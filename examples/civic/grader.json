@@ -1,0 +1,47 @@
+{
+  "method": "independent-agent",
+  "agentId": "regression_review_a",
+  "status": "pass",
+  "scope": "S3-only; legacy canonical review preserved",
+  "sourceHashes": {
+    "design.json": "7a724fce19e430553387f35b90d35fd0499998f59f012d13c69dd2a2926b0ce2",
+    "DESIGN.pdf": "dc6f62c9a7a21d7884fe1e355b58592a4d9133f249d916934ca152a30b949b6f",
+    "review.json": "d2d9fcdfe660a2b821d67315f0a356a3400510be446ae83dce1dc148e2c4cc7d"
+  },
+  "imageHashes": {
+    "independent-evidence/final-page-02.png": "8ed37f7a8f0f972c19cb3644245eaddb68fb5a1094670b2e6c485af705a14b8d",
+    "independent-evidence/final-page-03.png": "e82488699f7178da66b7a3e0b35d4307d139f2914f0e9f8fdb9b9eb449176e4b"
+  },
+  "S3": {
+    "status": "pass",
+    "taskTreeVector": true,
+    "workflowVector": true,
+    "legibleAt100Percent": true,
+    "evidence": [
+      "Final iteration 6 actual DESIGN.pdf pages 2/3 rendered with pdftoppm at 72 dpi and visually viewed at native dimensions.",
+      "PDF content streams independently inspected: zero raster images on both diagram pages; path/line commands and text are present.",
+      "Page 2 task IDs, hierarchy, mode/risk labels and node titles match canonical tasks; page 3 workflow component IDs, directed edges and role colors match the canonical graph.",
+      "Civic page 3 is visually denser with overlapping orthogonal routes; all nodes remain readable. Branch predicates are available in architecture.md."
+    ],
+    "renderedPages": [
+      2,
+      3
+    ],
+    "dpi": 72,
+    "zoomPercent": 100,
+    "pdfVectorEvidence": {
+      "2": {
+        "rasterImages": 0,
+        "lineOperators": 81
+      },
+      "3": {
+        "rasterImages": 0,
+        "lineOperators": 149
+      }
+    }
+  },
+  "limitations": [
+    "S3 visual/vector review does not establish semantic or production correctness.",
+    "Legacy civic received no new D1-D12 review or canonical review mutation."
+  ]
+}

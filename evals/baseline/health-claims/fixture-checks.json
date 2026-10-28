@@ -1,0 +1,144 @@
+{
+  "method": "Local Python JSON parse, SHA256 recomputation and length assertions only; does not execute workflow or business rules.",
+  "checks": [
+    {
+      "id": "EV1",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6524
+    },
+    {
+      "id": "EV2",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6530
+    },
+    {
+      "id": "EV3",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6961
+    },
+    {
+      "id": "EV4",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6113
+    },
+    {
+      "id": "EV5",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 5652
+    },
+    {
+      "id": "EV6",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6519
+    },
+    {
+      "id": "EV7",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 5592
+    },
+    {
+      "id": "EV8",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 5224
+    },
+    {
+      "id": "EV9",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6607
+    },
+    {
+      "id": "EV10",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6634
+    },
+    {
+      "id": "EV11",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 5775
+    },
+    {
+      "id": "EV12",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6583
+    },
+    {
+      "id": "EV13",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6532
+    },
+    {
+      "id": "EV14",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 7310
+    },
+    {
+      "id": "EV15",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 7377
+    },
+    {
+      "id": "EV16",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6526
+    },
+    {
+      "id": "EV17",
+      "payloadDigestMatches": false,
+      "expectedMatch": false,
+      "inputLength": 6713
+    },
+    {
+      "id": "EV18",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 4393
+    },
+    {
+      "id": "EV19",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 6057
+    },
+    {
+      "id": "EV20",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 5651
+    },
+    {
+      "id": "EV21",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 5655
+    },
+    {
+      "id": "EV22",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 3180
+    },
+    {
+      "id": "EV26",
+      "payloadDigestMatches": true,
+      "expectedMatch": true,
+      "inputLength": 7148
+    }
+  ],
+  "allExpectedHashAndLengthChecksPass": true
+}

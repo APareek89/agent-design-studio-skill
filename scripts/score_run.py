@@ -116,7 +116,9 @@ def score(folder,baseline=None,brief=None,validator_script=None):
     try:
         final=load(folder/'review.json'); review_valid=validator.validate_review(final,structural_valid=validation['valid'])['valid']
         rounds=sorted(folder.glob('review-round-*.json')); prior=[load(p) for p in rounds]
-        preserved={r['round'] for r in prior}==set(range(1,final['round'])) and len(prior)==max(0,final['round']-1)
+        preceding=[r for r in prior if r['round']<final['round']]
+        final_snapshots=[r for r in prior if r['round']==final['round']]
+        preserved={r['round'] for r in preceding}==set(range(1,final['round'])) and len(preceding)==max(0,final['round']-1) and all(r==final for r in final_snapshots) and len(preceding)+len(final_snapshots)==len(prior)
         valid_prior=all(validator.validate_review(r,structural_valid=True)['valid'] for r in prior)
         declared=report.get('reviewRounds')==[p.name for p in rounds]+['review.json']
         independence=final.get('method')!='independent-agent' or (independent and bound_evidence(g,folder,('review.json',)))

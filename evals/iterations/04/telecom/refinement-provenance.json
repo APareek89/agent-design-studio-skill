@@ -1,0 +1,10 @@
+{
+  "source": "evals/iterations/03/telecom",
+  "sourceSha256": "c2d3ed1b6423545b39ae6a024f3597cf5ef645db12ca6b34ffb102f7bd842e59",
+  "startedAt": "2026-10-28T12:00:15.844158+00:00",
+  "changes": [
+    "Every write-class golden now has exact typed writes equality and writer/forbidden-effect linkage, in addition to existing assertions.",
+    "W14 exposes and checks an exact trusted string record ID; alternatives are bound in the actual workflow contract."
+  ],
+  "method": "Root authored stricter declared controls; independent domain review pending, not a fresh author run."
+}

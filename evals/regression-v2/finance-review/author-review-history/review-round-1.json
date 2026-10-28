@@ -1,0 +1,128 @@
+{
+  "method": "self-review",
+  "round": 1,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "Bounded review-only scope, H1-H5 evidence limits, source checks, domain-specific fixtures and FMEA are present."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "Bounded review-only scope, H1-H5 evidence limits, source checks, domain-specific fixtures and FMEA are present."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 2,
+      "evidence": [
+        "Inspected ten stages and source fixtures; unresolved I1-I4 prevent structural and complete branch readiness."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 2,
+      "evidence": [
+        "Inspected ten stages and source fixtures; unresolved I1-I4 prevent structural and complete branch readiness."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "Bounded review-only scope, H1-H5 evidence limits, source checks, domain-specific fixtures and FMEA are present."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "Bounded review-only scope, H1-H5 evidence limits, source checks, domain-specific fixtures and FMEA are present."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "Bounded review-only scope, H1-H5 evidence limits, source checks, domain-specific fixtures and FMEA are present."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "Bounded review-only scope, H1-H5 evidence limits, source checks, domain-specific fixtures and FMEA are present."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "Bounded review-only scope, H1-H5 evidence limits, source checks, domain-specific fixtures and FMEA are present."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "Inspected ten stages and source fixtures; unresolved I1-I4 prevent structural and complete branch readiness."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "Bounded review-only scope, H1-H5 evidence limits, source checks, domain-specific fixtures and FMEA are present."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "Inspected ten stages and source fixtures; unresolved I1-I4 prevent structural and complete branch readiness."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "I1",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W1",
+      "message": "W1-W5 decision fields were authored as strings rather than booleans; structural validation fails. Repair type without removing predicates from description.",
+      "resolved": false
+    },
+    {
+      "id": "I2",
+      "severity": "major",
+      "stage": "framework",
+      "itemId": "F1",
+      "message": "F1-F3 alternatives were authored as strings rather than arrays; structural validation fails.",
+      "resolved": false
+    },
+    {
+      "id": "I3",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W5",
+      "message": "Exceptional paths reach C5 without a C4.checked value. Declare a typed union handoff envelope carrying exception evidence; do not require an absent successful artifact.",
+      "resolved": false
+    },
+    {
+      "id": "I4",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV1",
+      "message": "Supplement domain cases with exact duplicate, evidence conflict, missing source and forged citation cases; release must include these actual IDs.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Design-only self-review; no business assertions executed and no stakeholder sign-off."
+  ]
+}

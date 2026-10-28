@@ -1,0 +1,205 @@
+{
+  "generator": "agent-design-studio.design_io/1.0",
+  "generatedFiles": [
+    "PRD.md",
+    "architecture.md",
+    "eval-set.json",
+    "fmea-register.csv",
+    "assumptions.md",
+    "validation.json",
+    "build/01-milestone.md",
+    "build/02-milestone.md",
+    "build/03-milestone.md",
+    "build/00-overview.md"
+  ],
+  "designOnly": true,
+  "status": "pass",
+  "designSha256": "4ba94403e39dbfd61e0be858d16defbf58c33723dc5f876606e0bfab55ca4f45",
+  "reviewSha256": "9d830e2afa853149c2be4773851d26f727e2b9155b74434917925d7bfa4129cc",
+  "structuralValidation": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 3,
+      "tasks": 11,
+      "components": 10,
+      "workflow": 13,
+      "framework": 4,
+      "models": 1,
+      "fmea": 9,
+      "evals": 23,
+      "rollout": 7,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewValidation": {
+    "valid": true,
+    "status": "pass",
+    "computedStatus": "pass",
+    "errors": [],
+    "blockerIds": [],
+    "method": "self-review",
+    "round": 2,
+    "scores": {
+      "D1": 3,
+      "D2": 3,
+      "D3": 3,
+      "D4": 3,
+      "D5": 3,
+      "D6": 3,
+      "D7": 3,
+      "D8": 3,
+      "D9": 3,
+      "D10": 3,
+      "D11": 3,
+      "D12": 3
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "review": {
+    "method": "self-review",
+    "round": 2,
+    "status": "pass",
+    "dimensions": [
+      {
+        "id": "D1",
+        "score": 3,
+        "evidence": [
+          "CTX1-CTX3 distinguish eligible service credits from manual cash refunds/invoice correction; T0-T4 cover checked scope, investigation, exclusive route and proof."
+        ]
+      },
+      {
+        "id": "D2",
+        "score": 3,
+        "evidence": [
+          "All leaf tasks map to components, W nodes and golden evals; FM eval lists derived from actual EV relations including monitoring/release. Exact brief retained; H1-H5 distinguish proposed policies from facts."
+        ]
+      },
+      {
+        "id": "D3",
+        "score": 3,
+        "evidence": [
+          "W6 notice branch has bounded ENTRY/H24 sequence and 48h terminal ownership; W9 uncertain outcomes go exclusively to W10; only definitive absence re-enters W8 once with stable operationId."
+        ]
+      },
+      {
+        "id": "D4",
+        "score": 3,
+        "evidence": [
+          "C1-C10 declare scope, input/output enums, immutable plan fields, adapter outcomes, proof and human events. H2 makes real provider contracts a prerequisite. C8 malformed success is normalized UNKNOWN_COMMIT per X1."
+        ]
+      },
+      {
+        "id": "D5",
+        "score": 3,
+        "evidence": [
+          "C1 scope before C2; C7/C8 active/version/revocation checks and atomic eventKey uniqueness. C3 produces explanation/disposition only. W11 verifies postingId and matching receipt before W13."
+        ]
+      },
+      {
+        "id": "D6",
+        "score": 3,
+        "evidence": [
+          "H1-H4 clearly block launch pending policy, API, queue and privacy verification; H5 prices/volume labelled illustrative. C2/C4 abstain on missing/conflicting records."
+        ]
+      },
+      {
+        "id": "D7",
+        "score": 3,
+        "evidence": [
+          "F1 chooses durable code workflow versus planner and request handler using wait/recovery needs. F2-F4 assign state, privileges and coherent cloud/open-source candidates with unverified status."
+        ]
+      },
+      {
+        "id": "D8",
+        "score": 3,
+        "evidence": [
+          "M1 only for C3: expected1.1/max2 attempts,2000/300 tokens,$1/$4 illustrative prices,$0.00352/case and$35.20/10000. Standard/reasoning and tuning choices tied to evidence."
+        ]
+      },
+      {
+        "id": "D9",
+        "score": 3,
+        "evidence": [
+          "FM1-FM9 cover wrong service, stale authority, duplicate/concurrent writes, unknown posting, injection, false proof, waiting failure, contradictions and cancellation. Each has owner/release gate and specific golden coverage."
+        ]
+      },
+      {
+        "id": "D10",
+        "score": 3,
+        "evidence": [
+          "EV1-EV20 are self-contained JSON fixtures with exact expected effects and pass assertions, both polarities for service_credit; EV11 now scripts hidden provider absence while preserving visible uncertainty. EV21-EV23 define offline, monitoring and full release execution; no claim they ran."
+        ]
+      },
+      {
+        "id": "D11",
+        "score": 3,
+        "evidence": [
+          "R1 denominators/windows and baseline collection precede effect claims. R2-R5 use distinct entry/exit gates. R6 account randomization, strata, follow-up, two-proportion power and cluster correction are explicit. Safety veto separate from averages."
+        ]
+      },
+      {
+        "id": "D12",
+        "score": 3,
+        "evidence": [
+          "X1 and milestones01-03 derive scope, selected component/branch/test contracts and launch blockers. Export validated; full fixtures remain in indexed companion. Live execution and HTML excluded until separate authority/opt-in."
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "id": "ISSUE1",
+        "severity": "major",
+        "stage": "framework",
+        "itemId": "F1",
+        "message": "Repaired F1-F4 alternatives to arrays; complete validator now passes. M1 nonempty description also repaired after validator finding.",
+        "resolved": true
+      },
+      {
+        "id": "ISSUE2",
+        "severity": "major",
+        "stage": "evals",
+        "itemId": "EV11",
+        "message": "Fixture now specifies providerHiddenOutcome.committed=false, invisible to assistant; ambiguity still freezes event key and forbids subsequent POST. Actual eval and semantic fixture remain identical.",
+        "resolved": true
+      }
+    ],
+    "limitations": [
+      "Self-review is AI judgement, not independent review or stakeholder approval. Root is obtaining a separate review.",
+      "Validator passes schema and declared semantic invariants only; no business assertions, adapters, model behavior, staffing, costs or production reliability have been executed or verified.",
+      "H1-H4 are live-launch blockers. H5 cost and traffic assumptions require measurement. Portal progress requires customers to revisit/poll; no SMS/email connector is included."
+    ]
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ],
+  "mode": "standard",
+  "fileSha256": {
+    "PRD.md": "ab643102deb786801085c7cd9350c159d7e6b6cfc6e4f141720864772e184ab4",
+    "architecture.md": "c6dcc1b68ed82691d44d9ab032edeb20f47e7d409287bcf69d951dbec59f43b0",
+    "eval-set.json": "c4d7672ccee13886f07ba2329135a7d0b33e98f46e0a5f46480fe383f6ebca7c",
+    "fmea-register.csv": "4809d666e2752ae716e73c9f1ef83d149d3c10e8b56840ede7b40d119f983f14",
+    "assumptions.md": "2bb63937bb1556e88ecbe65b70dc0016149713651d20ceba9b90007474cb370d",
+    "build/01-milestone.md": "75890dcfdf1b7695832aeb4ae1d08efeb2c88fcbb22fc5ae3d4704b564531892",
+    "build/02-milestone.md": "535eae555081146b2b4c6dfc86271cecc256fd8d5e203f316983195f7779d425",
+    "build/03-milestone.md": "a7ad219a3cae3d6a589defdd978b0f0d65bbb1c37919d80e696b6acab1e8ed20",
+    "build/00-overview.md": "a72e038a794cfe3a09a190c74f7763c100adfe9a610a3d4eeaeb29b4e829f9a4"
+  }
+}

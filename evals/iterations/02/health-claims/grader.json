@@ -1,0 +1,131 @@
+{
+  "method": "independent-agent",
+  "agentId": "health_reviewer_round2",
+  "round": 1,
+  "designSha256": "96b283a8d54473ed5f3bea2adb1c8c4e1906c1fd774e03328bf7ee33be35aa32",
+  "pdfSha256": "644bfddeb039392a175bf808505cbdff2f588225d023faed5bc1d881d247ce13",
+  "status": "pass",
+  "S3": {
+    "pass": true,
+    "viewedPages": [
+      2,
+      3
+    ],
+    "dpi": 72,
+    "zoomPercent": 100,
+    "checks": [
+      {
+        "id": 1,
+        "pass": true,
+        "evidence": [
+          "PDF:p2",
+          "T0",
+          "T1",
+          "T2",
+          "T3",
+          "T4",
+          "T5",
+          "151 SVG paths from page 2; no embedded images"
+        ]
+      },
+      {
+        "id": 2,
+        "pass": true,
+        "evidence": [
+          "PDF:p3",
+          "W1\u2013W8",
+          "C1\u2013C7",
+          "164 SVG paths from page 3; no embedded images"
+        ]
+      },
+      {
+        "id": 3,
+        "pass": true,
+        "evidence": [
+          "PDF:p2/p3 native 596\u00d7842 raster viewed at 72 dpi/100%; labels and task/workflow geometry readable",
+          "IR-HC-01: crossing/unlabeled workflow edges are a minor presentation improvement"
+        ]
+      }
+    ],
+    "evidence": [
+      "pdfimages -list reports no raster image objects in DESIGN.pdf; diagrams are actual vector geometry with selectable PDF text."
+    ]
+  },
+  "S8": {
+    "pass": true,
+    "passed": 5,
+    "total": 6,
+    "minimumRequired": 5,
+    "checks": [
+      {
+        "id": 1,
+        "pass": true,
+        "evidence": [
+          "CTX2",
+          "C3",
+          "EV3: admission 2026-04-01 selects P7 over newer P8",
+          "EV17: conflicting event date routes review; H2 requires insurer event-basis approval"
+        ]
+      },
+      {
+        "id": 2,
+        "pass": true,
+        "evidence": [
+          "H2: proposed PR1 pending insurer sign-off",
+          "C3: integer once-only per-line class-specific room-rent ratio with floor/order",
+          "EV21",
+          "EV22",
+          "EV23",
+          "EV28"
+        ]
+      },
+      {
+        "id": 3,
+        "pass": true,
+        "evidence": [
+          "H1",
+          "CTX1",
+          "C4: no final adjudication/denial/payment capability",
+          "EV16: rejection_candidate only; finalRejectionNotices=0; staff alone make final rejection"
+        ]
+      },
+      {
+        "id": 4,
+        "pass": true,
+        "evidence": [
+          "C1: visible-pixel sandbox OCR excludes hidden/off-page/script/annotation layers",
+          "C2: document instructions treated as data",
+          "EV5",
+          "EV27"
+        ]
+      },
+      {
+        "id": 5,
+        "pass": true,
+        "evidence": [
+          "C3: every narrative claim bound to verified evidence, exact page/quote span and applicable policy clause required",
+          "EV16: EX1 source clause",
+          "EV24",
+          "EV25",
+          "EV26"
+        ]
+      },
+      {
+        "id": 6,
+        "pass": false,
+        "evidence": [
+          "H1",
+          "R5: assist-only scale; autonomy expansion needs new design",
+          "No STP release or STP QA-sampling contract is supplied; omission is explicit and safe within bounded assist-only scope."
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    "Independent AI design review, not production, medical, insurance-policy or legal certification.",
+    "Reviewed completed canonical design, brief, companion deliverables and PDF; author scripts and prior review files were excluded. Companion status banners were not evidence for scoring.",
+    "Synthetic fixtures were inspected and source correspondences checked; real business harness, live APIs, OCR/provider quality and stakeholder sign-offs were not executed or verified.",
+    "STP is explicitly excluded by H1; therefore S8 check 6 fails literally without creating a major gap in this approved assist-only scope.",
+    "PDF pages 2 and 3 were visually inspected at native 72 dpi (596\u00d7842 rendered pixels), without zoom; other PDF pages were text-inspected."
+  ]
+}

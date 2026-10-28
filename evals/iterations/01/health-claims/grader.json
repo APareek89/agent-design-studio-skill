@@ -1,0 +1,70 @@
+{
+  "method": "independent-agent",
+  "agentId": "candidate_reviewer_v2",
+  "sourceHashes": {
+    "design.json": "be4bb1b3897b119c3a9e769b7d5e39257c8bbee5755b11c50fae0d39e8b727f4",
+    "DESIGN.pdf": "46446b35139ff0b93dd646d8a7f63e898a6ad062bfbe3e8acd6bf48b6697de71"
+  },
+  "S8": {
+    "brief": "health-claims",
+    "checks": [
+      {
+        "id": 1,
+        "pass": true,
+        "evidence": [
+          "CTX2",
+          "C3",
+          "EV3: admission April 1 selects P7 over newer P8"
+        ]
+      },
+      {
+        "id": 2,
+        "pass": false,
+        "evidence": [
+          "C3 names rule but no positive proportionate-deduction formula/fixture; EV1/EV13 prorateClasses=[]; EV4 missing rule only"
+        ]
+      },
+      {
+        "id": 3,
+        "pass": true,
+        "evidence": [
+          "H1",
+          "CTX1",
+          "C4 no final decision permission",
+          "EV16 no final rejection notices"
+        ]
+      },
+      {
+        "id": 4,
+        "pass": false,
+        "evidence": [
+          "C2 treats pages as data; hidden text stripping absent; EV5 visible hostile page text only"
+        ]
+      },
+      {
+        "id": 5,
+        "pass": false,
+        "evidence": [
+          "C2 citation output and uncited-claim schema rejection present; existence/page/quote/clause resolution checks absent"
+        ]
+      },
+      {
+        "id": 6,
+        "pass": false,
+        "evidence": [
+          "H1/R5: all claims human reviewed; STP strict-code gate and QA sample absent by scope"
+        ]
+      }
+    ]
+  },
+  "S3": {
+    "taskTreeVector": true,
+    "workflowVector": true,
+    "legibleAt100Percent": true,
+    "evidence": [
+      "pdftoppm -f 2 -l 3 -r 72 -png; original 596x842 images inspected with view_image",
+      "Task tree page 2 labels/modes/risks readable; workflow page 3 component labels and roles readable at native 72dpi; routes have crossings and no on-diagram predicates (architecture carries exact rules).",
+      "pdfimages -list returns no embedded images; pdftotext preserves node text, consistent with vector drawings."
+    ]
+  }
+}

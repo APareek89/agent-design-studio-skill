@@ -5021,5 +5021,399 @@
       ],
       "assumptions": []
     }
-  }
+  },
+  "presentation": {
+    "systemSentence": "Help city staff route streetlight reports and track each saved ticket.",
+    "designCalls": [
+      {
+        "choice": "Staff approve ticket changes.",
+        "rejected": "Free agent writes",
+        "why": "People own routing"
+      },
+      {
+        "choice": "Reuse known tickets.",
+        "rejected": "New ticket each time",
+        "why": "Avoid double work"
+      },
+      {
+        "choice": "No equipment control.",
+        "rejected": "Remote switching",
+        "why": "Keep the first release safe"
+      }
+    ],
+    "autonomy": [
+      {
+        "action": "Read city records",
+        "level": "acts alone"
+      },
+      {
+        "action": "Suggest fault type and crew",
+        "level": "suggests"
+      },
+      {
+        "action": "Approve a ticket change",
+        "level": "human decides"
+      }
+    ],
+    "scopeSummary": "Staff can create or link a repair ticket. The system cannot switch lights or control street equipment.",
+    "taskLabels": {
+      "T0": "Resolve a streetlight report",
+      "T1": "Validate and register intake",
+      "T2": "Read asset, candidate tickets and routing policy",
+      "T3": "Classify and explain",
+      "T4": "Construct safe routing proposal",
+      "T5": "Obtain operator decision",
+      "T6": "Persist approved ticket action",
+      "T7": "Reconcile unknown write",
+      "T8": "Own exceptions, cancellation and completion"
+    },
+    "workflowLabels": {
+      "W1": "Register or cancel intake",
+      "W2": "Read context snapshot",
+      "W3": "Bounded classification",
+      "W4": "Build safe immutable plan",
+      "W5": "Await payload-bound human decision",
+      "W6": "Apply conditional ticket action",
+      "W7": "Reconcile uncertain commit",
+      "W8": "Persist owned manual disposition",
+      "W9": "Record ticket receipt completion",
+      "W10": "Record proposal cancellation",
+      "W11": "Hold unknown effect with owner",
+      "W12": "Project durable ticket receipt",
+      "W13": "Project durable proposal cancellation"
+    }
+  },
+  "runOptions": {
+    "mode": "standard",
+    "interactive": false
+  },
+  "milestones": [
+    {
+      "id": "1-0",
+      "title": "Intake and scope gate part 1",
+      "componentIds": [
+        "C1"
+      ],
+      "taskIds": [
+        "T1"
+      ],
+      "workflowIds": [
+        "W1"
+      ],
+      "evalIds": [
+        "EV1",
+        "EV2",
+        "EV3",
+        "EV4",
+        "EV18",
+        "EV21",
+        "EV19",
+        "EV20",
+        "EV22",
+        "EV23"
+      ],
+      "acceptanceCriteria": [
+        "Implement these exact branch rules and all named eval assertions. No equipment controls."
+      ]
+    },
+    {
+      "id": "2-0",
+      "title": "Authoritative context read adapter part 1",
+      "componentIds": [
+        "C2"
+      ],
+      "taskIds": [
+        "T2"
+      ],
+      "workflowIds": [
+        "W2"
+      ],
+      "evalIds": [
+        "EV1",
+        "EV3",
+        "EV4",
+        "EV5",
+        "EV6",
+        "EV9",
+        "EV17",
+        "EV18",
+        "EV20",
+        "EV22",
+        "EV25",
+        "EV26"
+      ],
+      "acceptanceCriteria": [
+        "Implement these exact branch rules and all named eval assertions. No equipment controls."
+      ]
+    },
+    {
+      "id": "3-0",
+      "title": "Bounded text triage judgement part 1",
+      "componentIds": [
+        "C3"
+      ],
+      "taskIds": [
+        "T3"
+      ],
+      "workflowIds": [
+        "W3"
+      ],
+      "evalIds": [
+        "EV1",
+        "EV2",
+        "EV11",
+        "EV15",
+        "EV17",
+        "EV18",
+        "EV19",
+        "EV20",
+        "EV22",
+        "EV23",
+        "EV26",
+        "EV27"
+      ],
+      "acceptanceCriteria": [
+        "Implement these exact branch rules and all named eval assertions. No equipment controls."
+      ]
+    },
+    {
+      "id": "4-0",
+      "title": "Route resolver and immutable plan validator part 1",
+      "componentIds": [
+        "C4"
+      ],
+      "taskIds": [
+        "T4"
+      ],
+      "workflowIds": [
+        "W4"
+      ],
+      "evalIds": [
+        "EV1",
+        "EV2",
+        "EV3",
+        "EV4",
+        "EV5",
+        "EV6",
+        "EV7",
+        "EV8",
+        "EV9",
+        "EV10",
+        "EV11",
+        "EV15",
+        "EV16",
+        "EV19",
+        "EV20",
+        "EV22",
+        "EV23",
+        "EV25",
+        "EV27"
+      ],
+      "acceptanceCriteria": [
+        "Implement these exact branch rules and all named eval assertions. No equipment controls."
+      ]
+    },
+    {
+      "id": "5-0",
+      "title": "Operator decision queue part 1",
+      "componentIds": [
+        "C5"
+      ],
+      "taskIds": [
+        "T5"
+      ],
+      "workflowIds": [
+        "W5"
+      ],
+      "evalIds": [
+        "EV1",
+        "EV6",
+        "EV7",
+        "EV8",
+        "EV9",
+        "EV10",
+        "EV14",
+        "EV16",
+        "EV21",
+        "EV19",
+        "EV20",
+        "EV22",
+        "EV24",
+        "EV25"
+      ],
+      "acceptanceCriteria": [
+        "Implement these exact branch rules and all named eval assertions. No equipment controls."
+      ]
+    },
+    {
+      "id": "6-0",
+      "title": "Conditional ticket writer part 1",
+      "componentIds": [
+        "C6"
+      ],
+      "taskIds": [
+        "T6"
+      ],
+      "workflowIds": [
+        "W6"
+      ],
+      "evalIds": [
+        "EV1",
+        "EV3",
+        "EV5",
+        "EV6",
+        "EV7",
+        "EV8",
+        "EV9",
+        "EV10",
+        "EV11",
+        "EV12",
+        "EV13",
+        "EV16",
+        "EV20",
+        "EV22",
+        "EV25",
+        "EV27"
+      ],
+      "acceptanceCriteria": [
+        "Implement these exact branch rules and all named eval assertions. No equipment controls."
+      ]
+    },
+    {
+      "id": "7-0",
+      "title": "Read-only commit reconciler part 1",
+      "componentIds": [
+        "C7"
+      ],
+      "taskIds": [
+        "T7"
+      ],
+      "workflowIds": [
+        "W7"
+      ],
+      "evalIds": [
+        "EV12",
+        "EV13",
+        "EV20",
+        "EV22"
+      ],
+      "acceptanceCriteria": [
+        "Implement these exact branch rules and all named eval assertions. No equipment controls."
+      ]
+    },
+    {
+      "id": "8-0",
+      "title": "Case journal, owner timers and status projection part 1",
+      "componentIds": [
+        "C8"
+      ],
+      "taskIds": [
+        "T8"
+      ],
+      "workflowIds": [
+        "W8",
+        "W9"
+      ],
+      "evalIds": [
+        "EV1",
+        "EV2",
+        "EV4",
+        "EV6",
+        "EV11",
+        "EV12",
+        "EV13",
+        "EV14",
+        "EV15",
+        "EV17",
+        "EV18",
+        "EV21",
+        "EV19",
+        "EV20",
+        "EV22",
+        "EV23",
+        "EV24",
+        "EV26",
+        "EV27"
+      ],
+      "acceptanceCriteria": [
+        "Implement these exact branch rules and all named eval assertions. No equipment controls."
+      ]
+    },
+    {
+      "id": "8-1",
+      "title": "Case journal, owner timers and status projection part 2",
+      "componentIds": [
+        "C8"
+      ],
+      "taskIds": [
+        "T8"
+      ],
+      "workflowIds": [
+        "W10",
+        "W11"
+      ],
+      "evalIds": [
+        "EV1",
+        "EV2",
+        "EV4",
+        "EV6",
+        "EV11",
+        "EV12",
+        "EV13",
+        "EV14",
+        "EV15",
+        "EV17",
+        "EV18",
+        "EV21",
+        "EV19",
+        "EV20",
+        "EV22",
+        "EV23",
+        "EV24",
+        "EV26",
+        "EV27"
+      ],
+      "acceptanceCriteria": [
+        "Implement these exact branch rules and all named eval assertions. No equipment controls."
+      ]
+    },
+    {
+      "id": "8-2",
+      "title": "Case journal, owner timers and status projection part 3",
+      "componentIds": [
+        "C8"
+      ],
+      "taskIds": [
+        "T8"
+      ],
+      "workflowIds": [
+        "W12",
+        "W13"
+      ],
+      "evalIds": [
+        "EV1",
+        "EV2",
+        "EV4",
+        "EV6",
+        "EV11",
+        "EV12",
+        "EV13",
+        "EV14",
+        "EV15",
+        "EV17",
+        "EV18",
+        "EV21",
+        "EV19",
+        "EV20",
+        "EV22",
+        "EV23",
+        "EV24",
+        "EV26",
+        "EV27"
+      ],
+      "acceptanceCriteria": [
+        "Implement these exact branch rules and all named eval assertions. No equipment controls."
+      ]
+    }
+  ]
 }

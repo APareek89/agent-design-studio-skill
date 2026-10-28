@@ -1,0 +1,273 @@
+{
+  "version": "1.1",
+  "folder": "/Users/macbook/Documents/agent-design-studio-skill/evals/baseline/health-claims",
+  "mode": "standard",
+  "brief": "health-claims",
+  "validatorScript": "/Users/macbook/Documents/agent-design-studio-skill/evals/baseline/frozen-v1/agent-design-studio/scripts/design_io.py",
+  "allPass": false,
+  "scores": {
+    "S1": {
+      "pass": false,
+      "evaluated": true,
+      "evidence": {
+        "mode": "standard",
+        "pages": 26,
+        "limit": 12
+      }
+    },
+    "S2": {
+      "pass": false,
+      "evaluated": true,
+      "evidence": {
+        "blocks": {
+          "The system in one sentence": false,
+          "Key design calls": false,
+          "Who acts and who decides": false,
+          "Top risks by RPN": false,
+          "Launch blockers and owners": false,
+          "Illustrative cost per case": false,
+          "Review status:": false
+        },
+        "inOrder": true,
+        "dimensionTableOnPage1": true
+      }
+    },
+    "S3": {
+      "pass": false,
+      "evaluated": true,
+      "evidence": {
+        "independentAgent": "baseline_grader_v2",
+        "vectorOperatorsPresent": true,
+        "judgment": {
+          "taskTreeVector": false,
+          "workflowVector": false,
+          "legibleAt100Percent": false,
+          "evidence": [
+            "DESIGN.pdf pages 2 and 8 rendered with pdftoppm -r 72 and inspected using view_image at original size (596x842 pixels).",
+            "Task map consists of prose cards with Tree position labels; no connected task-tree diagram. Workflow map consists of source/target/guard transition table; no connected workflow diagram.",
+            "Rendered prose and table are legible at 100%; required diagrams are absent, so diagram legibility cannot receive a pass."
+          ],
+          "inspection": {
+            "dpi": 72,
+            "pages": [
+              2,
+              8
+            ],
+            "tool": "pdftoppm + view_image(original)",
+            "proseAndTableLegibleAt100Percent": true
+          }
+        }
+      }
+    },
+    "S4": {
+      "pass": false,
+      "evaluated": true,
+      "evidence": {
+        "fleschReadingEase": 13.144446779491233,
+        "averageWordsPerSentence": 16.97826086956522,
+        "bannedTerms": [
+          "canonical"
+        ],
+        "method": "textstat"
+      }
+    },
+    "S5": {
+      "pass": false,
+      "evaluated": true,
+      "evidence": {
+        "fileBytes": {},
+        "totalBytes": 0,
+        "perFileLimit": 25000,
+        "standardTotalLimit": 100000
+      }
+    },
+    "S6": {
+      "pass": false,
+      "evaluated": true,
+      "evidence": [
+        {
+          "file": "sem001-faulty.json",
+          "expectedRule": "SEM001",
+          "observedRules": [],
+          "pass": false
+        },
+        {
+          "file": "sem002-faulty.json",
+          "expectedRule": "SEM002",
+          "observedRules": [],
+          "pass": false
+        },
+        {
+          "file": "sem003-faulty.json",
+          "expectedRule": "SEM003",
+          "observedRules": [],
+          "pass": false
+        },
+        {
+          "file": "sem004-faulty.json",
+          "expectedRule": "SEM004",
+          "observedRules": [],
+          "pass": false
+        },
+        {
+          "file": "sem005-faulty.json",
+          "expectedRule": "SEM005",
+          "observedRules": [],
+          "pass": false
+        },
+        {
+          "file": "sem006-faulty.json",
+          "expectedRule": "SEM006",
+          "observedRules": [],
+          "pass": false
+        },
+        {
+          "file": "sem007-faulty.json",
+          "expectedRule": "SEM007",
+          "observedRules": [],
+          "pass": false
+        }
+      ]
+    },
+    "S7": {
+      "pass": false,
+      "evaluated": false,
+      "evidence": [
+        {
+          "file": "s7-refund-no-guard.json",
+          "expectedRule": "SEM001",
+          "observedRules": [],
+          "pass": false,
+          "reviewMajorOrCritical": false
+        },
+        {
+          "file": "s7-48h-no-notice.json",
+          "expectedRule": "SEM002",
+          "observedRules": [],
+          "pass": false,
+          "reviewMajorOrCritical": false
+        },
+        {
+          "file": "s7-llm-amount.json",
+          "expectedRule": "SEM005",
+          "observedRules": [],
+          "pass": false,
+          "reviewMajorOrCritical": false
+        },
+        {
+          "file": "s7-no-positive-golden.json",
+          "expectedRule": "SEM003",
+          "observedRules": [],
+          "pass": false,
+          "reviewMajorOrCritical": false
+        },
+        {
+          "file": "s7-unversioned-inheritance.json",
+          "expectedRule": "SEM004",
+          "observedRules": [],
+          "pass": false,
+          "reviewMajorOrCritical": false
+        },
+        {
+          "file": "s7-llm-customer-id.json",
+          "expectedRule": "SEM005",
+          "observedRules": [],
+          "pass": false,
+          "reviewMajorOrCritical": false
+        }
+      ]
+    },
+    "S8": {
+      "pass": false,
+      "evaluated": true,
+      "evidence": {
+        "brief": "health-claims",
+        "found": 3,
+        "required": 5,
+        "checks": [
+          {
+            "id": 1,
+            "pass": true,
+            "evidence": [
+              "H2/H3: admission-date governing version is explicit synthetic basis, immutable registry effective intervals.",
+              "C2: deterministic confirmed admission/discharge spans precede half-open policy interval selection; ambiguous dates/versions hold."
+            ]
+          },
+          {
+            "id": 2,
+            "pass": false,
+            "evidence": [
+              "H3: HC1 explicitly uses no proportional deduction.",
+              "C4: only min(room charge,cap*covered days) on room lines; never infer proportional deductions on related charges. explicit_formula is an input enum without an executable proportionate formula or positive proportionate example.",
+              "EV5 holds unspecified proportional rules; this is a safe exclusion, not implementation of proportionate deduction."
+            ]
+          },
+          {
+            "id": 3,
+            "pass": true,
+            "evidence": [
+              "T4.1: all recommendations including zero-eligible/proposed rejection require human review.",
+              "C5: reviewer signs off; authenticated scoped human review events preserve actorId/time/notes; no automatic denial at overdue.",
+              "EV26: actual exclusion positive control yields review_pending/recommend_reject with adjudicator owner and zero externalDenialCalls. Pass is for required human authority on rejection, not automated insurer denial capability."
+            ]
+          },
+          {
+            "id": 4,
+            "pass": false,
+            "evidence": [
+              "A2/C3: documents are untrusted data, never instructions; model has no tools/network/writes.",
+              "C2/C3: no hidden-text/metadata stripping or visible-versus-hidden text normalization control is specified; treating text as data alone does not satisfy stripping requirement."
+            ]
+          },
+          {
+            "id": 5,
+            "pass": true,
+            "evidence": [
+              "C2/C3: source spans require existent docId/version/page/start/end; approved rule references require policyVersion/hash/ruleId; code checks required citations.",
+              "EV7: nonexistent document version 999 must abstain/hold.",
+              "EV26: policy-clause document v1 page 1 text exists; evidence span 0..78 matches 78-character text, HC1.coverage rule supplies exclusion reason, persisted packet includes actual evidence refs and line ruleIds."
+            ]
+          },
+          {
+            "id": 6,
+            "pass": false,
+            "evidence": [
+              "H1/CTX3/R3/R4: scope is assist-only, every decision human reviewed; no autonomous payment/denial phase.",
+              "C4 supplies strict code arithmetic and EV23 supplies held-out evaluation, but there is no straight-through-processing eligibility gate or QA sampling of STP decisions. Excluding STP is not implementation of STP."
+            ]
+          }
+        ],
+        "independentAgent": "baseline_grader_v2"
+      }
+    },
+    "S9": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "reviewValid": true,
+        "preservedRounds": true,
+        "priorReviewRecordsValid": true,
+        "reportedRoundsMatch": true,
+        "methodEvidence": true,
+        "unsupportedPass": false,
+        "method": "self-review",
+        "status": "pass"
+      }
+    },
+    "S10": {
+      "pass": false,
+      "evaluated": false,
+      "evidence": "Actual regression-test evidence or six brief outputs unavailable: /Users/macbook/Documents/agent-design-studio-skill/evals/baseline/health-claims/test-evidence.json: [Errno 2] No such file or directory: '/Users/macbook/Documents/agent-design-studio-skill/evals/baseline/health-claims/test-evidence.json'"
+    },
+    "S11": {
+      "pass": false,
+      "evaluated": false,
+      "evidence": "Comparable standard-mode host token measurements with the same tokenMethod unavailable; artifact size is not inference usage."
+    },
+    "S12": {
+      "pass": false,
+      "evaluated": false,
+      "evidence": "Scripted task-removal/checkpoint evidence unavailable: /Users/macbook/Documents/agent-design-studio-skill/evals/baseline/health-claims/interactive-evidence.json: [Errno 2] No such file or directory: '/Users/macbook/Documents/agent-design-studio-skill/evals/baseline/health-claims/interactive-evidence.json'"
+    }
+  }
+}

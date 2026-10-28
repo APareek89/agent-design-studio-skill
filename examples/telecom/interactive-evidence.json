@@ -1,0 +1,21 @@
+{
+  "scripted": true,
+  "beforeDesign": "../../evals/interactive-proof-v2/before.json",
+  "afterDesign": "../../evals/interactive-proof-v2/after.json",
+  "edits": "../../evals/interactive-proof-v2/edits.json",
+  "checkpoint": "../../evals/interactive-proof-v2/checkpoint.json",
+  "removedTaskIds": [
+    "T99"
+  ],
+  "removedComponentIds": [
+    "C99"
+  ],
+  "notes": "Functional checkpoint test, not a claim the user selected interactive mode for a normal brief-only run.",
+  "sourceHashes": {
+    "../../evals/interactive-proof-v2/before.json": "81c546e89cddea3b170ad5eb61da96ecf31b37fde228fe0c00ad361d4e7fa0e4",
+    "../../evals/interactive-proof-v2/after.json": "d3f00aaac6b340fa872b6d151f77c2c6f44e16aaea41e55c032d79662d9189d0",
+    "../../evals/interactive-proof-v2/edits.json": "0c230aa56157cd9756862244c9acbf7d88790244ba1bc13800719ce565fcdb7c",
+    "../../evals/interactive-proof-v2/checkpoint.json": "585d4858ed99226c9352ae554a30eb7b69eea20476c29e64c3854f478a3c3560",
+    "design.json": "7c2981b87a64fcf6178382f8d446fa2eb49d3e7b3b7783a47659a4179453fdd8"
+  }
+}

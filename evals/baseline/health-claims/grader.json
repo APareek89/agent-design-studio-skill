@@ -1,0 +1,87 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "design.json": "5949edad9880af26cf86f1dbe52264af998567104e3ad1d8813e786758a5de52",
+    "DESIGN.pdf": "23d7925c6ca0f5b4a92d5f95b8abcca56248d815e1a25e9bd00f77a1d3b3e30c",
+    "review.json": "8b7a1fdd217d4fce941c7ce3c08164399336775aad5de8fd51301b10e44c9acd"
+  },
+  "S8": {
+    "brief": "Design a health insurance claim adjudication assistant for inpatient hospital claims. It should read submitted policy and hospital documents, assess coverage and eligible charges, recommend or process eligible claims, and route exceptions and rejections for review. Policies can change over time and bills may include room-rent limits. Protect personal medical data, explain decisions with evidence and propose any missing rules as assumptions, not verified insurance or medical advice.\n",
+    "checks": [
+      {
+        "id": 1,
+        "pass": true,
+        "evidence": [
+          "H2/H3: admission-date governing version is explicit synthetic basis, immutable registry effective intervals.",
+          "C2: deterministic confirmed admission/discharge spans precede half-open policy interval selection; ambiguous dates/versions hold."
+        ]
+      },
+      {
+        "id": 2,
+        "pass": false,
+        "evidence": [
+          "H3: HC1 explicitly uses no proportional deduction.",
+          "C4: only min(room charge,cap*covered days) on room lines; never infer proportional deductions on related charges. explicit_formula is an input enum without an executable proportionate formula or positive proportionate example.",
+          "EV5 holds unspecified proportional rules; this is a safe exclusion, not implementation of proportionate deduction."
+        ]
+      },
+      {
+        "id": 3,
+        "pass": true,
+        "evidence": [
+          "T4.1: all recommendations including zero-eligible/proposed rejection require human review.",
+          "C5: reviewer signs off; authenticated scoped human review events preserve actorId/time/notes; no automatic denial at overdue.",
+          "EV26: actual exclusion positive control yields review_pending/recommend_reject with adjudicator owner and zero externalDenialCalls. Pass is for required human authority on rejection, not automated insurer denial capability."
+        ]
+      },
+      {
+        "id": 4,
+        "pass": false,
+        "evidence": [
+          "A2/C3: documents are untrusted data, never instructions; model has no tools/network/writes.",
+          "C2/C3: no hidden-text/metadata stripping or visible-versus-hidden text normalization control is specified; treating text as data alone does not satisfy stripping requirement."
+        ]
+      },
+      {
+        "id": 5,
+        "pass": true,
+        "evidence": [
+          "C2/C3: source spans require existent docId/version/page/start/end; approved rule references require policyVersion/hash/ruleId; code checks required citations.",
+          "EV7: nonexistent document version 999 must abstain/hold.",
+          "EV26: policy-clause document v1 page 1 text exists; evidence span 0..78 matches 78-character text, HC1.coverage rule supplies exclusion reason, persisted packet includes actual evidence refs and line ruleIds."
+        ]
+      },
+      {
+        "id": 6,
+        "pass": false,
+        "evidence": [
+          "H1/CTX3/R3/R4: scope is assist-only, every decision human reviewed; no autonomous payment/denial phase.",
+          "C4 supplies strict code arithmetic and EV23 supplies held-out evaluation, but there is no straight-through-processing eligibility gate or QA sampling of STP decisions. Excluding STP is not implementation of STP."
+        ]
+      }
+    ],
+    "passedChecks": 3,
+    "requiredChecks": 5,
+    "pass": false
+  },
+  "S3": {
+    "taskTreeVector": false,
+    "workflowVector": false,
+    "legibleAt100Percent": false,
+    "evidence": [
+      "DESIGN.pdf pages 2 and 8 rendered with pdftoppm -r 72 and inspected using view_image at original size (596x842 pixels).",
+      "Task map consists of prose cards with Tree position labels; no connected task-tree diagram. Workflow map consists of source/target/guard transition table; no connected workflow diagram.",
+      "Rendered prose and table are legible at 100%; required diagrams are absent, so diagram legibility cannot receive a pass."
+    ],
+    "inspection": {
+      "dpi": 72,
+      "pages": [
+        2,
+        8
+      ],
+      "tool": "pdftoppm + view_image(original)",
+      "proseAndTableLegibleAt100Percent": true
+    }
+  }
+}

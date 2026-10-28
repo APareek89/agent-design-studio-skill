@@ -1,0 +1,67 @@
+{
+  "version": "1.1",
+  "mode": "standard",
+  "startedAt": "2026-10-28T11:24:27Z",
+  "endedAt": "2026-10-28T11:36:26.156727+00:00",
+  "wallTimeSeconds": 719.156727,
+  "approximateTokensUsed": null,
+  "tokenMethod": "Unavailable: the host did not expose total inference usage.",
+  "artifactTextTokenEstimate": 443348,
+  "artifactTokenMethod": "UTF-8 decoded text characters / 4 across delivered text artifacts, excludes historical failed rounds; not host inference tokens.",
+  "fileSizes": {
+    "author-run-report.json": 8306,
+    "DESIGN.pdf": 128613,
+    "PRD.md": 389323,
+    "architecture.md": 103354,
+    "review-round-1.json": 4735,
+    "review_repair.py": 17397,
+    "assumptions.md": 15781,
+    "fmea-register.csv": 22526,
+    "validation.json": 8724,
+    "eval-set.json": 256725,
+    "build-prompt.md": 484900,
+    "review.json": 5238,
+    "author_design.py": 80034,
+    "design.json": 474208,
+    "artifact-checks.json": 4813
+  },
+  "pageCount": 30,
+  "validatorResults": {
+    "semanticCoverage": "unverified",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [
+      {
+        "path": "$.semantics",
+        "message": "Legacy schema 1.0: semantic coverage unverified; author new designs as schema 1.1 with complete semantic metadata."
+      }
+    ],
+    "counts": {
+      "context": 7,
+      "tasks": 13,
+      "components": 9,
+      "workflow": 18,
+      "framework": 5,
+      "models": 1,
+      "fmea": 10,
+      "evals": 34,
+      "rollout": 7,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewRounds": [
+    "review-round-1.json",
+    "review.json"
+  ],
+  "reviewMethod": "self-review",
+  "reviewStatus": "pass",
+  "designSha256": "0059834bfed6f738e7f01c7875c35afc6ec54eefb8ca0ac01a820740647f0d05",
+  "businessAssertionsExecuted": false
+}

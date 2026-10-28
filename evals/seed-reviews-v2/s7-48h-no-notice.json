@@ -1,0 +1,18 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "/Users/macbook/Documents/agent-design-studio-skill/evals/seeded-defects/v2/s7-48h-no-notice.json": "81d6722073df73ffcb3139bdefb288d68b98345121b06ba9acfc7207c38ba9f0"
+  },
+  "issues": [
+    {
+      "severity": "major",
+      "ruleId": "SEM002",
+      "evidence": [
+        "semantics.nodes W3.kind=human_wait, waitHours=48.",
+        "W3->W4 when=notice is outcome=normal; no outgoing W3 transition declares a requester-notice effect. W3->W6 approved can bypass W4.",
+        "W4 requester_notice exists, but no mandatory initial/update notification schedule is bound to the 48-hour wait. Consequence: the requester can remain uninformed during a long human wait; this finding does not claim the notice node is absent."
+      ]
+    }
+  ]
+}

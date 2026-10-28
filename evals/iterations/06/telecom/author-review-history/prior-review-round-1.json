@@ -1,0 +1,22 @@
+{
+  "method":"self-review", "round":1, "status":"needs-work",
+  "dimensions":[
+    {"id":"D1","score":3,"evidence":["T0-T4 partition investigation, three outcomes and proof."]},
+    {"id":"D2","score":2,"evidence":["Validator rejects F1-F4 alternatives as strings; schema requires arrays."]},
+    {"id":"D3","score":3,"evidence":["W9 TIMEOUT and UNKNOWN_COMMIT go only to W10; bounded absent retry passes W8."]},
+    {"id":"D4","score":3,"evidence":["C1-C10 have typed inputs, outputs and declared provider prerequisites."]},
+    {"id":"D5","score":3,"evidence":["C7/C8 use trusted full plans and live preconditions; C3 has no money output."]},
+    {"id":"D6","score":3,"evidence":["H1-H5 label policy, integration, staffing, privacy and budget assumptions."]},
+    {"id":"D7","score":2,"evidence":["F1-F4 architecture content exists but alternatives contract type is invalid."]},
+    {"id":"D8","score":3,"evidence":["M1 derives1.1 expected/max2 attempts and $0.00352 expected per case."]},
+    {"id":"D9","score":3,"evidence":["FM1-FM9 identify concrete failure causes, owners and release gates."]},
+    {"id":"D10","score":2,"evidence":["EV11 says zero confirmed writes under unknown commit without a scripted hidden provider outcome; exact fixture is ambiguous."]},
+    {"id":"D11","score":3,"evidence":["R2-R5 phase gates are distinct; R6 power method waits for baseline."]},
+    {"id":"D12","score":2,"evidence":["Export cannot yet be considered valid until schema errors repaired."]}
+  ],
+  "issues":[
+    {"id":"ISSUE1","severity":"major","stage":"framework","itemId":"F1","message":"F1-F4 alternatives require arrays. Convert these strings and revalidate all contracts.","resolved":false},
+    {"id":"ISSUE2","severity":"major","stage":"evals","itemId":"EV11","message":"Unknown commit fixture cannot guarantee zero posted effects without a provider-side hidden outcome. Script hidden absence while retaining adapter ambiguity, and assert zero new POST attempts after the first.","resolved":false}
+  ],
+  "limitations":["Self-review of a design. Goldens and business controls are not executed; external policies/adapters/staffing remain launch blockers."]
+}

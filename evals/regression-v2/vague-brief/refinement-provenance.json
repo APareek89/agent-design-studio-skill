@@ -1,0 +1,10 @@
+{
+  "source": "evals/regression/vague-brief",
+  "sourceSha256": "35c65d74cd4e4ab985f877ed9a2790ae67f370ba9a7852e21e298fe5c555fd15",
+  "startedAt": "2026-10-28T12:00:15.844158+00:00",
+  "changes": [
+    "Every write-class golden now has exact typed writes equality and writer/forbidden-effect linkage, in addition to existing assertions.",
+    "W4 accurately classifies draft fact checking as validation, not proof of a nonexistent business write."
+  ],
+  "method": "Root authored stricter declared controls; independent domain review pending, not a fresh author run."
+}

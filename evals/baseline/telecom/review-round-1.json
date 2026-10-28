@@ -1,0 +1,123 @@
+{
+  "method": "self-review",
+  "round": 1,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1-CTX7 and T0-T5 bound intake, evidence, three resolution outcomes, cancellation and owned holds; scope excludes autonomous cash refund."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "All stage links pass v1 structural validation; H1-H8 distinguish proposals and exact brief quotes; FM/EV links derived reciprocally."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 2,
+      "evidence": [
+        "W4 leads directly from eligible plan to W10 without an explicit customer confirmation state, despite C4/C6 requiring confirmation."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 2,
+      "evidence": [
+        "C1 command discriminant lacks confirm_credit and no component owns a confirmation receipt/timer; an implementer must invent that interaction."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C4/C6 bind positive integer CREDIT payload, tenant/subject/active connection, policy/approval version, digest, entitlement key and durable proof; C7 read-only recovery survives session loss."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1-H8 label policies, APIs, timing, cost and retention; C2/C3 contradiction and unavailable states route human; no live service assertions."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1-F5 choose bounded judgement in durable code workflow; compare common persistence/timer/audit/ownership criteria and reject synchronous and autonomous alternatives."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 maps only C3; W3 allows one retry; 0.88 expected calls, 2 worst-case, illustrative price/token arithmetic and excluded costs explicit."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM10 cover subject, staleness, duplicates, unknown commits, injection, queue, cancellation, amount and false completion with owners and release gates."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "EV3 and EV19 mutate service/cancellation but omit entry state, so fixture may fail at intake rather than exercise writer guards. EV22 larger claim requires clearer uncapped routing. No confirmation positive/timeout cases."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1 metrics have denominators/windows; R2-R5 distinct entry/exit gates; R6 customer clustering, baseline power calculation, spillover and maturation; zero safety tolerance separate."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "X1 promises customer confirmation but no complete implementable state; downstream acceptance and release fixtures must include new path."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISSUE1",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W4",
+      "message": "Credit path lacks explicit confirmation interaction and timeout even though authority requires consent. Add typed confirmation command/receipt owner, immutable payload binding, bounded wait and fresh recheck; preserve no-write denial/expiry.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE2",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV3",
+      "message": "Writer-time deactivation and cancellation fixtures can reject earlier at W1 without exercising intended guard. Bind entryState W10 and existing prepared authorized operation; reject unexpected write effects. Add confirmation fixtures.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE3",
+      "severity": "major",
+      "stage": "context",
+      "itemId": "CTX2",
+      "message": "H2 describes cap while EV22 requires supervisor routing for uncapped amounts above it; state explicitly that larger customer entitlement is not silently reduced and closed automatically.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Self-review by the author, not independent review or stakeholder approval.",
+    "Bundled structural validator executed; financial, identity, queue and model assertions are specifications only and have not run against a business implementation.",
+    "Synthetic fixtures, policy P1, volumes, thresholds and costs are proposed assumptions; actual API capability, authority, privacy and policy approval remain H1-H8 launch dependencies.",
+    "PDF rendering and visual QA deliberately deferred to root batch step; no HTML requested or produced."
+  ]
+}

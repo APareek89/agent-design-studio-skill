@@ -1,0 +1,99 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "design.json": "0059834bfed6f738e7f01c7875c35afc6ec54eefb8ca0ac01a820740647f0d05",
+    "DESIGN.pdf": "2c34283a94ca90f363228123a5d59ae7b4a834b3788c5c54e574bdb3056c2eda",
+    "review.json": "b2c3efe0d9fe9e11b9f06c899e05f86f897eff5efc6642980cd2435049b9465a"
+  },
+  "S8": {
+    "brief": "Design a complaint assistant for a telecom provider. Customers report network outages, poor speed and billing errors. The assistant should investigate using account, billing and service records, explain findings and resolve eligible service credits. Larger or unclear refunds need a human supervisor and may wait up to 48 hours. Keep customers informed, avoid duplicate refunds and use only the right customer's active service connection. Propose any missing policies as assumptions, not real company rules.\n",
+    "checks": [
+      {
+        "id": 1,
+        "pass": true,
+        "evidence": [
+          "C3: model interprets scoped source evidence, selects issue/disposition and evidenceRefs; output forbids amount or tool command.",
+          "C4 + H2: policy code computes floor(monthly base fee * affected minutes / billing-cycle minutes), integer money; C4 chooses authoritative eligibility."
+        ]
+      },
+      {
+        "id": 2,
+        "pass": true,
+        "evidence": [
+          "C6: postCredit fetches immutable payload, rechecks policy/version/cap, subject, approval, confirmation and ledger allocation immediately at commit; no mutable caller amount."
+        ]
+      },
+      {
+        "id": 3,
+        "pass": true,
+        "evidence": [
+          "C2: authoritative records carry id/kind/version/observedAt and scopedBinding.",
+          "C3: customer report is untrusted; citations absent from packet are rejected; customer text cannot establish confirmed incident."
+        ]
+      },
+      {
+        "id": 4,
+        "pass": false,
+        "evidence": [
+          "H2: automatic 1000-minor-unit limit is per incident; remaining eligible base-fee limit is described.",
+          "C4/C6: current entitlement/ledger allocation checks exist, but no explicit monthly cumulative-credit aggregation, monthly cap field or corresponding cross-incident monthly guard is specified."
+        ]
+      },
+      {
+        "id": 5,
+        "pass": true,
+        "evidence": [
+          "T1/C1: list authorized active connections; multi-connection ambiguity returns needs_selection and asks customer to select in portal before investigation/action."
+        ]
+      },
+      {
+        "id": 6,
+        "pass": true,
+        "evidence": [
+          "CTX3: credited completion requires ledger posting ID and operation readback.",
+          "C6: committed/already_committed require durable matching readback.",
+          "C8: credited requires postingProof; completion recordId and postingId retained; no success before persistence."
+        ]
+      },
+      {
+        "id": 7,
+        "pass": true,
+        "evidence": [
+          "C6: 5-second write timeout becomes unknown.",
+          "C7: query operation and ledger; unknown never permits another operation; safe_retry needs definitive_absent with no possible in-flight commit and fresh C4 authority."
+        ]
+      },
+      {
+        "id": 8,
+        "pass": true,
+        "evidence": [
+          "C4: signed supervisor approval binds payloadDigest, caseRevision, policyVersion, subject/action and expiry; canonical CreditPayload includes exact amountMinor/currency.",
+          "C6/C9: commit verifies immutable digest and fresh approval; customer confirms exact immutable quote."
+        ]
+      }
+    ],
+    "passedChecks": 7,
+    "requiredChecks": 7,
+    "pass": true
+  },
+  "S3": {
+    "taskTreeVector": false,
+    "workflowVector": false,
+    "legibleAt100Percent": false,
+    "evidence": [
+      "DESIGN.pdf pages 2 and 9 rendered with pdftoppm -r 72 and inspected using view_image at original size (596x842 pixels).",
+      "Task map consists of prose cards with Tree position labels; no connected task-tree diagram. Workflow map consists of source/target/guard transition table; no connected workflow diagram.",
+      "Rendered prose and table are legible at 100%; required diagrams are absent, so diagram legibility cannot receive a pass."
+    ],
+    "inspection": {
+      "dpi": 72,
+      "pages": [
+        2,
+        9
+      ],
+      "tool": "pdftoppm + view_image(original)",
+      "proseAndTableLegibleAt100Percent": true
+    }
+  }
+}

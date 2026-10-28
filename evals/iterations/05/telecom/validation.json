@@ -1,0 +1,208 @@
+{
+  "generator": "agent-design-studio.design_io/1.0",
+  "generatedFiles": [
+    "PRD.md",
+    "architecture.md",
+    "eval-set.json",
+    "fmea-register.csv",
+    "assumptions.md",
+    "validation.json",
+    "build/01-milestone.md",
+    "build/02-milestone.md",
+    "build/03-milestone.md",
+    "build/00-overview.md"
+  ],
+  "designOnly": true,
+  "status": "needs-work",
+  "designSha256": "7f4e46ade204b0ed6b6b8bfe11784f4a486c9bbacee0a0febda3df8133258ba8",
+  "reviewSha256": "0057e1de03c03741b27665fc0aee73a4fc8af39b3d9650b3def1d8f9db40fed2",
+  "structuralValidation": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 3,
+      "tasks": 11,
+      "components": 11,
+      "workflow": 13,
+      "framework": 4,
+      "models": 1,
+      "fmea": 9,
+      "evals": 26,
+      "rollout": 7,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewValidation": {
+    "valid": true,
+    "status": "needs-work",
+    "computedStatus": "needs-work",
+    "errors": [],
+    "blockerIds": [
+      "IR1"
+    ],
+    "method": "independent-agent",
+    "round": 1,
+    "scores": {
+      "D1": 3,
+      "D2": 3,
+      "D3": 3,
+      "D4": 3,
+      "D5": 3,
+      "D6": 3,
+      "D7": 3,
+      "D8": 3,
+      "D9": 3,
+      "D10": 2,
+      "D11": 3,
+      "D12": 3
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "review": {
+    "method": "independent-agent",
+    "round": 1,
+    "status": "needs-work",
+    "dimensions": [
+      {
+        "id": "D1",
+        "score": 3,
+        "evidence": [
+          "CTX1–CTX3 and T0/T3 define the authenticated complaint boundary, sequential investigation and exclusive automatic/human/no-credit outcomes. Speed, billing, cash refunds and invoice correction have explicit owned limits; C1/W1 now specify selection clarification and resumption."
+        ]
+      },
+      {
+        "id": "D2",
+        "score": 3,
+        "evidence": [
+          "T1/T2/T3.1/T3.2/T3.3/T4 reach C1–C11, W1–W14 and EV1–EV26. Risk links FM1–FM9 are reciprocal. H1–H5 distinguish proposed facts from verified context. Actual eval-set items match canonical evals exactly and all23 semantic golden fixtures match decoded input/expected with matching integer write assertions. EV13 semantic inconsistency is recorded separately under D10."
+        ]
+      },
+      {
+        "id": "D3",
+        "score": 3,
+        "evidence": [
+          "W1 establishes entry; W13 proves credit and W14 shows proved case outcomes. W6 persists 1h acknowledgement and original 48h deadline, with ENTRY/H24 notice sequence. W9 uncertain outcomes must enter W10; DEFINITIVELY_ABSENT permits at most one W8 revalidation and same-operation retry. C9 freezes unresolved event keys across logout and worker failure."
+        ]
+      },
+      {
+        "id": "D4",
+        "score": 3,
+        "evidence": [
+          "C1–C11 separate scoped reads, bounded explanation, amount calculation, approval, internal portal notice, fresh validation, financial write, readback and two proof guards. CreditPlan enumerates financial/version fields; C8 provides typed write/error outcomes; C5 specifies queue, owner and timing. H2/H4 explicitly block use until real adapters, privacy and atomic preconditions are verified."
+        ]
+      },
+      {
+        "id": "D5",
+        "score": 3,
+        "evidence": [
+          "C3 has no tools or money/date/identity outputs. C4 computes integer credit; C7/C8 reconstruct and atomically validate exact signed or policy plan and invoice entitlement version. C10 requires direct committed postingId, C11 cannot claim credit from case proof. F3/H4 bound least privilege, tenant scope and retention. EV24 exercises monthly cumulative balance, EV25 selection and EV26 amount-bound approval."
+        ]
+      },
+      {
+        "id": "D6",
+        "score": 3,
+        "evidence": [
+          "CTX3 explicitly says no company policy, API support, staffing or savings is verified. H1–H4 are live-launch blockers; H5 cost/traffic is illustrative. Missing/conflicting evidence routes to supervisor without invented entitlement. F4 names provider candidates without live capability/compliance claims."
+        ]
+      },
+      {
+        "id": "D7",
+        "score": 3,
+        "evidence": [
+          "F1 selects one durable code state machine and transactional outbox for timers/recovery, rejecting free-running planner and synchronous handler. F2/F3 specify financial truth and permission separation. F4 lists AWS/GCP/Azure/open-source data/secret candidates against common retention/residency/audit/restore/operator criteria, with provider decision explicitly deferred to H4 verification. Quantified provider comparison is a non-blocking follow-up for this bounded provider-neutral design."
+        ]
+      },
+      {
+        "id": "D8",
+        "score": 3,
+        "evidence": [
+          "C3 has exactly one plan M1. Independently recomputed $0.0032/call at2000 input/300 output and $1/$4 per million; 1.1 expected calls gives $0.00352/case and $35.20/10000; worst2 calls=$0.0064. Max2 attempts and20s budget, deterministic fallback, excluded costs and held-out fine-tuning criteria are explicit."
+        ]
+      },
+      {
+        "id": "D9",
+        "score": 3,
+        "evidence": [
+          "FM1–FM9 cover wrong scope, stale entitlement/authority, duplicates, uncertain commit, injection, false completion, stalled queue, conflicting evidence and reordered cancellation/approval. Each names affected tasks/components, hypothetical S/O/D, owner, prevention/detection and specific linked cases. EV24–EV26 substantively extend invoice race, selection and approval tamper coverage."
+        ]
+      },
+      {
+        "id": "D10",
+        "score": 2,
+        "evidence": [
+          "EV1 positive automatic cap equality and EV2 larger supervisor credit calculate1000/2000 correctly; EV18 caps1000 raw at500 remaining; EV24 serializes two independently valid500 plans against one500 balance, posting500 once. EV3–EV7 forbid unsafe effects; EV9–EV11 cover committed/absent/unresolved timeout; EV25/EV26 isolate ambiguity and amount tampering. However EV13 scripts malformed C8 POSTED then C10 MISSING_PROOF despite mandatory UNKNOWN_COMMIT→W10/C9 routing, supplies no C9 result, and expects an exact state unreachable from its scripted trace. IR1 must be repaired before D10 passes."
+        ]
+      },
+      {
+        "id": "D11",
+        "score": 3,
+        "evidence": [
+          "R1 defines seven-day reopen denominator and elapsed decision metrics, safety separately. R2–R5 specify shadow/assist/pilot/scale, H1–H4 gates and disabling new writes while preserving readback. R6 defines sticky account randomization, strata, contamination controls, baseline-dependent power/design effect, four-week observation plus7d follow-up and immediate safety stop. R7 assigns queue and reconciliation owners."
+        ]
+      },
+      {
+        "id": "D12",
+        "score": 3,
+        "evidence": [
+          "Actual PRD, architecture, eval-set and build00–03 preserve canonical IDs, exact selected component/workflow contracts and launch blockers. X1 says this is a design and future harness, not built telecom software. All23 actual golden definitions and EV21–EV23 release/monitoring obligations remain available; EV13 repair is the one blocking evaluation inconsistency."
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "id": "IR1",
+        "severity": "major",
+        "stage": "evals",
+        "itemId": "EV13",
+        "message": "Malformed-success golden is inconsistent with actual recovery graph. C8 normalizes empty postingId POSTED to UNKNOWN_COMMIT, so W9 must enter W10/C9. EV13 instead scripts C10 MISSING_PROOF immediately, supplies no C9 authoritative result or component link, and expects exact MISSING_PROOF state. W11/C10 is reachable only after valid POSTED or COMMITTED proof. Add a concrete C9 unresolved/committed result and truthful expected route/state; if testing C10 separately, make it an explicit component fixture rather than a contradictory end-to-end trace. Preserve zero new financial writes and no completed-credit view.",
+        "resolved": false
+      },
+      {
+        "id": "IR2",
+        "severity": "minor",
+        "stage": "framework",
+        "itemId": "F4",
+        "message": "Provider families and common comparison criteria are explicit, but no measured or scored tradeoff assessment is supplied. H4 keeps vendor/residency selection unresolved safely; complete the bounded comparison and operational restore/timer evidence before deployment.",
+        "resolved": false
+      }
+    ],
+    "limitations": [
+      "Independent review of current iteration05 telecom variant, using actual canonical design and companions; no author review/provenance or earlier variant used as evidence for this verdict.",
+      "Scores are bounded AI design judgements, not measured correctness, production certification or confirmation of provider/API capabilities. No business assertions or live provider actions executed.",
+      "Bundled validator independently returned structural-pass/verified-declarations. Parsed golden consistency and arithmetic checks do not execute a business harness.",
+      "Actual rendered DESIGN.pdf pages1–3 inspected at72dpi/100%: labels, arrows and role colors are readable. Task tree and workflow contain vector strokes/selectable text and no raster image resources; exact predicates are in architecture.md."
+    ]
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ],
+  "mode": "standard",
+  "fileSha256": {
+    "PRD.md": "686c8b1447d5dbd04a283dc6ee80ba8f7061742f14a7d45c3fc4ad9770d3f26a",
+    "architecture.md": "33c526de1b8665d4410af7b3cf6b0024912d46736cd98fb62d528d3b468ecb11",
+    "eval-set.json": "c429350fc2c85d650f9c34ff3449acd1ee41a7c14bf8533800f5b187537bb749",
+    "fmea-register.csv": "eb20c9677af56a54e42866b2afb0175c760929aba94228198444d167e5ebb109",
+    "assumptions.md": "e750b3c353c2ce62e52a79fb2d4ed7bda0cc15a7c0d864246b90228e88dd4d99",
+    "build/01-milestone.md": "4fc59ed580d5ab66cbf86459fd5630e6d6c971d0b3949a49100a51bb46e11a4b",
+    "build/02-milestone.md": "bbd2b94059de363d03634435b07597434ecaa802be6e99d19ad5b334248e7d9e",
+    "build/03-milestone.md": "48d7b06067d9dd1a4cdc15aeeb7c5f08ef36bf845f6193875bf1dc8994689668",
+    "build/00-overview.md": "d1a5e7dfb182a32f8f0e146f58464ac6de5165cd89c88155d41bdef4fdfe2bc3"
+  }
+}

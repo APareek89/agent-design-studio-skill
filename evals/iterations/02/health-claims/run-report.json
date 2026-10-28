@@ -1,0 +1,66 @@
+{
+  "version": "1.1",
+  "mode": "standard",
+  "startedAt": "2026-10-28T11:42:48Z",
+  "endedAt": "2026-10-28T11:45:28.979145+00:00",
+  "wallTimeSeconds": 160.979145,
+  "approximateTokensUsed": null,
+  "tokenMethod": "Unavailable: the host did not expose total inference usage.",
+  "artifactTextTokenEstimate": 201112,
+  "artifactTokenMethod": "UTF-8 decoded text characters / 4 across delivered text artifacts, excludes historical failed rounds; not host inference tokens.",
+  "fileSizes": {
+    "repair.py": 13975,
+    "PRD.md": 30858,
+    "architecture.md": 51074,
+    "timing.json": 165,
+    "prior-review-round-2.json": 3924,
+    "assumptions.md": 9041,
+    "fmea-register.csv": 12237,
+    "artifact-fixture-check.json": 2099,
+    "validation.json": 9830,
+    "prior-independent-review.json": 5390,
+    "eval-set.json": 171129,
+    "review.json": 5314,
+    "prior-review-round-1.json": 3546,
+    "review-round-3.json": 5314,
+    "design.json": 458198,
+    "build/00-overview.md": 1335,
+    "build/01-milestone.md": 18147,
+    "build/02-milestone.md": 6410,
+    "build/03-milestone.md": 15825
+  },
+  "pageCount": null,
+  "validatorResults": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 3,
+      "tasks": 9,
+      "components": 7,
+      "workflow": 8,
+      "framework": 4,
+      "models": 1,
+      "fmea": 7,
+      "evals": 28,
+      "rollout": 7,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewRounds": [
+    "review-round-3.json",
+    "review.json"
+  ],
+  "reviewMethod": "self-review",
+  "reviewStatus": "pass",
+  "designSha256": "96b283a8d54473ed5f3bea2adb1c8c4e1906c1fd774e03328bf7ee33be35aa32",
+  "businessAssertionsExecuted": false
+}

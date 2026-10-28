@@ -1,0 +1,20 @@
+{
+  "scripted": true,
+  "beforeDesign": "before.json",
+  "afterDesign": "after.json",
+  "edits": "edits.json",
+  "checkpoint": "checkpoint.json",
+  "removedTaskIds": [
+    "T99"
+  ],
+  "removedComponentIds": [
+    "C99"
+  ],
+  "sourceHashes": {
+    "before.json": "58122a16084d3884414d5ea456b2abf15d82f0f6075162008bb09d5c217e9431",
+    "after.json": "183a24cf67d905c62779c195cf14a321864ec4dc153c3a179f66036e65dfd1ae",
+    "edits.json": "0c230aa56157cd9756862244c9acbf7d88790244ba1bc13800719ce565fcdb7c",
+    "checkpoint.json": "be64410297e40927e08633076d4e73eaab93d03d20a5784d0b5cbafebbf24dd2"
+  },
+  "notes": "Functional checkpoint test, not a claim the user selected interactive mode for a normal brief-only run."
+}

@@ -1,0 +1,139 @@
+{
+  "method": "self-review",
+  "round": 3,
+  "status": "pass",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1 and T0/T3 sequence/choice cover active-service investigation, outage credit, supervisor, cancellation and owned unknown outcomes; cash payouts and network repair excluded."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "Every leaf T1,T2,T3.1,T3.2,T3.3,T4 is served by C/W and goldens. FM1-FM9 links derive from EV1-EV23 and are reciprocal. Source brief exact quote; H1-H6 separate proposed policies and adapters."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W6 durable timers, W5 notice scheduling, W7 actual send, W10 all unknown paths reconcile, same-key one retry after final absence; W14 proof before W15; W16 owned unresolved terminal. EV6 now CREDITED plus cancellation flag."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C1-C9 define scope/evidence/status fields, required immutable command content, write response enums, 5s adapter deadlines, durable queue acknowledgement/escalation and read-only lookup beyond session."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C1 and C7 scope/active joins precede private reads and credit. C4 exact approved command, C7 fresh versions/authority and atomic uniqueness; C3 has explanation-only output with citation verification. H4 privacy is explicit launch gate."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1-H4/H6 block launch on unverified policy, integration, staffing, privacy and notice evidence. H5/M1 illustrative volume/prices and all fixtures synthetic. Missing/conflicting records yield owned investigation."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1 rejects open-ended/synchronous chain for durable code state machine; same comparison criteria persistence/timers/dedup/authority/recovery. F2 scopes principals; F3 compares relational/evidence/audit patterns across cloud/open-source as unverified candidates."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "One M1 matches C3/W3. 2400*1/1e6+450*4/1e6=.0042 USD/call, <=.9 calls gives .00378/case and <=37.80/10000 cases; worst one call. No retries, timeout fallback, fine-tune only after labeled held-out improvement."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM9 are case-specific with hypothetical S/O/D, actionable owners, gates and objective metrics. High severity and high RPN have no invented acceptance; guard failures tie to actual scoped tests."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 3,
+      "evidence": [
+        "EV1 valid arithmetic, EV2 wrong customer, EV3/14 stale/revoked, EV4 two concurrent operations, EV5/20 conflict/invented citation, EV6/16 uncertain/logout/cancel, EV7 proof failure, EV8 48h queue, EV9 missing policy, EV10/11/15 notices, EV12 cap overflow, EV13 signed supervisor, EV17 cancel, EV18 inactive, EV19 speed. Self-contained inputs and expected effects; EV21-EV23 explicitly release all 20 goldens."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1 denominators/windows and censored resolution, R2 non-circular Shadow/Assist/Pilot/Scale gates and stop/reconcile policy, R3 account randomization and binary/log-hours sample-size methods, R4 proposed accountable role sign-offs."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 3,
+      "evidence": [
+        "X1 preserves exact C/W boundaries and shared state ownership; four milestones cover all components and linked tests. Full fixtures indexed outside build packets. No claim of executing business controls or receiving policy approval."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISS1",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W10",
+      "message": "EV6 expects CREDITED_CANCEL_REQUESTED outside C9 outcome enum. Keep CREDITED with cancellationRequested flag; otherwise client state handling needs invention.",
+      "resolved": true
+    },
+    {
+      "id": "ISS2",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV7",
+      "message": "A malformed POST response does not prove zero ledger effects. Start fixture after uncertain authorized attempt, assert zero additional writes and UNKNOWN_OWNED with proof lock.",
+      "resolved": true
+    },
+    {
+      "id": "ISS3",
+      "severity": "major",
+      "stage": "framework",
+      "itemId": "F1",
+      "message": "Structural validator rejects alternatives string and presentation autonomy labels. Use array and allowed levels; rerun.",
+      "resolved": true
+    },
+    {
+      "id": "ISS4",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W6",
+      "message": "Wait notice edge targets a write node rather than a separate requester_notice role. Add durable notice scheduling node W5, then external delivery W7.",
+      "resolved": true
+    },
+    {
+      "id": "ISS5",
+      "severity": "major",
+      "stage": "export",
+      "itemId": "X1",
+      "message": "Several descriptions empty and W12 claims T3.3 outside C6 task contract. Populate meaningful descriptions and constrain W12 task claim.",
+      "resolved": true
+    }
+  ],
+  "limitations": [
+    "Self-review by author, not independent review or stakeholder approval.",
+    "Structural and semantic declarations passed helper; goldens are specifications, no business harness or real API tests ran.",
+    "H1-H4,H6 remain launch blockers; policy legality, API support, continuous staffing and actual vendor performance have not been verified.",
+    "PDF rendering and visual layout inspection are delegated to root and are not claimed complete in this source-only subtask."
+  ]
+}

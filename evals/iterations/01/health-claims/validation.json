@@ -1,0 +1,215 @@
+{
+  "generator": "agent-design-studio.design_io/1.0",
+  "generatedFiles": [
+    "PRD.md",
+    "architecture.md",
+    "eval-set.json",
+    "fmea-register.csv",
+    "assumptions.md",
+    "validation.json",
+    "build/01-milestone.md",
+    "build/02-milestone.md",
+    "build/03-milestone.md",
+    "build/00-overview.md"
+  ],
+  "designOnly": true,
+  "status": "pass",
+  "designSha256": "be4bb1b3897b119c3a9e769b7d5e39257c8bbee5755b11c50fae0d39e8b727f4",
+  "reviewSha256": "347a08af67214a45310adba50d6d3012305aee901e969061d93b48770421ef8a",
+  "structuralValidation": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 3,
+      "tasks": 9,
+      "components": 7,
+      "workflow": 8,
+      "framework": 4,
+      "models": 1,
+      "fmea": 7,
+      "evals": 20,
+      "rollout": 7,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewValidation": {
+    "valid": true,
+    "status": "pass",
+    "computedStatus": "pass",
+    "errors": [],
+    "blockerIds": [],
+    "method": "self-review",
+    "round": 2,
+    "scores": {
+      "D1": 3,
+      "D2": 3,
+      "D3": 3,
+      "D4": 3,
+      "D5": 3,
+      "D6": 3,
+      "D7": 3,
+      "D8": 3,
+      "D9": 3,
+      "D10": 3,
+      "D11": 3,
+      "D12": 3
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "review": {
+    "method": "self-review",
+    "round": 2,
+    "status": "pass",
+    "dimensions": [
+      {
+        "id": "D1",
+        "score": 3,
+        "evidence": [
+          "CTX1/CTX3 and T1-T5 bound draft-only inpatient review and owned pending outcomes."
+        ]
+      },
+      {
+        "id": "D2",
+        "score": 3,
+        "evidence": [
+          "T1-T5 link C1-C7/W1-W8 and EV1-EV20; FM links derived in both directions."
+        ]
+      },
+      {
+        "id": "D3",
+        "score": 3,
+        "evidence": [
+          "W4 timeout/unknown to W5; W5 bounded reads; W6 proof before W7; W8 owns unresolved outcomes."
+        ]
+      },
+      {
+        "id": "D4",
+        "score": 3,
+        "evidence": [
+          "C1-C7 typed contracts separate read, draft-write and readback; H3 marks adapter capability unverified."
+        ]
+      },
+      {
+        "id": "D5",
+        "score": 3,
+        "evidence": [
+          "C3 uses approved policy and human-verified facts; C4 cannot pay/deny; C6 durable assignment proof."
+        ]
+      },
+      {
+        "id": "D6",
+        "score": 3,
+        "evidence": [
+          "H1-H6 mark proposed scope, rules, ownership, privacy and budgets; no clinical/legal claims."
+        ]
+      },
+      {
+        "id": "D7",
+        "score": 3,
+        "evidence": [
+          "F1-F4 select code worker; reject in-memory and unconstrained agents; candidates explicitly unverified."
+        ]
+      },
+      {
+        "id": "D8",
+        "score": 3,
+        "evidence": [
+          "M1 gives W2-only calls 1.05 expected/2 maximum, USD .0378 illustrative and fallback."
+        ]
+      },
+      {
+        "id": "D9",
+        "score": 3,
+        "evidence": [
+          "FM1-FM7 specific subject, policy, room-cap, injection, duplicate, uncertainty and queue risks, owner gates."
+        ]
+      },
+      {
+        "id": "D10",
+        "score": 3,
+        "evidence": [
+          "EV1-EV17 self-contained synthetic fixtures, EV18 held-out, EV19 operations and EV20 inclusion assertions."
+        ]
+      },
+      {
+        "id": "D11",
+        "score": 3,
+        "evidence": [
+          "R1-R7 define denominators, baseline, mean-test power plan, cluster assignment and assist-only scale."
+        ]
+      },
+      {
+        "id": "D12",
+        "score": 3,
+        "evidence": [
+          "X1 and milestones select exact contracts; no final claim writes or fabricated launch evidence."
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "id": "ISSUE1",
+        "severity": "major",
+        "stage": "context",
+        "itemId": "CTX1",
+        "message": "Initial artifact left descriptions empty on many cards; validator rejects incomplete cards. Fill specific summaries and revalidate. Repaired and inspected in current design; validator now passes.",
+        "resolved": true
+      },
+      {
+        "id": "ISSUE2",
+        "severity": "major",
+        "stage": "workflow",
+        "itemId": "W8",
+        "message": "W8 lists T1/T4 but C7 serves only T5. Align display responsibility with T5. Repaired and inspected in current design; validator now passes.",
+        "resolved": true
+      },
+      {
+        "id": "ISSUE3",
+        "severity": "major",
+        "stage": "evals",
+        "itemId": "EV9",
+        "message": "Missing-proof fixture says start after prior operation but includes a POST in mocks. Explicitly start proof stage and remove POST to isolate guard. Repaired and inspected in current design; validator now passes.",
+        "resolved": true
+      }
+    ],
+    "limitations": [
+      "Self-review by design author; independent reviewer has not evaluated these files.",
+      "Schema and semantic declarations do not execute business controls or establish provenance truth.",
+      "Synthetic policy, proposed API support, privacy rules and human queue SLA require H1-H5 owner evidence.",
+      "No live claim, medical advice, final decision, cost quote or measured savings is represented.",
+      "Human review resolution is outside the first-release workflow; the existing insurer queue must prove H5 assignment, acknowledgement and overdue alerts. Packet-ready is not claim approved."
+    ]
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ],
+  "mode": "standard",
+  "fileSha256": {
+    "PRD.md": "51e8ab85599e658345286c19c762fb1702ada349d77149599ab2b25400205fc3",
+    "architecture.md": "6904a7001556fddbc69c8f6170da3dc590f32376af989b9586f7194fdbfb061b",
+    "eval-set.json": "7acc94579413527b916a1a961660df2288208b059b212ab962f0ad8bfbdf377d",
+    "fmea-register.csv": "0a330ec3c37203163ccf1528bfcbf3e2425ee25bdc845de4cbc0d6a7e5fd1bc4",
+    "assumptions.md": "1e6252f0962994e3f25b7908c86203ad8cb680eaba77bc11e55da8ca12d90cb6",
+    "build/01-milestone.md": "22a4a3c7f4280a84de29bac8440acd526206f2c3dbde16e8d07ab77901fe8bbb",
+    "build/02-milestone.md": "361f8d8a67256e987206f4ab97770dd7fa778741c0e651a51cb29d3e8a6e9e58",
+    "build/03-milestone.md": "176f5881418a10253a0a9333465856f21606bce99365315a3079f7d63acdc0bf",
+    "build/00-overview.md": "2be3ea5d20113d2aa0938ec464d3079a00bb1eb03c4e65ef892d0b8730bb2b24"
+  }
+}

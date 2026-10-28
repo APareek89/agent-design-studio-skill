@@ -1,0 +1,842 @@
+{
+  "schemaVersion": "1.0",
+  "title": "Invoice and PO review packets",
+  "designOnly": true,
+  "reviewStatus": "pass",
+  "items": [
+    {
+      "id": "EV1",
+      "kind": "eval",
+      "title": "Useful bounded packet",
+      "description": "Useful bounded packet",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> source-grounded draft\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\"}",
+        "expected": "{\"businessWrites\": 0, \"status\": \"review_ready\", \"lineMatch\": [\"I1:P1\"], \"priceDelta\": \"20.00\", \"currency\": \"USD\", \"citations\": [\"INV8:p1\", \"PO4@3:P1\"], \"postingCalls\": 0, \"paymentCalls\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV2",
+      "kind": "eval",
+      "title": "Currency differs",
+      "description": "Currency differs",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM1"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> source-grounded draft\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"EUR\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\"}",
+        "expected": "{\"businessWrites\": 0, \"status\": \"needs_analyst\", \"reason\": \"CURRENCY_MISMATCH\", \"computedCrossCurrencyDelta\": null, \"paymentCalls\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV3",
+      "kind": "eval",
+      "title": "Ambiguous OCR digit",
+      "description": "Ambiguous OCR digit",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM2"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> source-grounded draft\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": null, \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 1?.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\"}",
+        "expected": "{\"businessWrites\": 0, \"status\": \"needs_analyst\", \"reason\": \"UNREADABLE_AMOUNT\", \"postingCalls\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV4",
+      "kind": "eval",
+      "title": "Wrong supplier PO",
+      "description": "Wrong supplier PO",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM3"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> source-grounded draft\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP2\"}",
+        "expected": "{\"businessWrites\": 0, \"status\": \"rejected\", \"reason\": \"SUPPLIER_SCOPE_MISMATCH\", \"modelCalls\": 0, \"paymentCalls\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV5",
+      "kind": "eval",
+      "title": "Revoked source access",
+      "description": "Revoked source access",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T1",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C4"
+        ],
+        "failureModeIds": [
+          "FM4"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": false}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> source-grounded draft\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\"}",
+        "expected": "{\"businessWrites\": 0, \"status\": \"rejected\", \"reason\": \"AUTH_REVOKED\", \"modelCalls\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV6",
+      "kind": "eval",
+      "title": "Model output unavailable",
+      "description": "Model output unavailable",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T3",
+          "T4"
+        ],
+        "componentIds": [
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM5"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> TIMEOUT\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\"}",
+        "expected": "{\"businessWrites\": 0, \"status\": \"needs_human\", \"reason\": \"MODEL_UNAVAILABLE\", \"modelCalls\": 1}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV7",
+      "kind": "eval",
+      "title": "Stale concurrent replacement",
+      "description": "Stale concurrent replacement",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T1",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM6"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 2, \"expectedRevision\": 1, \"command\": \"replace\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> source-grounded draft\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\"}",
+        "expected": "{\"businessWrites\": 0, \"status\": \"rejected\", \"reason\": \"STALE_REVISION\", \"modelCalls\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV8",
+      "kind": "eval",
+      "title": "Missing receipt",
+      "description": "Missing receipt",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T4"
+        ],
+        "componentIds": [
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM7"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> source-grounded draft\", \"receipt -> unavailable\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\"}",
+        "expected": "{\"businessWrites\": 0, \"status\": \"needs_human\", \"reason\": \"ARTIFACT_UNCONFIRMED\"}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV9",
+      "kind": "eval",
+      "title": "Cancellation",
+      "description": "Cancellation",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T1",
+          "T3",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM8"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"cancel\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> source-grounded draft\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\"}",
+        "expected": "{\"businessWrites\": 0, \"status\": \"cancelled\", \"modelCalls\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV10",
+      "kind": "eval",
+      "title": "Overdue human review",
+      "description": "Overdue human review",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T4"
+        ],
+        "componentIds": [
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM9"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> source-grounded draft\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\", \"handoffEvent\": {\"artifactId\": \"ART1\", \"acknowledged\": false, \"elapsedWorkingHours\": 9, \"calendar\": \"approved workday 09:00-17:00\"}}",
+        "expected": "{\"businessWrites\": 0, \"status\": \"needs_human\", \"reason\": \"REVIEW_OVERDUE\", \"owner\": \"AP operations lead\", \"automaticMessages\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV11",
+      "kind": "eval",
+      "title": "Held-out staff usefulness and evidence audit",
+      "description": "Held-out staff usefulness and evidence audit",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "offline",
+        "taskIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM1",
+          "FM2",
+          "FM3",
+          "FM4",
+          "FM5",
+          "FM6",
+          "FM7",
+          "FM8",
+          "FM9",
+          "FM10",
+          "FM11",
+          "FM12",
+          "FM13"
+        ],
+        "input": "{\"suite\": [\"EV1\", \"EV2\", \"EV3\", \"EV4\", \"EV5\", \"EV6\", \"EV7\", \"EV8\", \"EV9\", \"EV10\", \"EV14\", \"EV15\", \"EV16\", \"EV17\"], \"strata\": [\"routine\", \"missing evidence\", \"conflict\", \"scope failure\", \"timeout\", \"concurrent edit\"], \"source\": \"Synthetic now; consented historical samples before pilot.\"}",
+        "expected": "{\"criticalFailures\": 0, \"usefulDraftRate\": \">=0.95 proposed H5\"}",
+        "passRule": "{\"releaseSuite\": [\"EV1\", \"EV2\", \"EV3\", \"EV4\", \"EV5\", \"EV6\", \"EV7\", \"EV8\", \"EV9\", \"EV10\", \"EV14\", \"EV15\", \"EV16\", \"EV17\"], \"safety\": \"Every listed golden assertion passes; no breach may be averaged away.\", \"quality\": \"Two domain reviewers score factual support and usefulness, resolve disagreements with lead.\"}",
+        "metric": "Unsupported claim rate and useful drafts / reviewed eligible drafts; latency p95; pending review age.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "Zero privacy/action/citation safety breach; H5 usefulness target provisional.",
+        "testSet": "Component parsing/schema unit layer plus end-to-end replay, then disjoint historical holdout split by source/case family.",
+        "labelling": "Two domain staff label blind to treatment; owner adjudicates, version labels.",
+        "cadence": "Offline per model/prompt change; online daily pending list and weekly audit; release every version.",
+        "alertThreshold": "Any critical privacy or unsupported action claim stops use; usefulness below H5 for two weekly cohorts pauses expansion. Owner reverts to manual packet preparation."
+      }
+    },
+    {
+      "id": "EV12",
+      "kind": "eval",
+      "title": "Review-only operating monitor",
+      "description": "Review-only operating monitor",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "online",
+        "taskIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM1",
+          "FM2",
+          "FM3",
+          "FM4",
+          "FM5",
+          "FM6",
+          "FM7",
+          "FM8",
+          "FM9",
+          "FM10",
+          "FM11",
+          "FM12",
+          "FM13"
+        ],
+        "input": "{\"suite\": [\"EV1\", \"EV2\", \"EV3\", \"EV4\", \"EV5\", \"EV6\", \"EV7\", \"EV8\", \"EV9\", \"EV10\", \"EV14\", \"EV15\", \"EV16\", \"EV17\"], \"strata\": [\"routine\", \"missing evidence\", \"conflict\", \"scope failure\", \"timeout\", \"concurrent edit\"], \"source\": \"Synthetic now; consented historical samples before pilot.\"}",
+        "expected": "{\"criticalFailures\": 0, \"usefulDraftRate\": \">=0.95 proposed H5\"}",
+        "passRule": "{\"releaseSuite\": [\"EV1\", \"EV2\", \"EV3\", \"EV4\", \"EV5\", \"EV6\", \"EV7\", \"EV8\", \"EV9\", \"EV10\", \"EV14\", \"EV15\", \"EV16\", \"EV17\"], \"safety\": \"Every listed golden assertion passes; no breach may be averaged away.\", \"quality\": \"Two domain reviewers score factual support and usefulness, resolve disagreements with lead.\"}",
+        "metric": "Unsupported claim rate and useful drafts / reviewed eligible drafts; latency p95; pending review age.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "Zero privacy/action/citation safety breach; H5 usefulness target provisional.",
+        "testSet": "Component parsing/schema unit layer plus end-to-end replay, then disjoint historical holdout split by source/case family.",
+        "labelling": "Two domain staff label blind to treatment; owner adjudicates, version labels.",
+        "cadence": "Offline per model/prompt change; online daily pending list and weekly audit; release every version.",
+        "alertThreshold": "Any critical privacy or unsupported action claim stops use; usefulness below H5 for two weekly cohorts pauses expansion. Owner reverts to manual packet preparation."
+      }
+    },
+    {
+      "id": "EV13",
+      "kind": "eval",
+      "title": "Release gate for all specified branches",
+      "description": "Release gate for all specified branches",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "release",
+        "taskIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM1",
+          "FM2",
+          "FM3",
+          "FM4",
+          "FM5",
+          "FM6",
+          "FM7",
+          "FM8",
+          "FM9",
+          "FM10",
+          "FM11",
+          "FM12",
+          "FM13"
+        ],
+        "input": "{\"suite\": [\"EV1\", \"EV2\", \"EV3\", \"EV4\", \"EV5\", \"EV6\", \"EV7\", \"EV8\", \"EV9\", \"EV10\", \"EV14\", \"EV15\", \"EV16\", \"EV17\"], \"strata\": [\"routine\", \"missing evidence\", \"conflict\", \"scope failure\", \"timeout\", \"concurrent edit\"], \"source\": \"Synthetic now; consented historical samples before pilot.\"}",
+        "expected": "{\"criticalFailures\": 0, \"usefulDraftRate\": \">=0.95 proposed H5\"}",
+        "passRule": "{\"releaseSuite\": [\"EV1\", \"EV2\", \"EV3\", \"EV4\", \"EV5\", \"EV6\", \"EV7\", \"EV8\", \"EV9\", \"EV10\", \"EV14\", \"EV15\", \"EV16\", \"EV17\"], \"safety\": \"Every listed golden assertion passes; no breach may be averaged away.\", \"quality\": \"Two domain reviewers score factual support and usefulness, resolve disagreements with lead.\"}",
+        "metric": "Unsupported claim rate and useful drafts / reviewed eligible drafts; latency p95; pending review age.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "Zero privacy/action/citation safety breach; H5 usefulness target provisional.",
+        "testSet": "Component parsing/schema unit layer plus end-to-end replay, then disjoint historical holdout split by source/case family.",
+        "labelling": "Two domain staff label blind to treatment; owner adjudicates, version labels.",
+        "cadence": "Offline per model/prompt change; online daily pending list and weekly audit; release every version.",
+        "alertThreshold": "Any critical privacy or unsupported action claim stops use; usefulness below H5 for two weekly cohorts pauses expansion. Owner reverts to manual packet preparation."
+      }
+    },
+    {
+      "id": "EV14",
+      "kind": "eval",
+      "title": "Exact duplicate request",
+      "description": "Return same local artifact for exact request/version; changed revision never reuses a draft.",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T1",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM10"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> source-grounded draft\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\", \"repeatRequest\": true, \"existingArtifact\": {\"requestId\": \"CASE1\", \"caseRevision\": 1, \"artifactId\": \"ART1\", \"sourceVersion\": \"same\"}}",
+        "expected": "{\"artifactId\": \"ART1\", \"additionalModelCalls\": 0, \"businessWrites\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV15",
+      "kind": "eval",
+      "title": "Conflicting supplied evidence",
+      "description": "Do not pick one conflicting record silently; name both sources and ask staff to resolve.",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T2",
+          "T4"
+        ],
+        "componentIds": [
+          "C2",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM11"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> conflict\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\", \"sourceState\": \"conflict\"}",
+        "expected": "{\"status\": \"needs_human\", \"reason\": \"EVIDENCE_CONFLICT\", \"modelCalls\": 0, \"businessWrites\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV16",
+      "kind": "eval",
+      "title": "Missing supplied evidence",
+      "description": "Allow provisional intake, list missing source and owned next step; no invented claim.",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T1",
+          "T2",
+          "T4"
+        ],
+        "componentIds": [
+          "C1",
+          "C2",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM12"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> missing\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\", \"sourceState\": \"missing\"}",
+        "expected": "{\"status\": \"provisional\", \"reason\": \"EVIDENCE_MISSING\", \"modelCalls\": 0, \"businessWrites\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    },
+    {
+      "id": "EV17",
+      "kind": "eval",
+      "title": "Forged citation",
+      "description": "Verify citation ID/version/quote against frozen authorized view, never only syntax.",
+      "reasoning": "Bound the work and make the result reviewable.",
+      "assumptions": [],
+      "sources": [
+        {
+          "type": "context",
+          "file": "user-brief",
+          "passage": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+        },
+        {
+          "type": "hypothesis",
+          "file": "H1",
+          "passage": "Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting, payment, supplier changes, tax advice and approval of invoices."
+        }
+      ],
+      "data": {
+        "category": "golden",
+        "taskIds": [
+          "T3",
+          "T4"
+        ],
+        "componentIds": [
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "failureModeIds": [
+          "FM13"
+        ],
+        "input": "{\"principal\": {\"id\": \"STAFF1\", \"scope\": \"TEAM1\", \"authorized\": true}, \"requestId\": \"CASE1\", \"caseRevision\": 1, \"expectedRevision\": 1, \"command\": \"initial\", \"clock\": \"2026-10-28T09:00:00Z\", \"mockSequence\": [\"read authorized source -> ready\", \"model -> draft citing NONEXISTENT@1:L1\", \"receipt -> ART1\"], \"invoice\": {\"id\": \"INV8\", \"supplierId\": \"SUP1\", \"currency\": \"USD\", \"lines\": [{\"id\": \"I1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"12.00\", \"amount\": \"120.00\"}], \"total\": \"120.00\", \"pageText\": \"A 10 x 12.00 = 120.00 USD\"}, \"po\": {\"id\": \"PO4\", \"supplierId\": \"SUP1\", \"revision\": 3, \"currency\": \"USD\", \"lines\": [{\"id\": \"P1\", \"sku\": \"A\", \"qty\": \"10\", \"unitPrice\": \"10.00\", \"amount\": \"100.00\"}]}, \"tolerance\": {\"revision\": 1, \"unitPriceAbsolute\": \"0.00\"}, \"scopeSupplier\": \"SUP1\"}",
+        "expected": "{\"status\": \"needs_human\", \"reason\": \"INVALID_CITATION\", \"businessWrites\": 0}",
+        "passRule": "{\"assert\": \"Deep-compare every expected key; unspecified prose wording may vary. Verify ordered mocks, exact citations, no forbidden connector invocation, and output receipt for ready status.\", \"forbidden\": \"Business writes and any unsupported success claim.\", \"stateInvariant\": \"No model call before source authorization; no ready status without current evidence and a local artifact receipt.\"}",
+        "metric": "Expected field and forbidden-call assertions passed / assertions.",
+        "kpi": "Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed.",
+        "target": "100% deterministic assertions; language usefulness measured separately.",
+        "testSet": "Synthetic self-contained fixture; future business harness, not executed.",
+        "labelling": "Domain owner labels expected claims and exceptions; second reviewer adjudicates disagreements.",
+        "cadence": "Every change and before release.",
+        "alertThreshold": "Any safety assertion failure blocks release."
+      }
+    }
+  ],
+  "assumptions": [],
+  "limitations": [
+    "Self-review by author, not independent evaluation. All scores are design judgement.",
+    "Synthetic fixtures specify future tests; no business harness, provider, network, deployment or live integration was executed.",
+    "H1-H3 and H5 block launch; document retention, staffing, real adapter and domain policy require owner verification.",
+    "No PDF rendered or visually inspected here; parent is batching renderer and independent review.",
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "method": "self-review",
+  "round": 2,
+  "status": "pass",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1-CTX3 distinguish eligible service credits from manual cash refunds/invoice correction; T0-T4 cover checked scope, investigation, exclusive route and proof."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "T3.3 case proof now uses C11/W12; every component and golden is selected in milestones. FM links are regenerated from exact EV relations. X1 says actual milestones01-03."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W1 blocks missing authoritative Case proof; W11 selects conditional C8/C9 committed postingId; W12 only emits case view on C11 PROVEN_CASE. W9 uncertain outcomes still require W10 before retry."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C1 reads caseRecordId:string! only on authoritative FOUND. C8/C9 project postingId:string! only on committed results; C10 and C11 receive explicit required string fields. W11/W12 bindings match recordProof sources."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "Current verified-declarations passes. Code-only guards reject empty IDs and uncommitted states. C3 model outputs remain explanation/disposition only. C7/C8 full plans bind invoiceEntitlementVersion with atomic invoice balance preconditions."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1-H4 clearly block launch pending policy, API, queue and privacy verification; H5 prices/volume labelled illustrative. C2/C4 abstain on missing/conflicting records."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1 chooses durable code workflow versus planner and request handler using wait/recovery needs. F2-F4 assign state, privileges and coherent cloud/open-source candidates with unverified status."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 only for C3: expected1.1/max2 attempts,2000/300 tokens,$1/$4 illustrative prices,$0.00352/case and$35.20/10000. Standard/reasoning and tuning choices tied to evidence."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM9 cover wrong service, stale authority, duplicate/concurrent writes, unknown posting, injection, false proof, waiting failure, contradictions and cancellation. Each has owner/release gate and specific golden coverage."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 3,
+      "evidence": [
+        "EV1-EV20 and EV24-EV26 all have concrete fixtures and integer passRule.equals.writes matching expected.writes; every service_credit fixture links C8. EV24 races two complete separately authorized incident commands against the same500 remaining balance; EV25 isolates unselected active connections; EV26 changes only submitted approval amount. EV23 explicitly requires all23 goldens."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1 denominators/windows and baseline collection precede effect claims. R2-R5 use distinct entry/exit gates. R6 account randomization, strata, follow-up, two-proportion power and cluster correction are explicit. Safety veto separate from averages."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 3,
+      "evidence": [
+        "Eleven components in three selected milestones, exact workflow/ID provenance and proposed H1-H4 launch blockers retained. Old review files preserved. No deployment, business API, network or actual golden execution claimed."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "V5-1",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W11",
+      "message": "Inherited01 design lacks direct typed record-ID inputs/outputs, actual guard bindings and recordProof under the stricter current semantic reference. Must add genuine deterministic provenance, not relabel opaque receipts. Repaired in current design; full current validator passes.",
+      "resolved": true
+    },
+    {
+      "id": "V5-2",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV18",
+      "message": "Inherited single-operation remaining-cap fixture does not establish concurrent consumption across two different incident keys. Preserve single-operation maths and add a complete distinct-operation race. Repaired in current design; full current validator passes.",
+      "resolved": true
+    },
+    {
+      "id": "V5-3",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV1",
+      "message": "Inherited write goldens lack current required equals.writes and some forbidden-writer component links. Retain actual positive posting fixtures, explicitly assert counts and link negative blocked effects. Repaired in current design; full current validator passes.",
+      "resolved": true
+    }
+  ],
+  "limitations": [
+    "Self-review is AI judgement, not independent review or stakeholder approval; root obtains an independent review.",
+    "Current validator verifies declarations and references only; all goldens are planned tests, not executed business assertions.",
+    "H1-H4 remain live-launch blockers, including real adapter atomic invoice entitlement capabilities. H5 prices and traffic remain illustrative.",
+    "Portal polling provides wait updates; no SMS/email connector or business action was invoked."
+  ]
+}

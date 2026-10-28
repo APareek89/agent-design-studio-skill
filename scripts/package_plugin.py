@@ -16,6 +16,7 @@ def package(output):
         root / ".codex-plugin/plugin.json",
         root / "LICENSE",
         root / "README.md",
+        root / "CHANGELOG.md",
     ]
     files += [
         p

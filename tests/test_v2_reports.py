@@ -28,6 +28,19 @@ class ModeTests(unittest.TestCase):
     def write(self):
         self.dp.write_text(json.dumps(self.d));self.rp.write_text(json.dumps(self.r))
     def tearDown(self):self.tmp.cleanup()
+    @unittest.skipUnless(test_design_pdf.PDF_AVAILABLE,'PDF runtime optional')
+    def test_core_report_shows_real_architecture_choices_and_rollout_gates(self):
+        from pypdf import PdfReader
+        f=self.d['stages']['framework']['items'][0]
+        f['description']='Generic framework title.';f['reasoning']='Generic reasoning.'
+        f['data']['choice']='VISIBLE_CHOICE use a small code workflow.'
+        r=self.d['stages']['rollout']['items'][1]
+        r['description']='Generic rollout title.';r['data']['gate']='VISIBLE_GATE verify all access and failure tests.';r['data']['owner']='VISIBLE_OWNER Operations'
+        self.write();out=self.folder/'core.pdf'
+        test_design_pdf.design_pdf.create_pdf(self.dp,self.rp,out,mode='standard')
+        text=' '.join(p.extract_text() for p in PdfReader(out).pages)
+        for marker in ('VISIBLE_CHOICE','VISIBLE_GATE','VISIBLE_OWNER'):self.assertIn(marker,text)
+
     def test_reexport_removes_only_unchanged_obsolete_milestones(self):
         milestone={'id':'01','title':'First','taskIds':['T1'],'componentIds':['C1'],'evalIds':['EV1','EV2','EV3','EV4'],'acceptanceCriteria':['Keep safe.']}
         self.d['milestones']=[milestone,dict(milestone,id='02',title='Obsolete',acceptanceCriteria=['REMOVED_ACCEPTANCE'])]

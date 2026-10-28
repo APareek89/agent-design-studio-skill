@@ -1,0 +1,120 @@
+{
+  "method": "self-review",
+  "round": 1,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1-CTX3 distinguish eligible service credits from manual cash refunds/invoice correction; T0-T4 cover checked scope, investigation, exclusive route and proof."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "All leaf tasks map to components, W nodes and golden evals; FM eval lists derived from actual EV relations including monitoring/release. Exact brief retained; H1-H5 distinguish proposed policies from facts."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W6 notice branch has bounded ENTRY/H24 sequence and 48h terminal ownership; W9 uncertain outcomes go exclusively to W10; only definitive absence re-enters W8 once with stable operationId."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 2,
+      "evidence": [
+        "Inherited current-contract gaps are detailed in V5-1 through V5-3; current schema also rejected reader autonomy enum strings before repair."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 2,
+      "evidence": [
+        "Inherited current-contract gaps are detailed in V5-1 through V5-3; current schema also rejected reader autonomy enum strings before repair."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1-H4 clearly block launch pending policy, API, queue and privacy verification; H5 prices/volume labelled illustrative. C2/C4 abstain on missing/conflicting records."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1 chooses durable code workflow versus planner and request handler using wait/recovery needs. F2-F4 assign state, privileges and coherent cloud/open-source candidates with unverified status."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 only for C3: expected1.1/max2 attempts,2000/300 tokens,$1/$4 illustrative prices,$0.00352/case and$35.20/10000. Standard/reasoning and tuning choices tied to evidence."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM9 cover wrong service, stale authority, duplicate/concurrent writes, unknown posting, injection, false proof, waiting failure, contradictions and cancellation. Each has owner/release gate and specific golden coverage."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "Inherited current-contract gaps are detailed in V5-1 through V5-3; current schema also rejected reader autonomy enum strings before repair."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1 denominators/windows and baseline collection precede effect claims. R2-R5 use distinct entry/exit gates. R6 account randomization, strata, follow-up, two-proportion power and cluster correction are explicit. Safety veto separate from averages."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "Inherited current-contract gaps are detailed in V5-1 through V5-3; current schema also rejected reader autonomy enum strings before repair."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "V5-1",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W11",
+      "message": "Inherited01 design lacks direct typed record-ID inputs/outputs, actual guard bindings and recordProof under the stricter current semantic reference. Must add genuine deterministic provenance, not relabel opaque receipts.",
+      "resolved": false
+    },
+    {
+      "id": "V5-2",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV18",
+      "message": "Inherited single-operation remaining-cap fixture does not establish concurrent consumption across two different incident keys. Preserve single-operation maths and add a complete distinct-operation race.",
+      "resolved": false
+    },
+    {
+      "id": "V5-3",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV1",
+      "message": "Inherited write goldens lack current required equals.writes and some forbidden-writer component links. Retain actual positive posting fixtures, explicitly assert counts and link negative blocked effects.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Historical failed author rounds from iteration01 are preserved as prior-review-round-1/2.json. This round describes actual inherited gaps inspected during this refinement. No business assertions executed."
+  ]
+}

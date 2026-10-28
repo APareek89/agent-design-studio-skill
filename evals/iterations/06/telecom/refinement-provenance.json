@@ -1,0 +1,6 @@
+{
+  "source": "evals/iterations/05/telecom",
+  "sourceSha256": "7f4e46ade204b0ed6b6b8bfe11784f4a486c9bbacee0a0febda3df8133258ba8",
+  "actualRepairAt": "2026-10-28T12:13:49.574040+00:00",
+  "change": "EV13 now follows actual C8 normalization, C9 unresolved readbacks and C11/W14 pending ownership. No threshold, business policy, or historical seed changed."
+}

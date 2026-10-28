@@ -1,0 +1,209 @@
+{
+  "generator": "agent-design-studio.design_io/1.0",
+  "generatedFiles": [
+    "PRD.md",
+    "architecture.md",
+    "eval-set.json",
+    "fmea-register.csv",
+    "assumptions.md",
+    "validation.json",
+    "build/01-milestone.md",
+    "build/02-milestone.md",
+    "build/03-milestone.md",
+    "build/04-milestone.md",
+    "build/00-overview.md"
+  ],
+  "designOnly": true,
+  "status": "pass",
+  "designSha256": "24a23210fff216b5fb69bb9ed7a887fddec25781497e177f9dd4fc1b036f8233",
+  "reviewSha256": "0508146ee2ee9cab3469e3c414223e2d2d74ca2decfdf43362908207fc977813",
+  "structuralValidation": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 4,
+      "tasks": 11,
+      "components": 9,
+      "workflow": 11,
+      "framework": 4,
+      "models": 1,
+      "fmea": 8,
+      "evals": 33,
+      "rollout": 4,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewValidation": {
+    "valid": true,
+    "status": "pass",
+    "computedStatus": "pass",
+    "errors": [],
+    "blockerIds": [],
+    "method": "independent-agent",
+    "round": 2,
+    "scores": {
+      "D1": 3,
+      "D2": 3,
+      "D3": 3,
+      "D4": 3,
+      "D5": 3,
+      "D6": 4,
+      "D7": 3,
+      "D8": 4,
+      "D9": 3,
+      "D10": 3,
+      "D11": 3,
+      "D12": 3
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "review": {
+    "method": "independent-agent",
+    "round": 2,
+    "status": "pass",
+    "dimensions": [
+      {
+        "id": "D1",
+        "score": 3,
+        "evidence": [
+          "CTX1-CTX4/T1-T7 define authenticated inpatient draft scope, terminal proof or owned exception; H1 rejects automated settlement."
+        ]
+      },
+      {
+        "id": "D2",
+        "score": 3,
+        "evidence": [
+          "T1-T7/C1-C9/W1-W11 retain stable links; FM2/EV32/EV33 and EV21 propagate accumulator guard coverage. C2 authenticated snapshot and receipt establish trusted source separately from operation outputs. Exact eval-set data equals canonical."
+        ]
+      },
+      {
+        "id": "D3",
+        "score": 3,
+        "evidence": [
+          "W1-W11 define exclusive predicates, 24h durable wait, one-hour notice, bounded readback and retry, cancellation/expiry and owned unresolved terminal."
+        ]
+      },
+      {
+        "id": "D4",
+        "score": 3,
+        "evidence": [
+          "C1-C9 retain typed bounded contracts; C2 adds accumulator scope/version/receipt response; C4 exact source guards and C7 fresh writer version recheck prevent source-state inference. H2 is explicit external API verification dependency."
+        ]
+      },
+      {
+        "id": "D5",
+        "score": 3,
+        "evidence": [
+          "C1 gates PHI; C2 excludes hidden layers; C4 owns arithmetic/dates; C7 enforces RBAC/CAS/immutable bytes; C8 independent readback; C9 gates saved display. No payment/denial scope."
+        ]
+      },
+      {
+        "id": "D6",
+        "score": 4,
+        "evidence": [
+          "H1-H6 label authority, policy/privacy/staffing launch gaps and illustrative cost/targets. Unknown rules/clinical necessity/copay/currency/date splits abstain."
+        ]
+      },
+      {
+        "id": "D7",
+        "score": 3,
+        "evidence": [
+          "F1 durable code workflow fits 11 nodes; F2 separates vault/rules/ledger; F3 least privilege; F4 uses equivalent candidate residency/deletion/timer tests and rejects multi-cloud expansion."
+        ]
+      },
+      {
+        "id": "D8",
+        "score": 4,
+        "evidence": [
+          "M1 exactly covers C3: 0.8*1.1=.88 calls, .024 USD/call, .02112/case, 211.20/10k; retry/worst-case/context/staff exclusions and rejected tiers are explicit."
+        ]
+      },
+      {
+        "id": "D9",
+        "score": 3,
+        "evidence": [
+          "FM1-FM8 give scored case-specific causes, controls, owners and reciprocal tests for PHI, rules, forged sources, races, uncertain save, proof, revocation and queue stalls."
+        ]
+      },
+      {
+        "id": "D10",
+        "score": 3,
+        "evidence": [
+          "30 self-contained golden fixtures: EV1/EV4/EV9/EV23/EV30 now carry C2 source snapshot, same-request receipt and clock. EV32 missing accumulatorVersion and EV33 mismatched receipt version each assert zero writes/no authoritative total. EV10 has independently authorized OP-A and OP-B payloads with matching recomputed hashes and exact CAS schedule/winner/loser/no-overwrite assertions. EV6-EV8 remain isolated page/clause/quote negatives. EV25 sole intentional payload-hash mismatch."
+        ]
+      },
+      {
+        "id": "D11",
+        "score": 3,
+        "evidence": [
+          "R1-R4 define denominators, baseline/assist gates, team randomization/ICC power method, safety vetoes and stop/reconciliation ownership; no unapproved scale claim."
+        ]
+      },
+      {
+        "id": "D12",
+        "score": 3,
+        "evidence": [
+          "Actual PRD/architecture/build milestones include repaired accumulator contracts and concurrency handoff; exported eval-set data equal canonical. EV21 release set names all 30 goldens including EV32/EV33. Real H2 adapters and business harness remain clear launch dependencies."
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "id": "IR1",
+        "severity": "major",
+        "stage": "evals",
+        "itemId": "EV1",
+        "message": "Resolved by C2 typed authoritative accumulatorSnapshot, C4 scope/same-request version/timestamp guards, positive fixture source/clock payloads, C7 fresh writer-version query, and isolated missing/stale negatives EV32/EV33. Independently inspected actual fixture objects and their API mock responses.",
+        "resolved": true
+      },
+      {
+        "id": "IR2",
+        "severity": "major",
+        "stage": "evals",
+        "itemId": "EV10",
+        "message": "Resolved by two complete independently authorized OP-A/OP-B payloads and matching request paths/IDs/hashes/source versions, explicit expectedVersion=3 CAS schedule and one-winner/no-overwrite assertions. Both SHA256 values independently recomputed from actual payloads.",
+        "resolved": true
+      }
+    ],
+    "limitations": [
+      "Independent second-round AI design review; pass means bounded proposed-design readiness, not insurance/medical/legal certification or production correctness.",
+      "Business golden harness and live API/PHI controls were not executed. Structural validation and independent fixture arithmetic/hash checks do not establish those controls work in production.",
+      "H1-H4 remain launch blockers: real rule registry/accumulator and authorization contracts, policy applicability, privacy/deletion/residency and staffed queues require accountable evidence.",
+      "The staff-assist design explicitly excludes claim payment, final rejection and straight-through settlement, so no STP QA sample is claimed.",
+      "Reviewed revised canonical design, actual eval-set and PRD/architecture/build exports against D1-D12 and prior independent findings; did not rely on author reviews, repair scripts or self-reported repair checks."
+    ]
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ],
+  "mode": "standard",
+  "fileSha256": {
+    "PRD.md": "0218541fe346b7438edba23290085ec8c2619e12cca33cf327630e1bdc7f8937",
+    "architecture.md": "c1f03b71979be5b72c54324eaf42e53a6fb7bd5b232c423acc66f1f44e42b51f",
+    "eval-set.json": "f2c8520794e02207eaed5991df64ab858e09837f592dfaf69946308468b2d90e",
+    "fmea-register.csv": "bfaf412a62fec5c79f14f111e2bd0818f83596cd84f3c55b4d7a5fda2abfe141",
+    "assumptions.md": "c05eafa2e81753249bf7beab5106af214a4ad5a1ee08626cf5a6ea05671701d5",
+    "build/01-milestone.md": "3fd46d375a0ec23753020f1f8b2303b5125f52a0d259db381f181d8a450fb3f1",
+    "build/02-milestone.md": "2e99a7492b699fcf9fe0150820be1601c854cf9d002d84dcc54ec3a049684e4c",
+    "build/03-milestone.md": "30063b62b9e39d1983faa58591a70df8416e827030d18c010d0c6d2f4ef8be0a",
+    "build/04-milestone.md": "f5bdc7530389945da60a6ce7f796f98bb42abfd0696abcddbd8d984e497c288e",
+    "build/00-overview.md": "30aa0584dc59f9b492221da4f838392afdc696311ba0b70281a19f1c58009872"
+  }
+}

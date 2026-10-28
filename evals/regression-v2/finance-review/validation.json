@@ -1,0 +1,233 @@
+{
+  "generator": "agent-design-studio.design_io/1.0",
+  "generatedFiles": [
+    "PRD.md",
+    "architecture.md",
+    "eval-set.json",
+    "fmea-register.csv",
+    "assumptions.md",
+    "validation.json",
+    "build/01-milestone.md",
+    "build/02-milestone.md",
+    "build/00-overview.md"
+  ],
+  "designOnly": true,
+  "status": "needs-work",
+  "designSha256": "9fffd9bb2809061dab8cddb09c7b83097c0d63d06d402b2b466002ae86b2483b",
+  "reviewSha256": "07366f35e8f00e89fcbb8fe7a6abfc3eda5c8efe6e3204db572445e3d43dc4ea",
+  "structuralValidation": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 3,
+      "tasks": 6,
+      "components": 5,
+      "workflow": 5,
+      "framework": 3,
+      "models": 1,
+      "fmea": 13,
+      "evals": 17,
+      "rollout": 5,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewValidation": {
+    "valid": true,
+    "status": "needs-work",
+    "computedStatus": "needs-work",
+    "errors": [],
+    "blockerIds": [
+      "IA1",
+      "IA2",
+      "IA3",
+      "IA5"
+    ],
+    "method": "independent-agent",
+    "round": 1,
+    "scores": {
+      "D1": 3,
+      "D2": 3,
+      "D3": 2,
+      "D4": 2,
+      "D5": 3,
+      "D6": 3,
+      "D7": 3,
+      "D8": 3,
+      "D9": 2,
+      "D10": 2,
+      "D11": 3,
+      "D12": 2
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "review": {
+    "method": "independent-agent",
+    "round": 1,
+    "status": "needs-work",
+    "dimensions": [
+      {
+        "id": "D1",
+        "score": 3,
+        "evidence": [
+          "CTX1-CTX3 and T0-T4 bound staff-reviewed supplied-evidence work, exclusions and exception/cancellation outputs."
+        ]
+      },
+      {
+        "id": "D2",
+        "score": 3,
+        "evidence": [
+          "Stable task/component/workflow/eval IDs are present; independently recomputed FMEA/eval reciprocity has zero discrepancies. No external-source verification is claimed."
+        ]
+      },
+      {
+        "id": "D3",
+        "score": 2,
+        "evidence": [
+          "W1-W5 provide exclusive evidence paths and bounded retries, but C4 requires a local receipt before ready while C5 later creates it; no upstream receipt producer/binding is specified."
+        ]
+      },
+      {
+        "id": "D4",
+        "score": 2,
+        "evidence": [
+          "C3 draft schema names text/citations; C4.checked and C5.handoff do not carry that draft or a specified retrievable artifact-content contract. EV1 output payload fields lack typed producer bindings."
+        ]
+      },
+      {
+        "id": "D5",
+        "score": 3,
+        "evidence": [
+          "F2 excludes business write credentials; C1 checks current scope and C4 rechecks it. H3 bounds retention proposal and logs are minimized/redacted; manual review retains authority."
+        ]
+      },
+      {
+        "id": "D6",
+        "score": 3,
+        "evidence": [
+          "H1-H5 distinguish scope, adapter, staffing, retention, budget and target hypotheses from user brief. All fixtures are labelled synthetic and unexecuted."
+        ]
+      },
+      {
+        "id": "D7",
+        "score": 3,
+        "evidence": [
+          "F1 chooses simple state machine over free tool agent/multi-agent chain; F3 compares scoped read/region/retention/audit/operations/price for unverified cloud/self-hosted patterns."
+        ]
+      },
+      {
+        "id": "D8",
+        "score": 3,
+        "evidence": [
+          "M1 maps solely to C3/W3, max one call/no retry, 30-second deadline; 4000*1/1e6+800*4/1e6=$0.0072 and 100 cases=$0.72. Provider prices and volume explicitly illustrative."
+        ]
+      },
+      {
+        "id": "D9",
+        "score": 2,
+        "evidence": [
+          "FM1-FM13 cover currency/OCR/supplier and recovery, but no adversarial invoice instruction/prompt-injection failure or test, despite model consuming untrusted document text."
+        ]
+      },
+      {
+        "id": "D10",
+        "score": 2,
+        "evidence": [
+          "All 14 complete small golden inputs/expectations inspected. EV5/EV7/EV9/EV14 assert zero model calls yet retain ordered mockSequence with model invocation; EV1/EV17 model outputs are prose rather than exact response payloads. No harness executed."
+        ]
+      },
+      {
+        "id": "D11",
+        "score": 3,
+        "evidence": [
+          "R1 defines weekly active-minute denominator; R2-R5 define shadow/pilot entry/exit, owner/manual fallback, randomized source-family strata, contamination control and baseline-driven power method."
+        ]
+      },
+      {
+        "id": "D12",
+        "score": 2,
+        "evidence": [
+          "Iteration 6 PDF pages 6/10 now summarize actual architecture and rollout data; IA4 resolved after direct visual inspection. D12 remains 2 because companions/handoff preserve the unresolved C3-C5 content/receipt gaps in IA1/IA2."
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "id": "IA1",
+        "severity": "major",
+        "stage": "components",
+        "itemId": "C4",
+        "message": "C4 requires an artifact receipt before ready but C5 creates the local receipt after C4. Specify the exact upstream producer, persistence contract and binding (or move receipt generation before the check), including unavailable handling; keep W1/W2 exception paths coherent.",
+        "resolved": false
+      },
+      {
+        "id": "IA2",
+        "severity": "major",
+        "stage": "components",
+        "itemId": "C5",
+        "message": "Successful handoffInput only carries C4.checked metadata, while checked omits the draft text/claim citations and typed domain result. C5 output also lacks review content. Preserve a fully typed reviewedArtifact payload or specify content storage/retrieval by artifactId, freshness/hash binding and domain fields from producer to terminal output. Declare matched-line records, signed quantity/unit/line deltas, currency and citation fields; EV1 expects lineMatch/priceDelta.",
+        "resolved": false
+      },
+      {
+        "id": "IA3",
+        "severity": "major",
+        "stage": "evals",
+        "itemId": "EV5",
+        "message": "EV5, EV7, EV9 and EV14 expect zero/additional-zero model calls yet mockSequence contains model -> source-grounded draft and passRule says verify ordered mocks. EV1/EV17 give prose model responses rather than typed concrete candidates, so a harness must invent payloads. Separate configured responses from expected invocation traces, supply exact candidate outputs and define forbidden calls explicitly.",
+        "resolved": false
+      },
+      {
+        "id": "IA4",
+        "severity": "major",
+        "stage": "export",
+        "itemId": "X1",
+        "message": "Resolved by final iteration 6 reader export: actual PDF page 6 now displays F1-F3 choices/rejected alternatives/tradeoffs/access; page 10 displays R1-R5 measures, phase owners, gates and experiment summaries. Viewed actual 72 dpi pages; full source fields are present in PRD.md. Remaining contract/eval findings are unaffected.",
+        "resolved": true
+      },
+      {
+        "id": "IA5",
+        "severity": "major",
+        "stage": "fmea",
+        "itemId": "FM13",
+        "message": "Forged citation test is not a prompt-injection test. Invoice/source documents are untrusted model input but no risk/control/eval exercises embedded instructions to hide a mismatch, assert payment approval or disclose other suppliers. Add a concrete adversarial document case with exact prohibited effects and evidence-grounded expected packet.",
+        "resolved": false
+      }
+    ],
+    "limitations": [
+      "Independent agent design judgement against canonical source contracts and fixtures; no business assertions, provider, network, integration or deployment executed.",
+      "All operational owners, policies, quality targets and adapters remain proposals or launch blockers as labelled H1-H5.",
+      "Incidental exposure: validation.json contains an embedded author review. Major findings were formed and reported before that read; author reasoning and scripts were not used to derive scores.",
+      "Actual final iteration 6 PDF pages 2, 3, 6 and 10 visually inspected using pdftoppm at 72 dpi/native size; other PDF pages inspected through text."
+    ]
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ],
+  "mode": "standard",
+  "fileSha256": {
+    "PRD.md": "29039f5cbde82ca75222886ed34b37d263bf70e575888c72e777b234ea61380d",
+    "architecture.md": "f2bfa0bc7d4682e018b8623a763bf86e7e049de2801b7dc53f9cb0281a148b52",
+    "eval-set.json": "03a0ba7afa6c57cd505bb968b00b9ab0782638106012a7157f611df9376e767d",
+    "fmea-register.csv": "99f009ee299182ddb80ad62101fad120e6e0b722c85f829dc28f756bc12845ef",
+    "assumptions.md": "02db642a477cb7e33d21d0cc9d9f719bf9078d020044e5eb94b4b73299a4d72e",
+    "build/01-milestone.md": "9ad0e8c57fb1533062102f73118808a5e585f381a7a1c329438273f896a4db6b",
+    "build/02-milestone.md": "24284d6e1d08f42b7f5c11880ca5743f9c4f8c639aa8b433ba02a323091b8667",
+    "build/00-overview.md": "b0a172a50531042d0c4d87c99e59cef197866122a23a2a60d272603d1f1c7689"
+  }
+}

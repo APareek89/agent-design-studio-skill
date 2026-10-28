@@ -1,0 +1,69 @@
+{
+  "method": "independent-agent",
+  "agentId": "regression_review_b",
+  "status": "needs-work",
+  "scope": "D1-D12 plus S3",
+  "sourceHashes": {
+    "design.json": "9b3c7d09bd44af8c0723d324fa3ebcb0a28702b6c3cc6eb47709ea0fb66ce404",
+    "DESIGN.pdf": "a7390602ec91d3264ffb1b610d85563b8596008fbbaf49d36e474c5b2f6a2248",
+    "review.json": "609e129359e1eeb967f2e7c5721beb27c74dbbc8cbd50dda1924a0b97511325b",
+    "independent-review.json": "609e129359e1eeb967f2e7c5721beb27c74dbbc8cbd50dda1924a0b97511325b"
+  },
+  "S3": {
+    "status": "pass",
+    "taskTreeVector": true,
+    "workflowVector": true,
+    "legibleAt100Percent": true,
+    "evidence": [
+      {
+        "page": 2,
+        "image": "independent-qa/page-02.png",
+        "imageSha256": "df32c8a683739d3038dd569c8b9c4289a4731eb6b1f19fe9b335f81d5e60d0b6",
+        "rasterDpi": 72,
+        "viewedAt": "100% original image",
+        "embeddedImageCount": 0,
+        "vectorLineOperators": 33,
+        "textOperators": 27,
+        "finding": "Labels, arrows, boxes and legend are readable with no clipping or overlap. Task labels and workflow nodes fit within the page margins."
+      },
+      {
+        "page": 3,
+        "image": "independent-qa/page-03.png",
+        "imageSha256": "b5ac862d72bc9b3e950479564833102ce689dafdf3d7a12a772fcb38a04d156f",
+        "rasterDpi": 72,
+        "viewedAt": "100% original image",
+        "embeddedImageCount": 0,
+        "vectorLineOperators": 41,
+        "textOperators": 24,
+        "finding": "Labels, arrows, boxes and legend are readable with no clipping or overlap. Task labels and workflow nodes fit within the page margins."
+      }
+    ]
+  },
+  "limitations": [
+    "S3 judges actual PDF pages 2/3 using 72 dpi original-size images and native PDF path/text operators; S3 passes.",
+    "Independent needs-work review is now canonical. Earlier author reviews and PDFs are preserved by the root agent; no source-contract or fixture repairs were made in this final reader-only iteration.",
+    "D1-D12 findings remain the independent review of the unchanged source design. No business assertions or provider calls were executed."
+  ],
+  "independentReview": "independent-review.json",
+  "dimensionReviewStatus": "needs-work",
+  "unresolvedMajorIssueIds": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5"
+  ],
+  "artifactBinding": {
+    "iteration": 6,
+    "actualPdfReRenderedAndViewed": true,
+    "viewedPages": [
+      2,
+      3
+    ],
+    "dpi": 72,
+    "imageDetail": "original; 100%",
+    "canonicalReviewMatchesIndependent": true,
+    "designUnchangedFromIndependentReview": true,
+    "scope": "Final output binding only; unresolved source-contract and fixture findings remain needs-work."
+  }
+}

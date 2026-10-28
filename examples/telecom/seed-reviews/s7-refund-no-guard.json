@@ -1,0 +1,19 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "../../evals/seeded-defects/v2/s7-refund-no-guard.json": "4b82c80663302bb1055bddf07f0bbb2b0ac7d0889b1b2158ab1536b30eba471c"
+  },
+  "issues": [
+    {
+      "severity": "critical",
+      "ruleId": "SEM001",
+      "evidence": [
+        "semantics.entrypoints W1; semantics.nodes W1.kind=other; W2.kind=write/actionClass=refund.",
+        "W1->W2 on valid reaches the refund write without a declared validation node or actual code validator before the write. W1 prose title validation conflicts with its semantic kind, and C1 is an LLM; naming the transition valid does not provide deterministic validation.",
+        "Consequence: refund execution lacks an explicit enforced validation boundary. C3 verifies record proof only later at W6, after the write."
+      ]
+    }
+  ],
+  "evidenceRelocation": "Relative paths remap the exact independently graded seed bytes; central original record retained in evals/seed-reviews-v2."
+}

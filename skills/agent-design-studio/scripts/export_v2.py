@@ -21,7 +21,7 @@ def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode)
     for key in D.STAGES:
         prd+='## '+key.title()+'\n\n'
         for item in design['stages'][key]['items']:
-            prd+=f"- **{item['id']} {item['title']}**: {item['description']}\n"
+            prd+=D._item_md(item)+'\n' if key in ('framework','rollout','export') else f"- **{item['id']} {item['title']}**: {item['description']}\n"
         prd+='\n'
     prd+='Full exact data and source evidence: [design.json](design.json). Launch facts and owners: [assumptions.md](assumptions.md).\n'
     docs['PRD.md']=prd
@@ -41,7 +41,7 @@ def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode)
                                'acceptanceCriteria':['Implement the declared contract and all named assertions; do not execute live actions without user authority.']})
     overview='# Build overview\n\n'+banner+design['brief']+'\n\n'
     overview+='Load one milestone file at a time. Contracts below are selected by component; full source is ../design.json. Test IDs resolve to complete fixtures in ../eval-set.json. Do not load the entire design unless a dependency requires it.\n\n'
-    overview+='Code owns money, identity, dates and limits. The agent never holds write authority. Keep proposed policies and owners distinct from verified facts. Launch blockers: ../assumptions.md.\n\n'
+    overview+='Code owns money, identity, dates and limits. The agent never holds write authority. Keep proposed policies and owners distinct from verified facts. Launch blockers: ../assumptions.md. Complete rollout gates and owners: ../PRD.md#rollout.\n\n'
     overview+='After delivering DESIGN.pdf, ask the user: '+QUESTION+' Generate HTML only after opt-in, unless already requested.\n\n'
     comps={c['id']:c for c in design['stages']['components']['items']}
     used=set(); covered_workflow=set(); files={}; component_files={}

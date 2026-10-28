@@ -1,0 +1,131 @@
+{
+  "method": "independent-agent",
+  "round": 1,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1 and T0/T3 bound the outage-credit release, separate speed/billing human work, and state sequence/choice precedence. W1 and W14\u2013W16 retain missing-input/cancellation/owned outcomes. C1 does not explicitly resolve multiple active connections; S8.5 fails."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "Task leaves T1/T2/T3.1/T3.2/T3.3/T4 link through components, workflow and EV1\u2013EV23; FM1\u2013FM9 links are reciprocal. H1\u2013H6 honestly label policy, staffing, privacy and integration hypotheses. Canonical golden data uses serialized JSON while semantic fixture copies are objects; validator accepts this, contrary to literal semantic-contract wording."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W1 is reachable entry; W15/W16 are explicit terminals. W9/W7/W12 uncertain outcomes reach W10; C8 requires ABSENT_FINAL before a bounded same-key retry. W6 defines UTC queue timers and W8 bounds failed approval correction. C7 uses uniqueness and cycle locking."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C1\u2013C9 separate identity/evidence, explanation, rule validation, queue, notice, credit, reconciliation and proof. C4 enumerates immutable command fields and C7 specifies target original charge and response/error states. H2/H6 explicitly block live use pending adapter capability verification; these are proposed port contracts, not verified APIs."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C3 has no write credentials or amount/identity authority; C4 computes money, C7 refreshes authorization and ledger state. C9 requires a matching C7/C8 posting for CREDITED; C1 case proof cannot substitute. F2 and H4 cover least privilege, privacy and retention. C4 caps cumulative cycle credit at remaining original charge, with C7 atomic cycle budget lock; monthly fixtures use October 1\u2013November 1."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1\u2013H6 label missing operational facts as assumptions with owners and launch blockers. CTX2/C2 route conflicting and unavailable evidence to owned investigation. H5/M1 explicitly label traffic and prices illustrative; R4 states no approvals actually supplied."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 2,
+      "evidence": [
+        "F1 chooses transactional code workflow and rejects open-ended agent/chat chain for durable 48-hour waits and unknown-write locks. However Temporal/LangGraph are only named as things to compare; F1\u2013F3 repeat identical generic AWS/GCP/Azure candidates without an actual comparative assessment of tools, data and permissions. IR3 remains material under D7."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "Exactly one LLM component C3 has M1. Arithmetic independently checked: 2400*$1/1e6+450*$4/1e6=$0.0042/call; 0.9 calls/case=$0.00378; 10000 cases=$37.80. No model retry; 12-second timeout, excluded infrastructure/human cost, unmeasured peak load and held-out fine-tune gate are explicit."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1\u2013FM9 cover wrong subject, stale authority, duplicate credit, injection/conflict, unknown commit/cancellation, missing proof, queue failure, arithmetic and notice routing. Hypothetical scales, owners, detection metrics and controls are explicit; linked concrete examples exist. Additional boundary tests required by IR1 would strengthen FM2/FM3/FM8 assurance."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "Inspected actual canonical and eval-set fixtures: EV1 yields floor(30000*360/44640)=241; EV12 yields floor(100000*30000/44640)=67204. EV1/EV13 provide positive service-credit effects; EV2/EV3/EV14 forbid writes; EV11 positive and EV10 negative notices; EV6/EV7/EV15/EV16 correctly count only additional writes after prior submissions. Material missing fixtures: exact-cap and remaining-budget boundaries, overlapping interval union inputs, exact approved-amount mutation, multiple connections and ABSENT_FINAL retry path. EV23 names checks but supplies no concrete replacements."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1 defines median/P90 resolution time, safe-resolution denominator and separate unresolved aging; baseline unknown. R2 has shadow/assist/pilot/scale and stop action preserving reconciliation. R3 defines account randomization, stratification, incident clustering, contamination control, minimum duration and power method; R4 assigns approval responsibility without claiming sign-off."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 3,
+      "evidence": [
+        "Read PRD.md, architecture.md, eval-set.json and build milestones 00\u201304 against canonical IDs. Components, workflow and selected tests remain aligned, with H1\u2013H4/H6 launch blockers and design-only limitations explicit. Prior PASS banners reflect author review and are superseded by this independent needs-work result; business assertions remain specifications."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "IR1",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV23",
+      "message": "D10 lacks substantive boundary and adversarial fixtures for money/authority controls: no automatic-cap equality/overflow pair, remaining cumulative-charge budget case, overlapping outage interval union case, approved amount/currency mutation case, or ABSENT_FINAL safe retry case. EV12 only checks a far-above-cap amount; EV13/EV14 test valid and revoked authority, not command mutation. Add concrete fixtures with exact writes, amounts, tool ordering and forbidden effects before passing D10.",
+      "resolved": false
+    },
+    {
+      "id": "IR2",
+      "severity": "minor",
+      "stage": "components",
+      "itemId": "C1",
+      "message": "S8.5: C1 accepts optional selection and rejects wrong/inactive selections, but does not explicitly require clarification when multiple active connections exist and none is selected. Define NEED_INFO with safe choices and zero private reads/writes; add a concrete multi-connection golden.",
+      "resolved": false
+    },
+    {
+      "id": "IR3",
+      "severity": "major",
+      "stage": "framework",
+      "itemId": "F1",
+      "message": "D7 comparison is deferred rather than performed: Temporal and LangGraph are listed for a future spike, and AWS/GCP/Azure descriptions are identical generic placeholders. Provide a bounded assessment using the same durability/timer/recovery/permission/data/ownership criteria, separating unknown facts from proposed choices; a minimal custom code choice can remain recommended.",
+      "resolved": false
+    },
+    {
+      "id": "IR5",
+      "severity": "observation",
+      "stage": "evals",
+      "itemId": "EV1",
+      "message": "semantic-contract.md describes actual golden input/expected as JSON objects while stage-shaped canonical EV1\u2013EV20/eval-set store serialized JSON and semantics stores parsed object copies. The bundled validator accepts this encoding. Align documentation to clarify the parsing boundary; this is a wording ambiguity, not a structural design defect.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Independent review by final_telecom_review of current telecom canonical design and actual companions; no author review, provenance or earlier cases read to derive findings.",
+    "Scores are bounded AI design judgements, not production, regulatory, API support or measured accuracy evidence. No business control harness or live action executed.",
+    "Bundled structural validation independently returned structural-pass and verified-declarations; it does not execute the golden assertions.",
+    "Actual PDF pages 1\u20133 were rendered at 72 dpi and inspected at native pixel size. Diagram labels are readable; exact branch predicates are intentionally delegated to architecture.md."
+  ]
+}

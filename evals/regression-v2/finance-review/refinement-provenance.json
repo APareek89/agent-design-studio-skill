@@ -1,0 +1,10 @@
+{
+  "source": "evals/regression/finance-review",
+  "sourceSha256": "59edef1d1d3fcbc392a764ed728d34b2b75811b3c29e202f0dbad0d3541feb7c",
+  "startedAt": "2026-10-28T12:00:15.844158+00:00",
+  "changes": [
+    "Every write-class golden now has exact typed writes equality and writer/forbidden-effect linkage, in addition to existing assertions.",
+    "W4 accurately classifies draft fact checking as validation, not proof of a nonexistent business write."
+  ],
+  "method": "Root authored stricter declared controls; independent domain review pending, not a fresh author run."
+}

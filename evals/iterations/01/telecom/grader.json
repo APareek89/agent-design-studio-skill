@@ -1,0 +1,97 @@
+{
+  "method": "independent-agent",
+  "agentId": "candidate_reviewer_v2",
+  "sourceHashes": {
+    "design.json": "4ba94403e39dbfd61e0be858d16defbf58c33723dc5f876606e0bfab55ca4f45",
+    "DESIGN.pdf": "a9defbf09e88cc8674f7d4fb872ff4ec664466f4717ff35579cc4368eb12e822"
+  },
+  "S8": {
+    "brief": "telecom",
+    "checks": [
+      {
+        "id": 1,
+        "pass": true,
+        "evidence": [
+          "H1/C4 deterministic credit formula/route",
+          "C3 evidence-linked explanation only; no money authority",
+          "EV1/EV12"
+        ]
+      },
+      {
+        "id": 2,
+        "pass": true,
+        "evidence": [
+          "C7 fresh policy/invoice/remaining entitlement and active scope",
+          "C8 API atomic preconditions",
+          "EV5/EV7/EV18"
+        ]
+      },
+      {
+        "id": 3,
+        "pass": true,
+        "evidence": [
+          "C2 source record IDs/versions",
+          "C3 rejects unsupported citations",
+          "C4 financial input only C1/C2/policy; complaint text absent",
+          "EV12 FAKE citation and CON9 rejected"
+        ]
+      },
+      {
+        "id": 4,
+        "pass": true,
+        "evidence": [
+          "H1 cap remaining recurring charge",
+          "C4 ledger/C7 fresh entitlement",
+          "EV18 min(floor(31000*86400/2678400),31000-30500)=500; cumulative cap"
+        ]
+      },
+      {
+        "id": 5,
+        "pass": true,
+        "evidence": [
+          "T1 explicitly select one active connection; never default across multiple services",
+          "C1 selection required; SELECTION_REQUIRED status",
+          "W1->W12 preserves selection-required reason"
+        ]
+      },
+      {
+        "id": 6,
+        "pass": true,
+        "evidence": [
+          "C8 durable postingId/receipt",
+          "C10 matching proof required",
+          "W11->W13 only PROVEN_CREDIT",
+          "EV13 missing ID cannot complete"
+        ]
+      },
+      {
+        "id": 7,
+        "pass": true,
+        "evidence": [
+          "W9 TIMEOUT/UNKNOWN_COMMIT->W10",
+          "C9 definitive absent only then one W8 guarded retry",
+          "EV9/EV10/EV11"
+        ]
+      },
+      {
+        "id": 8,
+        "pass": true,
+        "evidence": [
+          "C5 signature covers immutable full plan including amount",
+          "C7 exact plan/expiry/version matching",
+          "EV2/EV6"
+        ]
+      }
+    ]
+  },
+  "S3": {
+    "taskTreeVector": true,
+    "workflowVector": true,
+    "legibleAt100Percent": true,
+    "evidence": [
+      "Actual DESIGN.pdf pages2/3 rendered using pdftoppm -f2 -l3 -r72 -png and viewed original 596x842 pixels with view_image.",
+      "Task tree T0/T3 choices and leaf risk labels readable. Workflow W1\u2013W14/C1\u2013C10 and role colors readable; routes cross but nodes are not clipped. Exact branch predicates in architecture.md.",
+      "pdfimages -list reports no embedded raster images; visible PDF node text and line drawings consistent with vector diagrams."
+    ]
+  }
+}

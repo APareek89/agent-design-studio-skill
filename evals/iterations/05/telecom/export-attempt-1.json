@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "status": "input-or-output-error",
+  "message": "Build03 exceeded25KB; repaired by moving independent existing-case proof C11 to secure-account milestone01. No control removed or fixture shortened."
+}

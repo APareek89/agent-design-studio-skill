@@ -1,0 +1,64 @@
+{
+  "version": "1.1",
+  "mode": "standard",
+  "startedAt": "2026-10-28T11:41:38Z",
+  "endedAt": "2026-10-28T11:46:14.208431+00:00",
+  "wallTimeSeconds": 276.208431,
+  "approximateTokensUsed": null,
+  "tokenMethod": "Unavailable: the host did not expose total inference usage.",
+  "artifactTextTokenEstimate": 83906,
+  "artifactTokenMethod": "UTF-8 decoded text characters / 4 across delivered text artifacts, excludes historical failed rounds; not host inference tokens.",
+  "fileSizes": {
+    "PRD.md": 14988,
+    "architecture.md": 25911,
+    "review-round-1.json": 3771,
+    "assumptions.md": 5693,
+    "validation-round-1.json": 1637,
+    "validation-round-2.json": 1003,
+    "fmea-register.csv": 18042,
+    "validation.json": 8952,
+    "authoring-run.json": 429,
+    "eval-set.json": 55286,
+    "review.json": 4560,
+    "review-round-2.json": 4560,
+    "design.json": 177728,
+    "build/00-overview.md": 926,
+    "build/01-milestone.md": 8064,
+    "build/02-milestone.md": 12553
+  },
+  "pageCount": null,
+  "validatorResults": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 3,
+      "tasks": 6,
+      "components": 5,
+      "workflow": 5,
+      "framework": 3,
+      "models": 1,
+      "fmea": 13,
+      "evals": 17,
+      "rollout": 5,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewRounds": [
+    "review-round-1.json",
+    "review-round-2.json",
+    "review.json"
+  ],
+  "reviewMethod": "self-review",
+  "reviewStatus": "pass",
+  "designSha256": "59edef1d1d3fcbc392a764ed728d34b2b75811b3c29e202f0dbad0d3541feb7c",
+  "businessAssertionsExecuted": false
+}

@@ -1,0 +1,122 @@
+{
+  "method": "independent-agent",
+  "round": 1,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1/H1 bound assistant to inpatient review packets; T1\u2013T5 partition intake, evidence, calculation, save and proof; W8 preserves blocked/pending outcomes."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "T1\u2013T5 map to C1\u2013C7/W1\u2013W8 and EV1\u2013EV20; FM1\u2013FM7 link substantive tests; X1 preserves canonical IDs. Sources distinguish brief and H1\u2013H6 hypotheses."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W1\u2013W8 provide exclusive typed outcomes and terminal dispositions; C4 has zero write retries, C5 bounded lookup with changed-intent freeze, C6 durable assigned-record proof."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 2,
+      "evidence": [
+        "C1\u2013C7 typed field contracts, H3 explicit adapter verification blocker, H5 queue ownership and escalation are concrete. C3 has no nonempty proration calculation contract; C2 citation validator lacks existence/quote/clause checks."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C3 integer rule arithmetic and fresh versions; C4 server transaction rechecks authority and unique key; F3 separate scoped principals; H4/F4 privacy and retention blockers; C6 record proof."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1\u2013H6 identify scope, rules, API, privacy, queue and budget assumptions with owners/blockers; CTX3 disclaims production results; C3 abstains on missing rules/facts."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1/F2 choose durable code worker and one bounded reader over free-running agents/in-memory chain; F1\u2013F4 compare cloud/self-hosted candidates on regional storage, privacy and ownership with verification boundary."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 covers sole LLM C2, rejects smaller/larger tiers conditionally, specifies 1.05 expected/2 maximum calls, 12000/1500 tokens, illustrative USD .0378/case and excluded costs; long documents abstain."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1\u2013FM7 give case-specific causes, scores, owners, controls, KPIs and EV links for wrong person, edition, room maths, injection, duplicate, uncertain save and queue failure."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "EV1\u2013EV17 include self-contained fixtures and exact expected writes/records; EV18\u2013EV20 define strata, labelling, monitoring and gates. Positive linked room-charge proration and invalid/nonexistent evidence citation cases are absent. EV17 also has discharged before admitted, confounding its date-boundary purpose."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1/R2 define denominators/windows and unknown baselines; R3\u2013R5 phased gates retain human adjudication; R6 cluster randomization, stratification, contamination controls and variance-based power method; R7 names recovery owners."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "X1 and build milestones preserve draft-only scope and external blockers; DESIGN.pdf task/workflow are vector and readable at 72dpi, but unimplemented calculation/citation decisions remain in C3/C2 and their exported contracts."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "IR1",
+      "severity": "major",
+      "stage": "components",
+      "itemId": "C3",
+      "message": "Define the positive linked room-rent proportionate deduction formula, charge-class scope and rounding/order, and add a nonempty prorateClasses golden. Existing EV1/EV13 only test an approved empty list; EV4 tests absent rules. The supported positive branch currently requires material implementation invention.",
+      "resolved": false
+    },
+    {
+      "id": "IR2",
+      "severity": "major",
+      "stage": "components",
+      "itemId": "C2",
+      "message": "Specify code validation that each citation resolves to an authorized immutable document/page and applicable policy clause, and that quote spans match source text; add nonexistent/wrong-clause negative fixtures. Rejecting uncited claims alone permits invented source references in the evidence-linked review packet.",
+      "resolved": false
+    },
+    {
+      "id": "IR3",
+      "severity": "minor",
+      "stage": "evals",
+      "itemId": "EV17",
+      "message": "The policy-date conflict fixture changes admission to July 1 while discharge remains April 3. Use a valid admission/discharge interval so generic invalid chronology cannot mask the intended edition-boundary/conflicting-source test.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Independent design review only; no business harness, external API, privacy approval or insurer rules executed/verified.",
+    "Human-only adjudication is a safe explicit assumption, so missing STP is recorded separately in S8 rather than requiring added autonomy.",
+    "PDF summary contains author review labels; independent scores here were derived from canonical evidence, not those scores."
+  ]
+}

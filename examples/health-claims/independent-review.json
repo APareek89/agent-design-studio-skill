@@ -1,0 +1,116 @@
+{
+  "method": "independent-agent",
+  "round": 2,
+  "status": "pass",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1-CTX4/T1-T7 define authenticated inpatient draft scope, terminal proof or owned exception; H1 rejects automated settlement."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "T1-T7/C1-C9/W1-W11 retain stable links; FM2/EV32/EV33 and EV21 propagate accumulator guard coverage. C2 authenticated snapshot and receipt establish trusted source separately from operation outputs. Exact eval-set data equals canonical."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W1-W11 define exclusive predicates, 24h durable wait, one-hour notice, bounded readback and retry, cancellation/expiry and owned unresolved terminal."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C1-C9 retain typed bounded contracts; C2 adds accumulator scope/version/receipt response; C4 exact source guards and C7 fresh writer version recheck prevent source-state inference. H2 is explicit external API verification dependency."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C1 gates PHI; C2 excludes hidden layers; C4 owns arithmetic/dates; C7 enforces RBAC/CAS/immutable bytes; C8 independent readback; C9 gates saved display. No payment/denial scope."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 4,
+      "evidence": [
+        "H1-H6 label authority, policy/privacy/staffing launch gaps and illustrative cost/targets. Unknown rules/clinical necessity/copay/currency/date splits abstain."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1 durable code workflow fits 11 nodes; F2 separates vault/rules/ledger; F3 least privilege; F4 uses equivalent candidate residency/deletion/timer tests and rejects multi-cloud expansion."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 4,
+      "evidence": [
+        "M1 exactly covers C3: 0.8*1.1=.88 calls, .024 USD/call, .02112/case, 211.20/10k; retry/worst-case/context/staff exclusions and rejected tiers are explicit."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM8 give scored case-specific causes, controls, owners and reciprocal tests for PHI, rules, forged sources, races, uncertain save, proof, revocation and queue stalls."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 3,
+      "evidence": [
+        "30 self-contained golden fixtures: EV1/EV4/EV9/EV23/EV30 now carry C2 source snapshot, same-request receipt and clock. EV32 missing accumulatorVersion and EV33 mismatched receipt version each assert zero writes/no authoritative total. EV10 has independently authorized OP-A and OP-B payloads with matching recomputed hashes and exact CAS schedule/winner/loser/no-overwrite assertions. EV6-EV8 remain isolated page/clause/quote negatives. EV25 sole intentional payload-hash mismatch."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1-R4 define denominators, baseline/assist gates, team randomization/ICC power method, safety vetoes and stop/reconciliation ownership; no unapproved scale claim."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 3,
+      "evidence": [
+        "Actual PRD/architecture/build milestones include repaired accumulator contracts and concurrency handoff; exported eval-set data equal canonical. EV21 release set names all 30 goldens including EV32/EV33. Real H2 adapters and business harness remain clear launch dependencies."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "IR1",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV1",
+      "message": "Resolved by C2 typed authoritative accumulatorSnapshot, C4 scope/same-request version/timestamp guards, positive fixture source/clock payloads, C7 fresh writer-version query, and isolated missing/stale negatives EV32/EV33. Independently inspected actual fixture objects and their API mock responses.",
+      "resolved": true
+    },
+    {
+      "id": "IR2",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV10",
+      "message": "Resolved by two complete independently authorized OP-A/OP-B payloads and matching request paths/IDs/hashes/source versions, explicit expectedVersion=3 CAS schedule and one-winner/no-overwrite assertions. Both SHA256 values independently recomputed from actual payloads.",
+      "resolved": true
+    }
+  ],
+  "limitations": [
+    "Independent second-round AI design review; pass means bounded proposed-design readiness, not insurance/medical/legal certification or production correctness.",
+    "Business golden harness and live API/PHI controls were not executed. Structural validation and independent fixture arithmetic/hash checks do not establish those controls work in production.",
+    "H1-H4 remain launch blockers: real rule registry/accumulator and authorization contracts, policy applicability, privacy/deletion/residency and staffed queues require accountable evidence.",
+    "The staff-assist design explicitly excludes claim payment, final rejection and straight-through settlement, so no STP QA sample is claimed.",
+    "Reviewed revised canonical design, actual eval-set and PRD/architecture/build exports against D1-D12 and prior independent findings; did not rely on author reviews, repair scripts or self-reported repair checks."
+  ]
+}

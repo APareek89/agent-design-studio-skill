@@ -1,0 +1,212 @@
+{
+  "generator": "agent-design-studio.design_io/1.0",
+  "generatedFiles": [
+    "PRD.md",
+    "architecture.md",
+    "eval-set.json",
+    "fmea-register.csv",
+    "assumptions.md",
+    "validation.json",
+    "build/01-milestone.md",
+    "build/02-milestone.md",
+    "build/03-milestone.md",
+    "build/04-milestone.md",
+    "build/00-overview.md"
+  ],
+  "designOnly": true,
+  "status": "needs-work",
+  "designSha256": "1605f02cc1b505abec240906adcb3640b01bc6d40a21cdb9a7c6cc6fe19a4b1b",
+  "reviewSha256": "1fca7a607c88937da8f499fb6013461155a5f166f4e4b1c3989ba0e303f5e637",
+  "structuralValidation": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 4,
+      "tasks": 11,
+      "components": 9,
+      "workflow": 11,
+      "framework": 4,
+      "models": 1,
+      "fmea": 8,
+      "evals": 31,
+      "rollout": 4,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewValidation": {
+    "valid": true,
+    "status": "needs-work",
+    "computedStatus": "needs-work",
+    "errors": [],
+    "blockerIds": [
+      "IR1",
+      "IR2"
+    ],
+    "method": "independent-agent",
+    "round": 1,
+    "scores": {
+      "D1": 3,
+      "D2": 2,
+      "D3": 3,
+      "D4": 3,
+      "D5": 3,
+      "D6": 4,
+      "D7": 3,
+      "D8": 4,
+      "D9": 3,
+      "D10": 2,
+      "D11": 3,
+      "D12": 2
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "review": {
+    "method": "independent-agent",
+    "round": 1,
+    "status": "needs-work",
+    "dimensions": [
+      {
+        "id": "D1",
+        "score": 3,
+        "evidence": [
+          "CTX1-CTX4/T1-T7 define authenticated inpatient draft scope, terminal proof or owned exception; H1 rejects automated settlement."
+        ]
+      },
+      {
+        "id": "D2",
+        "score": 2,
+        "evidence": [
+          "Stable task/component/workflow IDs and source context/hypotheses are clear. IR1/IR2 break trusted source and fixture-to-control traceability."
+        ]
+      },
+      {
+        "id": "D3",
+        "score": 3,
+        "evidence": [
+          "W1-W11 define exclusive predicates, 24h durable wait, one-hour notice, bounded readback and retry, cancellation/expiry and owned unresolved terminal."
+        ]
+      },
+      {
+        "id": "D4",
+        "score": 3,
+        "evidence": [
+          "C1-C9 bound roles, inputs/outputs, named scoped operations, error enums, staff queue and proof projections; H2 clearly gates real adapter verification. Accumulator source precision is part of IR1."
+        ]
+      },
+      {
+        "id": "D5",
+        "score": 3,
+        "evidence": [
+          "C1 gates PHI; C2 excludes hidden layers; C4 owns arithmetic/dates; C7 enforces RBAC/CAS/immutable bytes; C8 independent readback; C9 gates saved display. No payment/denial scope."
+        ]
+      },
+      {
+        "id": "D6",
+        "score": 4,
+        "evidence": [
+          "H1-H6 label authority, policy/privacy/staffing launch gaps and illustrative cost/targets. Unknown rules/clinical necessity/copay/currency/date splits abstain."
+        ]
+      },
+      {
+        "id": "D7",
+        "score": 3,
+        "evidence": [
+          "F1 durable code workflow fits 11 nodes; F2 separates vault/rules/ledger; F3 least privilege; F4 uses equivalent candidate residency/deletion/timer tests and rejects multi-cloud expansion."
+        ]
+      },
+      {
+        "id": "D8",
+        "score": 4,
+        "evidence": [
+          "M1 exactly covers C3: 0.8*1.1=.88 calls, .024 USD/call, .02112/case, 211.20/10k; retry/worst-case/context/staff exclusions and rejected tiers are explicit."
+        ]
+      },
+      {
+        "id": "D9",
+        "score": 3,
+        "evidence": [
+          "FM1-FM8 give scored case-specific causes, controls, owners and reciprocal tests for PHI, rules, forged sources, races, uncertain save, proof, revocation and queue stalls."
+        ]
+      },
+      {
+        "id": "D10",
+        "score": 2,
+        "evidence": [
+          "28 golden fixtures include positive/negative write coverage, isolated page/clause/quote guards EV6-EV8, hidden layer EV9, rounding EV30 and negative charge EV31. IR1/IR2 prevent executable valid-baseline isolation."
+        ]
+      },
+      {
+        "id": "D11",
+        "score": 3,
+        "evidence": [
+          "R1-R4 define denominators, baseline/assist gates, team randomization/ICC power method, safety vetoes and stop/reconciliation ownership; no unapproved scale claim."
+        ]
+      },
+      {
+        "id": "D12",
+        "score": 2,
+        "evidence": [
+          "PRD/architecture/eval-set/build milestones preserve bounded scope and IDs. IR1/IR2 propagate to implementation companions and require material fixture/source decisions before the release gate is credible."
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "id": "IR1",
+        "severity": "major",
+        "stage": "evals",
+        "itemId": "EV1",
+        "message": "C4 requires a fresh authoritative accumulator version and explicitly sends a missing version to review. Positive initial-analysis fixtures EV1, EV4, EV9, EV30 omit accumulatorVersion and freshness from policy/snapshot/registry mock, while expecting authoritative amounts and successful drafts. Version 7 appears only in their preconstructed output operation assessment, which cannot prove the source input is fresh. EV23 supplies the version but no explicit freshness basis. Add a typed authoritative accumulator snapshot/version/freshness contract and fixture input, then a missing/stale negative case; propagate through eval-set and build milestones. Do not obtain trusted source provenance by copying the expected output payload backwards.",
+        "resolved": false
+      },
+      {
+        "id": "IR2",
+        "severity": "major",
+        "stage": "evals",
+        "itemId": "EV10",
+        "message": "The concurrency fixture starts operations OP-A and OP-B, but its only immutable authorized operation payload/hash is for OP-1. Under C7 exact operation/resource binding, neither competitor has a complete valid authorized payload; expected one successful CAS write therefore cannot isolate concurrency. Supply two fully materialized independently authorized payloads/hashes with matching operation IDs and expectedVersion 3; assert the losing CAS outcome and absence of overwrite.",
+        "resolved": false
+      }
+    ],
+    "limitations": [
+      "Independent AI design review, not clinical, insurance, regulatory or production certification.",
+      "No business harness, operational API, OCR validation or staff control was executed; golden cases are proposed specifications.",
+      "H1-H4 remain human verification launch blockers; real policy applicability, signed registry, privacy and staffing are unverified.",
+      "Assist-only scope explicitly omits straight-through settlement; no settlement QA sampling is claimed.",
+      "Reviewed original brief, canonical design, actual eval-set, PRD, architecture, build milestones and PDF pages 1–3; no author reviews, provenance records, prior cases or author scripts informed judgement."
+    ]
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ],
+  "mode": "standard",
+  "fileSha256": {
+    "PRD.md": "0da62f207bef7cceaa0af838c2d0def49f20dd88d5c7fcc64daa33e72350613a",
+    "architecture.md": "cb7003b2d459ad0e5b16eb425134367bb65d6cd81a5b594cbac47615314d493e",
+    "eval-set.json": "c09159131492c22f85ead5beb3300213f0b3e46a34f9200152451b28eba1dbe0",
+    "fmea-register.csv": "5b7d542c25fd40240a024734994a2d4e3f027ab5b617d3ed286a216f2137e5cd",
+    "assumptions.md": "f6b3d020efd9965336f0d1d805be2326ac9a33b2869486466c7b85f00fa40e11",
+    "build/01-milestone.md": "295f963a339c11753ae86e3fa08c5a8ee5d595caba0ef65ae07b42b2a1a4773e",
+    "build/02-milestone.md": "0811ac14df6f9b9dea17928759870c2e8940d1d928b64d0da255709c31f6d4db",
+    "build/03-milestone.md": "2109df3bacd574b7a43761d92207d7cf163ee39acd30c48d626a71c628015574",
+    "build/04-milestone.md": "8b693b082e9d8cce25eae2270d868fec208ceee3d8781641395f401874f5ff50",
+    "build/00-overview.md": "50fcb5e68dd4e5655efc48669e00b3b6c04b3b9d947dc5c366b984954f5d043f"
+  }
+}

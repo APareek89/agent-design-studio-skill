@@ -1,0 +1,45 @@
+{
+  "valid": false,
+  "status": "structural-errors",
+  "errors": [
+    {
+      "path": "$.stages.workflow.items[0].data.decision",
+      "message": "Expected boolean."
+    },
+    {
+      "path": "$.stages.workflow.items[1].data.decision",
+      "message": "Expected boolean."
+    },
+    {
+      "path": "$.stages.workflow.items[2].data.decision",
+      "message": "Expected boolean."
+    },
+    {
+      "path": "$.stages.workflow.items[3].data.decision",
+      "message": "Expected boolean."
+    },
+    {
+      "path": "$.stages.workflow.items[4].data.decision",
+      "message": "Expected boolean."
+    },
+    {
+      "path": "$.stages.framework.items[0].data.alternatives",
+      "message": "Expected array."
+    },
+    {
+      "path": "$.stages.framework.items[1].data.alternatives",
+      "message": "Expected array."
+    },
+    {
+      "path": "$.stages.framework.items[2].data.alternatives",
+      "message": "Expected array."
+    }
+  ],
+  "warnings": [],
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ]
+}

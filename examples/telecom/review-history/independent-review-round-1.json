@@ -1,0 +1,114 @@
+{
+  "method": "independent-agent",
+  "round": 1,
+  "status": "pass",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1/CTX2 bound portal complaints to eligible credits, explicit no-credit or owned pending outcomes. T1/T2/T3.1\u2013T3.3/T4 partition identity, investigation, exclusive routes and proof; unsupported cash refunds stay manual."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "Tasks map to C1\u2013C10 and W1\u2013W14; FM1\u2013FM9 reciprocal tests include concrete conditions; brief sources distinguish H1\u2013H5 hypotheses. Standard architecture/build exports preserve identifiers and boundaries."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W6/W7 retain durable 48h clocks/notices with cancellation precedence; W9 timeout/unknown must pass W10, which allows only one definitive-absence retry through W8; unresolved keys remain frozen. W13 requires W11 proof."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C1\u2013C10 specify fields/enums, target resources, scoped reads, exact CreditPlan, signed supervisor approval, commit receipt and readback. H2 makes real atomic API capabilities a launch blocker; C5/H3 specify queue owner, acknowledgement and escalation."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C4 calculates integer amount from system evidence; C7 reconstructs full plan, checks fresh scope/versions/entitlement and exact approval; C8 atomic backend preconditions/uniqueness; C10 requires postingId and exact receipt. F3/F4/H4 constrain permissions and private data."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "CTX3 explicitly disclaims verified operational facts; H1\u2013H4 are owned launch blockers; H5/M1 traffic/prices are illustrative. C2/C4 route missing/conflicting data to supervisor, never guessed eligibility."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1 compares durable worker versus workflow engine/request handler and rejects free-running agent authority. F2 owns relational state/outbox/inbox; F4 compares AWS/GCP/Azure/self-hosted candidates on identical privacy/recovery/operations criteria without current capability claims."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 is sole LLM allocation C3; small tier rationale and standard/reasoning alternatives explicit. 1.1 expected/2 max calls at 2000/300 tokens produces USD .00352/case and USD35.20/10000; fallback, peak latency and fine-tuning evidence gates included."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1\u2013FM9 cover wrong connection, stale policy, duplicate, uncertain posting, injection, false completion, queue clock, missing evidence and cancellation with S/O/D, owners, controls, KPIs and substantive EV links."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 3,
+      "evidence": [
+        "EV1\u2013EV20 include complete synthetic inputs and exact expected actions/values; EV8 concurrency, EV9\u2013EV11 uncertain recovery, EV12 hostile text, EV13 missing proof, EV14\u2013EV16 clocks/cancellation. EV21\u2013EV23 add labelled strata, monitoring and mandatory release suite. EV18 concurrency assertion exceeds its single-operation fixture, a minor precision limit."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1 defines reopen denominator/window, elapsed time and financial safety; R2\u2013R5 specify phased owners/gates/stop actions. R6 sticky account randomization, strata, contamination control, baseline-based two-proportion/continuous power and follow-up; R7 pending ownership persists through rollback."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 3,
+      "evidence": [
+        "X1/build files specify state tables, APIs, timers, crashes, immutable authority, tests and phased rollout consistent with canonical scope. Missing external capabilities remain H1\u2013H4 blockers. Actual PDF pages2/3 are vector with readable labels at 72dpi; no production correctness claim."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "IR1",
+      "severity": "minor",
+      "stage": "evals",
+      "itemId": "EV18",
+      "message": "EV18 asserts simultaneous remaining-entitlement serialization but provides only one operation. Extend it with two different incident keys against the same invoice/period and assert aggregate posted value stays within remaining charge; this makes the already-required serialization control directly testable.",
+      "resolved": false
+    },
+    {
+      "id": "IR2",
+      "severity": "minor",
+      "stage": "export",
+      "itemId": "X1",
+      "message": "Build instructions say milestones01\u201304, while exported overview lists only 01\u201303. Align the count to avoid suggesting a missing handoff file.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Independent design judgement, not measured accuracy or production certification. No provider APIs, business controls, queues or policy approvals executed.",
+    "H1\u2013H4 remain mandatory external launch evidence; pass applies only within their bounded proposed contracts.",
+    "PDF diagrams have crossing routes and no edge predicates on-page; exact predicates remain in architecture.md. Native 72dpi labels were inspected, not inferred from text extraction."
+  ]
+}

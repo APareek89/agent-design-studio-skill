@@ -1,0 +1,7 @@
+{
+  "source": "evals/iterations/06/telecom",
+  "type": "feedback-refined synthetic design, not untouched transfer",
+  "designSha256": "7c2981b87a64fcf6178382f8d446fa2eb49d3e7b3b7783a47659a4179453fdd8",
+  "reviewMethod": "independent-agent",
+  "businessAssertionsExecuted": false
+}

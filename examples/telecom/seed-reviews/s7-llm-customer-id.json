@@ -1,0 +1,19 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "../../evals/seeded-defects/v2/s7-llm-customer-id.json": "78ed521e88308b34f381a17607a864a8af76b2aa36214d9a95105fa15b5fe241"
+  },
+  "issues": [
+    {
+      "severity": "critical",
+      "ruleId": "SEM005",
+      "evidence": [
+        "semantics.nodes W2.bindings customerId has category=identity, source=llm, sourceComponentId=C1, sourceField=customerId.",
+        "C1 outputs customerId:string! and C2 Persist refund consumes customerId:string!; W2 is a refund write.",
+        "Consequence: the refund recipient originates in model generation instead of authenticated/system identity; a wrong-subject financial action can result."
+      ]
+    }
+  ],
+  "evidenceRelocation": "Relative paths remap the exact independently graded seed bytes; central original record retained in evals/seed-reviews-v2."
+}

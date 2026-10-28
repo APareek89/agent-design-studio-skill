@@ -296,9 +296,28 @@ class Report:
 
     def summary_stage(self,key):
         for item in self.design['stages'][key]['items']:
-            self.heading(item['id']+' - '+item['title'])
-            self.text(sentence(item['description'],38))
-            self.text('Why: '+sentence(item['reasoning'],26),'small')
+            d=item['data']; self.heading(item['id']+' - '+item['title'])
+            if key=='framework':
+                self.text('Choice: '+sentence(d['choice'],26))
+                self.text('Rejected: '+sentence('; '.join(d['alternatives']),20),'small')
+                self.text('Trade-off: '+sentence(d['tradeoffs'],22),'small')
+                if d['category'] in ('permission','data'):
+                    self.text('Access: '+sentence(d['leastPrivilege'],20),'small')
+            elif key=='rollout':
+                if d['category']=='kpi':
+                    self.text('Measure: '+sentence(d['businessKpi'],30))
+                    self.text('Signals: '+sentence('; '.join(d['aiMetrics']),24),'small')
+                elif d['category']=='experiment':
+                    self.text('Test: '+sentence(d['experiment'],38))
+                    self.text('Decision gate: '+sentence(d['gate'],22),'small')
+                else:
+                    self.text('Phase / owner: '+sentence(d['phase']+' / '+d['owner'],22),'small')
+                    self.text('Gate: '+sentence(d['gate'],32))
+            else:
+                self.text(sentence(item['description'],38))
+                self.text('Why: '+sentence(item['reasoning'],26),'small')
+        if key in ('framework','rollout'):
+            self.text('These are reader summaries. Complete choices, alternatives, gates and owners are in PRD.md and design.json.','small')
 
     def build(self):
         self.decision(); self.finish_page()

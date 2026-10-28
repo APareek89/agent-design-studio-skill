@@ -1,0 +1,19 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "../../evals/seeded-defects/v2/s7-unversioned-inheritance.json": "03951183c15c0a3bdd182406b728073d3750cd22ae7afb7a15e85c4764cb76af"
+  },
+  "issues": [
+    {
+      "severity": "major",
+      "ruleId": "SEM004",
+      "evidence": [
+        "semantics.goldens EV1 uses base={id:shared-refund}, no immutable version/hash and no materialized semantic fixture.",
+        "Canonical EV1 has local input/expected text, but it does not pin or expand the referenced shared-refund base.",
+        "Consequence: shared fixture changes cannot be detected or replayed against an immutable version, so the inherited negative refund case is not reproducible."
+      ]
+    }
+  ],
+  "evidenceRelocation": "Relative paths remap the exact independently graded seed bytes; central original record retained in evals/seed-reviews-v2."
+}

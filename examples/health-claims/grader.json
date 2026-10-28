@@ -1,0 +1,99 @@
+{
+  "method": "independent-agent",
+  "agentId": "final_health_review",
+  "sourceHashes": {
+    "design.json": "24a23210fff216b5fb69bb9ed7a887fddec25781497e177f9dd4fc1b036f8233",
+    "DESIGN.pdf": "6fbe9ec2b8326fdd06c18d2f844dbfce05ea25d45b8af29e7883007eca2c81f2",
+    "review.json": "0508146ee2ee9cab3469e3c414223e2d2d74ca2decfdf43362908207fc977813"
+  },
+  "S3": {
+    "taskTreeVector": true,
+    "workflowVector": true,
+    "legibleAt100Percent": true,
+    "evidence": [
+      "PDF page 2: 0 raster images; 130 vector path operators; 838 extractable text characters.",
+      "PDF page 3: 0 raster images; 226 vector path operators; 614 extractable text characters.",
+      "Actual iteration05 DESIGN.pdf pages 1\u20133 rendered via pdftoppm at 72dpi and inspected at 100%; text/task/decision boxes readable and uncut. Recovery arrows dense; exact predicates available in architecture.md.",
+      "Page 1 shows independent-agent round 2 pass; PDF 12 pages.",
+      "Final reader-layer iteration6: regenerated from unchanged canonical design/review, preserved prior PDF as DESIGN-before-reader-fix.pdf. Actual current pages 1\u20133, 6 (architecture) and 11 (measurement/rollout) rendered at 72dpi and inspected at 100%; all readable without overlap/crop, 12 pages total.",
+      "Pages6/11 now display actual selected/rejected architecture and rollout gate/owner fields as labelled reader summaries. Independent exact-string check confirms full framework choice/alternatives/tradeoffs/access and rollout KPI/AI metrics/phase/gate/owner/experiment values survive in PRD.md."
+    ]
+  },
+  "S8": {
+    "brief": "health-claims",
+    "checks": [
+      {
+        "id": 1,
+        "pass": true,
+        "evidence": [
+          "CTX3",
+          "C4",
+          "EV3",
+          "EV22",
+          "H2"
+        ]
+      },
+      {
+        "id": 2,
+        "pass": true,
+        "evidence": [
+          "C4",
+          "EV1",
+          "EV4",
+          "EV5",
+          "EV23",
+          "EV30",
+          "EV32",
+          "EV33"
+        ]
+      },
+      {
+        "id": 3,
+        "pass": true,
+        "evidence": [
+          "H1",
+          "C5",
+          "EV27",
+          "CTX2"
+        ]
+      },
+      {
+        "id": 4,
+        "pass": true,
+        "evidence": [
+          "CTX4",
+          "C2",
+          "C3",
+          "EV9",
+          "EV26"
+        ]
+      },
+      {
+        "id": 5,
+        "pass": true,
+        "evidence": [
+          "C3",
+          "C4",
+          "EV6",
+          "EV7",
+          "EV8"
+        ]
+      },
+      {
+        "id": 6,
+        "pass": false,
+        "evidence": [
+          "H1",
+          "CTX2",
+          "R2",
+          "F3"
+        ]
+      }
+    ],
+    "limitations": [
+      "Criterion 1 uses certified rule-pack admission/service-date applicability and conservative review for service-period splits; actual insurer admission-date policy remains H2 launch dependency.",
+      "Criterion 2 arithmetic independently recomputed: room-only 3000000; proportional 2700000; minor-unit half-up 2.5 becomes 3. Positive fixtures now have authoritative accumulator snapshot/receipt and EV32/EV33 exercise missing/stale source guards.",
+      "Criterion 6 intentionally absent in explicitly bounded staff-assist scope: no automatic settlement or STP QA sample is designed. Five of six task criteria; this omission does not negate assist-scope review pass."
+    ]
+  }
+}

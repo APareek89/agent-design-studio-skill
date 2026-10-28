@@ -1,0 +1,1696 @@
+{
+  "context": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "items": {
+        "minItems": 1,
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "reasoning": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "assumptions": {
+              "maxItems": 60,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "sources": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "upload",
+                      "hypothesis",
+                      "context"
+                    ]
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "passage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "file",
+                  "passage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "kind": {
+              "type": "string",
+              "const": "context"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "value": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "question": {
+                  "type": "string",
+                  "maxLength": 8000
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "question"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "description",
+            "reasoning",
+            "assumptions",
+            "sources",
+            "kind",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "assumptions": {
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "required": [
+      "items",
+      "assumptions"
+    ],
+    "additionalProperties": false
+  },
+  "tasks": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "items": {
+        "minItems": 1,
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8000
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "reasoning": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "assumptions": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "sources": {
+                  "minItems": 1,
+                  "maxItems": 20,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "upload",
+                          "hypothesis",
+                          "context"
+                        ]
+                      },
+                      "file": {
+                        "type": "string"
+                      },
+                      "passage": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "file",
+                      "passage"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "const": "task"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "parentId": {
+                      "type": "string",
+                      "maxLength": 8000
+                    },
+                    "mode": {
+                      "type": "string",
+                      "enum": [
+                        "sequence",
+                        "choose one",
+                        "leaf"
+                      ]
+                    },
+                    "basis": {
+                      "maxItems": 60,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 2000
+                      }
+                    },
+                    "examples": {
+                      "maxItems": 60,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 2000
+                      }
+                    },
+                    "autonomy": {
+                      "type": "string",
+                      "maxLength": 8000
+                    },
+                    "frequency": {
+                      "type": "string",
+                      "maxLength": 8000
+                    },
+                    "risk": {
+                      "type": "string",
+                      "enum": [
+                        "low",
+                        "medium",
+                        "high"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "parentId",
+                    "mode",
+                    "basis",
+                    "examples",
+                    "autonomy",
+                    "frequency",
+                    "risk"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "description",
+                "reasoning",
+                "assumptions",
+                "sources",
+                "kind",
+                "data"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8000
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "reasoning": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "assumptions": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "sources": {
+                  "minItems": 1,
+                  "maxItems": 20,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "upload",
+                          "hypothesis",
+                          "context"
+                        ]
+                      },
+                      "file": {
+                        "type": "string"
+                      },
+                      "passage": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "file",
+                      "passage"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "const": "attribute"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "taskIds": {
+                      "maxItems": 60,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 2000
+                      }
+                    },
+                    "sourceSystem": {
+                      "type": "string",
+                      "maxLength": 8000
+                    },
+                    "loaded": {
+                      "type": "string",
+                      "enum": [
+                        "session start",
+                        "on demand"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "taskIds",
+                    "sourceSystem",
+                    "loaded"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "description",
+                "reasoning",
+                "assumptions",
+                "sources",
+                "kind",
+                "data"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "assumptions": {
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "required": [
+      "items",
+      "assumptions"
+    ],
+    "additionalProperties": false
+  },
+  "components": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "items": {
+        "minItems": 1,
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "reasoning": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "assumptions": {
+              "maxItems": 60,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "sources": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "upload",
+                      "hypothesis",
+                      "context"
+                    ]
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "passage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "file",
+                  "passage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "kind": {
+              "type": "string",
+              "const": "component"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "group": {
+                  "type": "string",
+                  "enum": [
+                    "Agents (LLM)",
+                    "Code: tools",
+                    "Code: validation",
+                    "Code: human triggers"
+                  ]
+                },
+                "taskIds": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "inputs": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "outputs": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "whyCode": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "approvalRule": {
+                  "type": "string",
+                  "maxLength": 8000
+                }
+              },
+              "required": [
+                "group",
+                "taskIds",
+                "inputs",
+                "outputs",
+                "whyCode",
+                "approvalRule"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "description",
+            "reasoning",
+            "assumptions",
+            "sources",
+            "kind",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "assumptions": {
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "required": [
+      "items",
+      "assumptions"
+    ],
+    "additionalProperties": false
+  },
+  "workflow": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "items": {
+        "minItems": 1,
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "reasoning": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "assumptions": {
+              "maxItems": 60,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "sources": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "upload",
+                      "hypothesis",
+                      "context"
+                    ]
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "passage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "file",
+                  "passage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "kind": {
+              "type": "string",
+              "const": "workflow"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "componentId": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "taskIds": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "next": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "decision": {
+                  "type": "boolean"
+                },
+                "example": {
+                  "type": "string",
+                  "maxLength": 8000
+                }
+              },
+              "required": [
+                "componentId",
+                "taskIds",
+                "next",
+                "decision",
+                "example"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "description",
+            "reasoning",
+            "assumptions",
+            "sources",
+            "kind",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "assumptions": {
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "required": [
+      "items",
+      "assumptions"
+    ],
+    "additionalProperties": false
+  },
+  "framework": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "items": {
+        "minItems": 1,
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "reasoning": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "assumptions": {
+              "maxItems": 60,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "sources": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "upload",
+                      "hypothesis",
+                      "context"
+                    ]
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "passage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "file",
+                  "passage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "kind": {
+              "type": "string",
+              "const": "framework"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "fit",
+                    "architecture",
+                    "orchestration",
+                    "permission",
+                    "data"
+                  ]
+                },
+                "taskIds": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "choice": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "alternatives": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "tradeoffs": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "permission": {
+                  "type": "string",
+                  "enum": [
+                    "read",
+                    "write",
+                    "none"
+                  ]
+                },
+                "blastRadius": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "approvalRule": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "leastPrivilege": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "aws": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "gcp": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "azure": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "openSource": {
+                  "type": "string",
+                  "maxLength": 8000
+                }
+              },
+              "required": [
+                "category",
+                "taskIds",
+                "choice",
+                "alternatives",
+                "tradeoffs",
+                "permission",
+                "blastRadius",
+                "approvalRule",
+                "leastPrivilege",
+                "aws",
+                "gcp",
+                "azure",
+                "openSource"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "description",
+            "reasoning",
+            "assumptions",
+            "sources",
+            "kind",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "assumptions": {
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "required": [
+      "items",
+      "assumptions"
+    ],
+    "additionalProperties": false
+  },
+  "models": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "items": {
+        "minItems": 0,
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "reasoning": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "assumptions": {
+              "maxItems": 60,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "sources": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "upload",
+                      "hypothesis",
+                      "context"
+                    ]
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "passage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "file",
+                  "passage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "kind": {
+              "type": "string",
+              "const": "model"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "componentId": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "tier": {
+                  "type": "string",
+                  "enum": [
+                    "small",
+                    "standard",
+                    "reasoning"
+                  ]
+                },
+                "rationale": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "fineTuneWhen": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "callsPerCase": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000
+                },
+                "inputTokens": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000
+                },
+                "outputTokens": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000
+                },
+                "inputPrice": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "outputPrice": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "componentId",
+                "tier",
+                "rationale",
+                "fineTuneWhen",
+                "callsPerCase",
+                "inputTokens",
+                "outputTokens",
+                "inputPrice",
+                "outputPrice"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "description",
+            "reasoning",
+            "assumptions",
+            "sources",
+            "kind",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "assumptions": {
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "required": [
+      "items",
+      "assumptions"
+    ],
+    "additionalProperties": false
+  },
+  "fmea": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "items": {
+        "minItems": 1,
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "reasoning": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "assumptions": {
+              "maxItems": 60,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "sources": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "upload",
+                      "hypothesis",
+                      "context"
+                    ]
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "passage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "file",
+                  "passage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "kind": {
+              "type": "string",
+              "const": "fmea"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "taskIds": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "componentIds": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "effect": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "cause": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "severity": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                "occurrence": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                "detection": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                "control": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "detectionMethod": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "action": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "metric": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "kpi": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "evalIds": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "acceptedRisk": {
+                  "type": "boolean"
+                },
+                "commonToAll": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "taskIds",
+                "componentIds",
+                "effect",
+                "cause",
+                "severity",
+                "occurrence",
+                "detection",
+                "control",
+                "detectionMethod",
+                "action",
+                "metric",
+                "kpi",
+                "evalIds",
+                "acceptedRisk",
+                "commonToAll"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "description",
+            "reasoning",
+            "assumptions",
+            "sources",
+            "kind",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "assumptions": {
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "required": [
+      "items",
+      "assumptions"
+    ],
+    "additionalProperties": false
+  },
+  "evals": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "items": {
+        "minItems": 1,
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "reasoning": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "assumptions": {
+              "maxItems": 60,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "sources": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "upload",
+                      "hypothesis",
+                      "context"
+                    ]
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "passage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "file",
+                  "passage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "kind": {
+              "type": "string",
+              "const": "eval"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "golden",
+                    "offline",
+                    "online",
+                    "release"
+                  ]
+                },
+                "taskIds": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "componentIds": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "failureModeIds": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "input": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "expected": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "passRule": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "metric": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "kpi": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "target": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "testSet": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "labelling": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "cadence": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "alertThreshold": {
+                  "type": "string",
+                  "maxLength": 8000
+                }
+              },
+              "required": [
+                "category",
+                "taskIds",
+                "componentIds",
+                "failureModeIds",
+                "input",
+                "expected",
+                "passRule",
+                "metric",
+                "kpi",
+                "target",
+                "testSet",
+                "labelling",
+                "cadence",
+                "alertThreshold"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "description",
+            "reasoning",
+            "assumptions",
+            "sources",
+            "kind",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "assumptions": {
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "required": [
+      "items",
+      "assumptions"
+    ],
+    "additionalProperties": false
+  },
+  "rollout": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "items": {
+        "minItems": 1,
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "reasoning": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "assumptions": {
+              "maxItems": 60,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "sources": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "upload",
+                      "hypothesis",
+                      "context"
+                    ]
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "passage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "file",
+                  "passage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "kind": {
+              "type": "string",
+              "const": "rollout"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "kpi",
+                    "phase",
+                    "experiment",
+                    "owner"
+                  ]
+                },
+                "businessKpi": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "aiMetrics": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "phase": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "gate": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "owner": {
+                  "type": "string",
+                  "maxLength": 8000
+                },
+                "experiment": {
+                  "type": "string",
+                  "maxLength": 8000
+                }
+              },
+              "required": [
+                "category",
+                "businessKpi",
+                "aiMetrics",
+                "phase",
+                "gate",
+                "owner",
+                "experiment"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "description",
+            "reasoning",
+            "assumptions",
+            "sources",
+            "kind",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "assumptions": {
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "required": [
+      "items",
+      "assumptions"
+    ],
+    "additionalProperties": false
+  },
+  "export": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "items": {
+        "minItems": 1,
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*(?:\\.\\d+)*$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "reasoning": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "assumptions": {
+              "maxItems": 60,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "sources": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "upload",
+                      "hypothesis",
+                      "context"
+                    ]
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "passage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "file",
+                  "passage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "kind": {
+              "type": "string",
+              "const": "export"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "acceptanceCriteria": {
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "buildInstructions": {
+                  "type": "string",
+                  "maxLength": 8000
+                }
+              },
+              "required": [
+                "acceptanceCriteria",
+                "buildInstructions"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "description",
+            "reasoning",
+            "assumptions",
+            "sources",
+            "kind",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "assumptions": {
+        "maxItems": 60,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "required": [
+      "items",
+      "assumptions"
+    ],
+    "additionalProperties": false
+  }
+}

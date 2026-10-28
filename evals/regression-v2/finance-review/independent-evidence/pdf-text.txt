@@ -1,0 +1,451 @@
+Invoice and PO review packets
+The system in one sentence
+Explain invoice differences and give an AP analyst a clear review packet.
+
+Key design calls
+Start with review drafts. Rejected: Automatic action. Why: Staff retain every decision.
+Use supplied sources. Rejected: Open browsing. Why: Claims need checked evidence.
+Code checks hard facts. Rejected: Model authority. Why: Values and access must be repeatable.
+
+Who acts and who decides
+ Action                                                                                           Autonomy
+
+ Check supplied evidence                                                                          acts alone
+
+ Draft an explanation                                                                             suggests
+
+ Send or take action                                                                              human decides
+
+
+Top risks by RPN
+FM4 | Revoked source access | RPN 108
+FM1 | Currency differs | RPN 96
+FM2 | Ambiguous OCR digit | RPN 84
+FM3 | Wrong supplier PO | RPN 84
+FM6 | Stale concurrent replacement | RPN 84
+
+Launch blockers and owners
+H1, H3, H5: Read supplied invoices and read-only...; One workday response target, coordinator...; Proposed quality target is 95%... Owner:
+AP operations lead.
+H2: Authorized staff supply source bundles... Owner: Integration owner.
+
+Illustrative cost per case
+USD 0.00720 per case in the model budget. This is an estimate, not a current provider quote. Staff and tools cost extra.
+Review status: independent-agent; round 1; needs-work.
+Proposed design. Full rules and blockers: design.json and assumptions.md.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                            1
+Task tree
+
+
+
+                                                                   T0
+                                                      Invoice and PO review packets
+                                                         sequence | medium risk
+
+
+
+
+                                                   T2                                                                   T4
+                T1                                                                   T3
+                                         Extract and compare                                                 Assemble analyst review
+      Check invoice bundle                                                 Explain PO differences
+                                             invoice lines                                                           packet
+         leaf | high risk                                                    leaf | medium risk
+                                            leaf | high risk                                                     leaf | high risk
+
+
+
+
+Labels show each leaf mode and risk. Full task inputs, examples and limits are in design.json and PRD.md.
+
+Plain words and scope
+Read supplied invoices and read-only PO snapshots. Explain line differences for analyst review. Exclude posting,
+payment, supplier changes, tax advice and approval of invoices.
+A fingerprint is a check that the approved details have not changed. A record ID is proof from a tool that the change was saved.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                           2
+Workflow diagram
+
+
+                       W1 / C1                                                                      W2 / C2
+                     Check request                                                              Prepare evidence
+
+
+
+
+                        W4 / C4                                                                      W3 / C3
+                       Check draft                                                              Draft with sources
+
+
+
+
+                       W5 / C5
+                 Hand off with next step
+
+
+
+
+Diamonds mark choices. Arrows show all routes, including retry and recovery. Exact branch rules are in architecture.md.
+
+ Colour                     Role
+
+ #E8E0FA                    Agents (LLM)
+
+ #E0EDF8                    Code: tools
+
+ #DDF2E9                    Code: validation
+
+ #FFF0D5                    Code: human triggers
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                              3
+Top risks and release checks
+
+Risk heat table - severity x occurrence
+Each cell names the risks at that severity and occurrence. The full scores, causes, controls and owners are in fmea-register.csv.
+
+ S/O         1            2           3            4            5            6            7            8            9              10
+
+ 10          -            -           -            -            -            -            -            -            -              -
+
+ 9           -            -           FM4          -            -            -            -            -            -              -
+
+ 8           -            -           FM1          -            -            -            -            -            -              -
+
+ 7           -            -           FM2,         -            -            -            -            -            -              -
+                                      FM3,
+                                      FM6,
+                                      FM7,
+                                      FM9,
+                                      FM10,
+                                      FM11,
+                                      FM12,
+                                      FM13
+
+ 6           -            -           FM5,         -            -            -            -            -            -              -
+                                      FM8
+
+ 5           -            -           -            -            -            -            -            -            -              -
+
+ 4           -            -           -            -            -            -            -            -            -              -
+
+ 3           -            -           -            -            -            -            -            -            -              -
+
+ 2           -            -           -            -            -            -            -            -            -              -
+
+ 1           -            -           -            -            -            -            -            -            -              -
+
+
+ Risk                                        Control summary / full register linked
+
+ FM1 Currency differs                        Code prohibits cross-currency comparisons; analyst obtains a correct PO.
+
+ FM2 Ambiguous OCR digit                     No guessed numeric fields; null extraction blocks computed comparison.
+
+ FM3 Wrong supplier PO                       Trusted scope matches invoice and PO before document contents reach model.
+
+ FM4 Revoked source access                   Fresh access checks before source reads and final ready output.
+
+ FM5 Model output unavailable                Bounded call and explicit fallback; no ready success claim.
+
+ FM6 Stale concurrent replacement            Compare revision at intake and handoff; same requestId/revision returns same artifact;
+                                             changed intent needs next revision.
+
+ FM7 Missing receipt                         C4 verifies receipt before ready. A failed receipt remains unconfirmed; staff may create a
+                                             new local export. No external commit exists.
+
+ FM8 Cancellation                            Cancellation precedes draft; cancellation during a call discards response and returns
+                                             cancelled receipt.
+
+ FM9 Overdue human review                    Packet includes proposed one-workday target, owner and backup. An operator checks
+                                             pending list at daily opening; overdue remains visibly pending. Receiving...
+
+ FM10 Exact duplicate request                Return same local artifact for exact request/version; changed revision never reuses a draft.
+
+ FM11 Conflicting supplied evidence          Do not pick one conflicting record silently; name both sources and ask staff to resolve.
+
+ FM12 Missing supplied evidence              Allow provisional intake, list missing source and owned next step; no invented claim.
+
+ FM13 Forged citation                        Verify citation ID/version/quote against frozen authorized view, never only syntax.
+
+Risk scores are proposed estimates. They are not measured odds or risk acceptance.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                                4
+Components and contracts
+This inventory is a summary. Exact typed inputs, outputs and permission rules are in architecture.md and the build milestone files.
+
+ Component / group                         Responsibility                                                          Task IDs
+
+ C1 / Code: validation                     Check case envelope                                                     T1
+
+ C2 / Code: tools                          Build trusted evidence view                                             T2
+
+ C3 / Agents (LLM)                         Draft bounded recommendation                                            T3
+
+ C4 / Code: validation                     Check claims and output proof                                           T3, T4
+
+ C5 / Code: human triggers                 Prepare human handoff                                                   T4
+
+
+Shared control boundary
+Code checks identity, money, dates and limits. A model may suggest a choice. It cannot authorise or perform a
+business write.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                          5
+Architecture and model budget
+
+F1 - Workflow choice
+Choice: A small deterministic state machine with one bounded drafting call.
+Rejected: Free tool-using agent; multi-agent chain.
+Trade-off: Few states and no operational writes favor a simple flow; more agents add disagreement and latency.
+
+F2 - Permissions and data
+Choice: Read-only supplied evidence and local artifact export; no business write credentials.
+Rejected: Connect full operational accounts.
+Trade-off: A wider connection adds exposure without helping this review-only release.
+Access: Separate source read principal from model; source allowlist enforced before retrieval; minimize, redact, expire per approved policy.
+
+F3 - Storage and deployment options
+Choice: Choose encrypted existing team storage with access checks and a relational run manifest; verify
+environment before purchase.
+Rejected: AWS object store plus relational ledger; GCP object store plus relational ledger; Azure object store plus relational ledger;
+self-hosted object...
+Trade-off: Compare same criteria: scoped reads, region, retention, audit, operations effort and price. Existing team storage wins
+provisionally; self-hosting adds operational burden. Retrieval...
+Access: Separate source read principal from model; source allowlist enforced before retrieval; minimize, redact, expire per approved policy.
+These are reader summaries. Complete choices, alternatives, gates and owners are in PRD.md and design.json.
+
+Model cost
+Illustrative model cost is USD 0.00720 per case. Unknown prices are not free service. Confirm rates, traffic, staff
+and tools before launch.
+Full call counts, token budgets, rejected choices and costs: design.json, architecture.md and assumptions.md.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                              6
+Evaluation coverage matrix
+ Risk / task           EV1      EV2      EV3   EV4   EV5   EV6   EV7   EV8   EV9   EV10   EV14   EV15
+
+ FM1                   -        X        -     -     -     -     -     -     -     -      -      -
+
+ FM2                   -        -        X     -     -     -     -     -     -     -      -      -
+
+ FM3                   -        -        -     X     -     -     -     -     -     -      -      -
+
+ FM4                   -        -        -     -     X     -     -     -     -     -      -      -
+
+ FM5                   -        -        -     -     -     X     -     -     -     -      -      -
+
+ FM6                   -        -        -     -     -     -     X     -     -     -      -      -
+
+ FM7                   -        -        -     -     -     -     -     X     -     -      -      -
+
+ FM8                   -        -        -     -     -     -     -     -     X     -      -      -
+
+ FM9                   -        -        -     -     -     -     -     -     -     X      -      -
+
+ FM10                  -        -        -     -     -     -     -     -     -     -      X      -
+
+ FM11                  -        -        -     -     -     -     -     -     -     -      -      X
+
+ FM12                  -        -        -     -     -     -     -     -     -     -      -      -
+
+ FM13                  -        -        -     -     -     -     -     -     -     -      -      -
+
+ T1                    X        X        X     X     X     -     X     -     X     -      X      -
+
+ T2                    X        X        X     X     -     -     -     -     -     -      -      X
+
+ T4                    X        X        X     X     X     X     X     X     X     X      X      X
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                            7
+Evaluation coverage matrix - continued
+ Risk / task             EV16                                                        EV17
+
+ FM1                     -                                                           -
+
+ FM2                     -                                                           -
+
+ FM3                     -                                                           -
+
+ FM4                     -                                                           -
+
+ FM5                     -                                                           -
+
+ FM6                     -                                                           -
+
+ FM7                     -                                                           -
+
+ FM8                     -                                                           -
+
+ FM9                     -                                                           -
+
+ FM10                    -                                                           -
+
+ FM11                    -                                                           -
+
+ FM12                    X                                                           -
+
+ FM13                    -                                                           X
+
+ T1                      X                                                           -
+
+ T2                      X                                                           -
+
+ T4                      X                                                           X
+
+X means the test is linked to that risk or task. It does not mean the test passed. Complete fixtures and assertions: eval-set.json.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                          8
+Evaluation plan
+ Test        Layer             Purpose
+
+ EV1         golden            Useful bounded packet
+
+ EV2         golden            Currency differs
+
+ EV3         golden            Ambiguous OCR digit
+
+ EV4         golden            Wrong supplier PO
+
+ EV5         golden            Revoked source access
+
+ EV6         golden            Model output unavailable
+
+ EV7         golden            Stale concurrent replacement
+
+ EV8         golden            Missing receipt
+
+ EV9         golden            Cancellation
+
+ EV10        golden            Overdue human review
+
+ EV11        offline           Held-out staff usefulness and evidence audit
+
+ EV12        online            Review-only operating monitor
+
+ EV13        release           Release gate for all specified branches
+
+ EV14        golden            Exact duplicate request
+
+ EV15        golden            Conflicting supplied evidence
+
+ EV16        golden            Missing supplied evidence
+
+ EV17        golden            Forged citation
+
+These are test plans. No business controls, provider quality or user outcomes were measured. See eval-set.json for fixtures and pass rules.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                             9
+Measurement and rollout
+
+R1 - Business measure
+Measure: Analyst active minutes per invoice packet; weekly active review minutes / packets reviewed. Baseline
+unknown; proposed improvement goal set after baseline.
+Signals: Fewer unsupported claims reduces rework; usefulness can lower review effort but must be measured.; No private-data leakage is a
+safety guardrail, not a claimed...
+
+R2 - Shadow on historical cases
+Phase / owner: shadow / AP operations lead
+
+Gate: Entry: approved scope and lawful sample access. Exit: all release goldens and held-out citation/privacy
+checks pass; domain owner signs evidence.
+
+R3 - Assist-only pilot
+Phase / owner: assist pilot / AP operations lead
+
+Gate: Entry: shadow exit and H1-H3/H5 verified. Review two weekly cycles, staffed capacity confirmed. Exit: no
+safety failures and useful drafts >=H5; owner may extend review-only usage. Scale keeps human review and all...
+
+R4 - Measure review effort
+Test: Randomize eligible case families to manual or assistant draft; stratify routine/exception and operator. Same
+source family stays in one arm; hide treatment drafts from control. Collect baseline variance of active minutes,
+choose minimum useful difference with owner, compute...
+Decision gate: Entry uses baseline/power plan, never already-achieved pilot results. Stop for any critical failure.
+
+R5 - Accountable owner and stop plan
+Phase / owner: all / AP operations lead
+
+Gate: Lead owns backlog, privacy incident response and release decision; technical owner owns adapters and
+evidence receipts. Stop use on safety breach; preserve scoped audit then manual fallback.
+These are reader summaries. Complete choices, alternatives, gates and owners are in PRD.md and design.json.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                         10
+Build handoff and review
+Start with build/00-overview.md. Load one milestone file at a time. Exact source rules remain in design.json; do not
+treat design approval as live write permission.
+X1: Build a review-only tool
+
+Review dimensions - evidence in review.json
+ Dimension                                  Score                     Dimension                                   Score
+
+ D1                                         3/4                       D7                                          3/4
+
+ D2                                         3/4                       D8                                          3/4
+
+ D3                                         2/4                       D9                                          2/4
+
+ D4                                         2/4                       D10                                         2/4
+
+ D5                                         3/4                       D11                                         3/4
+
+ D6                                         3/4                       D12                                         2/4
+
+IA1 major OPEN: C4 requires an artifact receipt before ready but C5 creates the local receipt after C4. Specify the exact upstream
+producer, persistence contract and binding...
+IA2 major OPEN: Successful handoffInput only carries C4.checked metadata, while checked omits the draft text/claim citations and typed
+domain result. C5 output also lacks review content. Preserve...
+IA3 major OPEN: EV5, EV7, EV9 and EV14 expect zero/additional-zero model calls yet mockSequence contains model -> source-grounded
+draft and passRule says verify ordered mocks. EV1/EV17 give...
+IA4 major resolved: Resolved by final iteration 6 reader export: actual PDF page 6 now displays F1-F3 choices/rejected
+alternatives/tradeoffs/access; page 10 displays R1-R5 measures, phase owners, gates...
+IA5 major OPEN: Forged citation test is not a prompt-injection test. Invoice/source documents are untrusted model input but no
+risk/control/eval exercises embedded instructions to hide a mismatch...
+
+Glossary
+canonical: agreed
+discriminated: typed
+payload binding: approved details
+digest: fingerprint
+idempotency: duplicate-write protection
+reciprocal: two-way
+terminal disposition: final outcome
+calc_digest: a fingerprint of the approved amount
+After delivering DESIGN.pdf, ask the user: Would you also like a visual HTML version in the same ten-stage structure as the app? Generate
+HTML only after opt-in, unless already requested.
+Full assumptions, owners and evidence: assumptions.md. Review method and failed rounds are preserved in review.json and
+review-round-*.json.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                          11
+

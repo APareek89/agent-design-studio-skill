@@ -1,0 +1,70 @@
+{
+  "method": "independent-agent",
+  "agentId": "regression_review_a",
+  "status": "needs-work",
+  "scope": "D1-D12 plus S3; canonical independent review remains needs-work; author review history preserved by root.",
+  "sourceHashes": {
+    "design.json": "9fffd9bb2809061dab8cddb09c7b83097c0d63d06d402b2b466002ae86b2483b",
+    "DESIGN.pdf": "3a6da252003bf89e3b3ecc08e2cd770304090604f5954f7b77832f9bdbb129b6",
+    "review.json": "07366f35e8f00e89fcbb8fe7a6abfc3eda5c8efe6e3204db572445e3d43dc4ea",
+    "independent-review.json": "07366f35e8f00e89fcbb8fe7a6abfc3eda5c8efe6e3204db572445e3d43dc4ea"
+  },
+  "imageHashes": {
+    "independent-evidence/final-page-02.png": "c049306269dd360d946f4b0e8107facc8fa5ce70ccc6868e6b5194c39fb9b4be",
+    "independent-evidence/final-page-03.png": "b5ac862d72bc9b3e950479564833102ce689dafdf3d7a12a772fcb38a04d156f",
+    "independent-evidence/final-page-06.png": "af5970617283a71ad5d9f287b3cd095a3c43d1748d790643e057d8d6291d17bd",
+    "independent-evidence/final-page-10.png": "d4cfb1ce9c85a0c89337b69d93f69fb8649a9f171d3b4486d7a04a26ffd22ec7"
+  },
+  "S3": {
+    "status": "pass",
+    "taskTreeVector": true,
+    "workflowVector": true,
+    "legibleAt100Percent": true,
+    "evidence": [
+      "Actual final review-synchronized DESIGN.pdf pages 2/3 rendered with pdftoppm at 72 dpi and viewed at native size; pages 6/10 also directly viewed after final rendering.",
+      "PDF content streams independently inspected: zero raster images on both diagram pages; path/line commands and text are present.",
+      "Page 2 task IDs, hierarchy, mode/risk labels and node titles match canonical tasks; page 3 workflow component IDs, directed edges and role colors match the canonical graph.",
+      "Five workflow nodes and six directed routes remain readable, with choices in diamonds and role-color legend; branch predicates are available in architecture.md."
+    ],
+    "renderedPages": [
+      2,
+      3
+    ],
+    "dpi": 72,
+    "zoomPercent": 100,
+    "pdfVectorEvidence": {
+      "2": {
+        "rasterImages": 0,
+        "lineOperators": 37
+      },
+      "3": {
+        "rasterImages": 0,
+        "lineOperators": 41
+      }
+    }
+  },
+  "limitations": [
+    "S3 visual/vector review and S9 artifact binding do not establish production correctness.",
+    "Remaining contract/fixture findings keep domain review needs-work; no business tests or network/provider calls executed."
+  ],
+  "companionHashes": {
+    "PRD.md": "29039f5cbde82ca75222886ed34b37d263bf70e575888c72e777b234ea61380d",
+    "architecture.md": "f2bfa0bc7d4682e018b8623a763bf86e7e049de2801b7dc53f9cb0281a148b52",
+    "eval-set.json": "03a0ba7afa6c57cd505bb968b00b9ab0782638106012a7157f611df9376e767d",
+    "validation.json": "b703d7bd4689a31ac16bb21665825abcc8607dd496d7ea7d4b636c10765ca8ee"
+  },
+  "S9": {
+    "status": "pass",
+    "reviewArtifactBinding": true,
+    "domainReviewStatus": "needs-work",
+    "evidence": [
+      "Canonical review.json and independent-review.json are byte-identical independent-agent round 1 needs-work records.",
+      "Final PDF text declares independent-agent round 1 needs-work, and its review section reflects IA4 resolved.",
+      "Actual PDF p6 and p10 display architecture choices/tradeoffs and rollout measures/owners/gates; full reader fields remain in PRD.md.",
+      "IA1/IA2/IA3 remain unresolved; finance additionally retains IA5. D12 stays 2 for unresolved handoff implementability."
+    ],
+    "resolvedIssueIds": [
+      "IA4"
+    ]
+  }
+}

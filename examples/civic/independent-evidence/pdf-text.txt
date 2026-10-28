@@ -1,0 +1,567 @@
+Streetlight repair intake and operator-assisted routing
+The system in one sentence
+Help city staff route streetlight reports and track each saved ticket.
+
+Key design calls
+Staff approve ticket changes. Rejected: Free agent writes. Why: People own routing
+Reuse known tickets. Rejected: New ticket each time. Why: Avoid double work
+No equipment control. Rejected: Remote switching. Why: Keep the first release safe
+
+Who acts and who decides
+ Action                                                                                           Autonomy
+
+ Read city records                                                                                acts alone
+
+ Suggest fault type and crew                                                                      suggests
+
+ Approve a ticket change                                                                          human decides
+
+
+Top risks by RPN
+FM1 | Hazard classified as routine | RPN 200
+FM8 | Human queue missed or unstaffed | RPN 180
+FM7 | Unknown commit retried or falsely marked complete | RPN 160
+FM3 | Duplicate report creates second action | RPN 140
+FM2 | Wrong city or asset routed | RPN 128
+
+Launch blockers and owners
+H1: Proposed first release ingests text... Owner: City service desk lead.
+H2: A city-scoped ticket ledger, GIS... Owner: City IT integration lead.
+H3: Each ticket write requires a... Owner: City service owner and IT security lead.
+H4: Potential exposed wires, fallen poles... Owner: City duty supervisor.
+H5, H7: Suggested duplicates require operator selection...; Proposed routing uses a versioned... Owner: Maintenance operations lead.
+H6: Proposed data policy: redact reporter... Owner: City data protection/records owner.
+H9: Proposed gates: zero unauthorized/wrong-city/equipment operations... Owner: City service owner.
+H10: Proposed operational limits: each read... Owner: City IT operations lead.
+
+Illustrative cost per case
+USD 0.00302 per case in the model budget. This is an estimate, not a current provider quote. Staff and tools cost extra.
+Review status: self-review; round 2; pass.
+Proposed design. Full rules and blockers: design.json and assumptions.md.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                           1
+Task tree
+
+
+                                          T0 | Resolve a streetlight report | sequence | high risk
+
+
+                                                  T1 | Validate and register intake | leaf | high risk
+
+
+                                     T2 | Read asset, candidate tickets and routing policy | leaf | medium risk
+
+
+                                                      T3 | Classify and explain | leaf | high risk
+
+
+                                                T4 | Construct safe routing proposal | leaf | high risk
+
+
+                                                   T5 | Obtain operator decision | leaf | high risk
+
+
+                                                 T6 | Persist approved ticket action | leaf | high risk
+
+
+                                                   T7 | Reconcile unknown write | leaf | high risk
+
+
+                                         T8 | Own exceptions, cancellation and completion | leaf | high risk
+
+
+
+Labels show each leaf mode and risk. Full task inputs, examples and limits are in design.json and PRD.md.
+
+Plain words and scope
+Staff can create or link a repair ticket. The system cannot switch lights or control street equipment.
+A fingerprint is a check that the approved details have not changed. A record ID is proof from a tool that the change was saved.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                       2
+Workflow diagram
+
+
+                        W1 / C1                                                                    W2 / C2
+                Register or cancel intake                                                    Read context snapshot
+
+
+
+
+                        W4 / C4                                                                    W3 / C3
+               Build safe immutable plan                                                      Bounded classification
+
+
+
+
+                        W5 / C5                                                                     W6 / C6
+          Await payload-bound human decision                                              Apply conditional ticket action
+
+
+
+
+                       W8 / C8                                                                      W7 / C7
+           Persist owned manual disposition                                                Reconcile uncertain commit
+
+
+
+
+                        W9 / C8                                                                    W10 / C8
+            Record ticket receipt completion                                              Record proposal cancellation
+
+
+
+
+                        W12 / C8                                                                   W11 / C8
+              Project durable ticket receipt                                             Hold unknown effect with owner
+
+
+
+
+                        W13 / C8
+                Project durable proposal
+                      cancellation
+
+
+
+
+Diamonds mark choices. Arrows show all routes, including retry and recovery. Exact branch rules are in architecture.md.
+
+ Colour                     Role
+
+ #E8E0FA                    Agents (LLM)
+
+ #E0EDF8                    Code: tools
+
+ #DDF2E9                    Code: validation
+
+ #FFF0D5                    Code: human triggers
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                3
+Top risks and release checks
+
+Risk heat table - severity x occurrence
+Each cell names the risks at that severity and occurrence. The full scores, causes, controls and owners are in fmea-register.csv.
+
+ S/O         1            2            3           4            5            6            7            8            9            10
+
+ 10          -            -            FM6         FM1          -            -            -            -            -            -
+
+ 9           -            -            -           FM8          -            -            -            -            -            -
+
+ 8           -            -            FM5,        FM2,         -            -            -            -            -            -
+                                       FM10,       FM4,
+                                       FM11        FM7
+
+ 7           -            -            -           FM12         FM3          -            -            -            -            -
+
+ 6           -            -            -           -            FM9          -            -            -            -            -
+
+ 5           -            -            -           -            -            -            -            -            -            -
+
+ 4           -            -            -           -            -            -            -            -            -            -
+
+ 3           -            -            -           -            -            -            -            -            -            -
+
+ 2           -            -            -           -            -            -            -            -            -            -
+
+ 1           -            -            -           -            -            -            -            -            -            -
+
+
+ Risk                                        Control summary / full register linked
+
+ FM1 Hazard classified as routine            Deterministic positive indicators OR model hazard always urgent; uncertain physical damage
+                                             human; staffed urgent console.
+
+ FM2 Wrong city or asset routed              Verified city scope on all APIs; exact asset evidence; ambiguous/mismatched location owned
+                                             manual; fresh resource check.
+
+ FM3 Duplicate report creates second         Exact intake uniqueness plus API business key across CREATE/LINK; new candidates
+ action                                      require renewed decision; semantic match never auto-merges.
+
+ FM4 Stale policy or revoked actor           API checks current policy, crewVersion, authority and ticket/case versions at commit; fail
+ accepted                                    closed.
+
+ FM5 Payload changes after approval          Immutable plan fetch, full agreed fingerprint, typed payload and action/resource binding;
+                                             unknown keys rejected.
+
+ FM6 Prompt injection changes action         No model tools/credentials; constrained category/evidence schema; C4 ID and quote checks;
+ scope                                       C6 allowlist and equipment egress deny.
+
+ FM7 Unknown commit retried or falsely       Durable MAY_HAVE_SENT, no blind write retry, read-only recovery identity, final proof,
+ marked...                                   duplicate callback dedup and owner lock.
+
+ FM8 Human queue missed or unstaffed         Durable timers, urgent elapsed clock, routine staffed calendar, supervisor then service
+                                             manager console escalation; coverage launch blocker.
+
+ FM9 Unavailable context/model               Persist intake first; bounded reads/retries; unavailable is not empty search; owned manual
+ mistaken for no ticket                      fallback.
+
+ FM10 Sensitive report data retained or      Contact separation/redaction, city RBAC, minimized logs, retention jobs and approved
+ exposed                                     residency; no production data until H6 verified.
+
+ FM11 Cancellation races with write          Atomic journal CAS; cancel before send cancels proposal, after send frozen pending
+                                             reconciliation; no automatic ticket reversal.
+
+ FM12 Stale or closed candidate linked       LINK requires open same-asset exact ticket and expectedTicketVersion; operator confirms
+                                             candidate; closed/different fault manual create decision.
+
+Risk scores are proposed estimates. They are not measured odds or risk acceptance.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                              4
+Components and contracts
+This inventory is a summary. Exact typed inputs, outputs and permission rules are in architecture.md and the build milestone files.
+
+ Component / group                         Responsibility                                                          Task IDs
+
+ C1 / Code: validation                     Intake and scope gate                                                   T1
+
+ C2 / Code: tools                          Authoritative context read adapter                                      T2
+
+ C3 / Agents (LLM)                         Bounded text triage judgement                                           T3
+
+ C4 / Code: validation                     Route resolver and immutable plan validator                             T4
+
+ C5 / Code: human triggers                 Operator decision queue                                                 T5
+
+ C6 / Code: tools                          Conditional ticket writer                                               T6
+
+ C7 / Code: tools                          Read-only commit reconciler                                             T7
+
+ C8 / Code: human triggers                 Case journal, owner timers and status projection                        T8
+
+
+Shared control boundary
+Code checks identity, money, dates and limits. A model may suggest a choice. It cannot authorise or perform a
+business write.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                          5
+Architecture and model budget
+
+F1 - Pattern and boundary
+Choice: Choose a durable code workflow with one bounded classification LLM and operator confirmation. Five
+operators/200 daily reports justify reliability and search assistance before more autonomy.
+Rejected: Rejected autonomous multi-agent dispatch: unnecessary authority, harder replay and more calls.; Code-only rules remain
+fallback and comparison: reliable known categories...
+Trade-off: One model call handles judgement; code owns policy and effects. Replace LLM with code-only if held-out routing gains do not
+justify cost/latency.
+
+F2 - State and ownership
+Choice: Choose transactional relational case/plan/approval/outbox journal with persisted timer jobs, W1-W11 and
+CAS versions. Authoritative city ticket system owns actual tickets; local store owns proposals, approvals and...
+Rejected: Rejected in-memory chat chain: loses human waits and unknown-commit ownership.
+Trade-off: Simple deploy footprint but requires robust timer worker, backups, recovery drills and adapter proof. Search snapshots are never
+authoritative for commit.
+
+F3 - Orchestration comparison
+Choice: Choose a small code state machine + relational job queue initially. Criteria are durable human wait, retry
+visibility, replay, operating burden and city team maintainability.
+Rejected: Candidate durable workflow engine: investigate managed or open-source workflow engine if timer/recovery load outgrows SQL
+queue; verify actual product capabilities...
+Trade-off: Code queue: fewer moving parts, recovery logic owned by IT. Workflow engine: evaluate durable timers/replay on same fixtures
+and operating burden in...
+
+F4 - Tool permissions and equipment exclusion
+Choice: Allow C2 city data reads; C6 only create-ticket/attach-report; C7 operation reads; C1/C4/C5/C8 local case
+writes. Deny arbitrary URLs, shell/tools from model, direct equipment endpoints, ticket closure...
+Rejected: Rejected broad municipal administrator token for integration convenience.
+Trade-off: Adapter-side and egress policy controls are required. Prove attempted equipment action rejected before any network call.
+Credentials held server-side secret store, rotated...
+Access: Separate context-read, ticket-create/attach and operation-read identities; no shared broad admin or equipment credential.
+
+F5 - Data minimization and platform options
+Choice: Prefer city-managed relational database, encrypted object store for restricted original reports, indexed
+city-scoped asset/ticket snapshots, and city identity/secret infrastructure already supported by IT. Unverified
+candidates only...
+Rejected: Rejected global vector index mixing cities and raw personal details.; Candidate semantic index only for candidate search; no
+authority to...
+Trade-off: Relational ledger gives transaction/version ownership; object storage for restricted originals separates access. Hosting options
+below use same categories - case ledger, restricted...
+Access: Separate context-read, ticket-create/attach and operation-read identities; no shared broad admin or equipment credential.
+These are reader summaries. Complete choices, alternatives, gates and owners are in PRD.md and design.json.
+
+Model cost
+Illustrative model cost is USD 0.00302 per case. Unknown prices are not free service. Confirm rates, traffic, staff
+and tools before launch.
+Full call counts, token budgets, rejected choices and costs: design.json, architecture.md and assumptions.md.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                                  6
+Evaluation coverage matrix
+ Risk / task           EV1      EV2      EV3   EV4   EV5   EV6   EV7   EV8   EV9   EV10   EV11   EV12
+
+ FM1                   -        X        -     -     -     -     -     -     -     -      -      -
+
+ FM2                   -        -        X     X     -     -     -     -     -     -      -      -
+
+ FM3                   -        -        -     -     X     X     -     -     -     -      -      -
+
+ FM4                   -        -        -     -     -     -     X     X     X     -      -      -
+
+ FM5                   -        -        -     -     -     -     -     -     -     X      -      -
+
+ FM6                   -        -        -     -     -     -     -     -     -     -      X      -
+
+ FM7                   -        -        -     -     -     -     -     -     -     -      -      X
+
+ FM8                   -        -        -     -     -     -     -     -     -     -      -      -
+
+ FM9                   -        -        -     -     -     -     -     -     -     -      -      -
+
+ FM10                  -        -        -     -     -     -     -     -     -     -      -      -
+
+ FM11                  -        -        -     -     -     -     -     -     -     -      -      -
+
+ FM12                  -        -        -     -     -     X     -     -     X     -      -      -
+
+ T1                    X        X        X     X     -     -     -     -     -     -      -      -
+
+ T3                    X        X        -     -     -     -     -     -     -     -      X      -
+
+ T4                    X        X        X     X     X     X     X     X     X     -      X      -
+
+ T5                    X        -        -     -     -     X     X     X     X     X      -      -
+
+ T6                    X        -        X     -     X     X     X     X     X     X      X      X
+
+ T7                    -        -        -     -     -     -     -     -     -     -      -      X
+
+ T8                    X        X        -     X     -     X     -     -     -     -      X      X
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                            7
+Evaluation coverage matrix - continued
+ Risk / task             EV13      EV14      EV15      EV16      EV17      EV18      EV21      EV23      EV24      EV25     EV26      EV27
+
+ FM1                     -         -         X         -         -         -         -         X         -         -        -         -
+
+ FM2                     -         -         -         -         -         -         -         -         -         -        -         -
+
+ FM3                     -         -         -         X         -         -         -         -         -         -        -         -
+
+ FM4                     -         -         -         -         -         -         -         -         -         X        -         -
+
+ FM5                     -         -         -         X         -         -         -         -         -         -        -         -
+
+ FM6                     -         -         -         -         -         -         -         -         -         -        -         X
+
+ FM7                     X         -         -         -         -         -         -         -         -         -        -         -
+
+ FM8                     -         X         -         -         -         -         -         -         X         -        -         -
+
+ FM9                     -         -         -         -         X         -         -         -         -         -        X         -
+
+ FM10                    -         -         -         -         -         X         -         -         -         -        -         -
+
+ FM11                    X         -         -         -         -         -         X         -         -         -        -         -
+
+ FM12                    -         -         -         -         -         -         -         -         -         X        -         -
+
+ T1                      -         -         -         -         -         X         X         X         -         -        -         -
+
+ T3                      -         -         X         -         X         X         -         X         -         -        X         X
+
+ T4                      -         -         X         X         -         -         -         X         -         X        -         X
+
+ T5                      -         X         -         X         -         -         X         -         X         X        -         -
+
+ T6                      X         -         -         X         -         -         -         -         -         X        -         X
+
+ T7                      X         -         -         -         -         -         -         -         -         -        -         -
+
+ T8                      X         X         X         -         X         X         X         X         X         -        X         X
+
+X means the test is linked to that risk or task. It does not mean the test passed. Complete fixtures and assertions: eval-set.json.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                                 8
+Evaluation plan
+ Test        Layer             Purpose
+
+ EV1         golden            Valid CREATE positive control
+
+ EV2         golden            Immediate deterministic hazard despite missing location
+
+ EV3         golden            Writer rejects resource city mismatch
+
+ EV4         golden            Contradictory location retained as human case
+
+ EV5         golden            Concurrent same-report CREATE cannot duplicate
+
+ EV6         golden            Valid operator-selected LINK positive control
+
+ EV7         golden            Revoked actor denied at commit
+
+ EV8         golden            Changed routing policy invalidates approval
+
+ EV9         golden            Concurrent ticket edit rejects stale LINK
+
+ EV10        golden            Payload tampering fails fingerprint binding
+
+ EV11        golden            Injection cannot invoke equipment or fabricate target
+
+ EV12        golden            Lost commit recovered after session expiry and duplicate callback
+
+ EV13        golden            Unknown effect remains locked during cancellation/change
+
+ EV14        golden            Urgent queue escalates after logout
+
+ EV15        golden            Model-detected oblique hazard reaches urgent owner
+
+ EV16        golden            LINK rejects forbidden CREATE fields even with valid fingerprint
+
+ EV17        golden            Context outage persists owned report without guessing
+
+ EV18        golden            Privacy redaction and proposed retention controls
+
+ EV21        golden            Cancellation before send has no ticket effect
+
+ EV19        offline           Offline judgement and staffed response validation
+
+ EV20        release           Full release and live invariant gates
+
+ EV22        online            Online safety, queue, drift and cost observation
+
+ EV23        golden            Urgent provisional intake without asset or address
+
+ EV24        golden            Routine owner deadline uses staffed calendar
+
+ EV25        golden            Closed candidate cannot receive new report
+
+ EV26        golden            Invalid model output exhausted into owned fallback
+
+ EV27        golden            Direct equipment command blocked before transport
+
+These are test plans. No business controls, provider quality or user outcomes were measured. See eval-set.json for fixtures and pass rules.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                             9
+Measurement and rollout
+
+R1 - Handling effort and first-route quality
+Measure: Active handling minutes/eligible report; correct first-route fraction; baseline two working weeks, target
+20% relative time reduction with noninferior route quality.
+Signals: C3 valid grounded category reduces editing; C2 useful candidates reduce search minutes; measure mediation by step-level
+timers.; Code route agreement affects first-route accuracy; override...
+
+R2 - Safety, ownership and privacy guardrails
+Measure: Zero control breaches, no abandoned urgent case, no duplicate record; acknowledgement and recall as
+H4/H9 proposed targets.
+Signals: Urgent recall affects time to staffed assessment, not a proven reduction in harm.; Readback/receipt completeness prevents false
+dispatch claims.; Queue ownership is service continuity...
+
+R3 - Shadow phase
+Phase / owner: Shadow / Product owner + service improvement analyst
+
+Gate: Entry: H1 scope, approved data access and privacy/redaction for supplied dataset; synthetic fixtures
+available. Exit: EV19 + all EV20 goldens pass in business harness, API proof and city H2-H7 dependencies
+confirmed; variance...
+
+R4 - Assist display-only phase
+Phase / owner: Assist / Service desk lead
+
+Gate: Entry: shadow exit proof and named coverage roles. Exit: representative operator usability review, timing
+instrumentation validated, no safety/control breach, pilot training/runbook and C6 kill switch + C7 recovery drill
+complete. No pilot...
+
+R5 - Bounded pilot
+Phase / owner: Pilot / City service owner; IT operations executes stop/reconcile
+
+Gate: Entry: assist exit, EV20 release report, city service-owner authorization and verified adapter. Exit: powered R7
+estimate with confidence interval meeting approved efficiency and route gates, zero invariant breaches, EV22
+stable, operator/crew review...
+
+R6 - Scale assisted scope
+Phase / owner: Scale / Maintenance operations lead + city service owner
+
+Gate: Entry: pilot exit plus new-area verified H7 maps and coverage. Exit/continuation: weekly EV22 and monthly
+owner review; regressions freeze expansion, restore prior policy/version for unsent plans only, reconcile unknown
+writes without compensation...
+
+R7 - Randomized effect evaluation
+Test: Control: existing manual search; treatment: recommendation/candidate view with same confirmation.
+Minimum two full working weeks after entry, extend to power requirement; use cluster-aware confidence intervals
+and operator/time strata. No post-hoc excluding slow cases.
+Decision gate: Before pilot use baseline variance and intracluster correlation: continuous-mean sample size n≈2*(zα/2+zβ)^2*σ²/δ², inflate
+1+(m−1)*ICC for shift clustering; binary noninferiority needs separate proportion-based...
+
+R8 - Authority, incident and residual-risk ownership
+Phase / owner: All phases / City service owner
+
+Gate: All roles named and coverage proved before live pilot; a stop disables new C6 sends while retaining C7 and
+C8. Rollback never replays actions or deletes operation evidence; ticket correction remains separate...
+These are reader summaries. Complete choices, alternatives, gates and owners are in PRD.md and design.json.
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                             10
+Build handoff and review
+Start with build/00-overview.md. Load one milestone file at a time. Exact source rules remain in design.json; do not
+treat design approval as live write permission.
+X1: Implement the proposed bounded workflow after city adapter/policy verification. This package implements no city system and grants no
+operational authority.
+
+Review dimensions - evidence in review.json
+ Dimension                                   Score                    Dimension                                   Score
+
+ D1                                          3/4                      D7                                          3/4
+
+ D2                                          3/4                      D8                                          3/4
+
+ D3                                          3/4                      D9                                          3/4
+
+ D4                                          3/4                      D10                                         3/4
+
+ D5                                          3/4                      D11                                         3/4
+
+ D6                                          3/4                      D12                                         3/4
+
+ISSUE1 major resolved: W9/W10 terminal failure dispositions imply alternate states without matching next edges. Add explicit finalizer
+decision nodes and terminal receipt/cancellation nodes; bind C8 status guard...
+ISSUE2 major resolved: Exact reasons required by EV3/EV11 and W8 are not fully declared as typed component outputs. Declare
+comprehensive reason producers and align negative fixtures with...
+ISSUE3 major resolved: Additional variants in EV2/EV9/EV11/EV14/EV17 are prose assertions rather than fully resolved fixtures. Replace
+variant assertions with dedicated concrete goldens and include them in two-way...
+ISSUE4 minor resolved: Current helper requires nonempty experiment on every rollout category, while the output contract permits
+inapplicable empty strings. Each card now contains a concrete R7...
+
+Glossary
+canonical: agreed
+discriminated: typed
+payload binding: approved details
+digest: fingerprint
+idempotency: duplicate-write protection
+reciprocal: two-way
+terminal disposition: final outcome
+calc_digest: a fingerprint of the approved amount
+After delivering DESIGN.pdf, ask the user: Would you also like a visual HTML version in the same ten-stage structure as the app? Generate
+HTML only after opt-in, unless already requested.
+Full assumptions, owners and evidence: assumptions.md. Review method and failed rounds are preserved in review.json and
+review-round-*.json.
+
+
+
+
+Agent Design Studio | standard | DESIGN ONLY                                                                                             11
+

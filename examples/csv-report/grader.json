@@ -1,0 +1,58 @@
+{
+  "method": "independent-agent",
+  "agentId": "regression_review_b",
+  "status": "pass",
+  "scope": "S3 only; legacy canonical review preserved",
+  "sourceHashes": {
+    "design.json": "3a10fceb951d9a9caeb9b1935a3e82a962ad95b40b370ccadf96a3fa3ebf1be4",
+    "DESIGN.pdf": "44c2de8f4d44fd38d74394f056c5052e43be87ac13b02ecb5a55f7509a7db7af",
+    "review.json": "c32fd423ba5d3053031a0f3c056605fdb55af232dd1b4d2018d0580819a661ec"
+  },
+  "S3": {
+    "status": "pass",
+    "taskTreeVector": true,
+    "workflowVector": true,
+    "legibleAt100Percent": true,
+    "evidence": [
+      {
+        "page": 2,
+        "image": "independent-qa/page-02.png",
+        "imageSha256": "6c6a3a85952b69c18c06c8473639f9a7a0ebd01b80d7b5f3106bbd0f091a8264",
+        "rasterDpi": 72,
+        "viewedAt": "100% original image",
+        "embeddedImageCount": 0,
+        "vectorLineOperators": 40,
+        "textOperators": 33,
+        "finding": "Labels, arrows, boxes and legend are readable with no clipping or overlap. Task labels and workflow nodes fit within the page margins."
+      },
+      {
+        "page": 3,
+        "image": "independent-qa/page-03.png",
+        "imageSha256": "972d44f708cf578c496213526585321eff67836f5ccd42b582fed37eaff8f7c8",
+        "rasterDpi": 72,
+        "viewedAt": "100% original image",
+        "embeddedImageCount": 0,
+        "vectorLineOperators": 101,
+        "textOperators": 30,
+        "finding": "Labels, arrows, boxes and legend are readable with no clipping or overlap. CSV workflow has crossing recovery lines; paths remain visible and exact branch rules are delegated to architecture.md."
+      }
+    ]
+  },
+  "limitations": [
+    "S3 judges pages 2/3 of the actual PDF using 72 dpi images and native PDF path/text operators. It does not establish business-system correctness.",
+    "Canonical source and self-review artifacts were preserved."
+  ],
+  "artifactBinding": {
+    "iteration": 6,
+    "actualPdfReRenderedAndViewed": true,
+    "viewedPages": [
+      2,
+      3
+    ],
+    "dpi": 72,
+    "imageDetail": "original; 100%",
+    "canonicalReviewMatchesIndependent": null,
+    "designUnchangedFromIndependentReview": true,
+    "scope": "Legacy S3 only; canonical self-review unchanged."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "startedAt": "2026-10-28T11:35:59Z",
+  "method": "Actual clock tool response at first reference read; time before that call is excluded.",
+  "networkCalls": 0,
+  "businessCalls": 0,
+  "approximateTokens": null,
+  "tokenMethod": "Host does not expose per-subagent inference usage. No estimate fabricated; exported artifact character proxies may be reported separately.",
+  "endedAt": "2026-10-28T11:43:01Z",
+  "wallTimeSeconds": 422,
+  "endMethod": "Actual clock tool at companion export completion; PDF intentionally deferred to root.",
+  "structuralValidation": "pass, verified-declarations",
+  "review": "self-review round2 pass; failed round1 preserved"
+}

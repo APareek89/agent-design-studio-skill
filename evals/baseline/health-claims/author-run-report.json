@@ -1,0 +1,147 @@
+{
+  "runType": "fresh-session frozen-v1 baseline",
+  "brief": "health-claims",
+  "startUtc": "2026-10-28T11:24:35Z",
+  "endUtc": "2026-10-28T11:33:55Z",
+  "skillPath": "/tmp/agent-design-studio-v1-baseline/agent-design-studio/SKILL.md",
+  "skillVersion": "1.0.0",
+  "hostModelOnly": true,
+  "networkUsed": false,
+  "credentialsUsed": false,
+  "businessActionsExecuted": false,
+  "pdfGenerated": false,
+  "pdfDeferralReason": "Parent requested batch artifact marking/render; PDF not attempted.",
+  "assumptions": [
+    {
+      "id": "H1",
+      "statement": "Release one recommends eligible amounts and routes all decisions to authorized insurer adjudicators; it cannot issue payment, deny coverage or notify claimants.",
+      "launchBlocker": true
+    },
+    {
+      "id": "H2",
+      "statement": "A tenant policy registry provides legally reviewed immutable policy/endorsement versions, effective intervals, member binding and explicit claim-date selection rules.",
+      "launchBlocker": true
+    },
+    {
+      "id": "H3",
+      "statement": "Synthetic rule pack HC1 uses admission-date selection, inclusive discharge day, INR minor units, room-rent cap only on room lines, no proportional deduction, zero deductible and zero coinsurance.",
+      "launchBlocker": true
+    },
+    {
+      "id": "H4",
+      "statement": "Internal case store supports tenant scoped transactions, optimistic versions, immutable evidence hashes, durable outbox and operation lookup. All external adapters remain unverified.",
+      "launchBlocker": true
+    },
+    {
+      "id": "H5",
+      "statement": "Use restricted medical evidence storage, encrypted transport and storage, tenant keys, no provider training, no raw content in logs; proposed 30-day working-copy deletion after case close subject to insurer approved retention/legal holds.",
+      "launchBlocker": true
+    },
+    {
+      "id": "H6",
+      "statement": "Human queues are staffed by claims operations: acknowledge in 4 elapsed hours, review in 2 elapsed days; overdue goes to duty manager at 4h and head of claims at 48h. Timers run UTC 24x7.",
+      "launchBlocker": true
+    },
+    {
+      "id": "H7",
+      "statement": "Illustrative volume is 1000 cases/month; 80% reach the model and 5% of reached cases need one schema repair retry. Synthetic standard model prices are USD 2 input and USD 8 output per million tokens.",
+      "launchBlocker": false
+    },
+    {
+      "id": "H8",
+      "statement": "Proposed release quality gates are zero safety failures in fixed synthetic guard suite, 99% line arithmetic agreement, 98% supported evidence precision and 20% median handling-time reduction.",
+      "launchBlocker": false
+    },
+    {
+      "id": "H9",
+      "statement": "Scope is one insurer product, one currency per claim and machine-readable or supported scanned inpatient reimbursement claims. Appeals, fraud decisions, outpatient, multi-currency and medical necessity decisions are human-only.",
+      "launchBlocker": true
+    }
+  ],
+  "authoredTokenEstimates": {
+    "method": "Heuristic character/4 approximation; no API telemetry available. Output estimate uses model-authored local construction/revision Python text as proxy and excludes mechanically expanded repeated canonical JSON/exports. Input is a broad range from visible task/instructions, frozen skill references, schema/validator snippets and tool feedback read during authoring; not precise billing tokens.",
+    "approximateAuthoredInputTokens": 26000,
+    "authoredInputRangeTokens": [
+      18000,
+      36000
+    ],
+    "authoredSourceCharacters": 86435,
+    "approximateAuthoredOutputTokens": 21609,
+    "authoredOutputRangeTokens": [
+      17287,
+      28812
+    ],
+    "actualApiTokenCountsAvailable": false
+  },
+  "review": {
+    "method": "self-review",
+    "rounds": 3,
+    "failedReviewFiles": [
+      "review-round-1.json",
+      "review-round-2.json"
+    ],
+    "finalStatus": "pass",
+    "meaning": "Design-review judgement only; no production certification."
+  },
+  "actualChecks": [
+    {
+      "name": "Frozen v1 initial structural validation",
+      "result": "failed",
+      "details": "13 workflow decision fields were strings; repaired to booleans."
+    },
+    {
+      "name": "Frozen v1 intermediate structural validation",
+      "result": "failed",
+      "details": "14 golden input strings exceeded 8000-character field limit after fixture enrichment; removed redundant canonical bytes/normalization copies and compacted JSON."
+    },
+    {
+      "name": "Frozen v1 final structural validation",
+      "result": "passed",
+      "details": "All stages, types, ID relationships, workflow graph and required coverage checked; 0 errors/0 warnings."
+    },
+    {
+      "name": "Local fixture digest and input length audit",
+      "result": "passed",
+      "details": "23 golden JSON inputs parsed; SHA256 of canonical persist payload recomputed; 22 match and EV17 intentionally mismatches; all under 8000 chars. See fixture-checks.json. Not business test execution."
+    },
+    {
+      "name": "Canonical self-review D1-D12",
+      "result": "pass",
+      "details": "Round 3 scores 3 in eleven dimensions and 4 in D6; resolved earlier findings, explicit external dependencies and limitations."
+    },
+    {
+      "name": "Frozen v1 companion export",
+      "result": "passed",
+      "details": "PRD, architecture, build prompt, eval set, FMEA CSV, assumptions and validation generated from canonical design and review."
+    }
+  ],
+  "notExecuted": [
+    "Business/control golden assertions",
+    "Live insurer/policy/OCR/model adapters",
+    "Real medical-data processing",
+    "Privacy/compliance approval",
+    "Measured model accuracy/cost/latency",
+    "PDF/HTML generation"
+  ],
+  "files": [
+    "PRD.md",
+    "architecture.md",
+    "assumptions.md",
+    "author_design.py",
+    "build-prompt.md",
+    "design.json",
+    "eval-set.json",
+    "finalize_design.py",
+    "fixture-checks.json",
+    "fmea-register.csv",
+    "review-round-1.json",
+    "review-round-2.json",
+    "review.json",
+    "revise_design.py",
+    "validation.json"
+  ],
+  "notes": [
+    "The frozen v1 skill and scripts were only read/invoked, not modified. Local author/revise/finalize scripts serialize model-authored design content inside this output folder.",
+    "No other context or baseline checklist was consulted. All synthetic insurance rules and timing/price thresholds are assumptions, not insurance or medical advice."
+  ]
+}

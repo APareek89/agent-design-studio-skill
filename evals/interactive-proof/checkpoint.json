@@ -1,0 +1,73 @@
+{
+  "version": "1.1",
+  "state": "awaiting-user",
+  "stage": "tasks",
+  "designSha256": "ea3d46533cb1d985c2a36baf9041aa084dece6e497f4ba8adbdad3bb9a4e0bce",
+  "summary": [
+    {
+      "id": "T0",
+      "title": "Prepare owned triage",
+      "data": {
+        "parentId": "",
+        "mode": "sequence",
+        "basis": [
+          "Authenticated request and explicit rules"
+        ],
+        "examples": [
+          "New request",
+          "Missing subject"
+        ],
+        "autonomy": "Human decides; code validates; LLM may explain only.",
+        "frequency": "Per request",
+        "risk": "medium"
+      }
+    },
+    {
+      "id": "T1",
+      "title": "Recommend or abstain",
+      "data": {
+        "parentId": "T0",
+        "mode": "leaf",
+        "basis": [
+          "Authenticated request and explicit rules"
+        ],
+        "examples": [
+          "New request",
+          "Missing subject"
+        ],
+        "autonomy": "Human decides; code validates; LLM may explain only.",
+        "frequency": "Per request",
+        "risk": "high"
+      }
+    },
+    {
+      "id": "A1",
+      "title": "Authenticated request",
+      "data": {
+        "taskIds": [
+          "T1"
+        ],
+        "sourceSystem": "Request registry proposed by H1",
+        "loaded": "on demand"
+      }
+    },
+    {
+      "id": "T99",
+      "title": "Optional internal audit note",
+      "data": {
+        "parentId": "T0",
+        "mode": "leaf",
+        "basis": [
+          "Authenticated request and explicit rules"
+        ],
+        "examples": [
+          "New request",
+          "Missing subject"
+        ],
+        "autonomy": "Human decides; code validates; LLM may explain only.",
+        "frequency": "Per request",
+        "risk": "low"
+      }
+    }
+  ]
+}

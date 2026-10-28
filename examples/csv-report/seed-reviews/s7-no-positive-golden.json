@@ -1,0 +1,19 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "../../evals/seeded-defects/v2/s7-no-positive-golden.json": "64398d83aed31f9f254ac22d0d31369254895e7a206371eae784d38ccc921442"
+  },
+  "issues": [
+    {
+      "severity": "major",
+      "ruleId": "SEM003",
+      "evidence": [
+        "semantics.writeActions refund references W2.",
+        "semantics.goldens contains EV1 negative only, expected writes=0/disposition=REJECTED; stages.evals has no positive golden or EV5.",
+        "Consequence: the suite does not verify an eligible refund commits once with a returned record; a reject-all implementation can pass available golden safety assertions."
+      ]
+    }
+  ],
+  "evidenceRelocation": "Relative paths remap the exact independently graded seed bytes; central original record retained in evals/seed-reviews-v2."
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Design Studio"
+  short_description: "Turn one brief into a reviewed PDF system design"
+  default_prompt: "Use $agent-design-studio to turn this brief into a complete reviewed PDF design report and coding-agent handoff."

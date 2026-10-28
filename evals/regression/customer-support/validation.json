@@ -1,0 +1,220 @@
+{
+  "generator": "agent-design-studio.design_io/1.0",
+  "generatedFiles": [
+    "PRD.md",
+    "architecture.md",
+    "eval-set.json",
+    "fmea-register.csv",
+    "assumptions.md",
+    "validation.json",
+    "build/01-milestone.md",
+    "build/02-milestone.md",
+    "build/00-overview.md"
+  ],
+  "designOnly": true,
+  "status": "pass",
+  "designSha256": "f493ad1b98e7a6eabe6768504fc9e674566dadcd1756da40d30bfa97c6a9f90b",
+  "reviewSha256": "475351493d66d482f5d75f4c41f26156245344c9e1c8ef47df44d4915bf65638",
+  "structuralValidation": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 3,
+      "tasks": 6,
+      "components": 5,
+      "workflow": 5,
+      "framework": 3,
+      "models": 1,
+      "fmea": 13,
+      "evals": 17,
+      "rollout": 5,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewValidation": {
+    "valid": true,
+    "status": "pass",
+    "computedStatus": "pass",
+    "errors": [],
+    "blockerIds": [],
+    "method": "self-review",
+    "round": 2,
+    "scores": {
+      "D1": 3,
+      "D2": 3,
+      "D3": 3,
+      "D4": 3,
+      "D5": 3,
+      "D6": 3,
+      "D7": 3,
+      "D8": 3,
+      "D9": 3,
+      "D10": 3,
+      "D11": 3,
+      "D12": 3
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "review": {
+    "method": "self-review",
+    "round": 2,
+    "status": "pass",
+    "dimensions": [
+      {
+        "id": "D1",
+        "score": 3,
+        "evidence": [
+          "CTX1-CTX3 and T0-T4 choose a bounded first release, provisional intake, explicit exclusions and staff-owned outputs."
+        ]
+      },
+      {
+        "id": "D2",
+        "score": 3,
+        "evidence": [
+          "All leaves map to C1-C5, W1-W5, goldens and selected milestones; every FM/eval relation is derived reciprocally."
+        ]
+      },
+      {
+        "id": "D3",
+        "score": 3,
+        "evidence": [
+          "W1-W5 enumerate ordered exclusive evidence and model outcomes; C1 revision checks and duplicate reuse prevent stale or extra work. No business writes or unattended human wait."
+        ]
+      },
+      {
+        "id": "D4",
+        "score": 3,
+        "evidence": [
+          "C1-C5 define scoped typed sources, draft abstention, checked evidence and tagged exception handoffInput; proposed adapter verification remains H2."
+        ]
+      },
+      {
+        "id": "D5",
+        "score": 3,
+        "evidence": [
+          "No business write adapter exists. C1/C4 check current authority and source version; C2 owns typed facts; C3 has no action permission."
+        ]
+      },
+      {
+        "id": "D6",
+        "score": 3,
+        "evidence": [
+          "H1-H5 label scope, source integration, operations, price and quality hypotheses; missing/contested evidence gets an owned packet."
+        ]
+      },
+      {
+        "id": "D7",
+        "score": 3,
+        "evidence": [
+          "F1-F3 reject free agents and full account connections; compare same storage/governance criteria across unverified cloud and open-source patterns."
+        ]
+      },
+      {
+        "id": "D8",
+        "score": 3,
+        "evidence": [
+          "M1 one W3 call, bounded timeout/no retry, reproducible USD 0.0072 cost and labelled workload/prices; alternatives and fine-tune trigger explicit."
+        ]
+      },
+      {
+        "id": "D9",
+        "score": 3,
+        "evidence": [
+          "Case-specific FM1-FM3 plus access, failure, concurrent revision, receipt, cancellation, queue, evidence and citation risks have owners and gates."
+        ]
+      },
+      {
+        "id": "D10",
+        "score": 3,
+        "evidence": [
+          "Self-contained positive and isolated negative fixtures include domain errors, timeout, cancellation, stale revision, no receipt, duplicates, missing/conflicting evidence and forged citations. Release enumerates all goldens."
+        ]
+      },
+      {
+        "id": "D11",
+        "score": 3,
+        "evidence": [
+          "R1-R5 define active minutes denominator, baseline, shadow/assist entry/exit, no automatic autonomy expansion, clustered mean experiment and breach stop."
+        ]
+      },
+      {
+        "id": "D12",
+        "score": 3,
+        "evidence": [
+          "X1 and milestone selection preserve read-only scope, missing dependencies, exact contracts and fixture index; schema validation actually ran."
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "id": "I1",
+        "severity": "major",
+        "stage": "workflow",
+        "itemId": "W1",
+        "message": "W1-W5 decision fields were authored as strings rather than booleans; structural validation fails. Repair type without removing predicates from description.",
+        "resolved": true
+      },
+      {
+        "id": "I2",
+        "severity": "major",
+        "stage": "framework",
+        "itemId": "F1",
+        "message": "F1-F3 alternatives were authored as strings rather than arrays; structural validation fails.",
+        "resolved": true
+      },
+      {
+        "id": "I3",
+        "severity": "major",
+        "stage": "workflow",
+        "itemId": "W5",
+        "message": "Exceptional paths reach C5 without a C4.checked value. Declare a typed union handoff envelope carrying exception evidence; do not require an absent successful artifact.",
+        "resolved": true
+      },
+      {
+        "id": "I4",
+        "severity": "major",
+        "stage": "evals",
+        "itemId": "EV1",
+        "message": "Supplement domain cases with exact duplicate, evidence conflict, missing source and forged citation cases; release must include these actual IDs.",
+        "resolved": true
+      }
+    ],
+    "limitations": [
+      "Self-review by author, not independent evaluation. All scores are design judgement.",
+      "Synthetic fixtures specify future tests; no business harness, provider, network, deployment or live integration was executed.",
+      "H1-H3 and H5 block launch; document retention, staffing, real adapter and domain policy require owner verification.",
+      "No PDF rendered or visually inspected here; parent is batching renderer and independent review."
+    ]
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ],
+  "mode": "standard",
+  "fileSha256": {
+    "PRD.md": "189579efa64e04e027103cf971a878fed72ccc1dbd08f249e01c0d1a5e560cbc",
+    "architecture.md": "ae5e7310a5489d8180610544937b4a490a1e5db05f2dc01dc50fbb443bbccc7c",
+    "eval-set.json": "a47ff8cb7f82da161a85773704672f6fe5741880f13ac5a3dead445162a4c059",
+    "fmea-register.csv": "8e5f9383a0ee40ae1efaa17534f95c98a5a24d54dd6e1aadbe1e05c2c27bd868",
+    "assumptions.md": "11627c7664ba44e6b105f709782663c47e9634f1d38e91ce8063891a1575a44f",
+    "build/01-milestone.md": "d85d8c6fc6d70628140272a0c36500d4846bafcf628a50ca0393dc9ff51c5fb7",
+    "build/02-milestone.md": "738d485a7c848d7355e2975f5a9c934fedc63a377a4b67529b226b8665fe5e9e",
+    "build/00-overview.md": "bfc7fcf5aae1eaca3beecfab77c7fef1fcab41269aac6b2cc7f1cdbf20728f42"
+  }
+}

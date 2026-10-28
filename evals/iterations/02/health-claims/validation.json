@@ -1,0 +1,222 @@
+{
+  "generator": "agent-design-studio.design_io/1.0",
+  "generatedFiles": [
+    "PRD.md",
+    "architecture.md",
+    "eval-set.json",
+    "fmea-register.csv",
+    "assumptions.md",
+    "validation.json",
+    "build/01-milestone.md",
+    "build/02-milestone.md",
+    "build/03-milestone.md",
+    "build/00-overview.md"
+  ],
+  "designOnly": true,
+  "status": "pass",
+  "designSha256": "96b283a8d54473ed5f3bea2adb1c8c4e1906c1fd774e03328bf7ee33be35aa32",
+  "reviewSha256": "327a708ff9f676e05d9d458fd94ca1d04e41f59de4f5f699e1c57163dcc14719",
+  "structuralValidation": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 3,
+      "tasks": 9,
+      "components": 7,
+      "workflow": 8,
+      "framework": 4,
+      "models": 1,
+      "fmea": 7,
+      "evals": 28,
+      "rollout": 7,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewValidation": {
+    "valid": true,
+    "status": "pass",
+    "computedStatus": "pass",
+    "errors": [],
+    "blockerIds": [],
+    "method": "self-review",
+    "round": 3,
+    "scores": {
+      "D1": 3,
+      "D2": 3,
+      "D3": 3,
+      "D4": 3,
+      "D5": 3,
+      "D6": 3,
+      "D7": 3,
+      "D8": 3,
+      "D9": 3,
+      "D10": 3,
+      "D11": 3,
+      "D12": 3
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "review": {
+    "method": "self-review",
+    "round": 3,
+    "status": "pass",
+    "dimensions": [
+      {
+        "id": "D1",
+        "score": 3,
+        "evidence": [
+          "CTX1/CTX3 and T1-T5 bound draft-only inpatient review and owned pending outcomes."
+        ]
+      },
+      {
+        "id": "D2",
+        "score": 3,
+        "evidence": [
+          "T1-T5 link C1-C7/W1-W8 and EV1-EV20; FM links derived in both directions."
+        ]
+      },
+      {
+        "id": "D3",
+        "score": 3,
+        "evidence": [
+          "W4 timeout/unknown to W5; W5 bounded reads; W6 proof before W7; W8 owns unresolved outcomes."
+        ]
+      },
+      {
+        "id": "D4",
+        "score": 3,
+        "evidence": [
+          "C1-C7 typed contracts separate read, draft-write and readback; H3 marks adapter capability unverified.",
+          "C1/C3 specify visible-only extraction, exact source-span/clause validation and proposed PR1. EV21-EV28 cover repairs; EV20 includes them; fixtures inspected by artifact-fixture-check.json, not a business harness."
+        ]
+      },
+      {
+        "id": "D5",
+        "score": 3,
+        "evidence": [
+          "C3 uses approved policy and human-verified facts; C4 cannot pay/deny; C6 durable assignment proof.",
+          "C1/C3 specify visible-only extraction, exact source-span/clause validation and proposed PR1. EV21-EV28 cover repairs; EV20 includes them; fixtures inspected by artifact-fixture-check.json, not a business harness."
+        ]
+      },
+      {
+        "id": "D6",
+        "score": 3,
+        "evidence": [
+          "H1-H6 mark proposed scope, rules, ownership, privacy and budgets; no clinical/legal claims.",
+          "C1/C3 specify visible-only extraction, exact source-span/clause validation and proposed PR1. EV21-EV28 cover repairs; EV20 includes them; fixtures inspected by artifact-fixture-check.json, not a business harness."
+        ]
+      },
+      {
+        "id": "D7",
+        "score": 3,
+        "evidence": [
+          "F1-F4 select code worker; reject in-memory and unconstrained agents; candidates explicitly unverified."
+        ]
+      },
+      {
+        "id": "D8",
+        "score": 3,
+        "evidence": [
+          "M1 gives W2-only calls 1.05 expected/2 maximum, USD .0378 illustrative and fallback."
+        ]
+      },
+      {
+        "id": "D9",
+        "score": 3,
+        "evidence": [
+          "FM1-FM7 specific subject, policy, room-cap, injection, duplicate, uncertainty and queue risks, owner gates."
+        ]
+      },
+      {
+        "id": "D10",
+        "score": 3,
+        "evidence": [
+          "EV1-EV17 self-contained synthetic fixtures, EV18 held-out, EV19 operations and EV20 inclusion assertions.",
+          "C1/C3 specify visible-only extraction, exact source-span/clause validation and proposed PR1. EV21-EV28 cover repairs; EV20 includes them; fixtures inspected by artifact-fixture-check.json, not a business harness."
+        ]
+      },
+      {
+        "id": "D11",
+        "score": 3,
+        "evidence": [
+          "R1-R7 define denominators, baseline, mean-test power plan, cluster assignment and assist-only scale."
+        ]
+      },
+      {
+        "id": "D12",
+        "score": 3,
+        "evidence": [
+          "X1 and milestones select exact contracts; no final claim writes or fabricated launch evidence.",
+          "C1/C3 specify visible-only extraction, exact source-span/clause validation and proposed PR1. EV21-EV28 cover repairs; EV20 includes them; fixtures inspected by artifact-fixture-check.json, not a business harness."
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "id": "IR1",
+        "severity": "major",
+        "stage": "components",
+        "itemId": "C3",
+        "message": "Added explicit proposed PR1 ratio, class scope, rounding/order and missing-rule fallbacks; EV21-EV23/EV28 specify positive, boundary and prohibited amount branches. Insurer sign-off still required under H2.",
+        "resolved": true
+      },
+      {
+        "id": "IR2",
+        "severity": "major",
+        "stage": "components",
+        "itemId": "C2",
+        "message": "C3 independently checks authorized immutable page, exact quote span and applicable clause before save; EV24-EV26 isolate forged references; C1 visible-only OCR and EV27 exclude hidden layers.",
+        "resolved": true
+      },
+      {
+        "id": "IR3",
+        "severity": "minor",
+        "stage": "evals",
+        "itemId": "EV17",
+        "message": "Admission July 1 and discharge July 3 now preserve valid chronology while alternate hospital admission June 30 tests the intended source conflict.",
+        "resolved": true
+      }
+    ],
+    "limitations": [
+      "Self-review by design author; independent reviewer has not evaluated these files.",
+      "Schema and semantic declarations do not execute business controls or establish provenance truth.",
+      "Synthetic policy, proposed API support, privacy rules and human queue SLA require H1-H5 owner evidence.",
+      "No live claim, medical advice, final decision, cost quote or measured savings is represented.",
+      "Human review resolution is outside the first-release workflow; the existing insurer queue must prove H5 assignment, acknowledgement and overdue alerts. Packet-ready is not claim approved.",
+      "Prior independent review is preserved verbatim; this repaired revision has only author self-review until a separate reviewer inspects it.",
+      "PR1 is a hypothetical test-only linked-charge formula; no insurer approval, legal interpretation or policy truth is claimed."
+    ]
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ],
+  "mode": "standard",
+  "fileSha256": {
+    "PRD.md": "0009b8d74132f92c897d824e5e3b5c59e27c2fdacf3baa19032174caa583c01f",
+    "architecture.md": "533a2c36f40a28c9fa26edb80895ad4077322a3f2b9585d020dd5b407d1cc38c",
+    "eval-set.json": "ebeb2a5f42ae1cae833ea7049e58dc03b140bb3af232039d61f7eb0be2401f8c",
+    "fmea-register.csv": "e001e89a9ac7d4a1f10e9b29894fea9254377c5e594af3deb0c77013c7afcec5",
+    "assumptions.md": "96d31cb95fe29c65ad8a988462ec11a6129c0d36af29f5c1719f523e34591265",
+    "build/01-milestone.md": "9e13f42440f7b071923538f1728e2248ada92034a33fc0a07ecd7c90ea5b5e71",
+    "build/02-milestone.md": "51eef90538d4baf67c5f6ae4b3c983e4f2a305b00ef3c6a8215282ad8e18c559",
+    "build/03-milestone.md": "54c4904636ff158a9d7fbccd4adb5203283b7d6602ccf2d6dbca873215392d5f",
+    "build/00-overview.md": "41b3d6ca129f7ddeafe47edb49933b2600c5b694f86c6c454f4017856b1774a3"
+  }
+}

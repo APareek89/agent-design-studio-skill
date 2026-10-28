@@ -1,0 +1,123 @@
+{
+  "method": "self-review",
+  "round": 2,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1\u2013CTX6/T0\u2013T4.3 define start/end, supported product, assist-only rejection review and cancellation."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "T1\u2013T4.3 all reach components/workflow/goldens; FM1\u2013FM10 risk links reciprocal across all layers."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W1\u2013W13 have boolean decision fields after repair, bound producer guards and persistent unknown owner."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C2 explicit date parser now breaks policy-selection dependency; C5 events reuse C6 writer; blocked audit service is minimal."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C6 fresh API scope/identity/CAS/hash enforcement; no insurer money permission; medical-data H5 explicit."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 4,
+      "evidence": [
+        "H1\u2013H9 and sources are hypotheses; no measured baseline or vendor promise invented."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1\u2013F5 choose transactional workflow and bounded model with rejected alternatives and same cloud data criteria."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 .84 expected/2 max calls, exact illustrative arithmetic, overflow hold and no silent truncation."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1\u2013FM10 case-specific controls/owners/gates, including temporal policy and room cap/proportion ambiguity."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "Structural schema now passes, but reinspection found EV7 invalid citation not actually altered, EV26 wrong source span for dates and EV18 preexisting-timer prerequisites unclear."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1\u2013R6 cluster randomization, baseline-driven power, safety stops and noncircular phase gates."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "X1 preserves safety boundary; fixtures need the last material repairs before calling design implementation-ready."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISSUE5",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV7",
+      "message": "Citation validity was only mocked false although actual model span remained valid; must corrupt a concrete span to isolate guard.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE6",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV26",
+      "message": "Generic fixture augmentation cited last document (policy clause) for admission dates. Correct dates to discharge span and include actual line trace in persist packet.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE7",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV18",
+      "message": "Timer fixture runs at 48h without a clear preexisting committed review record; make event action and prior receipt explicit.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Self-review by host model; no independent evaluator or stakeholder sign-off.",
+    "Frozen v1 validator verifies structure/references only. No business test harness, insurer integration, medical-data processing or production controls executed.",
+    "Synthetic fixtures and illustrative budgets do not prove accuracy, compliance, policy correctness or savings. H1-H6/H9 remain live-use blockers.",
+    "PDF is deferred by explicit parent instruction; this run produces canonical JSON and companion exports only."
+  ]
+}

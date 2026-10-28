@@ -1,0 +1,108 @@
+{
+  "method": "independent-agent",
+  "round": 1,
+  "status": "pass",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1 and H1 bound insurer staff inpatient review to draft packets, with final decisions/payments excluded. T0 sequences T1\u2013T5; missing facts remain owned and pending; C5 defines cancellation."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "All task/component/eval/parent/workflow references inspected resolve to existing canonical IDs. FM1\u2013FM7 and EV1\u2013EV28 failure-mode links are reciprocal. eval-set.json items exactly equal canonical eval items."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W1 is entry; W7/W8 terminal outcomes are explicit. W3 checks cancellation/freshness, W4 routes TIMEOUT and unknown_commit to W5, C5 bounds reads and freezes changed intent, and W6 requires durable record/assignment proof."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C1\u2013C7 define bounded inputs, outputs and error enums; C2 has citations and abstention only. C4 defines conditional immutable insert and C5 scoped lookup/body comparison. H3 explicitly blocks launch until real adapter capabilities are proven; H5 names queue owner and acknowledgement/escalation timing."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C3 owns integer arithmetic, applicable policy edition, independent source-span/clause validation and fresh authorization. C4 rechecks inside transaction and rejects packet-body mismatch. F3 separates principals; F4/H4 specify medical-data region, redaction, retention approval and deletion. EV7/EV11/EV12/EV24\u2013EV28 exercise safety boundaries."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 4,
+      "evidence": [
+        "H1\u2013H6 label proposed operational rules, adapter support, privacy, queue timings and prices as assumptions, with H1\u2013H5 launch blockers. H2 and PR1 explicitly require insurer approval/replacement. CTX3 and PDF identify design-only status and no measured accuracy or legal/medical determination."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1/F2 choose a durable database-backed worker for the bounded pipeline and reject autonomous adjudication/in-memory orchestration with concrete reasons. F3/F4 compare cloud and self-hosted candidates on consistent regional data, recovery and access criteria, without claiming verified vendor support."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 is the sole plan for the sole LLM C2: 1.05 expected calls, 12000 input/1500 output tokens, USD 2/8 per million produce USD 0.0378/case. Two-call bound, overflow abstention, excluded non-model costs, rejected tiers and held-out fine-tuning condition are explicit."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1\u2013FM7 name health-claim-specific causes, controls, accountable actions and tests for identity/privacy, historical policy, room proration, hostile evidence, duplicate/stale saves, unknown commit and queue failure. S/O/D scale is expressly hypothetical; no residual risk acceptance is fabricated."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 3,
+      "evidence": [
+        "EV1\u2013EV17 and EV21\u2013EV28 contain full synthetic input fixtures and exact outputs/assertions: historical admission-date version, room arithmetic, source forgery, hidden layers, revocation, duplicate save and lost response. EV18 defines held-out strata/SME labeling, EV19 monitoring/stops, and EV20 all-golden inclusion plus sign-offs; execution remains a future business harness requirement."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1/R2 define reviewer effort and safety denominators/windows and unknown baseline. R3\u2013R5 sequence shadow, assist and randomized assist-only pilot. R6 specifies reviewer-cluster randomization, strata, contamination controls, intention-to-treat, baseline variance/power method and separate safety assessment; R7 owns kill switch/recovery and residual-risk approval."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 3,
+      "evidence": [
+        "X1 and build/01\u201303 preserve canonical component/workflow/eval IDs, durable journal, immutable body, source validation, proposed PR1 gate and staged acceptance. DESIGN.pdf summarizes scope, actual task/workflow diagrams, risks and evaluation without claiming executed business controls. External H1\u2013H5 contracts/sign-offs remain visible launch blockers."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "IR-HC-01",
+      "severity": "minor",
+      "stage": "workflow",
+      "itemId": "W1",
+      "message": "PDF page 3 uses crossing, unlabeled arrows for W1\u2013W8. Nodes and arrowheads are readable at 72 dpi/100%, and architecture.md supplies exact predicates, but inline branch labels and reduced crossings would make exception paths easier to follow.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Independent AI design review, not production, medical, insurance-policy or legal certification.",
+    "Reviewed completed canonical design, brief, companion deliverables and PDF; author scripts and prior review files were excluded. Companion status banners were not evidence for scoring.",
+    "Synthetic fixtures were inspected and source correspondences checked; real business harness, live APIs, OCR/provider quality and stakeholder sign-offs were not executed or verified.",
+    "STP is explicitly excluded by H1; therefore S8 check 6 fails literally without creating a major gap in this approved assist-only scope.",
+    "PDF pages 2 and 3 were visually inspected at native 72 dpi (596\u00d7842 rendered pixels), without zoom; other PDF pages were text-inspected."
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "version": "1.1",
+  "mode": "standard",
+  "startedAt": "2026-10-28T11:35:59Z",
+  "endedAt": "2026-10-28T11:43:01.612045+00:00",
+  "wallTimeSeconds": 422.612045,
+  "approximateTokensUsed": null,
+  "tokenMethod": "Unavailable: the host did not expose total inference usage.",
+  "artifactTextTokenEstimate": 156174,
+  "artifactTokenMethod": "UTF-8 decoded text characters / 4 across delivered text artifacts, excludes historical failed rounds; not host inference tokens.",
+  "fileSizes": {
+    "PRD.md": 34020,
+    "architecture.md": 58267,
+    "review-round-1.json": 2167,
+    "assumptions.md": 9020,
+    "author.py": 54500,
+    "authoring-evidence.json": 375,
+    "fmea-register.csv": 17277,
+    "validation.json": 9269,
+    "eval-set.json": 105136,
+    "review.json": 4784,
+    "review-round-2.json": 4784,
+    "design.json": 337461,
+    "build/00-overview.md": 1387,
+    "build/01-milestone.md": 10906,
+    "build/02-milestone.md": 16130,
+    "build/03-milestone.md": 20819
+  },
+  "pageCount": null,
+  "validatorResults": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 3,
+      "tasks": 11,
+      "components": 10,
+      "workflow": 13,
+      "framework": 4,
+      "models": 1,
+      "fmea": 9,
+      "evals": 23,
+      "rollout": 7,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewRounds": [
+    "review-round-1.json",
+    "review-round-2.json",
+    "review.json"
+  ],
+  "reviewMethod": "self-review",
+  "reviewStatus": "pass",
+  "designSha256": "4ba94403e39dbfd61e0be858d16defbf58c33723dc5f876606e0bfab55ca4f45",
+  "businessAssertionsExecuted": false
+}

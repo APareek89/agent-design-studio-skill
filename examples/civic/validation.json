@@ -3,21 +3,37 @@
   "generatedFiles": [
     "PRD.md",
     "architecture.md",
-    "build-prompt.md",
     "eval-set.json",
     "fmea-register.csv",
     "assumptions.md",
-    "validation.json"
+    "validation.json",
+    "build/01-milestone.md",
+    "build/02-milestone.md",
+    "build/03-milestone.md",
+    "build/04-milestone.md",
+    "build/05-milestone.md",
+    "build/06-milestone.md",
+    "build/07-milestone.md",
+    "build/08-milestone.md",
+    "build/09-milestone.md",
+    "build/10-milestone.md",
+    "build/00-overview.md"
   ],
   "designOnly": true,
   "status": "pass",
-  "designSha256": "e9d7b1af06895ab14332f6df9b6ea467f104ba9b9aa17b825f76b300554be6ac",
+  "designSha256": "7a724fce19e430553387f35b90d35fd0499998f59f012d13c69dd2a2926b0ce2",
   "reviewSha256": "d2d9fcdfe660a2b821d67315f0a356a3400510be446ae83dce1dc148e2c4cc7d",
   "structuralValidation": {
+    "semanticCoverage": "unverified",
     "valid": true,
     "status": "structural-pass",
     "errors": [],
-    "warnings": [],
+    "warnings": [
+      {
+        "path": "$.semantics",
+        "message": "Legacy schema 1.0: semantic coverage unverified; author new designs as schema 1.1 with complete semantic metadata."
+      }
+    ],
     "counts": {
       "context": 6,
       "tasks": 14,
@@ -204,5 +220,24 @@
     "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
     "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
     "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
-  ]
+  ],
+  "mode": "standard",
+  "fileSha256": {
+    "PRD.md": "0ec96f2b25b98b60132a878a0904e8fc4916fce7417d8e3896965cf60216b159",
+    "architecture.md": "bb53433475c6124a3bd28da9fdaae011b10397d597784a5abe838ae8da4656fa",
+    "eval-set.json": "1b42fd79776ff8050e00a21661ded75dcd359df6c57cbe11d84e5d3f9b1583cd",
+    "fmea-register.csv": "d9aa79fd34865beb17002e6701633dfb9bc1e048cd033a5a51556af04ee1b586",
+    "assumptions.md": "3b2c21d4155ccdbb8eb1df97e22a26dead9b66ce4937b22ba139599ffe8cb54a",
+    "build/01-milestone.md": "603303d303563f07f8d3e5998837fdb9d54039c11481acf0de74bc699ec557f4",
+    "build/02-milestone.md": "2551f20d2469e51e7804fabb9c72c6f402adc7d86d8eccef6aeb4cac915b75b0",
+    "build/03-milestone.md": "5a89c4d91d2b3c3728e0d1d5355aaa34cb565d309d062e5ee20252ff51567d6a",
+    "build/04-milestone.md": "3fc830a43b613f03187026c591d9e160db6ed3363980fb5856b17c869df2fd4b",
+    "build/05-milestone.md": "588162992042037873407aff30ec2a0484b40511efe22e432fc0d232d864b131",
+    "build/06-milestone.md": "9c500614c6ffcd2f4ae211f10bd68205afe7acb532ece812b859419b8a76018c",
+    "build/07-milestone.md": "b4198125874f2c4989e47a99c60840a7f883e63b002b0296c0216a6a8be681f8",
+    "build/08-milestone.md": "af1411a0f53826f90b15102c4a3f3dc1fdf43c69ed7e2162ce4d33411cf78d9d",
+    "build/09-milestone.md": "5c2dcbe08622327465c8c3f090ea095659b4b3cd49ff7acbe484d983d924bf20",
+    "build/10-milestone.md": "3ebe12e8277a9aa6199433574b70beba15c0678d871bd363b5d32908c52bff84",
+    "build/00-overview.md": "03481439fc619bdda7ce46b5247ee5ea17978dba11b5382bf28b583ffab529c5"
+  }
 }

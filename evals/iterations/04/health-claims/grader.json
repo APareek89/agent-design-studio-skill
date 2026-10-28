@@ -1,0 +1,95 @@
+{
+  "method": "independent-agent",
+  "agentId": "final_health_review",
+  "sourceHashes": {
+    "design.json": "1605f02cc1b505abec240906adcb3640b01bc6d40a21cdb9a7c6cc6fe19a4b1b",
+    "DESIGN.pdf": "a50e2d03c7087eb0dacf6c0b09397e94486948f661ca74ad23d106aa6643f58d",
+    "review.json": "1fca7a607c88937da8f499fb6013461155a5f166f4e4b1c3989ba0e303f5e637"
+  },
+  "S3": {
+    "taskTreeVector": true,
+    "workflowVector": true,
+    "legibleAt100Percent": true,
+    "evidence": [
+      "PDF page 2: 0 raster images, 130 vector path operators, 838 extractable text characters.",
+      "PDF page 3: 0 raster images, 226 vector path operators, 614 extractable text characters.",
+      "Rendered actual new DESIGN.pdf pages 1\u20133 with pdftoppm -r 72; inspected 595x842 output at 100%. Text/boxes remain readable and uncut; workflow recovery arrows are dense, exact predicates delegated to architecture.md.",
+      "Page 1 shows independent-agent round 1 needs-work, matching canonical review."
+    ]
+  },
+  "S8": {
+    "brief": "health-claims",
+    "checks": [
+      {
+        "id": 1,
+        "pass": true,
+        "evidence": [
+          "CTX3",
+          "C4",
+          "EV3",
+          "EV22",
+          "H2"
+        ]
+      },
+      {
+        "id": 2,
+        "pass": true,
+        "evidence": [
+          "C4",
+          "EV1",
+          "EV4",
+          "EV5",
+          "EV30",
+          "IR1"
+        ]
+      },
+      {
+        "id": 3,
+        "pass": true,
+        "evidence": [
+          "H1",
+          "C5",
+          "EV27",
+          "CTX2"
+        ]
+      },
+      {
+        "id": 4,
+        "pass": true,
+        "evidence": [
+          "CTX4",
+          "C2",
+          "C3",
+          "EV9",
+          "EV26"
+        ]
+      },
+      {
+        "id": 5,
+        "pass": true,
+        "evidence": [
+          "C3",
+          "C4",
+          "EV6",
+          "EV7",
+          "EV8"
+        ]
+      },
+      {
+        "id": 6,
+        "pass": false,
+        "evidence": [
+          "H1",
+          "CTX2",
+          "R2",
+          "F3"
+        ]
+      }
+    ],
+    "limitations": [
+      "Criterion 1 is satisfied through certified rule-pack admission/service-date applicability and conservative review for service-period splits; actual insurer admission-date policy remains H2 launch dependency.",
+      "Criterion 2 checks the code-design arithmetic, independently recomputed as 3000000 room-only, 2700000 proportionate and 3 minor units at half-up 2.5. IR1 means complete positive fixture source provenance remains deficient.",
+      "Criterion 6 is intentionally absent in explicitly bounded staff-assist scope: no automatic settlement or straight-through QA sampling is designed. Five of six task criteria do not override needs-work D2/D10/D12."
+    ]
+  }
+}

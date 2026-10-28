@@ -1,0 +1,115 @@
+{
+  "method": "self-review",
+  "round": 1,
+  "status": "pass",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1-CTX4/T1-T7 define authenticated inpatient draft scope, terminal proof or owned exception; H1 rejects automated settlement."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "C2 authoritative accumulatorSnapshot and C4 exact typed input/guard bindings now agree. Every golden has a full insurer source response and versions, except deliberate EV32/EV33 source failures. Root strict write equals assertions and W9 recordProof bindings are preserved."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W1-W11 define exclusive predicates, 24h durable wait, one-hour notice, bounded readback and retry, cancellation/expiry and owned unresolved terminal."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C2 explicitly reads proposed benefit-accumulator API; C4 requires source scope, currency, source/receipt versions and time ordering. C7 rechecks accumulator version at save; H2 verification remains launch-blocking."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C1 gates PHI; C2 excludes hidden layers; C4 owns arithmetic/dates; C7 enforces RBAC/CAS/immutable bytes; C8 independent readback; C9 gates saved display. No payment/denial scope."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 4,
+      "evidence": [
+        "H1-H6 label authority, policy/privacy/staffing launch gaps and illustrative cost/targets. Unknown rules/clinical necessity/copay/currency/date splits abstain."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1 durable code workflow fits 11 nodes; F2 separates vault/rules/ledger; F3 least privilege; F4 uses equivalent candidate residency/deletion/timer tests and rejects multi-cloud expansion."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 4,
+      "evidence": [
+        "M1 exactly covers C3: 0.8*1.1=.88 calls, .024 USD/call, .02112/case, 211.20/10k; retry/worst-case/context/staff exclusions and rejected tiers are explicit."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM8 give scored case-specific causes, controls, owners and reciprocal tests for PHI, rules, forged sources, races, uncertain save, proof, revocation and queue stalls."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 3,
+      "evidence": [
+        "EV1/EV4/EV9/EV23/EV30 now have independently supplied insurer source snapshots and same-request version receipts. EV32 isolates missing source version and EV33 stale receipt. EV10 has two complete OP-A/OP-B immutable payloads/hashes/authorizations and explicit winner/loser/no-overwrite assertions. EV25 deliberately preserves its post-authorization hash mutation."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1-R4 define denominators, baseline/assist gates, team randomization/ICC power method, safety vetoes and stop/reconciliation ownership; no unapproved scale claim."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 3,
+      "evidence": [
+        "X1, A2, four milestones and EV21 release set include exact source and new fixture requirements. All companions will be regenerated from current design. Structural validator passes with verified declarations; local fixture JSON/hash audit passes, but no business harness ran."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "IR1",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV1",
+      "message": "Repaired: source accumulator snapshot/version/freshness now originates at C2 with explicit C4 guard; propagated to all effective fixtures. EV32/EV33 reject missing/stale source versions, even when output proposal has version 7.",
+      "resolved": true
+    },
+    {
+      "id": "IR2",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV10",
+      "message": "Repaired: OP-A and OP-B each have exact own immutable payload, recomputed SHA256, distinct approval binding and request path, with expectedVersion 3 and fresh version 7 source checks. Ordered race asserts one write, OP-B CAS conflict and no overwrite.",
+      "resolved": true
+    }
+  ],
+  "limitations": [
+    "Self-review of targeted repairs; independent re-review is pending at the parent run. Prior independent needs-work verdict is preserved in review-round-04-independent.json.",
+    "No business harness, provider, network or operational API calls were executed. Local JSON/hash checks are artifact consistency checks, not business control execution.",
+    "H1-H4 remain human verification blockers. Accumulator API/version receipt and all policy rules are proposed H2 contracts and synthetic fixture facts, not verified insurer or medical advice.",
+    "Assist-only scope and explicit record-proof/write-count semantic declarations remain unchanged. No PDF was generated by this worker."
+  ]
+}

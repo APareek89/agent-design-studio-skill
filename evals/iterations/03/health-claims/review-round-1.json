@@ -1,0 +1,120 @@
+{
+  "method": "self-review",
+  "round": 1,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1-CTX4 and T0-T7 cover bounded assist-only scope"
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "Sources use exact brief excerpt and H1-H6 hypotheses"
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 2,
+      "evidence": [
+        "W8 fallback overlap needs repair"
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C1-C9 name typed resources and enum errors"
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C4 code authority and C7 fresh writer check; H3 privacy gate"
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1-H6 record unverified operational facts"
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1-F4 compare generic platform candidates without live claims"
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 reproduces expected USD0.02112/case and two-call bound"
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM8 concrete case-specific failure controls"
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "EV1-EV21 useful coverage but missing time-of-revocation and full-byte fixtures"
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1-R4 define baseline, cluster study and assist-only end state"
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "X1 handoff blocked on structural type failures"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISSUE1",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W8",
+      "message": "The fallback predicate overlaps a found record when retryCount=1. Make found precedence explicit and restrict fallback to confirmed absence/unresolved.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE2",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV15",
+      "message": "Revocation is present at initial input instead of between initial authorization and save; initial fixture also lacks full immutable approval bytes/hash. Add actual save-time revocation and immutable-byte fixtures plus date/remaining-benefit boundary tests.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE3",
+      "severity": "major",
+      "stage": "export",
+      "itemId": "X1",
+      "message": "Validator found type errors in workflow decision, framework alternatives, rollout AI metrics and autonomy enum. Correct types and revalidate before export.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Self-review only; no independent agent review. Golden assertions specify future business tests and have not executed. No API or policy truth has been established."
+  ]
+}

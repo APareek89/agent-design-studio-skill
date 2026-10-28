@@ -1,0 +1,120 @@
+{
+  "method": "self-review",
+  "round": 1,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1/T0-T4 bound outage-credit scope, exceptions and durable owned outcomes."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "T leaves reach C/W/evals; FMEA evaluation links derived reciprocally; H1-H6 identify proposals."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 2,
+      "evidence": [
+        "W10 reconciliation and wait timers explicit, but EV6 adds an unsupported terminal enum."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C1-C9 typed contracts include exact immutable credit fields, error enums and lookup ownership."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C1/C4/C7 fresh subject/active-service/authority checks; C3 outputs never bind writes."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1-H6 mark policy, APIs, staffing, privacy and budget as proposals/blockers."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1-F3 compare durable workflow and cloud/open-source storage patterns; capabilities explicitly unverified."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 derives <=0.9 expected calls and one worst-case call; USD .00378 expected upper model cost."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM9 cover subject, stale/revoked authority, duplicate, prompt/conflict, unknown commit, proof and queues."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "EV1-EV23 contain substantive fixtures and release suite; EV7 incorrectly asserts no physical write after malformed provider response."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1-R4 specify censored resolution hours, baseline-first experiment, account clusters and phase entry/exit."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "X1/milestones provide implementable scope, but structural alternatives/autonomy values need correction."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISS1",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W10",
+      "message": "EV6 expects CREDITED_CANCEL_REQUESTED outside C9 outcome enum. Keep CREDITED with cancellationRequested flag; otherwise client state handling needs invention.",
+      "resolved": false
+    },
+    {
+      "id": "ISS2",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV7",
+      "message": "A malformed POST response does not prove zero ledger effects. Start fixture after uncertain authorized attempt, assert zero additional writes and UNKNOWN_OWNED with proof lock.",
+      "resolved": false
+    },
+    {
+      "id": "ISS3",
+      "severity": "major",
+      "stage": "framework",
+      "itemId": "F1",
+      "message": "Structural validator rejects alternatives string and presentation autonomy labels. Use array and allowed levels; rerun.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Design review only. No business control fixtures or API integration tests executed. Proposed policies, provider prices and launch approvals remain unverified."
+  ]
+}

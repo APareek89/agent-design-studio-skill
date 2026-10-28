@@ -1,0 +1,7 @@
+{
+  "method": "independent-agent",
+  "sourceReview": "evals/iterations/01/telecom/independent-review.json",
+  "sourcePreserved": "review-history/independent-review.json",
+  "canonicalRoundMeaning": "First independent review of completed design.",
+  "authorRecordsPreserved": "review-history/"
+}

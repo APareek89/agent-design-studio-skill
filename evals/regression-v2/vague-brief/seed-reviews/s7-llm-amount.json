@@ -1,0 +1,19 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "../../seeded-defects/v2/s7-llm-amount.json": "ef8694a0248ac406cf2dbfa6049a198a1b95baf3b51b770c909593ee5d72db95"
+  },
+  "issues": [
+    {
+      "severity": "critical",
+      "ruleId": "SEM005",
+      "evidence": [
+        "semantics.nodes W2.bindings amount has category=money, source=llm, sourceComponentId=C1, sourceField=amount.",
+        "C1 outputs amount:number! and C2 Persist refund consumes amount:number!; W2 is a refund write.",
+        "Consequence: exact financial amount originates in model generation instead of authoritative code calculation; an incorrect model amount can reach refund execution."
+      ]
+    }
+  ],
+  "evidenceRelocation": "Relative paths remap the exact independently graded seed bytes; central original record retained in evals/seed-reviews-v2."
+}

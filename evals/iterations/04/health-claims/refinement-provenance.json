@@ -1,0 +1,10 @@
+{
+  "source": "evals/iterations/03/health-claims",
+  "sourceSha256": "627ab73a3ff2dbcacab40725d6395a83826efc80b714bf3cafb6ff5c28df2478",
+  "startedAt": "2026-10-28T12:00:15.844158+00:00",
+  "changes": [
+    "Every write-class golden now has exact typed writes equality and writer/forbidden-effect linkage, in addition to existing assertions.",
+    "W9 exposes and checks an exact trusted string record ID; alternatives are bound in the actual workflow contract."
+  ],
+  "method": "Root authored stricter declared controls; independent domain review pending, not a fresh author run."
+}

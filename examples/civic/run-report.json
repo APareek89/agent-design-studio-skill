@@ -1,0 +1,98 @@
+{
+  "version": "1.1",
+  "mode": "standard",
+  "startedAt": null,
+  "endedAt": "2026-10-28T12:27:33.488178+00:00",
+  "wallTimeSeconds": null,
+  "approximateTokensUsed": null,
+  "tokenMethod": "Unavailable: the host did not expose total inference usage.",
+  "artifactTextTokenEstimate": 287484,
+  "artifactTokenMethod": "UTF-8 decoded text characters / 4 across delivered text artifacts, excludes historical failed rounds; not host inference tokens.",
+  "fileSizes": {
+    "DESIGN.pdf": 30777,
+    "PRD.md": 80148,
+    "architecture.md": 94270,
+    "DESIGN-before-reader-fix.pdf": 29363,
+    "review-round-1.json": 4523,
+    "page-1.png": 148718,
+    "page-3.png": 103251,
+    "assumptions.md": 115407,
+    "page-2.png": 75868,
+    "interactive-evidence.json": 1069,
+    "fmea-register.csv": 44480,
+    "validation.json": 12505,
+    "eval-set.json": 203291,
+    "review.json": 6923,
+    "review-round-2.json": 6923,
+    "test-evidence.json": 4058,
+    "design.json": 492852,
+    "independent-evidence/page-02.png": 49328,
+    "independent-evidence/page-03.png": 65494,
+    "independent-evidence/final-page-03.png": 65494,
+    "independent-evidence/final-page-02.png": 49328,
+    "independent-evidence/pdf-text.txt": 29302,
+    "seed-reviews/s7-llm-amount.json": 884,
+    "seed-reviews/s7-llm-customer-id.json": 896,
+    "seed-reviews/s7-no-positive-golden.json": 864,
+    "seed-reviews/s7-48h-no-notice.json": 939,
+    "seed-reviews/s7-unversioned-inheritance.json": 908,
+    "seed-reviews/s7-refund-no-guard.json": 1018,
+    "build/00-overview.md": 1675,
+    "build/06-milestone.md": 10352,
+    "build/01-milestone.md": 7711,
+    "build/07-milestone.md": 8081,
+    "build/05-milestone.md": 7553,
+    "build/02-milestone.md": 7572,
+    "build/10-milestone.md": 7724,
+    "build/03-milestone.md": 7634,
+    "build/04-milestone.md": 8446,
+    "build/09-milestone.md": 8022,
+    "build/08-milestone.md": 14801
+  },
+  "pageCount": 11,
+  "validatorResults": {
+    "semanticCoverage": "unverified",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [
+      {
+        "path": "$.semantics",
+        "message": "Legacy schema 1.0: semantic coverage unverified; author new designs as schema 1.1 with complete semantic metadata."
+      }
+    ],
+    "counts": {
+      "context": 6,
+      "tasks": 14,
+      "components": 8,
+      "workflow": 13,
+      "framework": 5,
+      "models": 1,
+      "fmea": 12,
+      "evals": 27,
+      "rollout": 8,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewRounds": [
+    "review-round-1.json",
+    "review-round-2.json",
+    "review.json"
+  ],
+  "reviewMethod": "self-review",
+  "reviewStatus": "pass",
+  "designSha256": "7a724fce19e430553387f35b90d35fd0499998f59f012d13c69dd2a2926b0ce2",
+  "businessAssertionsExecuted": false,
+  "timingScope": "Artifact QA capture; author wall time retained separately where available.",
+  "reviewHistoryFiles": [
+    "review-round-1.json",
+    "review-round-2.json",
+    "review.json"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "method": "Local author inspection of fixture source hashes, offsets and intentionally invalid cases; this does not execute proposed business controls.",
+  "results": [
+    {
+      "evalId": "EV1",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV2",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV3",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV4",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV5",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV6",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV7",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV8",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV9",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV10",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV11",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV12",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV13",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV14",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV15",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV16",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV17",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV21",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV22",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV23",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV24",
+      "artifactCitationDefects": [
+        "SOURCE_NOT_FOUND"
+      ]
+    },
+    {
+      "evalId": "EV25",
+      "artifactCitationDefects": [
+        "CLAUSE_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "evalId": "EV26",
+      "artifactCitationDefects": [
+        "QUOTE_MISMATCH"
+      ]
+    },
+    {
+      "evalId": "EV27",
+      "artifactCitationDefects": []
+    },
+    {
+      "evalId": "EV28",
+      "artifactCitationDefects": []
+    }
+  ]
+}

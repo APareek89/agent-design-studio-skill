@@ -85,6 +85,14 @@ class ScoreTests(unittest.TestCase):
         (self.folder/'tests.log').write_text('Ran 70 tests in 1.0s\nOK\n')
         t=json.loads((self.folder/'test-evidence.json').read_text());t.update(log='tests.log',sourceHashes=self.hashes('tests.log','design.json'));self.write('test-evidence.json',t)
         self.assertFalse(self.run_score()['S10']['pass'])
+    def test_identical_final_round_snapshot_is_not_a_missing_failed_round(self):
+        review=make_review();self.write('review-round-1.json',review)
+        self.write('run-report.json',{'mode':'standard','reviewRounds':['review-round-1.json','review.json']})
+        self.assertTrue(self.run_score()['S9']['pass'])
+        review['limitations'].append('Different record under same ordinal.')
+        self.write('review-round-1.json',review)
+        self.assertFalse(self.run_score()['S9']['pass'])
+
     def test_known_unresolved_independent_major_rejects_author_pass(self):
         review=make_review();review['method']='independent-agent';review['status']='needs-work';review['dimensions'][0]['score']=2
         review['issues']=[{'id':'IR1','severity':'major','stage':'evals','itemId':'EV1','message':'A positive control is absent.','resolved':False}]

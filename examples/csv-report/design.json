@@ -5469,5 +5469,62 @@
       ],
       "assumptions": []
     }
+  },
+  "presentation": {
+    "systemSentence": "Join two daily files and list orders delivered more than one day late.",
+    "designCalls": [
+      {
+        "choice": "Use code for the join.",
+        "rejected": "A model",
+        "why": "Dates need exact rules"
+      },
+      {
+        "choice": "Save one complete report.",
+        "rejected": "Partial files",
+        "why": "Staff need clear proof"
+      },
+      {
+        "choice": "Keep the tool local.",
+        "rejected": "Remote writes",
+        "why": "The brief needs only files"
+      }
+    ],
+    "autonomy": [
+      {
+        "action": "Check and join the files",
+        "level": "acts alone"
+      },
+      {
+        "action": "Save the local report",
+        "level": "acts alone"
+      },
+      {
+        "action": "Resolve bad input files",
+        "level": "human decides"
+      }
+    ],
+    "scopeSummary": "The tool writes a local CSV. It does not send messages, forecast delays or change any order.",
+    "taskLabels": {
+      "T0": "Produce the daily operations CSV",
+      "T1": "Acquire the local run and immutable input",
+      "T2": "Validate both CSV snapshots",
+      "T3": "Join delivered orders and compute strict lateness",
+      "T4": "Publish a complete immutable report",
+      "T5": "Record completion, cancellation or owned failure"
+    },
+    "workflowLabels": {
+      "W1": "ENTRY_ACQUIRE",
+      "W2": "VALIDATE",
+      "W3": "JOIN_RENDER",
+      "W4": "STAGE_PUBLISH",
+      "W6": "RECONCILE",
+      "W9": "COMPLETE",
+      "W10": "CANCELLED",
+      "W11": "BLOCKED"
+    }
+  },
+  "runOptions": {
+    "mode": "standard",
+    "interactive": false
   }
 }

@@ -1,0 +1,156 @@
+{
+  "status": "pass",
+  "scope": "Local JSON/hash/provenance consistency audit; no business assertions executed",
+  "checks": [
+    {
+      "evalId": "EV1",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV2",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV3",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV4",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV5",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV6",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV7",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV8",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV9",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV10",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV11",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV12",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV13",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV14",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV15",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV16",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV17",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV18",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV22",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV23",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV24",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV25",
+      "payloadHash": "intentional-mismatch",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV26",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV27",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV28",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV29",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV30",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV31",
+      "payloadHash": "coherent",
+      "sourceVersion": "coherent"
+    },
+    {
+      "evalId": "EV32",
+      "payloadHash": "coherent",
+      "sourceVersion": "intentional-negative"
+    },
+    {
+      "evalId": "EV33",
+      "payloadHash": "coherent",
+      "sourceVersion": "intentional-negative"
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "method": "self-review",
+  "round": 4,
+  "status": "pass",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1/CTX3 and T1-T5 bound draft-only inpatient review and owned pending outcomes."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "T1-T5 link C1-C7/W1-W8 and EV1-EV20; FM links derived in both directions."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W4 timeout/unknown to W5; W5 bounded reads; W6 proof before W7; W8 owns unresolved outcomes."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C1-C7 typed contracts separate read, draft-write and readback; H3 marks adapter capability unverified.",
+        "C1/C3 specify visible-only extraction, exact source-span/clause validation and proposed PR1. EV21-EV28 cover repairs; EV20 includes them; fixtures inspected by artifact-fixture-check.json, not a business harness.",
+        "Proof/assertion refinement: Every write-class golden now has exact typed writes equality and writer/forbidden-effect linkage, in addition to existing assertions.; W6 exposes and checks an exact trusted string record ID; alternatives are bound in the actual workflow contract."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C3 uses approved policy and human-verified facts; C4 cannot pay/deny; C6 durable assignment proof.",
+        "C1/C3 specify visible-only extraction, exact source-span/clause validation and proposed PR1. EV21-EV28 cover repairs; EV20 includes them; fixtures inspected by artifact-fixture-check.json, not a business harness."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1-H6 mark proposed scope, rules, ownership, privacy and budgets; no clinical/legal claims.",
+        "C1/C3 specify visible-only extraction, exact source-span/clause validation and proposed PR1. EV21-EV28 cover repairs; EV20 includes them; fixtures inspected by artifact-fixture-check.json, not a business harness."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1-F4 select code worker; reject in-memory and unconstrained agents; candidates explicitly unverified."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 gives W2-only calls 1.05 expected/2 maximum, USD .0378 illustrative and fallback."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM7 specific subject, policy, room-cap, injection, duplicate, uncertainty and queue risks, owner gates."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 3,
+      "evidence": [
+        "EV1-EV17 self-contained synthetic fixtures, EV18 held-out, EV19 operations and EV20 inclusion assertions.",
+        "C1/C3 specify visible-only extraction, exact source-span/clause validation and proposed PR1. EV21-EV28 cover repairs; EV20 includes them; fixtures inspected by artifact-fixture-check.json, not a business harness.",
+        "Proof/assertion refinement: Every write-class golden now has exact typed writes equality and writer/forbidden-effect linkage, in addition to existing assertions.; W6 exposes and checks an exact trusted string record ID; alternatives are bound in the actual workflow contract."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1-R7 define denominators, baseline, mean-test power plan, cluster assignment and assist-only scale."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 3,
+      "evidence": [
+        "X1 and milestones select exact contracts; no final claim writes or fabricated launch evidence.",
+        "C1/C3 specify visible-only extraction, exact source-span/clause validation and proposed PR1. EV21-EV28 cover repairs; EV20 includes them; fixtures inspected by artifact-fixture-check.json, not a business harness.",
+        "Proof/assertion refinement: Every write-class golden now has exact typed writes equality and writer/forbidden-effect linkage, in addition to existing assertions.; W6 exposes and checks an exact trusted string record ID; alternatives are bound in the actual workflow contract."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "IR1",
+      "severity": "major",
+      "stage": "components",
+      "itemId": "C3",
+      "message": "Added explicit proposed PR1 ratio, class scope, rounding/order and missing-rule fallbacks; EV21-EV23/EV28 specify positive, boundary and prohibited amount branches. Insurer sign-off still required under H2.",
+      "resolved": true
+    },
+    {
+      "id": "IR2",
+      "severity": "major",
+      "stage": "components",
+      "itemId": "C2",
+      "message": "C3 independently checks authorized immutable page, exact quote span and applicable clause before save; EV24-EV26 isolate forged references; C1 visible-only OCR and EV27 exclude hidden layers.",
+      "resolved": true
+    },
+    {
+      "id": "IR3",
+      "severity": "minor",
+      "stage": "evals",
+      "itemId": "EV17",
+      "message": "Admission July 1 and discharge July 3 now preserve valid chronology while alternate hospital admission June 30 tests the intended source conflict.",
+      "resolved": true
+    }
+  ],
+  "limitations": [
+    "Self-review by design author; independent reviewer has not evaluated these files.",
+    "Schema and semantic declarations do not execute business controls or establish provenance truth.",
+    "Synthetic policy, proposed API support, privacy rules and human queue SLA require H1-H5 owner evidence.",
+    "No live claim, medical advice, final decision, cost quote or measured savings is represented.",
+    "Human review resolution is outside the first-release workflow; the existing insurer queue must prove H5 assignment, acknowledgement and overdue alerts. Packet-ready is not claim approved.",
+    "Prior independent review is preserved verbatim; this repaired revision has only author self-review until a separate reviewer inspects it.",
+    "PR1 is a hypothetical test-only linked-charge formula; no insurer approval, legal interpretation or policy truth is claimed.",
+    "This root-agent refinement strengthens typed assertions/proof bindings; independent review of the revised artifact remains pending. No business assertions executed."
+  ]
+}

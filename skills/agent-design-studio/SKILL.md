@@ -48,7 +48,7 @@ Split the coding context into `build/00-overview.md` and milestone files selecti
 
 ## Review and repair
 
-Read [quality-rubric.json](references/quality-rubric.json). If the host can start a separate agent within the task's allowed resources, use a fresh reviewer with only the brief, output files and rubric, **without the author's reasoning or proposed verdict**. Label that actual review `independent-agent`. If delegation is unavailable, use and label `self-review`. Do not claim independent grading from a different role in the same process.
+Read [quality-rubric.json](references/quality-rubric.json). If the host can start a separate agent within the task's allowed resources, use a fresh reviewer with only the brief, `design.json`, actual source evidence and rubric, **without the author's reasoning or proposed verdict**. Withhold `review.json`, `validation.json`, author scripts/history and prior assessments for the first review; `validation.json` embeds the author review. Inspect exports/PDF after the independent findings or use a separate visual grader. Label that actual review `independent-agent`. If delegation is unavailable, use and label `self-review`. Do not claim independent grading from a different role in the same process.
 
 Inspect contracts and effective fixtures, not only titles and IDs. Run:
 

@@ -1,0 +1,202 @@
+{
+  "status": "passed",
+  "checks": [
+    "31 golden input/expected/passRule objects parsed; all self-contained",
+    "31 payload hashes checked: EV6 intentionally invalid, other 30 valid",
+    "18 workflow JSON state contracts parsed",
+    "all-category FMEA/evaluation relations reciprocal",
+    "10 required canonical/review/companion artifacts nonempty",
+    "no PDF generated"
+  ],
+  "fixtures": [
+    {
+      "evalId": "EV1",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 5
+    },
+    {
+      "evalId": "EV2",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV3",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV4",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV5",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 2
+    },
+    {
+      "evalId": "EV6",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "intentional mismatch",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV7",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV8",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV9",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV10",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV11",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV12",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV13",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV14",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV15",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV16",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 5
+    },
+    {
+      "evalId": "EV17",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV18",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV19",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV20",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV21",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV22",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV23",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV24",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV25",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV26",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV27",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV28",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 3
+    },
+    {
+      "evalId": "EV32",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV33",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    },
+    {
+      "evalId": "EV34",
+      "jsonObjectsParsed": true,
+      "canonicalPayloadHash": "matches",
+      "assertionCount": 4
+    }
+  ],
+  "limitations": [
+    "These are artifact consistency checks, not execution of proposed financial/identity/queue controls or model accuracy tests."
+  ]
+}

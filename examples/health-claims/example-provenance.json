@@ -1,0 +1,7 @@
+{
+  "source": "evals/iterations/05/health-claims",
+  "type": "feedback-refined synthetic design, not untouched transfer",
+  "designSha256": "24a23210fff216b5fb69bb9ed7a887fddec25781497e177f9dd4fc1b036f8233",
+  "reviewMethod": "independent-agent",
+  "businessAssertionsExecuted": false
+}

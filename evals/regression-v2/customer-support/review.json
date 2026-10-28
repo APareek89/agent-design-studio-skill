@@ -1,0 +1,131 @@
+{
+  "method": "independent-agent",
+  "round": 1,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1-CTX3 and T0-T4 bound staff-reviewed supplied-evidence work, exclusions and exception/cancellation outputs."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "Stable task/component/workflow/eval IDs are present; independently recomputed FMEA/eval reciprocity has zero discrepancies. No external-source verification is claimed."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 2,
+      "evidence": [
+        "W1-W5 provide exclusive evidence paths and bounded retries, but C4 requires a local receipt before ready while C5 later creates it; no upstream receipt producer/binding is specified."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 2,
+      "evidence": [
+        "C3 draft schema names text/citations; C4.checked and C5.handoff do not carry that draft or a specified retrievable artifact-content contract. EV1 output payload fields lack typed producer bindings."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "F2 excludes business write credentials; C1 checks current scope and C4 rechecks it. H3 bounds retention proposal and logs are minimized/redacted; manual review retains authority."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1-H5 distinguish scope, adapter, staffing, retention, budget and target hypotheses from user brief. All fixtures are labelled synthetic and unexecuted."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1 chooses simple state machine over free tool agent/multi-agent chain; F3 compares scoped read/region/retention/audit/operations/price for unverified cloud/self-hosted patterns."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 maps solely to C3/W3, max one call/no retry, 30-second deadline; 4000*1/1e6+800*4/1e6=$0.0072 and 100 cases=$0.72. Provider prices and volume explicitly illustrative."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM13 have hypothetical S/O/D scales, owners and release gates; customer subject/policy/refund failures are concrete."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "All 14 complete small golden inputs/expectations inspected. EV5/EV7/EV9/EV14 assert zero model calls yet retain ordered mockSequence with model invocation; EV1/EV17 model outputs are prose rather than exact response payloads. No harness executed."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1 defines weekly active-minute denominator; R2-R5 define shadow/pilot entry/exit, owner/manual fallback, randomized source-family strata, contamination control and baseline-driven power method."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "Iteration 6 PDF pages 6/10 now summarize actual architecture and rollout data; IA4 resolved after direct visual inspection. D12 remains 2 because companions/handoff preserve the unresolved C3-C5 content/receipt gaps in IA1/IA2."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "IA1",
+      "severity": "major",
+      "stage": "components",
+      "itemId": "C4",
+      "message": "C4 requires an artifact receipt before ready but C5 creates the local receipt after C4. Specify the exact upstream producer, persistence contract and binding (or move receipt generation before the check), including unavailable handling; keep W1/W2 exception paths coherent.",
+      "resolved": false
+    },
+    {
+      "id": "IA2",
+      "severity": "major",
+      "stage": "components",
+      "itemId": "C5",
+      "message": "Successful handoffInput only carries C4.checked metadata, while checked omits the draft text/claim citations and typed domain result. C5 output also lacks review content. Preserve a fully typed reviewedArtifact payload or specify content storage/retrieval by artifactId, freshness/hash binding and domain fields from producer to terminal output. Declare category enum as an actual produced field; EV1 expects category delivery.",
+      "resolved": false
+    },
+    {
+      "id": "IA3",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV5",
+      "message": "EV5, EV7, EV9 and EV14 expect zero/additional-zero model calls yet mockSequence contains model -> source-grounded draft and passRule says verify ordered mocks. EV1/EV17 give prose model responses rather than typed concrete candidates, so a harness must invent payloads. Separate configured responses from expected invocation traces, supply exact candidate outputs and define forbidden calls explicitly.",
+      "resolved": false
+    },
+    {
+      "id": "IA4",
+      "severity": "major",
+      "stage": "export",
+      "itemId": "X1",
+      "message": "Resolved by final iteration 6 reader export: actual PDF page 6 now displays F1-F3 choices/rejected alternatives/tradeoffs/access; page 10 displays R1-R5 measures, phase owners, gates and experiment summaries. Viewed actual 72 dpi pages; full source fields are present in PRD.md. Remaining contract/eval findings are unaffected.",
+      "resolved": true
+    }
+  ],
+  "limitations": [
+    "Independent agent design judgement against canonical source contracts and fixtures; no business assertions, provider, network, integration or deployment executed.",
+    "All operational owners, policies, quality targets and adapters remain proposals or launch blockers as labelled H1-H5.",
+    "Incidental exposure: validation.json contains an embedded author review. Major findings were formed and reported before that read; author reasoning and scripts were not used to derive scores.",
+    "Actual final iteration 6 PDF pages 2, 3, 6 and 10 visually inspected using pdftoppm at 72 dpi/native size; other PDF pages inspected through text."
+  ]
+}

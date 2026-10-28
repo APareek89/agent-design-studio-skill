@@ -1,0 +1,131 @@
+{
+  "method": "self-review",
+  "round": 1,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1/CTX3 and T1\u2013T4.3 bound an assist-only inpatient workflow with owned holds/cancellation."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "All 10 risk links derive reciprocally from 25 evaluation records; leaf/component/workflow IDs are explicit."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 2,
+      "evidence": [
+        "W8/W10/W11 cover unknown local commits, but initial decision fields violate boolean schema."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 2,
+      "evidence": [
+        "C1\u2013C7 contracts define enums and writers; initial C2 admission-date source and C5 event persistence need precision."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 2,
+      "evidence": [
+        "No payment/denial authority; C6 fresh checks and isolation. W13 blocked-record service identity needs clarification."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 4,
+      "evidence": [
+        "H1\u2013H9 distinguish synthetic policy, prices and launch prerequisites; no live advice claimed."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1\u2013F5 choose DB state machine and single model; compare cloud categories on same criteria as unverified candidates."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 derives .84 calls/case and $32.256/1000, bounded schema retries; token overflow needs explicit disposition."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1\u2013FM10 describe temporal coverage, room cap, identity, prompt injection, duplicates, unknown commits and queue failure."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "EV1\u2013EV22 are full resolved records, but hash placeholders and model mock payloads omit exact spans/digests. Additional proposed rejection control missing."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1\u2013R6 state baseline, causal metrics, noncircular phase entry and powered cluster experiment."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "X1 preserves assist scope, but type/fixture fixes must propagate before structural export."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISSUE1",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W1",
+      "message": "All W data.decision values are prose strings instead of required booleans. Fix type and retain exclusivity prose in description; structural validation fails.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE2",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV14",
+      "message": "Fixtures use symbolic hash strings, no exact canonical persist payload/digest and incomplete model outputs; implementer must invent material test data. Resolve actual spans/hashes and command payloads; add rejection proposal positive control.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE3",
+      "severity": "major",
+      "stage": "components",
+      "itemId": "C2",
+      "message": "Date needed to select policy before model extraction lacks a concrete normalized parser path; C5 human event persistence and W13 revoked-principal blocked audit need defined service ownership.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE4",
+      "severity": "minor",
+      "stage": "models",
+      "itemId": "M1",
+      "message": "12k token budget vs page bound requires explicit overflow hold rather than silent truncation.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Host-model self-review, not independent review or stakeholder approval.",
+    "Frozen v1 schema/reference checks only; no business harness, provider, medical-data processing, live API or production control executed.",
+    "All insurer rules, roles, thresholds, budgets and cloud candidates are proposals or synthetic fixtures. H1-H6/H9 require verification before real data.",
+    "PDF deliberately deferred by parent evaluation instruction; companion export is not PDF completion."
+  ]
+}

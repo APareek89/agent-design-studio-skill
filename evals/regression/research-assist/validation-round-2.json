@@ -1,0 +1,25 @@
+{
+  "semanticCoverage": "verified-declarations",
+  "valid": true,
+  "status": "structural-pass",
+  "errors": [],
+  "warnings": [],
+  "counts": {
+    "context": 3,
+    "tasks": 6,
+    "components": 5,
+    "workflow": 5,
+    "framework": 3,
+    "models": 1,
+    "fmea": 13,
+    "evals": 17,
+    "rollout": 5,
+    "export": 1
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ]
+}

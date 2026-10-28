@@ -1,0 +1,154 @@
+{
+  "id": "agent-design-studio-skill-v1",
+  "version": "1.0",
+  "purpose": "Bounded review of a brief-only proposed system design; not production certification.",
+  "scale": {
+    "0": "Absent, contradictory or unsafe.",
+    "1": "Named only; substantial omissions prevent implementation or credible validation.",
+    "2": "Useful partial design; at least one material ambiguity or missing condition remains.",
+    "3": "Implementation-ready within explicitly bounded assumptions; every required element is concrete and traceable, with only minor non-blocking limitations.",
+    "4": "Comprehensive and precise: boundary and negative cases, alternatives, recovery and objective evidence are explicit; implementation and verification require no material design invention."
+  },
+  "dimensions": [
+    {
+      "id": "D1",
+      "name": "Scope and task completeness",
+      "checks": [
+        "Business decision, actor, start/end conditions, non-goals and success outputs are explicit.",
+        "Task outcomes partition the stated work without overlaps or example-as-task inflation; sequence versus choice is coherent.",
+        "Missing input, unsupported request, human disposition, cancellation and terminal outcomes exist where relevant."
+      ]
+    },
+    {
+      "id": "D2",
+      "name": "Traceability and provenance",
+      "checks": [
+        "Every included leaf reaches components, workflow and verification; every component is used or justified.",
+        "All referenced IDs exist and refer to the intended responsibility; failure-mode-to-eval links are reciprocal and semantically correct.",
+        "Context facts, hypotheses and exact upload passages are distinguished; thresholds and vendor claims carry honest evidence boundaries.",
+        "Current canonical scope and stable IDs are consistent across dependent revisions."
+      ]
+    },
+    {
+      "id": "D3",
+      "name": "Workflow state and recovery",
+      "checks": [
+        "Reachable entry and explicit terminal states exist.",
+        "Every edge has a predicate, exclusivity/precedence or fan-out/join meaning; loops have bounded exits.",
+        "State transitions, timeout, retries, human queues, cancellation and uncertain external commit outcomes are defined.",
+        "Concurrency, version checks, idempotency and read-after-write reconciliation prevent duplicated or stale actions."
+      ]
+    },
+    {
+      "id": "D4",
+      "name": "Component and tool contracts",
+      "checks": [
+        "Every agent has bounded judgement responsibility and a typed input/output contract including evidence and abstention.",
+        "Every read/write API names target resource, identifiers, validation, response/error shapes and record proof.",
+        "Human triggers define queue, owner, SLA, acknowledgement and escalation.",
+        "No coding agent must invent a material API or payload field to implement an approved design."
+      ]
+    },
+    {
+      "id": "D5",
+      "name": "Authority, privacy and deterministic controls",
+      "checks": [
+        "Money, dates, policy, caps and permissions are enforced by code; LLM output has no authority to grant writes.",
+        "Every side effect has a named actor/policy approval, least-privilege scope and fresh API enforcement bound to the intended resource/version/action.",
+        "Tenant/subject isolation, untrusted inputs, sensitive-data minimisation, audit and retention boundaries are explicit.",
+        "Completion requires durable record IDs; policy/version staleness and authorization revocation fail safely."
+      ]
+    },
+    {
+      "id": "D6",
+      "name": "Uncertainty and context quality",
+      "checks": [
+        "No invented operational volumes, policy thresholds, regulatory interpretation or live vendor facts presented as established.",
+        "Missing facts are explicit hypotheses/questions with safe defaults or launch blockers.",
+        "Conflicting evidence, insufficient evidence and ambiguous intent lead to clarification/abstention/human routing.",
+        "Synthetic test facts and illustrative budgets/prices are clearly labelled."
+      ]
+    },
+    {
+      "id": "D7",
+      "name": "Architecture and vendor decision",
+      "checks": [
+        "Architecture choice follows workflow state/durability/approval needs and includes a rejected alternative.",
+        "Relevant orchestration options use identical criteria; simple deterministic systems may need no framework.",
+        "Tools/permissions and data categories compare AWS/GCP/Azure/open-source alternatives fairly.",
+        "Tradeoffs, constraints, operational ownership and evidence boundaries support a defensible selection."
+      ]
+    },
+    {
+      "id": "D8",
+      "name": "Model allocation and cost realism",
+      "checks": [
+        "Exactly one plan exists for every LLM judgement component with bounded role, tier rationale and rejected tier.",
+        "Calls, input/output tokens and prices are explicitly illustrative or measured; arithmetic and units are reproducible.",
+        "Retries, long context, escalation/fallback, peak latency and evaluation assumptions are addressed.",
+        "Fine-tuning requires labelled failure evidence and held-out improvement criteria."
+      ]
+    },
+    {
+      "id": "D9",
+      "name": "Case-specific risk analysis",
+      "checks": [
+        "Failures name concrete cause, effect and affected tasks/components for this use case.",
+        "Wrong subject, stale policy/data, duplicate/concurrent write, prompt injection, tool timeout/uncertain commit, false completion and human queue failure are covered where relevant.",
+        "Severity/occurrence/detection scoring has a clear scale and honest uncertainty; high-severity action ownership is explicit.",
+        "Every unaccepted risk has a specific preventive/detective control, KPI and linked test that actually exercises it."
+      ]
+    },
+    {
+      "id": "D10",
+      "name": "Executable evaluation and coverage",
+      "checks": [
+        "Golden cases contain concrete fixtures, inputs, exact expected records/actions and mechanically checkable pass rules.",
+        "Each unaccepted failure and high-risk leaf has a substantive test; IDs alone do not count as semantic coverage.",
+        "Boundary, negative, adversarial, concurrency, timeout/retry and recovery tests are included.",
+        "Component and end-to-end test sets, labelling, representative strata, online monitor, cadence, release gates and stop conditions are concrete."
+      ]
+    },
+    {
+      "id": "D11",
+      "name": "KPI causality and rollout governance",
+      "checks": [
+        "Business KPIs have definitions, denominator/window and honest baseline/target status; AI metrics have an explicit causal mechanism and guardrail.",
+        "Shadow, assist, pilot and scale have accountable owners, objective gates, minimum evidence and rollback/stop actions.",
+        "Experiment specifies randomisation unit, baseline, stratification/contamination control, duration and sample-size method rather than unsupported sample numbers.",
+        "Safety events cannot be masked by average quality gains; owner accepts residual risk explicitly."
+      ]
+    },
+    {
+      "id": "D12",
+      "name": "Export implementability and coherence",
+      "checks": [
+        "Build instructions and acceptance criteria cover data/state model, APIs, controls, monitoring, tests and rollout without introducing new scope.",
+        "Architecture, handoff, eval and FMEA artifacts agree with the canonical design and preserve IDs.",
+        "A competent implementer can identify missing external contracts and launch blockers without inventing design decisions.",
+        "No claim that a reviewed design, synthetic case or heuristic score proves production correctness."
+      ]
+    }
+  ],
+  "severity": {
+    "critical": "Design permits unauthorized/wrong-subject/duplicate irreversible action, fabricates successful completion, or bypasses deterministic authority; production-safety blocker.",
+    "major": "Material completeness, implementability, traceability or evaluation gap; prevents passing the affected dimension at 3.",
+    "minor": "Useful precision or evidence improvement that does not require a material implementation decision.",
+    "observation": "Explicit limitation or non-blocking follow-up."
+  },
+  "passRule": {
+    "allDimensionsAtLeast": 3,
+    "maximumCritical": 0,
+    "maximumUnresolvedMajor": 0,
+    "brokenTraceabilityAllowed": false,
+    "mustDeclareLimitations": true,
+    "aggregateScoreNeverOverridesDimensionOrSafetyFailure": true,
+    "mustPassBundledStructuralChecks": true
+  },
+  "method": "Inspect canonical design and brief against D1-D12, citing IDs and evidence. Repair and re-review for at most three revision rounds. Label independent-agent only for a different evaluator, otherwise self-review. Never lower thresholds.",
+  "limitations": [
+    "Scores are AI judgement, not measured accuracy, compliance or production evidence.",
+    "Designs cannot establish actual API support, policy legality, savings or live provider reliability.",
+    "Structural checks verify format and references; golden assertions remain specifications until the business harness executes them."
+  ]
+}

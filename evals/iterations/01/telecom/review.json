@@ -1,0 +1,114 @@
+{
+  "method": "self-review",
+  "round": 2,
+  "status": "pass",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1-CTX3 distinguish eligible service credits from manual cash refunds/invoice correction; T0-T4 cover checked scope, investigation, exclusive route and proof."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "All leaf tasks map to components, W nodes and golden evals; FM eval lists derived from actual EV relations including monitoring/release. Exact brief retained; H1-H5 distinguish proposed policies from facts."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 3,
+      "evidence": [
+        "W6 notice branch has bounded ENTRY/H24 sequence and 48h terminal ownership; W9 uncertain outcomes go exclusively to W10; only definitive absence re-enters W8 once with stable operationId."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 3,
+      "evidence": [
+        "C1-C10 declare scope, input/output enums, immutable plan fields, adapter outcomes, proof and human events. H2 makes real provider contracts a prerequisite. C8 malformed success is normalized UNKNOWN_COMMIT per X1."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C1 scope before C2; C7/C8 active/version/revocation checks and atomic eventKey uniqueness. C3 produces explanation/disposition only. W11 verifies postingId and matching receipt before W13."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1-H4 clearly block launch pending policy, API, queue and privacy verification; H5 prices/volume labelled illustrative. C2/C4 abstain on missing/conflicting records."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1 chooses durable code workflow versus planner and request handler using wait/recovery needs. F2-F4 assign state, privileges and coherent cloud/open-source candidates with unverified status."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 only for C3: expected1.1/max2 attempts,2000/300 tokens,$1/$4 illustrative prices,$0.00352/case and$35.20/10000. Standard/reasoning and tuning choices tied to evidence."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM9 cover wrong service, stale authority, duplicate/concurrent writes, unknown posting, injection, false proof, waiting failure, contradictions and cancellation. Each has owner/release gate and specific golden coverage."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 3,
+      "evidence": [
+        "EV1-EV20 are self-contained JSON fixtures with exact expected effects and pass assertions, both polarities for service_credit; EV11 now scripts hidden provider absence while preserving visible uncertainty. EV21-EV23 define offline, monitoring and full release execution; no claim they ran."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1 denominators/windows and baseline collection precede effect claims. R2-R5 use distinct entry/exit gates. R6 account randomization, strata, follow-up, two-proportion power and cluster correction are explicit. Safety veto separate from averages."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 3,
+      "evidence": [
+        "X1 and milestones01-03 derive scope, selected component/branch/test contracts and launch blockers. Export validated; full fixtures remain in indexed companion. Live execution and HTML excluded until separate authority/opt-in."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISSUE1",
+      "severity": "major",
+      "stage": "framework",
+      "itemId": "F1",
+      "message": "Repaired F1-F4 alternatives to arrays; complete validator now passes. M1 nonempty description also repaired after validator finding.",
+      "resolved": true
+    },
+    {
+      "id": "ISSUE2",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV11",
+      "message": "Fixture now specifies providerHiddenOutcome.committed=false, invisible to assistant; ambiguity still freezes event key and forbids subsequent POST. Actual eval and semantic fixture remain identical.",
+      "resolved": true
+    }
+  ],
+  "limitations": [
+    "Self-review is AI judgement, not independent review or stakeholder approval. Root is obtaining a separate review.",
+    "Validator passes schema and declared semantic invariants only; no business assertions, adapters, model behavior, staffing, costs or production reliability have been executed or verified.",
+    "H1-H4 are live-launch blockers. H5 cost and traffic assumptions require measurement. Portal progress requires customers to revisit/poll; no SMS/email connector is included."
+  ]
+}
