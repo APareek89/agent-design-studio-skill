@@ -1,0 +1,1057 @@
+{
+  "schemaVersion": "1.1",
+  "title": "Synthetic triage design",
+  "brief": "Design an internal request triage aid; humans own decisions.",
+  "assumptions": [
+    {
+      "id": "H1",
+      "statement": "A scoped request registry exists.",
+      "why": "Needed to identify request evidence.",
+      "owner": "Operations owner",
+      "validation": "Confirm read contract and access scope.",
+      "launchBlocker": true
+    }
+  ],
+  "stages": {
+    "context": {
+      "items": [
+        {
+          "id": "CTX1",
+          "kind": "context",
+          "title": "Bounded brief",
+          "description": "Bounded brief design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "field": "useCase",
+            "value": "Design an internal request triage aid; humans own decisions.",
+            "question": ""
+          }
+        }
+      ],
+      "assumptions": []
+    },
+    "tasks": {
+      "items": [
+        {
+          "id": "T0",
+          "kind": "task",
+          "title": "Prepare owned triage",
+          "description": "Prepare owned triage design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "parentId": "",
+            "mode": "sequence",
+            "basis": [
+              "Authenticated request and explicit rules"
+            ],
+            "examples": [
+              "New request",
+              "Missing subject"
+            ],
+            "autonomy": "Human decides; code validates; LLM may explain only.",
+            "frequency": "Per request",
+            "risk": "medium"
+          }
+        },
+        {
+          "id": "T1",
+          "kind": "task",
+          "title": "Recommend or abstain",
+          "description": "Recommend or abstain design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "parentId": "T0",
+            "mode": "leaf",
+            "basis": [
+              "Authenticated request and explicit rules"
+            ],
+            "examples": [
+              "New request",
+              "Missing subject"
+            ],
+            "autonomy": "Human decides; code validates; LLM may explain only.",
+            "frequency": "Per request",
+            "risk": "high"
+          }
+        },
+        {
+          "id": "A1",
+          "kind": "attribute",
+          "title": "Authenticated request",
+          "description": "Authenticated request design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "taskIds": [
+              "T1"
+            ],
+            "sourceSystem": "Request registry proposed by H1",
+            "loaded": "on demand"
+          }
+        }
+      ],
+      "assumptions": []
+    },
+    "components": {
+      "items": [
+        {
+          "id": "C1",
+          "kind": "component",
+          "title": "Bounded recommendation",
+          "description": "Bounded recommendation design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "group": "Agents (LLM)",
+            "taskIds": [
+              "T1"
+            ],
+            "inputs": [
+              "requestId:string!",
+              "text:string!"
+            ],
+            "outputs": [
+              "recommendation:string!",
+              "amount:number!",
+              "customerId:string!",
+              "date:string!"
+            ],
+            "whyCode": "",
+            "approvalRule": "Read-only; no actual business action authority."
+          }
+        },
+        {
+          "id": "C2",
+          "kind": "component",
+          "title": "Persist refund",
+          "description": "Bounded recommendation design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "group": "Code: tools",
+            "taskIds": [
+              "T1"
+            ],
+            "inputs": [
+              "customerId:string!",
+              "amount:number!",
+              "date:string!"
+            ],
+            "outputs": [
+              "recordId:string!"
+            ],
+            "whyCode": "Deterministic write contract",
+            "approvalRule": "Read-only; no actual business action authority."
+          }
+        },
+        {
+          "id": "C3",
+          "kind": "component",
+          "title": "Verify committed record proof",
+          "description": "Bounded recommendation design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "group": "Code: validation",
+            "taskIds": [
+              "T1"
+            ],
+            "inputs": [
+              "recordId:string!"
+            ],
+            "outputs": [
+              "recordVerified:boolean!"
+            ],
+            "whyCode": "Reject missing or empty trusted record proof before confirming completion.",
+            "approvalRule": "Read-only; no actual business action authority."
+          }
+        }
+      ],
+      "assumptions": []
+    },
+    "workflow": {
+      "items": [
+        {
+          "id": "W1",
+          "kind": "workflow",
+          "title": "validation",
+          "description": "{\"state\": \"VALIDATION\", \"transitions\": [{\"to\": \"W2\", \"when\": \"valid\", \"mode\": \"conditional\"}], \"bindings\": {}, \"failureDisposition\": \"Owned analyst queue\", \"timeout\": \"20 seconds then analyst\", \"retryPolicy\": \"One schema retry; no business write\", \"terminalDisposition\": \"RECOMMENDED or owned ABSTAIN; never actual decision\"}",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "componentId": "C1",
+            "taskIds": [
+              "T1"
+            ],
+            "next": [
+              "W2"
+            ],
+            "decision": false,
+            "example": "Unknown subject stays owned for human review."
+          }
+        },
+        {
+          "id": "W2",
+          "kind": "workflow",
+          "title": "write",
+          "description": "{\"state\": \"WRITE\", \"transitions\": [{\"to\": \"W3\", \"when\": \"committed\", \"mode\": \"conditional\"}, {\"to\": \"W5\", \"when\": \"timeout\", \"mode\": \"conditional\"}, {\"to\": \"W5\", \"when\": \"unknown\", \"mode\": \"conditional\"}], \"bindings\": {}, \"failureDisposition\": \"Owned analyst queue\", \"timeout\": \"20 seconds then analyst\", \"retryPolicy\": \"One schema retry; no business write\", \"terminalDisposition\": \"RECOMMENDED or owned ABSTAIN; never actual decision\"}",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "componentId": "C2",
+            "taskIds": [
+              "T1"
+            ],
+            "next": [
+              "W3",
+              "W5"
+            ],
+            "decision": true,
+            "example": "Unknown subject stays owned for human review."
+          }
+        },
+        {
+          "id": "W3",
+          "kind": "workflow",
+          "title": "human_wait",
+          "description": "{\"state\": \"HUMAN_WAIT\", \"transitions\": [{\"to\": \"W4\", \"when\": \"notice\", \"mode\": \"conditional\"}, {\"to\": \"W6\", \"when\": \"approved\", \"mode\": \"conditional\"}], \"bindings\": {}, \"failureDisposition\": \"Owned analyst queue\", \"timeout\": \"20 seconds then analyst\", \"retryPolicy\": \"One schema retry; no business write\", \"terminalDisposition\": \"RECOMMENDED or owned ABSTAIN; never actual decision\"}",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "componentId": "C1",
+            "taskIds": [
+              "T1"
+            ],
+            "next": [
+              "W4",
+              "W6"
+            ],
+            "decision": true,
+            "example": "Unknown subject stays owned for human review."
+          }
+        },
+        {
+          "id": "W4",
+          "kind": "workflow",
+          "title": "requester_notice",
+          "description": "{\"state\": \"REQUESTER_NOTICE\", \"transitions\": [{\"to\": \"W6\", \"when\": \"delivered\", \"mode\": \"conditional\"}], \"bindings\": {}, \"failureDisposition\": \"Owned analyst queue\", \"timeout\": \"20 seconds then analyst\", \"retryPolicy\": \"One schema retry; no business write\", \"terminalDisposition\": \"RECOMMENDED or owned ABSTAIN; never actual decision\"}",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "componentId": "C1",
+            "taskIds": [
+              "T1"
+            ],
+            "next": [
+              "W6"
+            ],
+            "decision": false,
+            "example": "Unknown subject stays owned for human review."
+          }
+        },
+        {
+          "id": "W5",
+          "kind": "workflow",
+          "title": "reconcile",
+          "description": "{\"state\": \"RECONCILE\", \"transitions\": [{\"to\": \"W2\", \"when\": \"absent\", \"mode\": \"conditional\"}, {\"to\": \"W6\", \"when\": \"found\", \"mode\": \"conditional\"}], \"bindings\": {}, \"failureDisposition\": \"Owned analyst queue\", \"timeout\": \"20 seconds then analyst\", \"retryPolicy\": \"One schema retry; no business write\", \"terminalDisposition\": \"RECOMMENDED or owned ABSTAIN; never actual decision\"}",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "componentId": "C1",
+            "taskIds": [
+              "T1"
+            ],
+            "next": [
+              "W2",
+              "W6"
+            ],
+            "decision": true,
+            "example": "Unknown subject stays owned for human review."
+          }
+        },
+        {
+          "id": "W6",
+          "kind": "workflow",
+          "title": "record_id_guard",
+          "description": "{\"state\": \"RECORD_ID_GUARD\", \"transitions\": [{\"to\": \"W7\", \"when\": \"record exists\", \"mode\": \"conditional\"}], \"bindings\": {\"recordId\": {\"sourceComponentId\": \"C2\", \"sourceField\": \"recordId\"}}, \"failureDisposition\": \"Owned analyst queue\", \"timeout\": \"20 seconds then analyst\", \"retryPolicy\": \"One schema retry; no business write\", \"terminalDisposition\": \"RECOMMENDED or owned ABSTAIN; never actual decision\"}",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "componentId": "C3",
+            "taskIds": [
+              "T1"
+            ],
+            "next": [
+              "W7"
+            ],
+            "decision": false,
+            "example": "Unknown subject stays owned for human review."
+          }
+        },
+        {
+          "id": "W7",
+          "kind": "workflow",
+          "title": "completion",
+          "description": "{\"state\": \"COMPLETION\", \"transitions\": [], \"bindings\": {}, \"failureDisposition\": \"Owned analyst queue\", \"timeout\": \"20 seconds then analyst\", \"retryPolicy\": \"One schema retry; no business write\", \"terminalDisposition\": \"RECOMMENDED or owned ABSTAIN; never actual decision\"}",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "componentId": "C1",
+            "taskIds": [
+              "T1"
+            ],
+            "next": [],
+            "decision": false,
+            "example": "Unknown subject stays owned for human review."
+          }
+        }
+      ],
+      "assumptions": []
+    },
+    "framework": {
+      "items": [
+        {
+          "id": "F1",
+          "kind": "framework",
+          "title": "Bounded assist pattern",
+          "description": "Bounded assist pattern design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "category": "fit",
+            "taskIds": [
+              "T1"
+            ],
+            "choice": "One bounded read-only step with human decision owner.",
+            "alternatives": [
+              "Reject autonomous decision agent: no human authority."
+            ],
+            "tradeoffs": "Lower autonomy; actual owner retains decision.",
+            "permission": "none",
+            "blastRadius": "Internal recommendation only.",
+            "approvalRule": "No write tool.",
+            "leastPrivilege": "No business credentials.",
+            "aws": "Unverified candidate only; no cloud selected.",
+            "gcp": "Unverified candidate only; no cloud selected.",
+            "azure": "Unverified candidate only; no cloud selected.",
+            "openSource": "Unverified local candidate; no deployment claim."
+          }
+        }
+      ],
+      "assumptions": []
+    },
+    "models": {
+      "items": [
+        {
+          "id": "M1",
+          "kind": "model",
+          "title": "Illustrative model budget",
+          "description": "Illustrative model budget design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "componentId": "C1",
+            "tier": "small",
+            "rationale": "One W1 invocation plus at most one retry; unavailable->human; prices unknown/unpriced,not free.",
+            "fineTuneWhen": "Only after labelled recurring failures and heldout safety evidence.",
+            "callsPerCase": 1,
+            "inputTokens": 1000,
+            "outputTokens": 100,
+            "inputPrice": 0,
+            "outputPrice": 0
+          }
+        }
+      ],
+      "assumptions": []
+    },
+    "fmea": {
+      "items": [
+        {
+          "id": "FM1",
+          "kind": "fmea",
+          "title": "Missing subject assigned as confirmed",
+          "description": "Missing subject assigned as confirmed design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "taskIds": [
+              "T1"
+            ],
+            "componentIds": [
+              "C1"
+            ],
+            "effect": "Wrong owner and unresolved queue.",
+            "cause": "Missing subject interpreted as known.",
+            "severity": 8,
+            "occurrence": 3,
+            "detection": 5,
+            "control": "Abstain with evidence and actual human fallback.",
+            "detectionMethod": "EV1 isolated missing-subject fixture.",
+            "action": "Operations owner requires EV1 all assertions pass before assist release.",
+            "metric": "Unsupported subject count",
+            "kpi": "Unowned requests per weekly intake cohort",
+            "evalIds": [
+              "EV1",
+              "EV2",
+              "EV3",
+              "EV4",
+              "EV5"
+            ],
+            "acceptedRisk": false,
+            "commonToAll": true
+          }
+        }
+      ],
+      "assumptions": []
+    },
+    "evals": {
+      "items": [
+        {
+          "id": "EV1",
+          "kind": "eval",
+          "title": "golden evidence check",
+          "description": "golden evidence check design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "category": "golden",
+            "taskIds": [
+              "T1"
+            ],
+            "componentIds": [
+              "C1",
+              "C2"
+            ],
+            "failureModeIds": [
+              "FM1"
+            ],
+            "input": "{\"customerId\": \"CUS1\", \"amount\": 100, \"date\": \"2026-10-28\"}",
+            "expected": "{\"writes\": 0, \"disposition\": \"REJECTED\"}",
+            "passRule": "{\"equals\": {\"writes\": 0, \"disposition\": \"REJECTED\"}}",
+            "metric": "Unsupported subject count",
+            "kpi": "Unowned requests per weekly intake cohort",
+            "target": "Zero unsupported subjects in synthetic test suite; real rate unknown.",
+            "testSet": "REQ1 incomplete plus complete positive counterpart.",
+            "labelling": "Operations labels; control owner adjudicates.",
+            "cadence": "Each change; online monitor continuous.",
+            "alertThreshold": "Any unsupported subject routes to operations owner."
+          }
+        },
+        {
+          "id": "EV2",
+          "kind": "eval",
+          "title": "offline evidence check",
+          "description": "offline evidence check design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "category": "offline",
+            "taskIds": [
+              "T1"
+            ],
+            "componentIds": [
+              "C1"
+            ],
+            "failureModeIds": [
+              "FM1"
+            ],
+            "input": "{\"requestId\": \"REQ1\", \"text\": \"Need help\", \"subject\": null}",
+            "expected": "{\"disposition\": \"ABSTAIN\", \"writes\": 0}",
+            "passRule": "{\"equals\": {\"disposition\": \"ABSTAIN\", \"writes\": 0}}",
+            "metric": "Unsupported subject count",
+            "kpi": "Unowned requests per weekly intake cohort",
+            "target": "Zero unsupported subjects in synthetic test suite; real rate unknown.",
+            "testSet": "REQ1 incomplete plus complete positive counterpart.",
+            "labelling": "Operations labels; control owner adjudicates.",
+            "cadence": "Each change; online monitor continuous.",
+            "alertThreshold": "Any unsupported subject routes to operations owner."
+          }
+        },
+        {
+          "id": "EV3",
+          "kind": "eval",
+          "title": "online evidence check",
+          "description": "online evidence check design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "category": "online",
+            "taskIds": [
+              "T1"
+            ],
+            "componentIds": [
+              "C1"
+            ],
+            "failureModeIds": [
+              "FM1"
+            ],
+            "input": "{\"requestId\": \"REQ1\", \"text\": \"Need help\", \"subject\": null}",
+            "expected": "{\"disposition\": \"ABSTAIN\", \"writes\": 0}",
+            "passRule": "{\"equals\": {\"disposition\": \"ABSTAIN\", \"writes\": 0}}",
+            "metric": "Unsupported subject count",
+            "kpi": "Unowned requests per weekly intake cohort",
+            "target": "Zero unsupported subjects in synthetic test suite; real rate unknown.",
+            "testSet": "REQ1 incomplete plus complete positive counterpart.",
+            "labelling": "Operations labels; control owner adjudicates.",
+            "cadence": "Each change; online monitor continuous.",
+            "alertThreshold": "Any unsupported subject routes to operations owner."
+          }
+        },
+        {
+          "id": "EV4",
+          "kind": "eval",
+          "title": "release evidence check",
+          "description": "release evidence check design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "category": "release",
+            "taskIds": [
+              "T1"
+            ],
+            "componentIds": [
+              "C1"
+            ],
+            "failureModeIds": [
+              "FM1"
+            ],
+            "input": "{\"requestId\": \"REQ1\", \"text\": \"Need help\", \"subject\": null}",
+            "expected": "{\"disposition\": \"ABSTAIN\", \"writes\": 0}",
+            "passRule": "{\"equals\": {\"disposition\": \"ABSTAIN\", \"writes\": 0}}",
+            "metric": "Unsupported subject count",
+            "kpi": "Unowned requests per weekly intake cohort",
+            "target": "Zero unsupported subjects in synthetic test suite; real rate unknown.",
+            "testSet": "REQ1 incomplete plus complete positive counterpart.",
+            "labelling": "Operations labels; control owner adjudicates.",
+            "cadence": "Each change; online monitor continuous.",
+            "alertThreshold": "Any unsupported subject routes to operations owner."
+          }
+        },
+        {
+          "id": "EV5",
+          "kind": "eval",
+          "title": "golden evidence check",
+          "description": "golden evidence check design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "category": "golden",
+            "taskIds": [
+              "T1"
+            ],
+            "componentIds": [
+              "C1",
+              "C2"
+            ],
+            "failureModeIds": [
+              "FM1"
+            ],
+            "input": "{\"customerId\": \"CUS1\", \"amount\": 100, \"date\": \"2026-10-28\"}",
+            "expected": "{\"writes\": 1, \"recordId\": \"REF1\"}",
+            "passRule": "{\"equals\": {\"writes\": 1, \"recordId\": \"REF1\"}}",
+            "metric": "Unsupported subject count",
+            "kpi": "Unowned requests per weekly intake cohort",
+            "target": "Zero unsupported subjects in synthetic test suite; real rate unknown.",
+            "testSet": "REQ1 incomplete plus complete positive counterpart.",
+            "labelling": "Operations labels; control owner adjudicates.",
+            "cadence": "Each change; online monitor continuous.",
+            "alertThreshold": "Any unsupported subject routes to operations owner."
+          }
+        }
+      ],
+      "assumptions": []
+    },
+    "rollout": {
+      "items": [
+        {
+          "id": "R1",
+          "kind": "rollout",
+          "title": "kpi plan",
+          "description": "kpi plan design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "category": "kpi",
+            "businessKpi": "Unowned request count / all admitted requests,weekly; baseline unknown.",
+            "aiMetrics": [
+              "Abstention protects unknown-subject boundary; queue age is service guardrail."
+            ],
+            "phase": "Shadow then human assist",
+            "gate": "Entry: synthetic tests; exit: operations reviews labels; no measured efficacy claim.",
+            "owner": "Operations owner proposed; confirm staffing before launch.",
+            "experiment": "Team-week assignment; collect baseline variance before power calculation; no sufficient sample claim."
+          }
+        },
+        {
+          "id": "R2",
+          "kind": "rollout",
+          "title": "phase plan",
+          "description": "phase plan design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "category": "phase",
+            "businessKpi": "Unowned request count / all admitted requests,weekly; baseline unknown.",
+            "aiMetrics": [
+              "Abstention protects unknown-subject boundary; queue age is service guardrail."
+            ],
+            "phase": "Shadow then human assist",
+            "gate": "Entry: synthetic tests; exit: operations reviews labels; no measured efficacy claim.",
+            "owner": "Operations owner proposed; confirm staffing before launch.",
+            "experiment": "Team-week assignment; collect baseline variance before power calculation; no sufficient sample claim."
+          }
+        },
+        {
+          "id": "R3",
+          "kind": "rollout",
+          "title": "experiment plan",
+          "description": "experiment plan design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "category": "experiment",
+            "businessKpi": "Unowned request count / all admitted requests,weekly; baseline unknown.",
+            "aiMetrics": [
+              "Abstention protects unknown-subject boundary; queue age is service guardrail."
+            ],
+            "phase": "Shadow then human assist",
+            "gate": "Entry: synthetic tests; exit: operations reviews labels; no measured efficacy claim.",
+            "owner": "Operations owner proposed; confirm staffing before launch.",
+            "experiment": "Team-week assignment; collect baseline variance before power calculation; no sufficient sample claim."
+          }
+        },
+        {
+          "id": "R4",
+          "kind": "rollout",
+          "title": "owner plan",
+          "description": "owner plan design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "category": "owner",
+            "businessKpi": "Unowned request count / all admitted requests,weekly; baseline unknown.",
+            "aiMetrics": [
+              "Abstention protects unknown-subject boundary; queue age is service guardrail."
+            ],
+            "phase": "Shadow then human assist",
+            "gate": "Entry: synthetic tests; exit: operations reviews labels; no measured efficacy claim.",
+            "owner": "Operations owner proposed; confirm staffing before launch.",
+            "experiment": "Team-week assignment; collect baseline variance before power calculation; no sufficient sample claim."
+          }
+        }
+      ],
+      "assumptions": []
+    },
+    "export": {
+      "items": [
+        {
+          "id": "X1",
+          "kind": "export",
+          "title": "Build bounded triage",
+          "description": "Build bounded triage design responsibility.",
+          "reasoning": "Keeps evidence and actual human authority distinct.",
+          "assumptions": [],
+          "sources": [
+            {
+              "type": "context",
+              "file": "user-brief",
+              "passage": "Design an internal request triage aid; humans own decisions."
+            }
+          ],
+          "data": {
+            "acceptanceCriteria": [
+              "EV1 missing subject yields ABSTAIN and zero writes."
+            ],
+            "buildInstructions": "Implement C1/W1 read-only inputs and preserve actual human decision owner; do not add authority."
+          }
+        }
+      ],
+      "assumptions": []
+    }
+  },
+  "semantics": {
+    "version": "1.1",
+    "entrypoints": [
+      "W1"
+    ],
+    "nodes": [
+      {
+        "id": "W1",
+        "kind": "validation"
+      },
+      {
+        "id": "W2",
+        "kind": "write",
+        "actionClass": "refund",
+        "bindings": [
+          {
+            "field": "customerId",
+            "category": "identity",
+            "source": "trusted"
+          },
+          {
+            "field": "amount",
+            "category": "money",
+            "source": "trusted"
+          },
+          {
+            "field": "date",
+            "category": "date",
+            "source": "trusted"
+          }
+        ]
+      },
+      {
+        "id": "W3",
+        "kind": "human_wait",
+        "waitHours": 48
+      },
+      {
+        "id": "W4",
+        "kind": "requester_notice"
+      },
+      {
+        "id": "W5",
+        "kind": "reconcile"
+      },
+      {
+        "id": "W6",
+        "kind": "record_id_guard",
+        "recordProof": {
+          "field": "recordId",
+          "sourceComponentId": "C2",
+          "sourceField": "recordId"
+        }
+      },
+      {
+        "id": "W7",
+        "kind": "completion"
+      }
+    ],
+    "transitions": [
+      {
+        "from": "W1",
+        "to": "W2",
+        "when": "valid",
+        "outcome": "normal"
+      },
+      {
+        "from": "W2",
+        "to": "W3",
+        "when": "committed",
+        "outcome": "normal"
+      },
+      {
+        "from": "W2",
+        "to": "W5",
+        "when": "timeout",
+        "outcome": "TIMEOUT"
+      },
+      {
+        "from": "W2",
+        "to": "W5",
+        "when": "unknown",
+        "outcome": "unknown_commit"
+      },
+      {
+        "from": "W3",
+        "to": "W4",
+        "when": "notice",
+        "outcome": "normal"
+      },
+      {
+        "from": "W3",
+        "to": "W6",
+        "when": "approved",
+        "outcome": "normal"
+      },
+      {
+        "from": "W4",
+        "to": "W6",
+        "when": "delivered",
+        "outcome": "normal"
+      },
+      {
+        "from": "W5",
+        "to": "W2",
+        "when": "absent",
+        "outcome": "repeat"
+      },
+      {
+        "from": "W5",
+        "to": "W6",
+        "when": "found",
+        "outcome": "normal"
+      },
+      {
+        "from": "W6",
+        "to": "W7",
+        "when": "record exists",
+        "outcome": "normal"
+      }
+    ],
+    "componentEffects": [
+      {
+        "componentId": "C1",
+        "effect": "none"
+      },
+      {
+        "componentId": "C2",
+        "effect": "write"
+      },
+      {
+        "componentId": "C3",
+        "effect": "none"
+      }
+    ],
+    "modelOutputs": [
+      {
+        "componentId": "C1",
+        "field": "recommendation",
+        "category": "other"
+      },
+      {
+        "componentId": "C1",
+        "field": "amount",
+        "category": "money"
+      },
+      {
+        "componentId": "C1",
+        "field": "customerId",
+        "category": "identity"
+      },
+      {
+        "componentId": "C1",
+        "field": "date",
+        "category": "date"
+      }
+    ],
+    "writeActions": [
+      {
+        "actionClass": "refund",
+        "nodeIds": [
+          "W2"
+        ]
+      }
+    ],
+    "goldens": [
+      {
+        "evalId": "EV1",
+        "actionClass": "refund",
+        "polarity": "negative",
+        "fixture": {
+          "input": {
+            "customerId": "CUS1",
+            "amount": 100,
+            "date": "2026-10-28"
+          },
+          "expected": {
+            "writes": 0,
+            "disposition": "REJECTED"
+          }
+        }
+      },
+      {
+        "evalId": "EV5",
+        "actionClass": "refund",
+        "polarity": "positive",
+        "fixture": {
+          "input": {
+            "customerId": "CUS1",
+            "amount": 100,
+            "date": "2026-10-28"
+          },
+          "expected": {
+            "writes": 1,
+            "recordId": "REF1"
+          }
+        }
+      }
+    ]
+  }
+}

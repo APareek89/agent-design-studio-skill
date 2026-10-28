@@ -1,6 +1,6 @@
 # Design personas
 
-Adapted from the studio's v2.1 workflow for brief-only use. Internal checkpoints replace manual stage approvals; they never create operational authority.
+Adapted from the studio's v2.1 workflow for brief-only use. Brief-only runs use internal checkpoints. Opt-in interactive runs pause after tasks and components; neither creates operational authority.
 
 ## Shared rules
 
@@ -28,7 +28,7 @@ Partition outcomes without overlap. Include exceptions and bounded unsupported-s
 
 Cover each leaf with C components in the four schema groups. Keep judgement bounded; code-only systems are valid. Typed inputs/outputs name fields, required/optional status, enums and invariants. LLM output includes evidence, structured recommendation and abstain/human disposition, never action authority. Deterministic components explain `whyCode`.
 
-Tools name resource/IDs, freshness/version, success proof, error classes, timeout and retry/readback. Use discriminated commands with conditional requirements: release has hold ID; credit has original posting/reservation; correction has original record/version. Missing initial evidence permits a provisional case and owned next step.
+Tools name resource/IDs, freshness/version, success proof, error classes, timeout and retry/readback. For document inputs specify which visible text and OCR layers are admitted, strip hidden/invisible instructions before model access, and validate each quoted page/clause against the authorized source text in code; treating text as data alone does not establish its provenance. Use discriminated commands with conditional requirements: release has hold ID; credit has original posting/reservation; correction has original record/version. Missing initial evidence permits a provisional case and owned next step.
 
 Bind the whole immutable canonical payload to approval, or fetch an immutable payload record and verify its digest at the writer. Include currency, units, timeframe, accounting allocation and other action-critical fields. Specify fresh API rechecks and typed acknowledgement, resolution, cancellation and overdue events. Missing real API support is a verification dependency, never an invented established integration.
 
@@ -68,7 +68,7 @@ Each failure has prevention, detection, mitigation, metric, protected business K
 
 Every unaccepted FM and high-risk leaf needs a substantive golden. Use JSON strings for input, expected and assertions, with complete command, policy/evidence/version, authority, ledger/record prerequisites and ordered mocks. A shared ID or monitor is insufficient.
 
-Validate the positive base, then mutate one guard per negative case and assert precise reason and forbidden effects. Compound adversarial cases are additional tests. A changed command replaces its full payload: revokes/corrections/releases cannot inherit forbidden grant/create fields. A privilege/resource change updates plan targets and readback too. Include valid positive controls for each action class.
+Validate the positive base, then mutate one guard per negative case and assert precise reason and forbidden effects. Compound adversarial cases are additional tests. A changed command replaces its full payload: revokes/corrections/releases cannot inherit forbidden grant/create fields. A privilege/resource change updates plan targets and readback too. Include valid positive controls for each action class. For each nontrivial arithmetic or policy branch, show a worked numeric positive fixture as well as the missing/invalid-rule rejection; an empty rule branch cannot test a formula. For cited documents, isolate nonexistent page, nonexistent clause and altered-quote failures. A concurrency assertion needs two operations in the fixture, not merely a label saying concurrent.
 
 Canonical hashes must match payloads and serialization. Unknown-commit cases explicitly start after a previously authorized operation; cover duplicate callbacks, expired sessions, cancellation and separately authorized follow-up. Human timers use declared calendars and owners. Resolve named/versioned fixture inheritance with explicit array/deletion/replacement rules; cyclic or missing bases are defects. Show the resulting effective fixture during review.
 
@@ -88,7 +88,7 @@ Use actual IDs and scope for observable acceptance criteria and an implementable
 
 Cross-check guard/payload fields, task/component/graph/risk/eval/KPI links and canonical cost assumptions. An implementer should not invent material branch, action or ownership decisions. Real adapter/policy verification can remain an explicit launch prerequisite. A design review is not stakeholder approval or operational evidence.
 
-The final human deliverable is a readable PDF in the same ten-stage order. Keep full machine artifacts separately. Include a coding-agent instruction to ask, after delivering the PDF: “Would you also like a visual HTML version in the same ten-stage structure as the app?” Generate HTML only after opt-in, unless already requested.
+The final human deliverable is a mode-aware PDF with the plain decision brief first; standard summarizes all ten stages within twelve pages and puts full contracts in companions. Keep full machine artifacts separately. Include a coding-agent instruction to ask, after delivering the PDF: “Would you also like a visual HTML version in the same ten-stage structure as the app?” Generate HTML only after opt-in, unless already requested.
 
 ## 11. Reviewer
 

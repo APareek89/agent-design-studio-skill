@@ -88,7 +88,7 @@ def score(folder,baseline=None,brief=None,validator_script=None):
     build=sorted(p for p in (folder/'build').rglob('*') if p.is_file()) if (folder/'build').exists() else []
     sizes={str(p.relative_to(folder)):p.stat().st_size for p in build}
     put('S5',bool(build) and all(n<=25000 for n in sizes.values()) and (mode!='standard' or sum(sizes.values())<=100000),{'fileBytes':sizes,'totalBytes':sum(sizes.values()),'perFileLimit':25000,'standardTotalLimit':100000})
-    seeds=ROOT/'evals/seeded-defects'; seed_results=[]; s7=[]
+    seeds=ROOT/'evals/seeded-defects/v2'; seed_results=[]; s7=[]
     try:
         manifest=load(seeds/'manifest.json')
         for case in manifest['cases']:
@@ -120,7 +120,9 @@ def score(folder,baseline=None,brief=None,validator_script=None):
         valid_prior=all(validator.validate_review(r,structural_valid=True)['valid'] for r in prior)
         declared=report.get('reviewRounds')==[p.name for p in rounds]+['review.json']
         independence=final.get('method')!='independent-agent' or (independent and bound_evidence(g,folder,('review.json',)))
-        put('S9',review_valid and preserved and valid_prior and declared and independence,{'reviewValid':review_valid,'preservedRounds':preserved,'priorReviewRecordsValid':valid_prior,'reportedRoundsMatch':declared,'methodEvidence':independence,'method':final.get('method'),'status':final.get('status')})
+        known_review=load(folder/'independent-review.json') if (folder/'independent-review.json').is_file() else None
+        unsupported_pass=final.get('status')=='pass' and known_review is not None and any(q.get('severity') in ('critical','major') and not q.get('resolved',False) for q in known_review.get('issues',[]))
+        put('S9',review_valid and preserved and valid_prior and declared and independence and not unsupported_pass,{'reviewValid':review_valid,'preservedRounds':preserved,'priorReviewRecordsValid':valid_prior,'reportedRoundsMatch':declared,'methodEvidence':independence,'unsupportedPass':unsupported_pass,'method':final.get('method'),'status':final.get('status')})
     except (OSError,ValueError,KeyError,TypeError) as e:unavailable('S9','Review round evidence unavailable: '+str(e))
     try:
         t=load(folder/'test-evidence.json')
@@ -128,8 +130,11 @@ def score(folder,baseline=None,brief=None,validator_script=None):
         for p in outputs:output_checks.append({'folder':p,'valid':validator.validate_design(load(folder/p/'design.json'))['valid']})
         log=(folder/t['log']).read_text()
         log_bound=bound_evidence(t,folder,(t['log'],)) and bool(re.search(r'(?:Ran\s+\d+\s+tests.*?OK|\d+ passed)',log,re.S))
-        complete=log_bound and t.get('exitCode')==0 and type(t.get('passed')) is int and t['passed']>=58 and t.get('failed')==0 and t.get('command') and bound_evidence(t,folder) and len({str((folder/x['folder']).resolve()) for x in output_checks})>=6 and all(x['valid'] for x in output_checks) and validation['valid']
-        put('S10',complete,{'testEvidence':t,'briefValidation':output_checks,'currentValidation':validation['valid']},evaluated=bool(t.get('command')))
+        current_tests=sum(len(re.findall(r'^\s+def test_',p.read_text(),re.M)) for p in (ROOT/'tests').glob('test_*.py'))
+        collected=re.search(r'Ran\s+(\d+)\s+tests',log)
+        full_suite=bool(collected) and int(collected.group(1))>=current_tests and t.get('testsCollected')==int(collected.group(1)) and t.get('skipped')==0 and not re.search(r'skipped=|FAILED',log)
+        complete=full_suite and log_bound and t.get('exitCode')==0 and type(t.get('passed')) is int and t['passed']>=max(58,current_tests) and t.get('failed')==0 and t.get('command') and bound_evidence(t,folder) and len({str((folder/x['folder']).resolve()) for x in output_checks})>=6 and all(x['valid'] for x in output_checks) and validation['valid']
+        put('S10',complete,{'testEvidence':t,'briefValidation':output_checks,'currentValidation':validation['valid'],'currentTestMethods':current_tests,'completeSuite':full_suite},evaluated=bool(t.get('command')))
     except (OSError,ValueError,KeyError,TypeError) as e:unavailable('S10','Actual regression-test evidence or six brief outputs unavailable: '+str(e))
     try:
         b=load(Path(baseline)/'run-report.json') if baseline else {}
@@ -153,8 +158,10 @@ def score(folder,baseline=None,brief=None,validator_script=None):
             if isinstance(value,dict):return set().union(*(scalar_ids(v) for v in value.values())) if value else set()
             if isinstance(value,list):return set().union(*(scalar_ids(v) for v in value)) if value else set()
             return {value} if isinstance(value,str) else set()
-        downstream=scalar_ids(design['stages'])|scalar_ids(design.get('semantics',{}))|scalar_ids(design.get('milestones',[]))
-        passed=i.get('scripted') is True and design.get('runOptions',{}).get('interactive') is True and bound_evidence(i,folder,('design.json',i['beforeDesign'],i['edits'],i['checkpoint'])) and checkpoint_matches and bool(expected_removed) and removed==expected_removed and removed<=before_tasks and components==expected_components and not (removed|components)&downstream and validation['valid']
+        after=load(folder/i['afterDesign']) if i.get('afterDesign') else design
+        after_valid=validator.validate_design(after)['valid']
+        downstream=scalar_ids(after['stages'])|scalar_ids(after.get('semantics',{}))|scalar_ids(after.get('milestones',[]))
+        passed=i.get('scripted') is True and after.get('runOptions',{}).get('interactive') is True and bound_evidence(i,folder,tuple(['design.json',i['beforeDesign'],i['edits'],i['checkpoint']]+([i['afterDesign']] if i.get('afterDesign') else []))) and checkpoint_matches and bool(expected_removed) and removed==expected_removed and removed<=before_tasks and components==expected_components and not (removed|components)&downstream and validation['valid'] and after_valid
         put('S12',passed,{'removedTasks':sorted(removed),'removedComponents':sorted(components),'checkpointMatches':checkpoint_matches,'absentDownstream':not bool((removed|components)&downstream),'validationPass':validation['valid']})
     except (OSError,ValueError,KeyError,TypeError) as e:unavailable('S12','Scripted task-removal/checkpoint evidence unavailable: '+str(e))
     return {'version':'1.1','folder':str(folder),'mode':mode,'brief':brief,'validatorScript':str(validator_script or ROOT/'skills/agent-design-studio/scripts/design_io.py'),'allPass':all(r['pass'] for r in results.values()),'scores':{k:results[k] for k in sorted(results,key=lambda x:int(x[1:]))}}

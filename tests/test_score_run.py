@@ -85,6 +85,13 @@ class ScoreTests(unittest.TestCase):
         (self.folder/'tests.log').write_text('Ran 70 tests in 1.0s\nOK\n')
         t=json.loads((self.folder/'test-evidence.json').read_text());t.update(log='tests.log',sourceHashes=self.hashes('tests.log','design.json'));self.write('test-evidence.json',t)
         self.assertFalse(self.run_score()['S10']['pass'])
+    def test_known_unresolved_independent_major_rejects_author_pass(self):
+        review=make_review();review['method']='independent-agent';review['status']='needs-work';review['dimensions'][0]['score']=2
+        review['issues']=[{'id':'IR1','severity':'major','stage':'evals','itemId':'EV1','message':'A positive control is absent.','resolved':False}]
+        self.write('independent-review.json',review)
+        result=self.run_score()['S9']
+        self.assertFalse(result['pass']);self.assertTrue(result['evidence']['unsupportedPass'])
+
     def test_author_claim_is_not_independent_grading(self):
         g=self.grader();g['method']='self-review';self.write('grader.json',g)
         self.assertFalse(self.run_score()['S3']['evaluated']);self.assertFalse(self.run_score()['S8']['evaluated'])

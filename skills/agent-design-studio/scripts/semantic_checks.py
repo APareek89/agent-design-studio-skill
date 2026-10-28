@@ -43,7 +43,7 @@ def validate_semantics(design):
                 if key in row and (not isinstance(row[key], typ) or (typ in (int,float) and isinstance(row[key],bool))):
                     malformed = True
     if any(not isinstance(x,str) for x in s['entrypoints']): malformed = True
-    shape(s['nodes'], {'id':str,'kind':str}, {'actionClass':str,'waitHours':(int,float),'bindings':list})
+    shape(s['nodes'], {'id':str,'kind':str}, {'actionClass':str,'waitHours':(int,float),'bindings':list,'recordProof':(dict,list)})
     shape(s['transitions'], {'from':str,'to':str,'when':str,'outcome':str})
     shape(s['componentEffects'], {'componentId':str,'effect':str})
     shape(s['modelOutputs'], {'componentId':str,'field':str,'category':str})
@@ -52,6 +52,9 @@ def validate_semantics(design):
     for n in s['nodes']:
         if isinstance(n,dict) and isinstance(n.get('bindings'),list):
             shape(n['bindings'], {'field':str,'category':str,'source':str}, {'sourceComponentId':str,'sourceField':str})
+        if isinstance(n,dict) and 'recordProof' in n:
+            proofs=n['recordProof'] if isinstance(n['recordProof'],list) else [n['recordProof']]
+            shape(proofs, {'field':str,'sourceComponentId':str,'sourceField':str})
     for a in s['writeActions']:
         if isinstance(a,dict) and isinstance(a.get('nodeIds'),list) and any(not isinstance(x,str) for x in a['nodeIds']): malformed=True
     if malformed:
@@ -77,7 +80,7 @@ def validate_semantics(design):
         if set(row) != {'componentId','effect'} or row.get('effect') not in {'none','read','write'}:
             issue('SEM000', 'Invalid component effect declaration.')
     for ident, n in ns.items():
-        allowed = {'id','kind','actionClass','waitHours','bindings'}
+        allowed = {'id','kind','actionClass','waitHours','bindings','recordProof'}
         if set(n)-allowed or n.get('kind') not in KINDS:
             issue('SEM000', 'Unknown or missing node semantic kind: ' + ident)
         if ident not in wf: continue
@@ -147,7 +150,7 @@ def validate_semantics(design):
         eid = g.get('evalId'); a = g.get('actionClass'); polarity = g.get('polarity')
         if eid not in evals or evals.get(eid,{}).get('data',{}).get('category') != 'golden' or eid in seen_evals or (a not in actions and a != '') or polarity not in {'positive','negative'}:
             issue('SEM000','Golden must identify a unique actual golden eval, declared action class and polarity.'); continue
-        seen_evals.add(eid); coverage.add((a,polarity))
+        seen_evals.add(eid)
         data = evals[eid]['data']
         try: fixture = {'input':json.loads(data['input']), 'expected':json.loads(data['expected'])}
         except (TypeError,ValueError): fixture = None
@@ -161,8 +164,14 @@ def validate_semantics(design):
             issue('SEM004','Self-contained golden fixture must match actual eval input/expected objects: '+eid)
         if a and fixture and isinstance(fixture['expected'],dict):
             count=fixture['expected'].get('writes')
-            if type(count) is not int or (polarity=='positive' and count<1) or (polarity=='negative' and count!=0):
-                issue('SEM003','Golden polarity must agree with explicit expected.writes (positive >=1, negative 0): '+eid)
+            try: assertion=json.loads(data['passRule']).get('equals',{}).get('writes')
+            except (TypeError,ValueError,AttributeError): assertion=None
+            writer_components={wf[i]['data']['componentId'] for i in actions[a]['nodeIds'] if i in wf}
+            linked=bool(writer_components.intersection(data['componentIds']))
+            if type(count) is not int or (polarity=='positive' and count<1) or (polarity=='negative' and count!=0) or type(assertion) is not int or assertion!=count or not linked:
+                issue('SEM003','Write golden needs a linked action writer and integer passRule.equals.writes matching expected.writes and polarity: '+eid)
+            else:
+                coverage.add((a,polarity))
     if seen_evals != {i for i,e in evals.items() if e['data']['category']=='golden'}:
         issue('SEM000', 'Every actual golden eval requires a fixture declaration; use empty actionClass for read-only cases.')
     for a in actions:
@@ -200,6 +209,32 @@ def validate_semantics(design):
         if e['from'] in writes and e['outcome'] in {'TIMEOUT','unknown_commit'}:
             repeated = reachable([e['to']],kind({'reconcile'})) & writes
             if repeated: issue('SEM006','Uncertain writer outcome can repeat a write before reconciliation: '+e['from'])
-    for i in kind({'completion'}) & reachable(roots,kind({'record_id_guard'})):
+    def required_string_field(component, side, field):
+        return any(':' in value and value.split(':',1)[0].rstrip('!').strip()==field and
+                   value.split(':',1)[1].strip().split(' ',1)[0]=='string!' for value in component['data'][side])
+    valid_record_guards=set()
+    for i in kind({'record_id_guard'}):
+        declared=ns[i].get('recordProof',[])
+        proofs=declared if isinstance(declared,list) else [declared]
+        guard=comps.get(wf.get(i,{}).get('data',{}).get('componentId'))
+        try: bindings=json.loads(wf[i]['description']).get('bindings',{})
+        except (ValueError,TypeError,KeyError): bindings={}
+        expected_bindings={}
+        valid=bool(proofs) and guard is not None and guard['data']['group']=='Code: validation'
+        for proof in proofs:
+            source_id=proof['sourceComponentId'];source=comps.get(source_id)
+            producers={n for n in ns if n!=i and wf.get(n,{}).get('data',{}).get('componentId')==source_id and
+                       (ns[n].get('kind') in {'write','reconcile'} or effects.get(source_id,{}).get('effect')=='read')}
+            valid=valid and source is not None and source['data']['group'] in {'Code: tools','Code: validation'} and \
+                  required_string_field(guard,'inputs',proof['field']) and \
+                  required_string_field(source,'outputs',proof['sourceField']) and \
+                  any(i in reachable([producer]) for producer in producers)
+            expected_bindings.setdefault(proof['field'],[]).append({'sourceComponentId':source_id,'sourceField':proof['sourceField']})
+        for field, alternatives in expected_bindings.items():
+            expected=alternatives if len(alternatives)>1 else alternatives[0]
+            valid=valid and isinstance(bindings,dict) and bindings.get(field)==expected
+        if valid: valid_record_guards.add(i)
+        else: issue('SEM007','Record-ID guard requires a deterministic validator and required string recordProof input from upstream trusted writers, reconcilers or read adapters: '+i)
+    for i in kind({'completion'}) & reachable(roots,valid_record_guards):
         issue('SEM007','Completion reachable without a record-ID guard: '+i)
     return errors

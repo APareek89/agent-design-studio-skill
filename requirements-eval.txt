@@ -1,0 +1,3 @@
+-r skills/agent-design-studio/requirements-pdf.txt
+textstat==0.7.13
+PyYAML>=6,<7

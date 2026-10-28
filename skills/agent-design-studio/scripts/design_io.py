@@ -304,6 +304,24 @@ def _finite_walk(value, path, errors):
             _finite_walk(v, f"{path}[{i}]", errors)
 
 
+def _report_schemas():
+    text = {"type": "string", "minLength": 1}
+    ids = {"type": "array", "items": text}
+    call = {"type": "object", "required": ["choice", "rejected", "why"], "properties": {key: text for key in ("choice", "rejected", "why")}, "additionalProperties": False}
+    autonomy = {"type": "object", "required": ["action", "level"], "properties": {"action": text, "level": {"enum": ["acts alone", "suggests", "human decides"]}, "note": text}, "additionalProperties": False}
+    presentation = {"type": "object", "required": ["systemSentence", "designCalls", "autonomy"], "properties": {
+        "systemSentence": text, "designCalls": {"type": "array", "minItems": 3, "maxItems": 5, "items": call},
+        "autonomy": {"type": "array", "minItems": 1, "items": autonomy}, "scopeSummary": text,
+        "taskLabels": {"type": "object", "additionalProperties": text},
+        "workflowLabels": {"type": "object", "additionalProperties": text}}, "additionalProperties": False}
+    milestone = {"type": "object", "required": ["id", "title", "taskIds", "componentIds", "evalIds", "acceptanceCriteria"], "properties": {
+        "id": text, "title": text, "taskIds": ids, "componentIds": ids, "evalIds": ids, "workflowIds": ids,
+        "acceptanceCriteria": {"type": "array", "minItems": 1, "items": text}}, "additionalProperties": False}
+    return {"presentation": presentation,
+            "runOptions": {"type": "object", "required": ["mode", "interactive"], "properties": {"mode": {"enum": ["lite", "standard", "full"]}, "interactive": {"type": "boolean"}}, "additionalProperties": False},
+            "milestones": {"type": "array", "minItems": 1, "items": milestone}}
+
+
 def validate_design(design, schemas=None):
     errors, warnings = [], []
     schemas = load_json(SCHEMA_PATH) if schemas is None else schemas
@@ -374,6 +392,7 @@ def validate_design(design, schemas=None):
         },
         "additionalProperties": False,
     }
+    top_schema["properties"].update(_report_schemas())
     check_schema(design, top_schema, "$", errors)
     _finite_walk(design, "$", errors)
     if errors:

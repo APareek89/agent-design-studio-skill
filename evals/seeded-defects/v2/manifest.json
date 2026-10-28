@@ -1,0 +1,98 @@
+{
+  "passing": "passing-v1.1.json",
+  "cases": [
+    {
+      "file": "sem001-faulty.json",
+      "ruleId": "SEM001",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem002-faulty.json",
+      "ruleId": "SEM002",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem003-faulty.json",
+      "ruleId": "SEM003",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem004-faulty.json",
+      "ruleId": "SEM004",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem005-faulty.json",
+      "ruleId": "SEM005",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem006-faulty.json",
+      "ruleId": "SEM006",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem007-faulty.json",
+      "ruleId": "SEM007",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "s7-refund-no-guard.json",
+      "ruleId": "SEM001",
+      "suite": "S7"
+    },
+    {
+      "file": "s7-48h-no-notice.json",
+      "ruleId": "SEM002",
+      "suite": "S7"
+    },
+    {
+      "file": "s7-llm-amount.json",
+      "ruleId": "SEM005",
+      "suite": "S7"
+    },
+    {
+      "file": "s7-no-positive-golden.json",
+      "ruleId": "SEM003",
+      "suite": "S7"
+    },
+    {
+      "file": "s7-unversioned-inheritance.json",
+      "ruleId": "SEM004",
+      "suite": "S7"
+    },
+    {
+      "file": "s7-llm-customer-id.json",
+      "ruleId": "SEM005",
+      "suite": "S7"
+    }
+  ],
+  "version": "v2",
+  "provenance": {
+    "base": "tests.test_semantics.make_semantic_design()",
+    "mutations": "tests.test_semantics.mutate(deepcopy(base), int(ruleId[-1])); s7-llm-customer-id uses bindings[0] source C1.customerId instead of amount",
+    "repairs": [
+      "EV1/EV5 link C2 writer and passRule.equals.writes matches their expected count; EV1 rejection assertion matches expected disposition.",
+      "W6 uses new deterministic C3 validator with required recordId input, bound C2.recordId output and explicit recordProof."
+    ],
+    "historicalDirectory": "..",
+    "historicalPassingStatus": "invalid under strengthened SEM003 and SEM007; preserved byte-for-byte",
+    "historicalSha256": {
+      "sem006-faulty.json": "b113e3b8facce00df7817aa0c1c8621794433ebee0eab8690c0e544a38ad7723",
+      "s7-llm-amount.json": "ec37e191548aa9141b69e8c1a87f5bea83c845710a6b7aff2896266e26954120",
+      "sem003-faulty.json": "bfa6750c748ad66bfd1677cb0c77028cfd2abc1497da708cc46ae67aa5872e88",
+      "s7-llm-customer-id.json": "bd3285c4841f1fe8398cd30e07ebc3863c623430e81754c967c1bf59b5343d15",
+      "s7-no-positive-golden.json": "bfa6750c748ad66bfd1677cb0c77028cfd2abc1497da708cc46ae67aa5872e88",
+      "sem005-faulty.json": "ec37e191548aa9141b69e8c1a87f5bea83c845710a6b7aff2896266e26954120",
+      "s7-48h-no-notice.json": "e91fbc12e0ed41a5b32605bc65e6dd089a6b739cc8fbfe4fe689c95aa4d20e22",
+      "s7-unversioned-inheritance.json": "7951fa342f968aa013ddc69f4a29386fcc92785d53715afae1c2150af21b8aef",
+      "sem002-faulty.json": "e91fbc12e0ed41a5b32605bc65e6dd089a6b739cc8fbfe4fe689c95aa4d20e22",
+      "sem007-faulty.json": "4f58d3738afe950ae2913ad5bed3d8b4d4f641e185bb14d0b70db81309cd202b",
+      "manifest.json": "4ec145de9ee96016b922d34f6f342ef6619d8d7ec35186da35959e0236c077f7",
+      "sem004-faulty.json": "7951fa342f968aa013ddc69f4a29386fcc92785d53715afae1c2150af21b8aef",
+      "passing-v1.1.json": "bffbb72d9525f1a0b3636127b13697219a4a1ed1d83ec1a4e73876e8e241971e",
+      "s7-refund-no-guard.json": "01bb620c08d03451374ac1ba9e41d88356fd3eddf4590eb1069d30c9e787eaf6",
+      "sem001-faulty.json": "01bb620c08d03451374ac1ba9e41d88356fd3eddf4590eb1069d30c9e787eaf6"
+    }
+  }
+}

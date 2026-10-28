@@ -185,29 +185,51 @@ class Report:
 
     def task_tree_rows(self,items,lookup):
         if len(items)>22: raise ValueError('More than 22 tasks need a dedicated multi-page task diagram; use a narrower first release or full diagram extension.')
-        yy=self.y-20
+        yy=self.y-20; pos={}
         for item in items:
             depth=0; parent=item['data']['parentId']
             while parent: depth+=1; parent=lookup[parent]['data']['parentId']
-            x=self.left+depth*36
-            self.box(x,yy-25,self.right-x,25,[item['id']+' | '+sentence(item['title'],9)+' | '+item['data']['mode']+' | '+item['data']['risk']+' risk'],'#E0EDF8')
-            if depth:self.arrow(x-16,yy+8,x-16,yy-12); self.arrow(x-16,yy-12,x,yy-12)
+            pos[item['id']]=(self.left+depth*36,yy)
             yy-=31
+        # Exact parent links, not a sibling-to-sibling chain.
+        for item in items:
+            parent=item['data']['parentId']
+            if parent:
+                x,y=pos[item['id']];px,py=pos[parent]
+                self.c.line(px+12,py-25,px+12,y-12)
+                self.arrow(px+12,y-12,x,y-12)
+        for item in items:
+            x,y=pos[item['id']]
+            self.box(x,y-25,self.right-x,25,[item['id']+' | '+sentence(item['title'],9)+' | '+item['data']['mode']+' | '+item['data']['risk']+' risk'],'#E0EDF8')
         self.y=yy-8
 
     def workflow(self):
         nodes=self.design['stages']['workflow']['items']; comps={c['id']:c for c in self.design['stages']['components']['items']}
         if len(nodes)>18: raise ValueError('Workflow exceeds 18 readable nodes on one page; author a multi-page diagram before delivery.')
         cols=2; rows=math.ceil(len(nodes)/cols); rowheight=min(98,540/max(rows,1)); boxh=min(58,rowheight-18); boxw=215
-        top=self.y-10; pos={n['id']:(self.left+(i%cols)*284,top-(i//cols)*rowheight-boxh) for i,n in enumerate(nodes)}
+        top=self.y-10; pos={n['id']:(self.left+((i%cols) if (i//cols)%2==0 else 1-(i%cols))*284,top-(i//cols)*rowheight-boxh) for i,n in enumerate(nodes)}
+        edge_index=0
         for n in nodes:
             x,y=pos[n['id']]
             for target in n['data']['next']:
-                tx,ty=pos[target]
-                # All real edges are drawn; back edges route outside the boxes.
-                if ty>=y and tx==x:
-                    side=x-12; self.c.line(x,y+boxh/2,side,y+boxh/2); self.c.line(side,y+boxh/2,side,ty+boxh/2); self.arrow(side,ty+boxh/2,tx,ty+boxh/2)
-                else:self.arrow(x+boxw/2,y,tx+boxw/2,ty+boxh)
+                tx,ty=pos[target];edge_index+=1
+                offset=(edge_index%7-3)*2
+                if y==ty:
+                    if tx>x:self.arrow(x+boxw,y+boxh/2,tx,ty+boxh/2)
+                    else:self.arrow(x,y+boxh/2,tx+boxw,ty+boxh/2)
+                elif x==tx and y>ty and y-ty<=rowheight+1:
+                    self.arrow(x+boxw/2,y,tx+boxw/2,ty+boxh)
+                else:
+                    if x==tx:
+                        rail=x-15+offset if x==self.left else x+boxw+15+offset
+                        sx=x if x==self.left else x+boxw
+                        ex=tx if tx==self.left else tx+boxw
+                    else:
+                        rail=self.left+250+offset
+                        sx=x+boxw if x<tx else x
+                        ex=tx if x<tx else tx+boxw
+                    sy=y+boxh/2; ey=ty+boxh/2
+                    self.c.line(sx,sy,rail,sy);self.c.line(rail,sy,rail,ey);self.arrow(rail,ey,ex,ey)
         for n in nodes:
             x,y=pos[n['id']]; comp=comps[n['data']['componentId']]
             title=self.design.get('presentation',{}).get('workflowLabels',{}).get(n['id'],sentence(n['title'],7))

@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import tempfile
 
@@ -103,11 +104,12 @@ def export_mode(D,design_path,out,review_path,mode):
     if not rr['valid']:return {'ok':False,'status':'invalid-review','errors':rr['errors']}
     docs=make_docs(D,design,review,structural,rr,hashlib.sha256(design_path.read_bytes()).hexdigest(),hashlib.sha256(review_path.read_bytes()).hexdigest(),mode)
     if out.is_symlink() or out.exists() and not out.is_dir():raise ValueError('Output must be an ordinary directory.')
-    prior={}
+    prior={}; recognized=False
     manifest=out/'validation.json'
     if manifest.is_file():
         previous=D.load_json(manifest)
-        if previous.get('generator')==D.GENERATOR:prior=previous.get('fileSha256',{})
+        if previous.get('generator')==D.GENERATOR and isinstance(previous.get('fileSha256'),dict):
+            prior=previous['fileSha256'];recognized=True
     protected={design_path.resolve(),review_path.resolve()}
     for name in docs:
         dest=out/name
@@ -117,11 +119,23 @@ def export_mode(D,design_path,out,review_path,mode):
             for inp in (design_path,review_path):
                 if os.path.samefile(dest,inp):raise ValueError('Refusing hardlink input alias.')
             if name=='validation.json':
-                if not prior:raise ValueError('Existing validation file has no v2 generated-file hashes; use a fresh folder.')
+                if not recognized:raise ValueError('Existing validation file has no v2 generated-file hashes; use a fresh folder.')
             elif prior.get(name)!=hashlib.sha256(dest.read_bytes()).hexdigest():
                 raise ValueError('Refusing to overwrite an unrelated or edited file: '+str(dest))
+    stale=[]
+    allowed={'PRD.md','architecture.md','build-prompt.md','eval-set.json','fmea-register.csv','assumptions.md'}
+    for name,expected_hash in prior.items():
+        if name in docs:continue
+        if name not in allowed and not re.fullmatch(r'build/(?:00-overview|[0-9]{2}-milestone)\.md',name):raise ValueError('Unexpected prior generated path; refusing cleanup: '+name)
+        old=out/name
+        if not old.exists() and not old.is_symlink():continue
+        if old.is_symlink() or old.parent.is_symlink() or not old.is_file() or old.resolve() in protected:raise ValueError('Unsafe obsolete generated target: '+str(old))
+        if any(os.path.samefile(old,inp) for inp in (design_path,review_path)):raise ValueError('Obsolete target aliases input.')
+        if hashlib.sha256(old.read_bytes()).hexdigest()!=expected_hash:raise ValueError('Obsolete generated file was edited; refusing cleanup: '+str(old))
+        stale.append(old)
     out.mkdir(parents=True,exist_ok=True)
-    for name,text in docs.items():
+    for name in [n for n in docs if n!='validation.json']+['validation.json']:
+        text=docs[name]
         dest=out/name;dest.parent.mkdir(parents=True,exist_ok=True)
         tmp=None
         try:
@@ -130,4 +144,7 @@ def export_mode(D,design_path,out,review_path,mode):
             os.replace(tmp,dest)
         finally:
             if tmp and tmp.exists():tmp.unlink()
+    for old in stale:old.unlink()
+    build_dir=out/'build'
+    if build_dir.is_dir() and not build_dir.is_symlink() and not any(build_dir.iterdir()):build_dir.rmdir()
     return {'ok':True,'mode':mode,'status':rr['status'],'files':[str((out/name).resolve()) for name in docs],'designOnly':True}
