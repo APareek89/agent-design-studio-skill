@@ -211,7 +211,7 @@ def _assumptions(design):
     return ledger, extra
 
 
-def create_pdf(design_path, review_path, out):
+def create_pdf(design_path, review_path, out, mode=None):
     D = _io_module()
     design_path = Path(design_path)
     review_path = Path(review_path)
@@ -238,6 +238,13 @@ def create_pdf(design_path, review_path, out):
         raise ValueError(
             f"{out}: existing files are never overwritten. Choose a new PDF filename or explicitly remove a known generated prior PDF."
         )
+    if mode in ("lite", "standard"):
+        spec = importlib.util.spec_from_file_location("studio_report_v2", Path(__file__).with_name("report_v2.py"))
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module.render(design, review, out, mode)
+    if mode not in (None, "full"):
+        raise ValueError("Unknown PDF mode.")
     R = _libraries()
     colors = R.colors
     body_font, bold_font, mono_font = "Helvetica", "Helvetica-Bold", "Courier"
@@ -405,19 +412,6 @@ def create_pdf(design_path, review_path, out):
     add(
         "This report prioritizes design calls,contracts and review evidence. Full fixtures and exact canonical wording remain in design.json; eval-set.json contains the complete machine-readable evaluation set.",
         "small",
-    )
-    table(
-        ["Design dimension", "Score", "Design dimension", "Score"],
-        [
-            [
-                review["dimensions"][i]["id"],
-                str(review["dimensions"][i]["score"]) + "/4",
-                review["dimensions"][i + 6]["id"],
-                str(review["dimensions"][i + 6]["score"]) + "/4",
-            ]
-            for i in range(6)
-        ],
-        [184, 72, 184, 71],
     )
     stages = design["stages"]
     for number, (key, title) in enumerate(SECTIONS, 1):
@@ -828,17 +822,35 @@ def create_pdf(design_path, review_path, out):
         canvas.restoreState()
 
     doc.build(story, onFirstPage=page, onLaterPages=page)
+    pdf_bytes = buffer.getvalue()
+    pages_count = doc.page
+    if mode == "full":
+        spec = importlib.util.spec_from_file_location("studio_report_front", Path(__file__).with_name("report_v2.py"))
+        front = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(front)
+        report = front.Report(design, review, "full")
+        report.decision(); report.finish_page()
+        report.heading("Task tree"); report.task_tree(); report.finish_page()
+        report.heading("Workflow diagram"); report.workflow(); report.finish_page()
+        report.heading("Risk heat table"); report.risks(); report.finish_page()
+        report.coverage(); report.finish_page(); report.c.save()
+        from pypdf import PdfReader, PdfWriter
+        writer = PdfWriter()
+        writer.append(PdfReader(io.BytesIO(report.buf.getvalue())))
+        writer.append(PdfReader(io.BytesIO(pdf_bytes)))
+        merged = io.BytesIO(); writer.write(merged)
+        pdf_bytes = merged.getvalue(); pages_count = len(writer.pages)
     out.parent.mkdir(parents=True, exist_ok=True)
     # Exclusive creation also protects against a file appearing after preflight.
     with out.open("xb") as handle:
-        handle.write(buffer.getvalue())
+        handle.write(pdf_bytes)
     return {
         "ok": True,
         "status": rv["status"],
         "designOnly": True,
         "file": str(out.resolve()),
-        "pages": doc.page,
-        "bytes": len(buffer.getvalue()),
+        "pages": pages_count,
+        "bytes": len(pdf_bytes),
         "limitations": [
             "Readable summary; exact contracts and full machine fixtures remain canonical design.json/eval-set.json.",
             "This renderer executes no model,network or business controls.",
@@ -851,9 +863,10 @@ def main(argv=None):
     parser.add_argument("design")
     parser.add_argument("--review", required=True)
     parser.add_argument("--out", required=True)
+    parser.add_argument("--mode", choices=("lite", "standard", "full"), default="standard")
     args = parser.parse_args(argv)
     try:
-        result = create_pdf(args.design, args.review, args.out)
+        result = create_pdf(args.design, args.review, args.out, args.mode)
         code = 0 if result["ok"] else 1
     except (ValueError, OSError, UnicodeError) as exc:
         result = {

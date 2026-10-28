@@ -1,0 +1,70 @@
+{
+  "passing": "passing-v1.1.json",
+  "cases": [
+    {
+      "file": "sem001-faulty.json",
+      "ruleId": "SEM001",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem002-faulty.json",
+      "ruleId": "SEM002",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem003-faulty.json",
+      "ruleId": "SEM003",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem004-faulty.json",
+      "ruleId": "SEM004",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem005-faulty.json",
+      "ruleId": "SEM005",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem006-faulty.json",
+      "ruleId": "SEM006",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "sem007-faulty.json",
+      "ruleId": "SEM007",
+      "suite": "seven-rules"
+    },
+    {
+      "file": "s7-refund-no-guard.json",
+      "ruleId": "SEM001",
+      "suite": "S7"
+    },
+    {
+      "file": "s7-48h-no-notice.json",
+      "ruleId": "SEM002",
+      "suite": "S7"
+    },
+    {
+      "file": "s7-llm-amount.json",
+      "ruleId": "SEM005",
+      "suite": "S7"
+    },
+    {
+      "file": "s7-no-positive-golden.json",
+      "ruleId": "SEM003",
+      "suite": "S7"
+    },
+    {
+      "file": "s7-unversioned-inheritance.json",
+      "ruleId": "SEM004",
+      "suite": "S7"
+    },
+    {
+      "file": "s7-llm-customer-id.json",
+      "ruleId": "SEM005",
+      "suite": "S7"
+    }
+  ]
+}

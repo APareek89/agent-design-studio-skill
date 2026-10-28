@@ -1,0 +1,17 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "/Users/macbook/Documents/agent-design-studio-skill/evals/seeded-defects/s7-llm-customer-id.json": "bd3285c4841f1fe8398cd30e07ebc3863c623430e81754c967c1bf59b5343d15"
+  },
+  "issues": [
+    {
+      "severity": "critical",
+      "ruleId": "SEM005",
+      "evidence": [
+        "semantics.nodes W2.bindings customerId: category=identity, source=llm, sourceComponentId=C1, sourceField=customerId.",
+        "C1 outputs customerId:string!; C2 Persist refund consumes customerId:string!. Refund recipient identity flows from model output instead of authenticated/system identity; a wrong-subject refund can result."
+      ]
+    }
+  ]
+}

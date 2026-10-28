@@ -1,6 +1,6 @@
 {
   "name": "agent-design-studio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Turn one brief into a complete PDF system design, reviewed PRD and coding-agent handoff.",
   "author": {
     "name": "Anand Pareek",

@@ -1,0 +1,18 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "/Users/macbook/Documents/agent-design-studio-skill/evals/seeded-defects/s7-no-positive-golden.json": "bfa6750c748ad66bfd1677cb0c77028cfd2abc1497da708cc46ae67aa5872e88"
+  },
+  "issues": [
+    {
+      "severity": "major",
+      "ruleId": "SEM003",
+      "evidence": [
+        "semantics.writeActions refund -> W2.",
+        "semantics.goldens contains only EV1 polarity=negative with writes=0/disposition=REJECTED; stages.evals has no positive refund golden.",
+        "No fixture proves an eligible refund reaches a committed record. A system rejecting every request could satisfy the available safety cases."
+      ]
+    }
+  ]
+}

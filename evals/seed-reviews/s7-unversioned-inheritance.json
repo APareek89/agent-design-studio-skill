@@ -1,0 +1,17 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "/Users/macbook/Documents/agent-design-studio-skill/evals/seeded-defects/s7-unversioned-inheritance.json": "7951fa342f968aa013ddc69f4a29386fcc92785d53715afae1c2150af21b8aef"
+  },
+  "issues": [
+    {
+      "severity": "major",
+      "ruleId": "SEM004",
+      "evidence": [
+        "semantics.goldens EV1 contains base={id:shared-refund}, with no immutable version/hash and no materialized fixture.",
+        "EV1 cannot identify or reproduce exact inherited input/expected values. Later shared fixture edits can silently alter the negative refund test, invalidating repeatability."
+      ]
+    }
+  ]
+}

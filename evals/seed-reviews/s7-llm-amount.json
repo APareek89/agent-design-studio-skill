@@ -1,0 +1,17 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "/Users/macbook/Documents/agent-design-studio-skill/evals/seeded-defects/s7-llm-amount.json": "ec37e191548aa9141b69e8c1a87f5bea83c845710a6b7aff2896266e26954120"
+  },
+  "issues": [
+    {
+      "severity": "critical",
+      "ruleId": "SEM005",
+      "evidence": [
+        "semantics.nodes W2.bindings amount: category=money, source=llm, sourceComponentId=C1, sourceField=amount.",
+        "C1 outputs amount:number!; C2 Persist refund consumes amount:number!. Exact refund amount flows from model output to money-writing action without a deterministic authoritative calculation binding; model can select the transferred amount."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "/Users/macbook/Documents/agent-design-studio-skill/evals/seeded-defects/s7-48h-no-notice.json": "e91fbc12e0ed41a5b32605bc65e6dd089a6b739cc8fbfe4fe689c95aa4d20e22"
+  },
+  "issues": [
+    {
+      "severity": "major",
+      "ruleId": "SEM002",
+      "evidence": [
+        "semantics.nodes W3: human_wait waitHours=48.",
+        "semantics.transitions W3->W4 is marked outcome=normal, not a declared notice effect; W3->W6 on approved bypasses W4 entirely.",
+        "W4 requester_notice exists, but there is no mandatory initial notice, scheduled progress update or deadline-notice obligation during the 48-hour wait. Thus requester notification is optional/underspecified, not absent as a node; a customer can wait without a guaranteed update."
+      ]
+    }
+  ]
+}

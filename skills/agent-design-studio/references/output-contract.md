@@ -4,7 +4,7 @@ Use `design.json` as the single source for all generated documents. The script r
 
 ```json
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "title": "A descriptive project name",
   "brief": "The user's original brief, verbatim",
   "assumptions": [
@@ -24,6 +24,8 @@ Use `design.json` as the single source for all generated documents. The script r
   }
 }
 ```
+
+Add the required `semantics` declarations from [semantic-contract.md](semantic-contract.md), plus reader summaries, selected milestones and run options from [report-contract.md](report-contract.md). Legacy 1.0 stays readable with semantic coverage explicitly unverified.
 
 The empty arrays above illustrate the container, not a completed design. Populate every stage; only Models may have zero items, and only with zero LLM components. Keep the brief unchanged. `H1...` record proposed facts, permissions, owners, thresholds, volumes and prices that the user did not supply. Empty assumptions is valid when nothing is assumed. All stage packet `assumptions` arrays contain concise strings; the top-level ledger carries the details.
 
@@ -67,4 +69,4 @@ Prefer self-contained fixtures. If inheritance saves substantial repetition, eac
 
 ## Final presentation
 
-`DESIGN.pdf` is the primary user-facing deliverable. The ten canonical stages and review remain the source; the PDF presents them without repeating complete packets or large inherited fixtures. Machine artifacts remain companions for coding agents. After PDF delivery, ask whether the user wants `DESIGN.html`, a read-only visual view in the same app stage order; do not generate that deliverable before opt-in. See `visual-output.md`.
+`DESIGN.pdf` is the primary user-facing deliverable. The first page is the plain-language decision brief in every mode. Standard defaults to at most 12 pages, lite to four, full includes appendices. The ten canonical stages and review remain the source; the PDF presents them without repeating complete packets or large inherited fixtures. Machine artifacts remain companions for coding agents. After PDF delivery, ask whether the user wants `DESIGN.html`, a read-only visual view in the same app stage order; do not generate that deliverable before opt-in. See `visual-output.md`.

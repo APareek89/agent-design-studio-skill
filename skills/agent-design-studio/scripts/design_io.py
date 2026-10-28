@@ -357,7 +357,11 @@ def validate_design(design, schemas=None):
         "type": "object",
         "required": ["schemaVersion", "title", "brief", "assumptions", "stages"],
         "properties": {
-            "schemaVersion": {"const": "1.0"},
+            "schemaVersion": {"enum": ["1.0", "1.1"]},
+            "semantics": {"type": "object"},
+            "presentation": {"type": "object"},
+            "runOptions": {"type": "object"},
+            "milestones": {"type": "array"},
             "title": {"type": "string", "minLength": 1},
             "brief": {"type": "string", "minLength": 1},
             "assumptions": ledger_schema,
@@ -826,7 +830,22 @@ def validate_design(design, schemas=None):
                 "$.stages.rollout",
                 "Missing actual " + category + " rollout card.",
             )
+    semantic_coverage = "unverified"
+    if design["schemaVersion"] == "1.1" or "semantics" in design:
+        # File-local loading also supports callers importing design_io by path.
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "agent_design_semantic_checks", Path(__file__).with_name("semantic_checks.py")
+        )
+        semantic_checks = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(semantic_checks)
+        semantic_errors = semantic_checks.validate_semantics(design)
+        errors.extend(semantic_errors)
+        semantic_coverage = "failed" if semantic_errors else "verified-declarations"
+    else:
+        warnings.append({"path": "$.semantics", "message": "Legacy schema 1.0: semantic coverage unverified; author new designs as schema 1.1 with complete semantic metadata."})
     return {
+        "semanticCoverage": semantic_coverage,
         "valid": not errors,
         "status": "structural-pass" if not errors else "structural-errors",
         "errors": errors,
@@ -1285,7 +1304,13 @@ def _preflight_output(out, inputs):
     return resolved
 
 
-def export_design(design_path, out, review_path):
+def export_design(design_path, out, review_path, mode=None):
+    if mode is not None:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("studio_export_v2", Path(__file__).with_name("export_v2.py"))
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module.export_mode(type("ExportNamespace", (), globals()), design_path, out, review_path, mode)
     design_path = Path(design_path)
     review_path = Path(review_path)
     out = Path(out)
@@ -1363,13 +1388,14 @@ def main(argv=None):
     exp.add_argument("design")
     exp.add_argument("--out", required=True)
     exp.add_argument("--review", required=True)
+    exp.add_argument("--mode", choices=("lite", "standard", "full"), default="standard")
     args = parser.parse_args(argv)
     try:
         if args.command == "validate":
             result = validate_design(load_json(args.design))
             code = 0 if result["valid"] else 1
         else:
-            result = export_design(args.design, args.out, args.review)
+            result = export_design(args.design, args.out, args.review, args.mode)
             code = 0 if result["ok"] else 1
     except (ValueError, OSError, UnicodeError) as exc:
         result = {

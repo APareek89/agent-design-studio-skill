@@ -1,0 +1,17 @@
+{
+  "method": "independent-agent",
+  "agentId": "baseline_grader_v2",
+  "sourceHashes": {
+    "/Users/macbook/Documents/agent-design-studio-skill/evals/seeded-defects/s7-refund-no-guard.json": "01bb620c08d03451374ac1ba9e41d88356fd3eddf4590eb1069d30c9e787eaf6"
+  },
+  "issues": [
+    {
+      "severity": "critical",
+      "ruleId": "SEM001",
+      "evidence": [
+        "semantics.nodes W1: kind=other, while W2 kind=write/actionClass=refund is directly reachable from entry W1.",
+        "W1->W2 when=valid does not identify an actual validation/authority guard; C2 is a write effect despite its read-only approvalRule. The execution semantics permit a refund path without a defined validation guard. The prose W1 title validation conflicts with its declared semantic kind; a title is insufficient to restore enforced validation."
+      ]
+    }
+  ]
+}
