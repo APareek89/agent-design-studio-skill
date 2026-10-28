@@ -1,0 +1,122 @@
+{
+  "method": "self-review",
+  "round": 1,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1-CTX6 and T0-T8 bound intake, routing, missing facts, cancellations and durable outcomes; CREATE/LINK require operator."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "Every T leaf has components and workflow; FM-to-EV links are reciprocal by explicit relation. H1-H11 distinguish hypotheses from brief facts."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 2,
+      "evidence": [
+        "W9 and W10 are declared terminals yet failureDisposition describes changing to other statuses without next edges; receipt/cancel races need explicit transition nodes."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 2,
+      "evidence": [
+        "C4 and C6 reason enums do not fully account for golden exact reasons WRONG_CITY, INVALID_MODEL_REFERENCE; W8 uses upstream reason without a complete typed mapping."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C5/C6 bind canonical payload and fresh authority; separate city read/write/recovery scopes and no equipment credentials, tools or egress. H2/H3/H6 are launch blockers."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "Original brief retained; unknown APIs, prices, policies and thresholds are H assumptions; no external verification or measured benefit claimed."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1-F5 choose durable code + single judgement; reject autonomous multi-agent dispatch; compare orchestration criteria and same-category unverified cloud/open-source options."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 3,
+      "evidence": [
+        "M1 exactly covers C3, shows expected .945 and max 2 calls/report, tokens and illustrative USD arithmetic, rejects tiers with held-out condition."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM12 cover hazards, wrong city/asset, duplicates, staleness, injection/equipment, unknown commits, queues, privacy and cancellation with owners and gates."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 2,
+      "evidence": [
+        "Goldens are self-contained but EV2/EV9/EV11/EV14/EV17 mention additional variants in assertions without supplying resolved fixtures; implementer would need to invent those fixtures."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1/R2 define denominators and causality; R3-R8 phase entry/exit are noncircular; R7 shift clusters and separate continuous/binary power are explicit hypotheses."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "X1 covers contracts and gates but the workflow/error and variant gaps must propagate to canonical and rendered package; export not yet run."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISSUE1",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W9",
+      "message": "W9/W10 terminal failure dispositions imply alternate states without matching next edges. Add explicit finalizer decision nodes and terminal receipt/cancellation nodes; bind C8 status guard and preserve no-effect cancellation race.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE2",
+      "severity": "major",
+      "stage": "components",
+      "itemId": "C4",
+      "message": "Exact reasons required by EV3/EV11 and W8 are not fully declared as typed component outputs. Declare comprehensive reason producers and align negative fixtures with C6 error enum.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE3",
+      "severity": "major",
+      "stage": "evals",
+      "itemId": "EV14",
+      "message": "Additional variants in EV2/EV9/EV11/EV14/EV17 are prose assertions rather than fully resolved fixtures. Replace variant assertions with dedicated concrete goldens and include them in reciprocal FM/release links.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "Design review only. No business fixture assertion, city API, actual policy, provider reliability, human acknowledgement or production effect has been executed or verified.",
+    "Synthetic fixtures and budget prices are author-defined proposals, not measured production evidence.",
+    "Structural helper checks formats/relationships and does not implement the designed system."
+  ]
+}

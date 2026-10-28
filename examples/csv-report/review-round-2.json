@@ -1,0 +1,123 @@
+{
+  "method": "self-review",
+  "round": 2,
+  "status": "needs-work",
+  "dimensions": [
+    {
+      "id": "D1",
+      "score": 3,
+      "evidence": [
+        "CTX1-CTX4/T0-T5 bound a daily join/export with exact exclusions and owned cancellation/failure."
+      ]
+    },
+    {
+      "id": "D2",
+      "score": 3,
+      "evidence": [
+        "Every leaf maps to C/W/EV; the generated all-category FM\u2194EV relation is reciprocal; H1-H8 distinguish assumptions from the unchanged brief."
+      ]
+    },
+    {
+      "id": "D3",
+      "score": 2,
+      "evidence": [
+        "ISSUE2/ISSUE3: exact manifest/config serialization, attempt-specific staging and post-start cancellation rule require canonical repair before handoff is implementable."
+      ]
+    },
+    {
+      "id": "D4",
+      "score": 2,
+      "evidence": [
+        "ISSUE2/ISSUE3: exact manifest/config serialization, attempt-specific staging and post-start cancellation rule require canonical repair before handoff is implementable."
+      ]
+    },
+    {
+      "id": "D5",
+      "score": 3,
+      "evidence": [
+        "C2/C3 own dates/IDs; F4 local allowlists and C4 fresh checks; manifest proof and H7 minimized retention. H6 platform behavior remains unverified."
+      ]
+    },
+    {
+      "id": "D6",
+      "score": 3,
+      "evidence": [
+        "H1-H8 mark source format, window, volumes, owners, policy and filesystem behavior as proposed launch dependencies; no vendor/current-fact claims."
+      ]
+    },
+    {
+      "id": "D7",
+      "score": 3,
+      "evidence": [
+        "F1-F5 choose code/local filesystem over LLM/database/cloud and compare deployment alternatives on identical criteria without claiming integrations."
+      ]
+    },
+    {
+      "id": "D8",
+      "score": 4,
+      "evidence": [
+        "Models.items is empty with an explicit zero-LLM budget; runtime/storage/human costs excluded as unmeasured."
+      ]
+    },
+    {
+      "id": "D9",
+      "score": 3,
+      "evidence": [
+        "FM1-FM9 are case-specific with S/O/D and owners; local unknown commits, injection, conflicts, failure visibility and privacy have explicit tests."
+      ]
+    },
+    {
+      "id": "D10",
+      "score": 3,
+      "evidence": [
+        "EV1-EV29 self-contained concrete fixtures; EV30 component/property layers, EV31 monitor and EV32 exact golden membership. Business harness is future work."
+      ]
+    },
+    {
+      "id": "D11",
+      "score": 3,
+      "evidence": [
+        "R1-R6 define denominator-based KPIs, source-baseline dependency, noncircular shadow/assist gates, continuous paired effort experiment and manual stop/restore."
+      ]
+    },
+    {
+      "id": "D12",
+      "score": 2,
+      "evidence": [
+        "ISSUE2/ISSUE3: exact manifest/config serialization, attempt-specific staging and post-start cancellation rule require canonical repair before handoff is implementable."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISSUE1",
+      "severity": "major",
+      "stage": "export",
+      "itemId": "X1",
+      "message": "Actual helper validate and same-folder export both exited 0; round-1 evidence is saved. Semantic payload review then found two material implementation ambiguities below.",
+      "resolved": true
+    },
+    {
+      "id": "ISSUE2",
+      "severity": "major",
+      "stage": "components",
+      "itemId": "C4",
+      "message": "CTX4/C1/C4 did not give one exact typed manifest object or exact config-digest key set, yet C4 delegated the manifest to CTX4. Different implementers could serialize different identity/config/count fields. Specify exact fields/canonical JSON and validate full stored binding before a no-op/completion.",
+      "resolved": false
+    },
+    {
+      "id": "ISSUE3",
+      "severity": "major",
+      "stage": "workflow",
+      "itemId": "W6",
+      "message": "C4 reused one staging path across its allowed retry after proven absence, so an orphan first-attempt staging directory could block EV15 despite the designed retry. Also EV27 expected explicit reconciliation for a signal after rename start without an explicit C4 output rule. Give attempt-specific stage paths and a precise post-start cancellation outcome.",
+      "resolved": false
+    }
+  ],
+  "limitations": [
+    "AI self-review only, not stakeholder sign-off or independent review.",
+    "No business report is implemented, scheduled or executed; all EV1-EV32 business tests are specifications.",
+    "Real exports, source freshness, operating owners/limits, local filesystem guarantees and retention need H1-H8 evidence before launch.",
+    "Design helper checks structure/relationships and renders documents; it does not prove fixture truth, business correctness or production impact."
+  ]
+}

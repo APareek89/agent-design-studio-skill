@@ -1,0 +1,200 @@
+{
+  "generator": "agent-design-studio.design_io/1.0",
+  "generatedFiles": [
+    "PRD.md",
+    "architecture.md",
+    "build-prompt.md",
+    "eval-set.json",
+    "fmea-register.csv",
+    "assumptions.md",
+    "validation.json"
+  ],
+  "designOnly": true,
+  "status": "pass",
+  "designSha256": "c6ee5c5f4fd25e5636635c684580b3c8f087a9b026a8034b6011cda7ab758ff6",
+  "reviewSha256": "c32fd423ba5d3053031a0f3c056605fdb55af232dd1b4d2018d0580819a661ec",
+  "structuralValidation": {
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 5,
+      "tasks": 9,
+      "components": 6,
+      "workflow": 8,
+      "framework": 5,
+      "models": 0,
+      "fmea": 9,
+      "evals": 32,
+      "rollout": 6,
+      "export": 1
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewValidation": {
+    "valid": true,
+    "status": "pass",
+    "computedStatus": "pass",
+    "errors": [],
+    "blockerIds": [],
+    "method": "self-review",
+    "round": 3,
+    "scores": {
+      "D1": 3,
+      "D2": 3,
+      "D3": 3,
+      "D4": 3,
+      "D5": 3,
+      "D6": 3,
+      "D7": 3,
+      "D8": 4,
+      "D9": 3,
+      "D10": 3,
+      "D11": 3,
+      "D12": 3
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "review": {
+    "method": "self-review",
+    "round": 3,
+    "status": "pass",
+    "dimensions": [
+      {
+        "id": "D1",
+        "score": 3,
+        "evidence": [
+          "CTX1-CTX4/T0-T5 bound a daily join/export with exact exclusions and owned cancellation/failure."
+        ]
+      },
+      {
+        "id": "D2",
+        "score": 3,
+        "evidence": [
+          "Every leaf maps to C/W/EV; the generated all-category FM↔EV relation is reciprocal; H1-H8 distinguish assumptions from the unchanged brief."
+        ]
+      },
+      {
+        "id": "D3",
+        "score": 3,
+        "evidence": [
+          "W1-W11/C4/C5: exhaustive outcomes, one proven-absent retry with distinct staging path; post-start cancellation always readback; exact final proof before completion."
+        ]
+      },
+      {
+        "id": "D4",
+        "score": 3,
+        "evidence": [
+          "C1-C6 and CTX4: exact typed manifest/config/run-key canonical object fields, contracts and errors; full stored manifest equality and local human disposition."
+        ]
+      },
+      {
+        "id": "D5",
+        "score": 3,
+        "evidence": [
+          "C2/C3 own dates/IDs; F4 local allowlists and C4 fresh checks; manifest proof and H7 minimized retention. H6 platform behavior remains unverified."
+        ]
+      },
+      {
+        "id": "D6",
+        "score": 3,
+        "evidence": [
+          "H1-H8 mark source format, window, volumes, owners, policy and filesystem behavior as proposed launch dependencies; no vendor/current-fact claims."
+        ]
+      },
+      {
+        "id": "D7",
+        "score": 3,
+        "evidence": [
+          "F1-F5 choose code/local filesystem over LLM/database/cloud and compare deployment alternatives on identical criteria without claiming integrations."
+        ]
+      },
+      {
+        "id": "D8",
+        "score": 4,
+        "evidence": [
+          "Models.items is empty with an explicit zero-LLM budget; runtime/storage/human costs excluded as unmeasured."
+        ]
+      },
+      {
+        "id": "D9",
+        "score": 3,
+        "evidence": [
+          "FM1-FM9 are case-specific with S/O/D and owners; local unknown commits, injection, conflicts, failure visibility and privacy have explicit tests."
+        ]
+      },
+      {
+        "id": "D10",
+        "score": 3,
+        "evidence": [
+          "EV1-EV29 self-contained concrete fixtures; EV30 component/property layers, EV31 monitor and EV32 exact golden membership. Business harness is future work.",
+          "Actual independent fixture-label arithmetic audit inspected EV1/EV2/EV6/EV19/EV24/EV29 expected CSV rows: all passed; this is not execution of the future business harness."
+        ]
+      },
+      {
+        "id": "D11",
+        "score": 3,
+        "evidence": [
+          "R1-R6 define denominator-based KPIs, source-baseline dependency, noncircular shadow/assist gates, continuous paired effort experiment and manual stop/restore."
+        ]
+      },
+      {
+        "id": "D12",
+        "score": 3,
+        "evidence": [
+          "X1/CTX4/C1/C4/C5 propagate repairs; actual helper validation exited 0 with zero errors/warnings. Same-folder export round 1 succeeded; final export inspection is recorded separately in check-evidence."
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "id": "ISSUE1",
+        "severity": "major",
+        "stage": "export",
+        "itemId": "X1",
+        "message": "Actual helper validate and same-folder export both exited 0; round-1 evidence is saved. Semantic payload review then found two material implementation ambiguities below.",
+        "resolved": true
+      },
+      {
+        "id": "ISSUE2",
+        "severity": "major",
+        "stage": "components",
+        "itemId": "C4",
+        "message": "CTX4/C1/C4 did not give one exact typed manifest object or exact config-digest key set, yet C4 delegated the manifest to CTX4. Different implementers could serialize different identity/config/count fields. Specify exact fields/canonical JSON and validate full stored binding before a no-op/completion. Repaired: CTX4 specifies exact manifest shape and canonical config/run-key bytes; C1/C4/C5/X1 propagate the binding.",
+        "resolved": true
+      },
+      {
+        "id": "ISSUE3",
+        "severity": "major",
+        "stage": "workflow",
+        "itemId": "W6",
+        "message": "C4 reused one staging path across its allowed retry after proven absence, so an orphan first-attempt staging directory could block EV15 despite the designed retry. Also EV27 expected explicit reconciliation for a signal after rename start without an explicit C4 output rule. Give attempt-specific stage paths and a precise post-start cancellation outcome. Repaired: C4 uses -a0/-a1 staging paths, fresh retry staging, owned cleanup, and explicit UNKNOWN on post-start cancellation; C5/X1 agree.",
+        "resolved": true
+      }
+    ],
+    "limitations": [
+      "AI self-review only, not stakeholder sign-off or independent review.",
+      "No business report is implemented, scheduled or executed; all EV1-EV32 business tests are specifications.",
+      "Real exports, source freshness, operating owners/limits, local filesystem guarantees and retention need H1-H8 evidence before launch.",
+      "Design helper checks structure/relationships and renders documents; it does not prove fixture truth, business correctness or production impact.",
+      "No source namespace/as-of metadata exists in the two CSV contract; H2 remains a real manual provenance/freshness prerequisite. Hashes alone cannot establish it."
+    ]
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ]
+}

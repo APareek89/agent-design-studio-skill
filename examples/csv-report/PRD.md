@@ -1,0 +1,4768 @@
+# Daily UTC delivery lateness CSV report
+
+> PASS · DESIGN ONLY. Review is a design judgement; no business controls or provider reliability were executed.
+
+Review method: self-review; round 3.
+
+Review dimensions (supplied scores):
+
+- D1: 3/4 — CTX1-CTX4/T0-T5 bound a daily join/export with exact exclusions and owned cancellation/failure.
+- D2: 3/4 — Every leaf maps to C/W/EV; the generated all-category FM↔EV relation is reciprocal; H1-H8 distinguish assumptions from the unchanged brief.
+- D3: 3/4 — W1-W11/C4/C5: exhaustive outcomes, one proven-absent retry with distinct staging path; post-start cancellation always readback; exact final proof before completion.
+- D4: 3/4 — C1-C6 and CTX4: exact typed manifest/config/run-key canonical object fields, contracts and errors; full stored manifest equality and local human disposition.
+- D5: 3/4 — C2/C3 own dates/IDs; F4 local allowlists and C4 fresh checks; manifest proof and H7 minimized retention. H6 platform behavior remains unverified.
+- D6: 3/4 — H1-H8 mark source format, window, volumes, owners, policy and filesystem behavior as proposed launch dependencies; no vendor/current-fact claims.
+- D7: 3/4 — F1-F5 choose code/local filesystem over LLM/database/cloud and compare deployment alternatives on identical criteria without claiming integrations.
+- D8: 4/4 — Models.items is empty with an explicit zero-LLM budget; runtime/storage/human costs excluded as unmeasured.
+- D9: 3/4 — FM1-FM9 are case-specific with S/O/D and owners; local unknown commits, injection, conflicts, failure visibility and privacy have explicit tests.
+- D10: 3/4 — EV1-EV29 self-contained concrete fixtures; EV30 component/property layers, EV31 monitor and EV32 exact golden membership. Business harness is future work.; Actual independent fixture-label arithmetic audit inspected EV1/EV2/EV6/EV19/EV24/EV29 expected CSV rows: all passed; this is not execution of the future business harness.
+- D11: 3/4 — R1-R6 define denominator-based KPIs, source-baseline dependency, noncircular shadow/assist gates, continuous paired effort experiment and manual stop/restore.
+- D12: 3/4 — X1/CTX4/C1/C4/C5 propagate repairs; actual helper validation exited 0 with zero errors/warnings. Same-folder export round 1 succeeded; final export inspection is recorded separately in check-evidence.
+
+Review findings:
+
+- ISSUE1 [major, resolved] export/X1: Actual helper validate and same-folder export both exited 0; round-1 evidence is saved. Semantic payload review then found two material implementation ambiguities below.
+- ISSUE2 [major, resolved] components/C4: CTX4/C1/C4 did not give one exact typed manifest object or exact config-digest key set, yet C4 delegated the manifest to CTX4. Different implementers could serialize different identity/config/count fields. Specify exact fields/canonical JSON and validate full stored binding before a no-op/completion. Repaired: CTX4 specifies exact manifest shape and canonical config/run-key bytes; C1/C4/C5/X1 propagate the binding.
+- ISSUE3 [major, resolved] workflow/W6: C4 reused one staging path across its allowed retry after proven absence, so an orphan first-attempt staging directory could block EV15 despite the designed retry. Also EV27 expected explicit reconciliation for a signal after rename start without an explicit C4 output rule. Give attempt-specific stage paths and a precise post-start cancellation outcome. Repaired: C4 uses -a0/-a1 staging paths, fresh retry staging, owned cleanup, and explicit UNKNOWN on post-start cancellation; C5/X1 agree.
+
+## Original brief
+
+```
+Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+```
+
+## context
+
+### CTX1 · Business decision and actors
+
+Operations uses the exported daily CSV to identify which delivered orders exceeded their promised delivery timestamp by strictly more than 24 hours. The tool reports facts; it does not decide compensation, contact customers or change orders. Proposed owner roles are not named people or confirmed appointments.
+
+Reasoning: A bounded report should make the operations decision and data contract reviewable.
+
+Data:
+
+```json
+{
+  "field": "Business decision and actors",
+  "value": "Operations uses the exported daily CSV to identify which delivered orders exceeded their promised delivery timestamp by strictly more than 24 hours. The tool reports facts; it does not decide compensation, contact customers or change orders. Proposed owner roles are not named people or confirmed appointments.",
+  "question": ""
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+### CTX2 · Trigger, scope and completion
+
+A manual CLI or existing local scheduler invokes one local batch run with two CSV paths and optional report date. Default is the previous UTC date. Join uses exact order_id equality; no normalization or fuzzy match. Success means one durable date directory with report.csv and a checksum-verified COMPLETE manifest. A valid empty day produces a header-only CSV. Non-goals: emails, messaging, remote updates, forecasting, chat UI, LLMs, customer actions and automatic correction of prior reports.
+
+Reasoning: A bounded report should make the operations decision and data contract reviewable.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "field": "Trigger, scope and completion",
+  "value": "A manual CLI or existing local scheduler invokes one local batch run with two CSV paths and optional report date. Default is the previous UTC date. Join uses exact order_id equality; no normalization or fuzzy match. Success means one durable date directory with report.csv and a checksum-verified COMPLETE manifest. A valid empty day produces a header-only CSV. Non-goals: emails, messaging, remote updates, forecasting, chat UI, LLMs, customer actions and automatic correction of prior reports.",
+  "question": ""
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### CTX3 · Date and data rules
+
+Validate entire snapshots before filtering. Blank actual timestamps are undelivered and excluded. A delivered actual ID with no promised row fails the run, even outside the report window; promised-only rows are counted as undelivered/not matched. Duplicate IDs in either file fail the entire run even if rows are identical. Only actual rows within [D 00:00:00Z,(D+1) 00:00:00Z) are reported. Signed lateness uses exact integer microseconds: flag iff actual-promised > 86400000000. Actual before promised is valid and not late. Empty values, bad headers/CSV/UTF-8, duplicate header names, invalid timestamps, non-UTC values and unsafe IDs block publication.
+
+Reasoning: A bounded report should make the operations decision and data contract reviewable.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "field": "Date and data rules",
+  "value": "Validate entire snapshots before filtering. Blank actual timestamps are undelivered and excluded. A delivered actual ID with no promised row fails the run, even outside the report window; promised-only rows are counted as undelivered/not matched. Duplicate IDs in either file fail the entire run even if rows are identical. Only actual rows within [D 00:00:00Z,(D+1) 00:00:00Z) are reported. Signed lateness uses exact integer microseconds: flag iff actual-promised > 86400000000. Actual before promised is valid and not late. Empty values, bad headers/CSV/UTF-8, duplicate header names, invalid timestamps, non-UTC values and unsafe IDs block publication.",
+  "question": ""
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+### CTX4 · Output and local authority
+
+CSV columns in order: order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late. Sort by case-sensitive ASCII order_id, preserve leading zeros, normalize timestamps to UTC Z with six fractional digits, emit signed decimal seconds with exactly six decimals and lowercase true/false. UTF-8 without BOM, CRLF records, standard CSV escaping. Local manifest includes schema_version, report_date, config_digest, input SHA-256 hashes, row counts, excluded-undelivered/out-of-window counts, report SHA-256, status COMPLETE and run_key. No raw rows in logs. This design exercise writes only design artifacts; running or scheduling the business report is separate implementation work. Manifest is exactly {schema_version:string="delivery-report-v1",report_date:YYYY-MM-DD,config_digest:hex64,promised_sha256:hex64,actual_sha256:hex64,raw_count_promised:int>=0,raw_count_actual:int>=0,rows:int>=0,flagged_rows:int>=0,excluded_undelivered:int>=0,excluded_out_of_window:int>=0,promised_only_rows:int>=0,report_sha256:hex64,status:string="COMPLETE",run_key:hex64}; no timestamp or absolute path is included in this deterministic object. Serialize manifest JSON with sorted keys and compact separators in UTF-8 followed by one LF. config_digest = SHA256 of compact sorted-key UTF-8 JSON with exactly {schema_version,threshold_microseconds,max_rows,max_bytes_per_file,deadline_seconds}; parser/ID/output contracts are versioned by schema_version; allowlisted paths are deployment capabilities, excluded from digest. run_key = SHA256 of compact sorted-key UTF-8 JSON with exactly {schema_version,report_date,config_digest,promised_sha256,actual_sha256}. No LF in either hashed JSON input. Fields use the typed values in C1/C2/C3, not stringified numbers.
+
+Reasoning: A bounded report should make the operations decision and data contract reviewable.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "field": "Output and local authority",
+  "value": "CSV columns in order: order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late. Sort by case-sensitive ASCII order_id, preserve leading zeros, normalize timestamps to UTC Z with six fractional digits, emit signed decimal seconds with exactly six decimals and lowercase true/false. UTF-8 without BOM, CRLF records, standard CSV escaping. Local manifest includes schema_version, report_date, config_digest, input SHA-256 hashes, row counts, excluded-undelivered/out-of-window counts, report SHA-256, status COMPLETE and run_key. No raw rows in logs. This design exercise writes only design artifacts; running or scheduling the business report is separate implementation work. Manifest is exactly {schema_version:string=\"delivery-report-v1\",report_date:YYYY-MM-DD,config_digest:hex64,promised_sha256:hex64,actual_sha256:hex64,raw_count_promised:int>=0,raw_count_actual:int>=0,rows:int>=0,flagged_rows:int>=0,excluded_undelivered:int>=0,excluded_out_of_window:int>=0,promised_only_rows:int>=0,report_sha256:hex64,status:string=\"COMPLETE\",run_key:hex64}; no timestamp or absolute path is included in this deterministic object. Serialize manifest JSON with sorted keys and compact separators in UTF-8 followed by one LF. config_digest = SHA256 of compact sorted-key UTF-8 JSON with exactly {schema_version,threshold_microseconds,max_rows,max_bytes_per_file,deadline_seconds}; parser/ID/output contracts are versioned by schema_version; allowlisted paths are deployment capabilities, excluded from digest. run_key = SHA256 of compact sorted-key UTF-8 JSON with exactly {schema_version,report_date,config_digest,promised_sha256,actual_sha256}. No LF in either hashed JSON input. Fields use the typed values in C1/C2/C3, not stringified numbers.",
+  "question": ""
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+### CTX5 · Quality and value measurements
+
+R1 defines daily record accuracy, publication completeness and operations review-time KPIs. Baselines are unknown. Hypothesis: exact deterministic fixtures pass 100%; all published files have valid manifests; reviewer effort decreases without any missed/extra flagged rows. Actual business impact requires future shadow/manual comparison and the R5 experiment; no savings or production accuracy is claimed.
+
+Reasoning: A bounded report should make the operations decision and data contract reviewable.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "field": "Quality and value measurements",
+  "value": "R1 defines daily record accuracy, publication completeness and operations review-time KPIs. Baselines are unknown. Hypothesis: exact deterministic fixtures pass 100%; all published files have valid manifests; reviewer effort decreases without any missed/extra flagged rows. Actual business impact requires future shadow/manual comparison and the R5 experiment; no savings or production accuracy is claimed.",
+  "question": ""
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+
+## tasks
+
+### T0 · Produce the daily operations CSV
+
+Acquire and snapshot → validate → join/classify → publish → record a local outcome. On failure or cancellation stop publication and emit an owned local outcome.
+
+Reasoning: Top-level ordering prevents a partially validated report being consumed.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "parentId": "",
+  "mode": "sequence",
+  "basis": [
+    "Acquire and snapshot → validate → join/classify → publish → record a local outcome. On failure or cancellation stop publication and emit an owned local outcome."
+  ],
+  "examples": [
+    "T1 then T2 then T3 then T4 then T5"
+  ],
+  "autonomy": "Deterministic local code; no LLM or external action. The operator supplies permitted local paths; business implementation is not executed by this design exercise.",
+  "frequency": "Once per UTC day proposed in H5; bounded manual backfill allowed.",
+  "risk": "low"
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### T1 · Acquire the local run and immutable input bytes
+
+Resolve configured paths and permissions; derive UTC window, reject current/future date, acquire exclusive per-date directory lock, bound sizes and read immutable bytes. Record hashes after reading; do not reread changing files.
+
+Reasoning: Fixed bytes bind every later step to the same evidence.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "parentId": "T0",
+  "mode": "leaf",
+  "basis": [
+    "Resolve configured paths and permissions; derive UTC window, reject current/future date, acquire exclusive per-date directory lock, bound sizes and read immutable bytes. Record hashes after reading; do not reread changing files."
+  ],
+  "examples": [
+    "2026-10-27 selects [2026-10-27T00:00:00Z,2026-10-28T00:00:00Z)."
+  ],
+  "autonomy": "Deterministic local code; no LLM or external action. The operator supplies permitted local paths; business implementation is not executed by this design exercise.",
+  "frequency": "Once per UTC day proposed in H5; bounded manual backfill allowed.",
+  "risk": "medium"
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### T2 · Validate both CSV snapshots
+
+Parse the entire files using H1/H4, enforce required unique headers and ID uniqueness and ensure delivered actual IDs have promised rows. Reject all malformed or contradictory inputs with exact reason and row number.
+
+Reasoning: Whole-batch validation prevents silent omissions.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "parentId": "T0",
+  "mode": "leaf",
+  "basis": [
+    "Parse the entire files using H1/H4, enforce required unique headers and ID uniqueness and ensure delivered actual IDs have promised rows. Reject all malformed or contradictory inputs with exact reason and row number."
+  ],
+  "examples": [
+    "Duplicate O100 in actual returns DUPLICATE_ID and no CSV."
+  ],
+  "autonomy": "Deterministic local code; no LLM or external action. The operator supplies permitted local paths; business implementation is not executed by this design exercise.",
+  "frequency": "Once per UTC day proposed in H5; bounded manual backfill allowed.",
+  "risk": "high"
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### T3 · Join delivered orders and compute strict lateness
+
+Exact string join, then daily-window filtering; compute signed microseconds without floats; build sorted rows, counts and deterministic CSV bytes.
+
+Reasoning: Dates and joins require code rather than judgement.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "parentId": "T0",
+  "mode": "leaf",
+  "basis": [
+    "Exact string join, then daily-window filtering; compute signed microseconds without floats; build sorted rows, counts and deterministic CSV bytes."
+  ],
+  "examples": [
+    "Actual 2026-10-27T12:00:00.000001Z minus promised 2026-10-26T12:00:00Z is late; exactly 24h is false."
+  ],
+  "autonomy": "Deterministic local code; no LLM or external action. The operator supplies permitted local paths; business implementation is not executed by this design exercise.",
+  "frequency": "Once per UTC day proposed in H5; bounded manual backfill allowed.",
+  "risk": "high"
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### T4 · Publish a complete immutable report
+
+Under the date lock, compare any existing completed date directory. Stage CSV and COMPLETE manifest, fsync files and staging directory, then rename date directory and fsync parent. Reconcile uncertain publication before any retry.
+
+Reasoning: A report is consumable only with durable checksum proof.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "parentId": "T0",
+  "mode": "leaf",
+  "basis": [
+    "Under the date lock, compare any existing completed date directory. Stage CSV and COMPLETE manifest, fsync files and staging directory, then rename date directory and fsync parent. Reconcile uncertain publication before any retry."
+  ],
+  "examples": [
+    "A crash after directory rename is reconciled as COMPLETE if final hashes match."
+  ],
+  "autonomy": "Deterministic local code; no LLM or external action. The operator supplies permitted local paths; business implementation is not executed by this design exercise.",
+  "frequency": "Once per UTC day proposed in H5; bounded manual backfill allowed.",
+  "risk": "high"
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### T5 · Record completion, cancellation or owned failure
+
+Write local status safely; release acquired lock on normal exit. Operations inspects the local result each day. Failure gets proposed owner, acknowledgement deadline, next action and visible state. Unknown publication and stale locks require manual inspection.
+
+Reasoning: No email or remote update is introduced to handle failures.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "parentId": "T0",
+  "mode": "leaf",
+  "basis": [
+    "Write local status safely; release acquired lock on normal exit. Operations inspects the local result each day. Failure gets proposed owner, acknowledgement deadline, next action and visible state. Unknown publication and stale locks require manual inspection."
+  ],
+  "examples": [
+    "BLOCKED/INPUT_INVALID: owner fixes CSV export and reruns; no final report is produced."
+  ],
+  "autonomy": "Deterministic local code; no LLM or external action. The operator supplies permitted local paths; business implementation is not executed by this design exercise.",
+  "frequency": "Once per UTC day proposed in H5; bounded manual backfill allowed.",
+  "risk": "medium"
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### A1 · Immutable CSV evidence
+
+Two operator-provided local CSV files; exact content hashes produced by C1.
+
+Reasoning: Bind the required evidence to the leaves that use it.
+
+Assumptions:
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3"
+  ],
+  "sourceSystem": "Two operator-provided local CSV files; exact content hashes produced by C1.",
+  "loaded": "session start"
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+### A2 · Run policy and report identity
+
+Versioned local config: schema_version=delivery-report-v1, threshold_microseconds=86400000000, UTC report date, allowlisted roots and H1/H4 parser profile; no live remote policy.
+
+Reasoning: Bind the required evidence to the leaves that use it.
+
+Assumptions:
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T1",
+    "T3",
+    "T4"
+  ],
+  "sourceSystem": "Versioned local config: schema_version=delivery-report-v1, threshold_microseconds=86400000000, UTC report date, allowlisted roots and H1/H4 parser profile; no live remote policy.",
+  "loaded": "session start"
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+### A3 · Durable publication and failure state
+
+Dedicated local output root, per-date lock, staging directory, committed manifest/CSV and status record; C4/C5 produce record evidence.
+
+Reasoning: Bind the required evidence to the leaves that use it.
+
+Assumptions:
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T4",
+    "T5"
+  ],
+  "sourceSystem": "Dedicated local output root, per-date lock, staging directory, committed manifest/CSV and status record; C4/C5 produce record evidence.",
+  "loaded": "session start"
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+
+## components
+
+### C1 · Run controller and immutable read
+
+CLI run --promised PATH --actual PATH [--report-date D] --out ROOT. Reject future/current day; fail rather than use partial reads. Before and after reading verify same inode/size/mtime_ns; change gives INPUT_IO. Hash exact bytes in memory. Lock mkdir is exclusive; never break an existing lock automatically. SHA256 run_key is hash of compact sorted-key UTF-8 JSON {schema_version,report_date,config_digest,promised_sha256,actual_sha256}; canonical JSON has no spaces. config_digest hashes parser/limits/output/threshold settings, excluding absolute paths. Cancellation checked at bounded row batches and immediately before publication; lock metadata contains pid, start time and run key when known. Whole-run deadline 120s; no read retries. Exact digest key sets/serialization are CTX4; schema_version versions all parser/ID/output behavior. config_digest excludes allowlisted paths and includes only schema_version,threshold_microseconds,max_rows,max_bytes_per_file,deadline_seconds with native JSON numeric types.
+
+Reasoning: Dates, hashes, identity and locks are exact deterministic operations; no natural-language interpretation is needed.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "group": "Code: tools",
+  "taskIds": [
+    "T1"
+  ],
+  "inputs": [
+    "command: required object {promised_path:absolute path,actual_path:absolute path,output_root:absolute path,report_date:YYYY-MM-DD optional default yesterday UTC}",
+    "config: required immutable {schema_version:string,threshold_microseconds:int=86400000000,allowlisted_roots:array[path],max_rows:int=100000,max_bytes_per_file:int=52428800,deadline_seconds:int=120}",
+    "clock.now_utc:required aware UTC datetime; signal.cancel_requested:required boolean, initially false"
+  ],
+  "outputs": [
+    "outcome:enum READY|BLOCKED|BUSY|CANCELLED; reason:enum NONE|INVALID_DATE|PATH_DENIED|INPUT_IO|FILE_TOO_LARGE|OUTPUT_IO|LOCK_BUSY|CANCELLED|TIMEOUT",
+    "snapshot when READY:required {promised_bytes:bytes,actual_bytes:bytes,promised_sha256:hex64,actual_sha256:hex64,config_digest:hex64,run_key:hex64,report_date:date,window_start:UTC datetime,window_end:UTC datetime,lock_path:path,deadline:monotonic time}",
+    "lock_acquired:required boolean; retry_count:required int=0; error:optional {file_role:enum promised|actual|output,row_number:optional int}; no row contents"
+  ],
+  "whyCode": "Dates, hashes, identity and locks are exact deterministic operations; no natural-language interpretation is needed.",
+  "approvalRule": "Operator-configured local filesystem permission only; no runtime approval conversation. Recheck local path/capability before reads/writes. No external action is authorized by this design."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### C2 · CSV integrity validator
+
+CSV parser strict mode, utf-8-sig decode and exact header names; header order may vary and extra columns are ignored, but repeated headers/row-width mismatches fail. Reject all IDs outside H1 and duplicate IDs including identical rows. Validate all promised timestamps and nonblank actual timestamps before filtering. Blank actual is null, not parse failure. Delivered actual IDs absent in promised yield MISSING_PROMISE. Promised-only rows are allowed. Invalid time/date/precision => INVALID_TIMESTAMP; parsed nonzero offset => NON_UTC. No normalization of IDs. All errors terminate the batch; no fallback parser or row skipping. Zero retries.
+
+Reasoning: Typed parsing and one-to-one constraints protect join identity and exact threshold arithmetic.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "group": "Code: validation",
+  "taskIds": [
+    "T2"
+  ],
+  "inputs": [
+    "snapshot:required C1 READY snapshot",
+    "cancel_requested:required boolean; deadline:required monotonic time"
+  ],
+  "outputs": [
+    "outcome:enum VALID|INVALID|CANCELLED; reason:enum NONE|CSV_PARSE|ENCODING|MISSING_HEADER|DUPLICATE_HEADER|ROW_SHAPE|ROW_LIMIT|INVALID_ID|DUPLICATE_ID|MISSING_PROMISE|INVALID_TIMESTAMP|NON_UTC|CANCELLED|TIMEOUT",
+    "validated when VALID:required {promised:map[string,int microseconds since epoch],actual:map[string,int microseconds since epoch|null],raw_count_promised:int,raw_count_actual:int}",
+    "error when INVALID:required {reason:enum as above,file_role:enum promised|actual,row_number:int}; row 1 means header; no raw field value"
+  ],
+  "whyCode": "Typed parsing and one-to-one constraints protect join identity and exact threshold arithmetic.",
+  "approvalRule": "Operator-configured local filesystem permission only; no runtime approval conversation. Recheck local path/capability before reads/writes. No external action is authorized by this design."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### C3 · Exact join and renderer
+
+For each actual-map ID with nonnull timestamp use matching promised timestamp; include iff start<=actual<end. Calculate signed delta as int microseconds; flag delta>86400000000. Decimal seconds formatting has exactly six digits, including negative values; never round before comparison. Canonical timestamps use six fractional digits and Z. Sort ASCII order IDs, UTF-8 no BOM and CRLF including final record; all columns deterministic. Blank-actual records count as excluded_undelivered; promised-only_rows counts promised IDs absent from actual map. Empty valid input produces just the header. Check deadline/cancel every 1000 rows. No retries.
+
+Reasoning: A code-only join and integer arithmetic are simpler and testable at the microsecond boundary.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "group": "Code: validation",
+  "taskIds": [
+    "T3"
+  ],
+  "inputs": [
+    "validated:required C2 VALID maps",
+    "window_start/window_end:required integer UTC epoch microseconds from C1",
+    "threshold_microseconds:required int=86400000000",
+    "cancel_requested:required boolean; deadline:required monotonic time"
+  ],
+  "outputs": [
+    "outcome:enum BUILT|CANCELLED; reason:enum NONE|CANCELLED|TIMEOUT",
+    "report when BUILT:required {csv_bytes:bytes,report_sha256:hex64,rows:int,flagged_rows:int,excluded_undelivered:int,excluded_out_of_window:int,promised_only_rows:int}"
+  ],
+  "whyCode": "A code-only join and integer arithmetic are simpler and testable at the microsecond boundary.",
+  "approvalRule": "Operator-configured local filesystem permission only; no runtime approval conversation. Recheck local path/capability before reads/writes. No external action is authorized by this design."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### C4 · Atomic local publisher
+
+Final directory ROOT/YYYY-MM-DD contains report.csv and manifest.json. Under acquired per-date lock, existing COMPLETE manifest with same run_key and matching CSV hash => ALREADY_COMPLETE; any differing or incomplete final directory => CONFLICT. Stage at ROOT/.staging-<date>-<run_key>-<pid>-a<retry_count>; create files exclusively, fsync each and directory. Manifest schema is in CTX4; input counts are C2/C3 outputs. Recheck output-root permission and lock ownership before rename. Publish by same-filesystem directory rename then fsync output root; any exception after rename begins => UNKNOWN and C5 reconciliation, never immediate retry. Before rename, cancellation deletes staging and returns CANCELLED; failures known before rename return NOT_COMMITTED. After rename begins defer cancellation until reconciliation determines whether published. Stage no later than deadline; uncertain timeout is UNKNOWN. No network, input mutation or automatic overwrite. The exact typed manifest/canonical JSON is CTX4. Before ALREADY_COMPLETE verify all stored date/schema/config/input hashes and derived counts against the current expected manifest, plus actual report hash; any discrepancy is CONFLICT. A retry uses its fresh -a1 directory; best-effort remove the owned prior -a0 stage after ABSENT proof, but cleanup failure never authorizes reading/reusing that stage. No automatic deletion of another run stage. Any cancellation signal received after rename begins makes C4 return UNKNOWN, even if rename appears successful, so W6 proves COMMITTED or ABSENT before selecting terminal; no post-start CANCELLED outcome bypasses readback.
+
+Reasoning: Atomic publication with content identity prevents partial reports, duplicate runs and false completion.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "group": "Code: tools",
+  "taskIds": [
+    "T4"
+  ],
+  "inputs": [
+    "snapshot:required C1 snapshot; report:required C3 BUILT report",
+    "retry_count:required int in 0..1; cancel_requested:required boolean",
+    "capability:required output-root permission from local execution account, rechecked before staging and rename; date lock still held"
+  ],
+  "outputs": [
+    "outcome:enum COMMITTED|ALREADY_COMPLETE|NOT_COMMITTED|UNKNOWN|CONFLICT|CANCELLED; reason:enum NONE|PERMISSION_DENIED|STAGE_IO|PUBLISH_AMBIGUOUS|EXISTING_CONFLICT|CANCELLED|TIMEOUT",
+    "proof when COMMITTED or ALREADY_COMPLETE:required {final_dir:absolute path,manifest_path:absolute path,run_key:hex64,report_sha256:hex64,manifest_status:COMPLETE}",
+    "candidate_final_dir:required absolute path; cleanup_warning:optional enum STAGING_CLEANUP_FAILED|LOCK_CLEANUP_FAILED"
+  ],
+  "whyCode": "Atomic publication with content identity prevents partial reports, duplicate runs and false completion.",
+  "approvalRule": "Operator-configured local filesystem permission only; no runtime approval conversation. Recheck local path/capability before reads/writes. No external action is authorized by this design."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### C5 · Read-only publication reconciler
+
+Read final manifest and CSV under held lock. COMPLETE + expected run_key + actual CSV SHA256 match => COMMITTED. No final directory => ABSENT; readable nonmatching/incomplete final => CONFLICT; read failure or reconciliation deadline => UNKNOWN. One reconciliation attempt, no write. ABSENT may authorize one C4 retry only if retry_count==0 and cancellation/deadline have not fired; increment before retry. Any unresolved ambiguity blocks owned outcome; an expired caller or stale lock never authorizes another publication. Matching proof also requires every expected manifest field from CTX4 (date/schema/config/input hashes and counts), not only status/run_key/output hash; mismatch yields CONFLICT. Read-only C5 never repairs or deletes a final directory.
+
+Reasoning: Read-only evidence distinguishes a committed report from a safe retry and from unresolved ambiguity.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "group": "Code: validation",
+  "taskIds": [
+    "T4"
+  ],
+  "inputs": [
+    "candidate_final_dir:required absolute path; expected_run_key:required hex64; expected_report_sha256:required hex64",
+    "read_capability:required within configured output root; retry_count:int 0..1; reconcile deadline:monotonic time now+5s"
+  ],
+  "outputs": [
+    "outcome:enum COMMITTED|ABSENT|CONFLICT|UNKNOWN; reason:enum NONE|FINAL_ABSENT|FINAL_MISMATCH|READBACK_IO|TIMEOUT",
+    "proof when COMMITTED:required same proof shape as C4; observed_final_state:required enum MATCH|ABSENT|MISMATCH|UNREADABLE"
+  ],
+  "whyCode": "Read-only evidence distinguishes a committed report from a safe retry and from unresolved ambiguity.",
+  "approvalRule": "Operator-configured local filesystem permission only; no runtime approval conversation. Recheck local path/capability before reads/writes. No external action is authorized by this design."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### C6 · Local outcome recorder
+
+Append a unique per-invocation local JSON status under ROOT/status (exclusive create + fsync), storing report date, run_key when known, terminal/reason, proof, proposed owner, ack_due_utc and manual next action. COMPLETE exits 0 only with C4/C5 proof; BLOCKED exits 2, CANCELLED exits 130. If status write fails emit structured stderr and status_proof=STDERR_ONLY; this does not convert a proved committed report to failure. Remove owned lock at normal exit; cleanup failure is visible stderr/status warning. Hard crash may leave stale lock: operator confirms no running process and read-only checks final manifest before manual lock removal. Operations checks local statuses by 10:00 UTC, acknowledges failure in a separate local operating log by 12:00 UTC, then manually escalates to lead if overdue. No automatic messaging and no indefinite waiting loop.
+
+Reasoning: A file/exit-code handoff handles exceptions without adding a conversational or remote interface.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "group": "Code: human triggers",
+  "taskIds": [
+    "T5"
+  ],
+  "inputs": [
+    "terminal:required enum COMPLETE|BLOCKED|CANCELLED",
+    "reason:required enum READY|ALREADY_COMPLETE|INPUT_INVALID|INPUT_IO|OUTPUT_IO|BUSY|CONFLICT|PUBLICATION_UNKNOWN|TIMEOUT|CANCELLED",
+    "proof:required on COMPLETE, otherwise absent; lock_acquired:required bool",
+    "owner_role:required proposed Operations report owner; acknowledgement_due:required next 12:00 UTC following this run"
+  ],
+  "outputs": [
+    "state:enum COMPLETE|BLOCKED|CANCELLED; exit_code:int enum 0|2|130; status_path:optional absolute path",
+    "status_proof:enum DURABLE|STDERR_ONLY; lock_status:enum RELEASED|NOT_HELD|CLEANUP_FAILED"
+  ],
+  "whyCode": "A file/exit-code handoff handles exceptions without adding a conversational or remote interface.",
+  "approvalRule": "Operator-configured local filesystem permission only; no runtime approval conversation. Recheck local path/capability before reads/writes. No external action is authorized by this design."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+
+## workflow
+
+### W1 · ENTRY_ACQUIRE
+
+{"state":"ENTRY_ACQUIRE","transitions":[{"to":"W2","when":"C1.outcome == READY","mode":"exclusive"},{"to":"W10","when":"C1.outcome == CANCELLED","mode":"exclusive"},{"to":"W11","when":"C1.outcome in [BLOCKED,BUSY]","mode":"exclusive"}],"failureDisposition":"All outcomes are enumerated below; unhandled internal exceptions go to W11 as BLOCKED/OUTPUT_IO without a success claim.","timeout":"C1-C4 share C1.deadline (120s); C5 has one additional 5s read-only reconciliation budget; C6 attempts local status once then stderr.","retryPolicy":"Zero except W6\u2192W4 after ABSENT, maximum one retry, bounded by deadline and cancellation.","terminalDisposition":"","guardBindings":"C1.outcome enum READY|BLOCKED|BUSY|CANCELLED; C2.outcome VALID|INVALID|CANCELLED; C3.outcome BUILT|CANCELLED; C4.outcome COMMITTED|ALREADY_COMPLETE|NOT_COMMITTED|UNKNOWN|CONFLICT|CANCELLED; C5.outcome COMMITTED|ABSENT|CONFLICT|UNKNOWN. C1 creates retry_count:int=0; orchestrator increments on W6\u2192W4. cancel_requested:boolean comes only from SIGINT/SIGTERM; deadline_expired:boolean compares monotonic clock with C1.deadline. Exact outcome switches below are exhaustive and exclusive; no guard depends on model text. "}
+
+Reasoning: Explicit outcome switches and bounded readback preserve local report integrity.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "componentId": "C1",
+  "taskIds": [
+    "T1"
+  ],
+  "next": [
+    "W2",
+    "W10",
+    "W11"
+  ],
+  "decision": true,
+  "example": "Valid two-file command for 2026-10-27 acquires the date lock then W2."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### W2 · VALIDATE
+
+{"state":"VALIDATE","transitions":[{"to":"W3","when":"C2.outcome == VALID","mode":"exclusive"},{"to":"W10","when":"C2.outcome == CANCELLED and C2.reason == CANCELLED","mode":"exclusive"},{"to":"W11","when":"C2.outcome == INVALID or (C2.outcome == CANCELLED and C2.reason == TIMEOUT)","mode":"exclusive"}],"failureDisposition":"All outcomes are enumerated below; unhandled internal exceptions go to W11 as BLOCKED/OUTPUT_IO without a success claim.","timeout":"C1-C4 share C1.deadline (120s); C5 has one additional 5s read-only reconciliation budget; C6 attempts local status once then stderr.","retryPolicy":"Zero except W6\u2192W4 after ABSENT, maximum one retry, bounded by deadline and cancellation.","terminalDisposition":"","guardBindings":"C1.outcome enum READY|BLOCKED|BUSY|CANCELLED; C2.outcome VALID|INVALID|CANCELLED; C3.outcome BUILT|CANCELLED; C4.outcome COMMITTED|ALREADY_COMPLETE|NOT_COMMITTED|UNKNOWN|CONFLICT|CANCELLED; C5.outcome COMMITTED|ABSENT|CONFLICT|UNKNOWN. C1 creates retry_count:int=0; orchestrator increments on W6\u2192W4. cancel_requested:boolean comes only from SIGINT/SIGTERM; deadline_expired:boolean compares monotonic clock with C1.deadline. Exact outcome switches below are exhaustive and exclusive; no guard depends on model text. "}
+
+Reasoning: Explicit outcome switches and bounded readback preserve local report integrity.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "componentId": "C2",
+  "taskIds": [
+    "T2"
+  ],
+  "next": [
+    "W3",
+    "W10",
+    "W11"
+  ],
+  "decision": true,
+  "example": "Duplicate order_id O1 returns INVALID/DUPLICATE_ID → W11/INPUT_INVALID."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### W3 · JOIN_RENDER
+
+{"state":"JOIN_RENDER","transitions":[{"to":"W4","when":"C3.outcome == BUILT","mode":"exclusive"},{"to":"W10","when":"C3.outcome == CANCELLED and C3.reason == CANCELLED","mode":"exclusive"},{"to":"W11","when":"C3.outcome == CANCELLED and C3.reason == TIMEOUT","mode":"exclusive"}],"failureDisposition":"All outcomes are enumerated below; unhandled internal exceptions go to W11 as BLOCKED/OUTPUT_IO without a success claim.","timeout":"C1-C4 share C1.deadline (120s); C5 has one additional 5s read-only reconciliation budget; C6 attempts local status once then stderr.","retryPolicy":"Zero except W6\u2192W4 after ABSENT, maximum one retry, bounded by deadline and cancellation.","terminalDisposition":"","guardBindings":"C1.outcome enum READY|BLOCKED|BUSY|CANCELLED; C2.outcome VALID|INVALID|CANCELLED; C3.outcome BUILT|CANCELLED; C4.outcome COMMITTED|ALREADY_COMPLETE|NOT_COMMITTED|UNKNOWN|CONFLICT|CANCELLED; C5.outcome COMMITTED|ABSENT|CONFLICT|UNKNOWN. C1 creates retry_count:int=0; orchestrator increments on W6\u2192W4. cancel_requested:boolean comes only from SIGINT/SIGTERM; deadline_expired:boolean compares monotonic clock with C1.deadline. Exact outcome switches below are exhaustive and exclusive; no guard depends on model text. "}
+
+Reasoning: Explicit outcome switches and bounded readback preserve local report integrity.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "componentId": "C3",
+  "taskIds": [
+    "T3"
+  ],
+  "next": [
+    "W4",
+    "W10",
+    "W11"
+  ],
+  "decision": true,
+  "example": "Exactly 24h produces false then W4."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### W4 · STAGE_PUBLISH
+
+{"state":"STAGE_PUBLISH","transitions":[{"to":"W9","when":"C4.outcome in [COMMITTED,ALREADY_COMPLETE]","mode":"exclusive"},{"to":"W6","when":"C4.outcome == UNKNOWN","mode":"exclusive"},{"to":"W10","when":"C4.outcome == CANCELLED","mode":"exclusive"},{"to":"W11","when":"C4.outcome in [NOT_COMMITTED,CONFLICT]","mode":"exclusive"}],"failureDisposition":"All outcomes are enumerated below; unhandled internal exceptions go to W11 as BLOCKED/OUTPUT_IO without a success claim.","timeout":"C1-C4 share C1.deadline (120s); C5 has one additional 5s read-only reconciliation budget; C6 attempts local status once then stderr.","retryPolicy":"Zero except W6\u2192W4 after ABSENT, maximum one retry, bounded by deadline and cancellation.","terminalDisposition":"","guardBindings":"C1.outcome enum READY|BLOCKED|BUSY|CANCELLED; C2.outcome VALID|INVALID|CANCELLED; C3.outcome BUILT|CANCELLED; C4.outcome COMMITTED|ALREADY_COMPLETE|NOT_COMMITTED|UNKNOWN|CONFLICT|CANCELLED; C5.outcome COMMITTED|ABSENT|CONFLICT|UNKNOWN. C1 creates retry_count:int=0; orchestrator increments on W6\u2192W4. cancel_requested:boolean comes only from SIGINT/SIGTERM; deadline_expired:boolean compares monotonic clock with C1.deadline. Exact outcome switches below are exhaustive and exclusive; no guard depends on model text. "}
+
+Reasoning: Explicit outcome switches and bounded readback preserve local report integrity.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "componentId": "C4",
+  "taskIds": [
+    "T4"
+  ],
+  "next": [
+    "W9",
+    "W6",
+    "W10",
+    "W11"
+  ],
+  "decision": true,
+  "example": "Rename succeeds but fsync result is unknown → W6; never blind retry."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### W6 · RECONCILE
+
+{"state":"RECONCILE","transitions":[{"to":"W9","when":"C5.outcome == COMMITTED","mode":"exclusive"},{"to":"W4","when":"C5.outcome == ABSENT and retry_count == 0 and not cancel_requested and not deadline_expired; increment retry_count before invoking C4","mode":"exclusive"},{"to":"W10","when":"C5.outcome == ABSENT and cancel_requested","mode":"exclusive"},{"to":"W11","when":"C5.outcome in [CONFLICT,UNKNOWN] or (C5.outcome == ABSENT and not cancel_requested and (retry_count == 1 or deadline_expired))","mode":"exclusive"}],"failureDisposition":"All outcomes are enumerated below; unhandled internal exceptions go to W11 as BLOCKED/OUTPUT_IO without a success claim.","timeout":"C1-C4 share C1.deadline (120s); C5 has one additional 5s read-only reconciliation budget; C6 attempts local status once then stderr.","retryPolicy":"Zero except W6\u2192W4 after ABSENT, maximum one retry, bounded by deadline and cancellation.","terminalDisposition":"","guardBindings":"C1.outcome enum READY|BLOCKED|BUSY|CANCELLED; C2.outcome VALID|INVALID|CANCELLED; C3.outcome BUILT|CANCELLED; C4.outcome COMMITTED|ALREADY_COMPLETE|NOT_COMMITTED|UNKNOWN|CONFLICT|CANCELLED; C5.outcome COMMITTED|ABSENT|CONFLICT|UNKNOWN. C1 creates retry_count:int=0; orchestrator increments on W6\u2192W4. cancel_requested:boolean comes only from SIGINT/SIGTERM; deadline_expired:boolean compares monotonic clock with C1.deadline. Exact outcome switches below are exhaustive and exclusive; no guard depends on model text. Cancellation after publication begins is deferred until final state known: COMMITTED still wins; ABSENT+CANCEL gives CANCELLED; UNKNOWN remains BLOCKED/PUBLICATION_UNKNOWN."}
+
+Reasoning: Explicit outcome switches and bounded readback preserve local report integrity.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "componentId": "C5",
+  "taskIds": [
+    "T4"
+  ],
+  "next": [
+    "W9",
+    "W4",
+    "W10",
+    "W11"
+  ],
+  "decision": true,
+  "example": "Post-rename timeout plus matching final hash → W9; absent final permits one bounded retry."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### W9 · COMPLETE
+
+{"state":"COMPLETE","transitions":[],"failureDisposition":"All outcomes are enumerated below; unhandled internal exceptions go to W11 as BLOCKED/OUTPUT_IO without a success claim.","timeout":"C1-C4 share C1.deadline (120s); C5 has one additional 5s read-only reconciliation budget; C6 attempts local status once then stderr.","retryPolicy":"Zero except W6\u2192W4 after ABSENT, maximum one retry, bounded by deadline and cancellation.","terminalDisposition":"COMPLETE with required proof; C6 status write failure yields STDERR_ONLY and a warning; never invents a report proof.","guardBindings":"C1.outcome enum READY|BLOCKED|BUSY|CANCELLED; C2.outcome VALID|INVALID|CANCELLED; C3.outcome BUILT|CANCELLED; C4.outcome COMMITTED|ALREADY_COMPLETE|NOT_COMMITTED|UNKNOWN|CONFLICT|CANCELLED; C5.outcome COMMITTED|ABSENT|CONFLICT|UNKNOWN. C1 creates retry_count:int=0; orchestrator increments on W6\u2192W4. cancel_requested:boolean comes only from SIGINT/SIGTERM; deadline_expired:boolean compares monotonic clock with C1.deadline. Exact outcome switches below are exhaustive and exclusive; no guard depends on model text. The reason is READY for new/reconciled commit or ALREADY_COMPLETE for identical rerun."}
+
+Reasoning: Explicit outcome switches and bounded readback preserve local report integrity.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "componentId": "C6",
+  "taskIds": [
+    "T5"
+  ],
+  "next": [],
+  "decision": false,
+  "example": "C4/C5 proof is persisted; exit 0 with final manifest path."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### W10 · CANCELLED
+
+{"state":"CANCELLED","transitions":[],"failureDisposition":"All outcomes are enumerated below; unhandled internal exceptions go to W11 as BLOCKED/OUTPUT_IO without a success claim.","timeout":"C1-C4 share C1.deadline (120s); C5 has one additional 5s read-only reconciliation budget; C6 attempts local status once then stderr.","retryPolicy":"Zero except W6\u2192W4 after ABSENT, maximum one retry, bounded by deadline and cancellation.","terminalDisposition":"CANCELLED; final absent has been proved if publication was attempted; owned lock released where possible.","guardBindings":"C1.outcome enum READY|BLOCKED|BUSY|CANCELLED; C2.outcome VALID|INVALID|CANCELLED; C3.outcome BUILT|CANCELLED; C4.outcome COMMITTED|ALREADY_COMPLETE|NOT_COMMITTED|UNKNOWN|CONFLICT|CANCELLED; C5.outcome COMMITTED|ABSENT|CONFLICT|UNKNOWN. C1 creates retry_count:int=0; orchestrator increments on W6\u2192W4. cancel_requested:boolean comes only from SIGINT/SIGTERM; deadline_expired:boolean compares monotonic clock with C1.deadline. Exact outcome switches below are exhaustive and exclusive; no guard depends on model text. Before publication, no final report created by this attempt. Post-start cancellation routes via W6. Signal-free timeout routes W11/TIMEOUT."}
+
+Reasoning: Explicit outcome switches and bounded readback preserve local report integrity.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "componentId": "C6",
+  "taskIds": [
+    "T5"
+  ],
+  "next": [],
+  "decision": false,
+  "example": "SIGINT before rename yields no final report, a local status and exit 130."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### W11 · BLOCKED
+
+{"state":"BLOCKED","transitions":[],"failureDisposition":"All outcomes are enumerated below; unhandled internal exceptions go to W11 as BLOCKED/OUTPUT_IO without a success claim.","timeout":"C1-C4 share C1.deadline (120s); C5 has one additional 5s read-only reconciliation budget; C6 attempts local status once then stderr.","retryPolicy":"Zero except W6\u2192W4 after ABSENT, maximum one retry, bounded by deadline and cancellation.","terminalDisposition":"BLOCKED with reason and proposed owner; exit 2. Publication ambiguity retains run identity for manual read-only inspection and forbids another blind write.","guardBindings":"C1.outcome enum READY|BLOCKED|BUSY|CANCELLED; C2.outcome VALID|INVALID|CANCELLED; C3.outcome BUILT|CANCELLED; C4.outcome COMMITTED|ALREADY_COMPLETE|NOT_COMMITTED|UNKNOWN|CONFLICT|CANCELLED; C5.outcome COMMITTED|ABSENT|CONFLICT|UNKNOWN. C1 creates retry_count:int=0; orchestrator increments on W6\u2192W4. cancel_requested:boolean comes only from SIGINT/SIGTERM; deadline_expired:boolean compares monotonic clock with C1.deadline. Exact outcome switches below are exhaustive and exclusive; no guard depends on model text. Reason mapping: C1 PATH_DENIED/OUTPUT_IO\u2192OUTPUT_IO, INPUT_IO/FILE_TOO_LARGE/INVALID_DATE\u2192INPUT_IO, BUSY\u2192BUSY; C2 INVALID\u2192INPUT_INVALID; deadline\u2192TIMEOUT; C4 NOT_COMMITTED\u2192OUTPUT_IO, CONFLICT\u2192CONFLICT; C5 CONFLICT\u2192CONFLICT, UNKNOWN\u2192PUBLICATION_UNKNOWN, exhausted ABSENT\u2192OUTPUT_IO. Local status is the handoff, not a remote queue."}
+
+Reasoning: Explicit outcome switches and bounded readback preserve local report integrity.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "componentId": "C6",
+  "taskIds": [
+    "T5"
+  ],
+  "next": [],
+  "decision": false,
+  "example": "Malformed timestamp yields INPUT_INVALID status, no CSV and exit 2."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+
+## framework
+
+### F1 · Code workflow fit
+
+A deterministic Python CLI is the complete first release; zero agent framework and zero model calls.
+
+Reasoning: Choose only capabilities required by the brief; external products remain unverified candidates.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "fit",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "choice": "A deterministic Python CLI is the complete first release; zero agent framework and zero model calls.",
+  "alternatives": [
+    "Rejected LLM/multi-agent system: adds parsing uncertainty, credentials, cost and orchestration with no judgement task."
+  ],
+  "tradeoffs": "Both options assessed on exact join/date correctness, local deployment, retries/audit and operating burden; code directly satisfies every criterion. No vendor capability claim is needed.",
+  "permission": "none",
+  "blastRadius": "No external systems.",
+  "approvalRule": "Use locally granted path capabilities; no account connection or remote write. Proposed owners confirm launch prerequisites, not this design review.",
+  "leastPrivilege": "Read-only configured input roots; create/write/delete staging and own lock/status only inside dedicated output root; never alter inputs or existing committed date reports. No network capability or secrets.",
+  "aws": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate requiring equivalent immutable-pair, atomic-publication, permission and retention tests; no current integration.",
+  "gcp": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate on the same criteria; no current integration.",
+  "azure": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate on the same criteria; no current integration.",
+  "openSource": "Chosen: Python 3 standard library csv, datetime, decimal/integer formatting, hashlib, json, pathlib/os; local filesystem. Existing local scheduler optional after deployment verification; no paid SDK or LLM service."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+### F2 · One-host durable batch architecture
+
+C1→C2→C3→C4 with C5 reconciliation and C6 local terminal status. Per-date exclusive lock, content-bound run identity and immutable report directory.
+
+Reasoning: Choose only capabilities required by the brief; external products remain unverified candidates.
+
+Assumptions:
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "architecture",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "choice": "C1→C2→C3→C4 with C5 reconciliation and C6 local terminal status. Per-date exclusive lock, content-bound run identity and immutable report directory.",
+  "alternatives": [
+    "Rejected database/workflow service for this small local report: extra infrastructure and operational state without a remote or long-running approval requirement."
+  ],
+  "tradeoffs": "Local filesystem behavior is a launch dependency; a future distributed execution would require a new concurrency/publication design.",
+  "permission": "write",
+  "blastRadius": "Only the configured local report root.",
+  "approvalRule": "Use locally granted path capabilities; no account connection or remote write. Proposed owners confirm launch prerequisites, not this design review.",
+  "leastPrivilege": "Read-only configured input roots; create/write/delete staging and own lock/status only inside dedicated output root; never alter inputs or existing committed date reports. No network capability or secrets.",
+  "aws": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate requiring equivalent immutable-pair, atomic-publication, permission and retention tests; no current integration.",
+  "gcp": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate on the same criteria; no current integration.",
+  "azure": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate on the same criteria; no current integration.",
+  "openSource": "Chosen: Python 3 standard library csv, datetime, decimal/integer formatting, hashlib, json, pathlib/os; local filesystem. Existing local scheduler optional after deployment verification; no paid SDK or LLM service."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### F3 · Schedule and bounded orchestration
+
+Invoke CLI manually first; use an existing local daily scheduler at proposed 08:00 UTC after export availability is verified. One run bounded to 120s plus 5s ambiguous-commit readback.
+
+Reasoning: Choose only capabilities required by the brief; external products remain unverified candidates.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "orchestration",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "choice": "Invoke CLI manually first; use an existing local daily scheduler at proposed 08:00 UTC after export availability is verified. One run bounded to 120s plus 5s ambiguous-commit readback.",
+  "alternatives": [
+    "Rejected cron-like remote service provisioning: outside design scope and not necessary for a small local job."
+  ],
+  "tradeoffs": "Manual invocation and an existing scheduler have the same validation, locks, exact data and publication rules; scheduling only changes trigger ownership. No automation is created in this exercise.",
+  "permission": "none",
+  "blastRadius": "One run for one completed UTC date.",
+  "approvalRule": "Use locally granted path capabilities; no account connection or remote write. Proposed owners confirm launch prerequisites, not this design review.",
+  "leastPrivilege": "Read-only configured input roots; create/write/delete staging and own lock/status only inside dedicated output root; never alter inputs or existing committed date reports. No network capability or secrets.",
+  "aws": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate requiring equivalent immutable-pair, atomic-publication, permission and retention tests; no current integration.",
+  "gcp": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate on the same criteria; no current integration.",
+  "azure": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate on the same criteria; no current integration.",
+  "openSource": "Chosen: Python 3 standard library csv, datetime, decimal/integer formatting, hashlib, json, pathlib/os; local filesystem. Existing local scheduler optional after deployment verification; no paid SDK or LLM service."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+### F4 · Filesystem authority and inert inputs
+
+Treat CSV content as untrusted data; strict parser/ID profile, no eval or shell interpolation. Resolve paths against allowlisted roots, forbid symlinks, fresh capability checks and exclusive creation.
+
+Reasoning: Choose only capabilities required by the brief; external products remain unverified candidates.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "permission",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "choice": "Treat CSV content as untrusted data; strict parser/ID profile, no eval or shell interpolation. Resolve paths against allowlisted roots, forbid symlinks, fresh capability checks and exclusive creation.",
+  "alternatives": [
+    "Rejected processing arbitrary paths and preserving formula-like IDs directly in spreadsheet CSV: unclear scope and formula risk."
+  ],
+  "tradeoffs": "The narrow ID profile is a confirmable source-contract dependency. Wrong-namespace/stale snapshot risk still needs the source-owner procedure; hashes establish byte identity, not business provenance.",
+  "permission": "write",
+  "blastRadius": "Input bytes read only; local output and status contain order identifiers and timestamps.",
+  "approvalRule": "Use locally granted path capabilities; no account connection or remote write. Proposed owners confirm launch prerequisites, not this design review.",
+  "leastPrivilege": "Read-only configured input roots; create/write/delete staging and own lock/status only inside dedicated output root; never alter inputs or existing committed date reports. No network capability or secrets.",
+  "aws": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate requiring equivalent immutable-pair, atomic-publication, permission and retention tests; no current integration.",
+  "gcp": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate on the same criteria; no current integration.",
+  "azure": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate on the same criteria; no current integration.",
+  "openSource": "Chosen: Python 3 standard library csv, datetime, decimal/integer formatting, hashlib, json, pathlib/os; local filesystem. Existing local scheduler optional after deployment verification; no paid SDK or LLM service."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+### F5 · Minimized data and retention
+
+Memory-only snapshots; retain output CSV, hashes, count/manifest and error codes/row numbers locally for proposed 30 days. No customer names, addresses or raw rows in logs.
+
+Reasoning: Choose only capabilities required by the brief; external products remain unverified candidates.
+
+Assumptions:
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "data",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "choice": "Memory-only snapshots; retain output CSV, hashes, count/manifest and error codes/row numbers locally for proposed 30 days. No customer names, addresses or raw rows in logs.",
+  "alternatives": [
+    "Rejected cloud warehouse/vector store: no retrieval or analytics need and extra data movement."
+  ],
+  "tradeoffs": "Memory/row limits are provisional; real export profiling and retention approval remain launch gates. All cloud alternatives face the same access, schema, provenance, durability, deletion and observability criteria; no price or reliability assumptions are asserted.",
+  "permission": "write",
+  "blastRadius": "A single operator-controlled filesystem; no upload.",
+  "approvalRule": "Use locally granted path capabilities; no account connection or remote write. Proposed owners confirm launch prerequisites, not this design review.",
+  "leastPrivilege": "Read-only configured input roots; create/write/delete staging and own lock/status only inside dedicated output root; never alter inputs or existing committed date reports. No network capability or secrets.",
+  "aws": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate requiring equivalent immutable-pair, atomic-publication, permission and retention tests; no current integration.",
+  "gcp": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate on the same criteria; no current integration.",
+  "azure": "If future hosting is requested: private object/file storage plus a scheduled container, unverified candidate on the same criteria; no current integration.",
+  "openSource": "Chosen: Python 3 standard library csv, datetime, decimal/integer formatting, hashlib, json, pathlib/os; local filesystem. Existing local scheduler optional after deployment verification; no paid SDK or LLM service."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+
+## models
+
+Stage assumptions:
+
+- Zero LLM components and zero model calls/tokens/prices: all leaves are deterministic code. No fine-tuning, prompt budget, LLM retry, provider account or model spend is applicable. Runtime/storage/operator costs are unmeasured and excluded; zero LLM usage is not a claim of zero operating cost.
+
+## fmea
+
+### FM1 · Wrong or duplicate order identity
+
+Hypothetical prioritization only: S severity 1 negligible to 10 catastrophic; O occurrence 1 rare to 10 frequent; D detection 1 caught before harm to 10 hard to detect. RPN=63. No measured frequency or accepted residual risk. Prompt injection as model manipulation is inapplicable with zero LLMs; unsafe CSV/shell content is FM6. Remote unknown commits, tenant grants, compensation and revoked remote authority are outside this local-only scope.
+
+Reasoning: Score the concrete report failure, then require a matching test and owner.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T2"
+  ],
+  "componentIds": [
+    "C2"
+  ],
+  "effect": "Rows joined to wrong orders or duplicate report rows.",
+  "cause": "Padded/normalized IDs, cross-namespace exports or duplicate IDs.",
+  "severity": 7,
+  "occurrence": 3,
+  "detection": 3,
+  "control": "Exact case-sensitive H1 ID validation, fail duplicate IDs; same-namespace source procedure H2.",
+  "detectionMethod": "Validator errors plus manual source-pair checklist before launch.",
+  "action": "Data owner must approve H1/H2; release EV1/EV3/EV4/EV5 and source-pair runbook evidence before launch.",
+  "metric": "wrong-join/duplicate rows per published report; target 0",
+  "kpi": "R1 record accuracy",
+  "evalIds": [
+    "EV1",
+    "EV3",
+    "EV4",
+    "EV5",
+    "EV30",
+    "EV31",
+    "EV32"
+  ],
+  "acceptedRisk": false,
+  "commonToAll": false
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### FM2 · Threshold or UTC-window error
+
+Hypothetical prioritization only: S severity 1 negligible to 10 catastrophic; O occurrence 1 rare to 10 frequent; D detection 1 caught before harm to 10 hard to detect. RPN=96. No measured frequency or accepted residual risk. Prompt injection as model manipulation is inapplicable with zero LLMs; unsafe CSV/shell content is FM6. Remote unknown commits, tenant grants, compensation and revoked remote authority are outside this local-only scope.
+
+Reasoning: Score the concrete report failure, then require a matching test and owner.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T3"
+  ],
+  "componentIds": [
+    "C3"
+  ],
+  "effect": "Late order omitted or exactly-24h order incorrectly flagged; wrong daily date included.",
+  "cause": "Float rounding, >= instead of >, local timezone conversion or inclusive end boundary.",
+  "severity": 8,
+  "occurrence": 3,
+  "detection": 4,
+  "control": "Parse UTC exact microseconds, strict >, half-open UTC day and sorted deterministic output.",
+  "detectionMethod": "Hand-worked microsecond boundary goldens and independent manual oracle.",
+  "action": "Implementation owner blocks release until EV1/EV2/EV6 pass exactly; no averaging across boundary failures.",
+  "metric": "incorrect flags or window inclusions / expected delivered rows",
+  "kpi": "R1 record accuracy",
+  "evalIds": [
+    "EV1",
+    "EV2",
+    "EV6",
+    "EV30",
+    "EV31",
+    "EV32"
+  ],
+  "acceptedRisk": false,
+  "commonToAll": false
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### FM3 · Incomplete, malformed or stale evidence
+
+Hypothetical prioritization only: S severity 1 negligible to 10 catastrophic; O occurrence 1 rare to 10 frequent; D detection 1 caught before harm to 10 hard to detect. RPN=128. No measured frequency or accepted residual risk. Prompt injection as model manipulation is inapplicable with zero LLMs; unsafe CSV/shell content is FM6. Remote unknown commits, tenant grants, compensation and revoked remote authority are outside this local-only scope.
+
+Reasoning: Score the concrete report failure, then require a matching test and owner.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T1",
+    "T2"
+  ],
+  "componentIds": [
+    "C1",
+    "C2"
+  ],
+  "effect": "A plausible but incomplete report hides late deliveries.",
+  "cause": "Broken CSV/encoding, missing promise, malformed/non-UTC time, file changes during read or stale exports.",
+  "severity": 8,
+  "occurrence": 4,
+  "detection": 4,
+  "control": "Whole-file validation and immutable snapshot hash; fail missing delivered promise; H2 source cutoff procedure. No inferred promise or silent skip.",
+  "detectionMethod": "Reject exact parse/relationship reason; compare source counts and export cutoff manually.",
+  "action": "Data owner must verify source freshness/late-arrival procedure H2 and implementation owner must pass EV7-EV12, EV19, EV22 before launch.",
+  "metric": "published reports with invalid/unverified inputs / runs; target 0",
+  "kpi": "R1 record accuracy and R2 completeness",
+  "evalIds": [
+    "EV7",
+    "EV8",
+    "EV9",
+    "EV10",
+    "EV11",
+    "EV12",
+    "EV19",
+    "EV22",
+    "EV30",
+    "EV31",
+    "EV32"
+  ],
+  "acceptedRisk": false,
+  "commonToAll": false
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### FM4 · Partial or false-complete local publication
+
+Hypothetical prioritization only: S severity 1 negligible to 10 catastrophic; O occurrence 1 rare to 10 frequent; D detection 1 caught before harm to 10 hard to detect. RPN=96. No measured frequency or accepted residual risk. Prompt injection as model manipulation is inapplicable with zero LLMs; unsafe CSV/shell content is FM6. Remote unknown commits, tenant grants, compensation and revoked remote authority are outside this local-only scope.
+
+Reasoning: Score the concrete report failure, then require a matching test and owner.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T4"
+  ],
+  "componentIds": [
+    "C4",
+    "C5"
+  ],
+  "effect": "Operations consumes a partial file or job claims completion without durable proof.",
+  "cause": "Disk-full, revoked write access, crash/timeout around rename, readback failure.",
+  "severity": 8,
+  "occurrence": 3,
+  "detection": 4,
+  "control": "Stage and fsync before atomic directory publication; manifest+hash required; read-only reconciliation before one bounded retry; unknown stays blocked.",
+  "detectionMethod": "Fault-injected staging, rename and readback; checksum audit for every completed report.",
+  "action": "Implementation owner owns filesystem verification H6 and release EV13-EV16/EV20/EV23 before launch; unresolved ambiguity blocks consumption.",
+  "metric": "complete statuses lacking matching final proof / complete statuses; target 0",
+  "kpi": "R2 publication completeness",
+  "evalIds": [
+    "EV13",
+    "EV14",
+    "EV15",
+    "EV16",
+    "EV20",
+    "EV23",
+    "EV30",
+    "EV31",
+    "EV32"
+  ],
+  "acceptedRisk": false,
+  "commonToAll": false
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### FM5 · Concurrent or conflicting re-publication
+
+Hypothetical prioritization only: S severity 1 negligible to 10 catastrophic; O occurrence 1 rare to 10 frequent; D detection 1 caught before harm to 10 hard to detect. RPN=63. No measured frequency or accepted residual risk. Prompt injection as model manipulation is inapplicable with zero LLMs; unsafe CSV/shell content is FM6. Remote unknown commits, tenant grants, compensation and revoked remote authority are outside this local-only scope.
+
+Reasoning: Score the concrete report failure, then require a matching test and owner.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T1",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C4"
+  ],
+  "effect": "Multiple versions for one date confuse operations or overwrite valid output.",
+  "cause": "Overlapping schedule, rerun with changed bytes or stale lock after crash.",
+  "severity": 7,
+  "occurrence": 3,
+  "detection": 3,
+  "control": "Per-date exclusive lock; same input+config no-op; changed existing date conflicts; never auto-break lock or auto-replace.",
+  "detectionMethod": "Concurrent command and same/different-content rerun tests; local status shows BUSY/CONFLICT.",
+  "action": "Report owner must approve correction/stale-lock runbook H8 and pass EV17/EV18/EV24/EV25 before launch.",
+  "metric": "duplicate/overwritten date reports; target 0",
+  "kpi": "R2 publication completeness",
+  "evalIds": [
+    "EV17",
+    "EV18",
+    "EV24",
+    "EV25",
+    "EV30",
+    "EV31",
+    "EV32"
+  ],
+  "acceptedRisk": false,
+  "commonToAll": false
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### FM6 · Unsafe input or filesystem scope
+
+Hypothetical prioritization only: S severity 1 negligible to 10 catastrophic; O occurrence 1 rare to 10 frequent; D detection 1 caught before harm to 10 hard to detect. RPN=64. No measured frequency or accepted residual risk. Prompt injection as model manipulation is inapplicable with zero LLMs; unsafe CSV/shell content is FM6. Remote unknown commits, tenant grants, compensation and revoked remote authority are outside this local-only scope.
+
+Reasoning: Score the concrete report failure, then require a matching test and owner.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T1",
+    "T2",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C2",
+    "C4"
+  ],
+  "effect": "Order cells execute as spreadsheet formulas or files escape allowed roots.",
+  "cause": "Formula-prefixed IDs, shell evaluation, symlink paths, permissions revoked after validation.",
+  "severity": 8,
+  "occurrence": 2,
+  "detection": 4,
+  "control": "H1 safe ID profile; parse as inert CSV with no shell/eval; allowlisted real paths and no symlinks; fresh local permission check before publication.",
+  "detectionMethod": "Injection/path/revoked-permission isolated goldens and capability audit.",
+  "action": "Implementation owner must pass EV5/EV20/EV21 and approve deployment H6; strict ID profile may be revised only with equivalent safe CSV encoding tests.",
+  "metric": "unsafe/unauthorized output files; target 0",
+  "kpi": "R1 record accuracy plus privacy guardrail",
+  "evalIds": [
+    "EV5",
+    "EV20",
+    "EV21",
+    "EV30",
+    "EV31",
+    "EV32"
+  ],
+  "acceptedRisk": false,
+  "commonToAll": false
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### FM7 · Cancellation, deadline or size-limit mishandling
+
+Hypothetical prioritization only: S severity 1 negligible to 10 catastrophic; O occurrence 1 rare to 10 frequent; D detection 1 caught before harm to 10 hard to detect. RPN=63. No measured frequency or accepted residual risk. Prompt injection as model manipulation is inapplicable with zero LLMs; unsafe CSV/shell content is FM6. Remote unknown commits, tenant grants, compensation and revoked remote authority are outside this local-only scope.
+
+Reasoning: Score the concrete report failure, then require a matching test and owner.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T1",
+    "T3",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C3",
+    "C4",
+    "C5"
+  ],
+  "effect": "Unbounded runtime or a cancelled job leaves a consumable incomplete output.",
+  "cause": "Large export, ignored signal, cancellation during rename or blind retry after timeout.",
+  "severity": 7,
+  "occurrence": 3,
+  "detection": 3,
+  "control": "Byte/row/time bounds, cancellation before rename and deferred outcome reconciliation after rename begins; no blind retry.",
+  "detectionMethod": "Synthetic deadline/size/signal fault tests assert terminal and final proof.",
+  "action": "Implementation owner passes EV16/EV22/EV26/EV27 before launch and measures actual budget H5.",
+  "metric": "runs beyond configured bound or unproved cancellation statuses",
+  "kpi": "R2 publication completeness and R3 review effort",
+  "evalIds": [
+    "EV16",
+    "EV22",
+    "EV26",
+    "EV27",
+    "EV30",
+    "EV31",
+    "EV32"
+  ],
+  "acceptedRisk": false,
+  "commonToAll": false
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### FM8 · Failure is not owned or seen
+
+Hypothetical prioritization only: S severity 1 negligible to 10 catastrophic; O occurrence 1 rare to 10 frequent; D detection 1 caught before harm to 10 hard to detect. RPN=96. No measured frequency or accepted residual risk. Prompt injection as model manipulation is inapplicable with zero LLMs; unsafe CSV/shell content is FM6. Remote unknown commits, tenant grants, compensation and revoked remote authority are outside this local-only scope.
+
+Reasoning: Score the concrete report failure, then require a matching test and owner.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T5"
+  ],
+  "componentIds": [
+    "C6"
+  ],
+  "effect": "Report is missing while operations assumes the day was processed.",
+  "cause": "Scheduler failure, status file unavailable, stale lock or no assigned human acknowledgement.",
+  "severity": 6,
+  "occurrence": 4,
+  "detection": 4,
+  "control": "Exit code + local durable status, stderr fallback, daily inspection and manual acknowledgement/escalation in H5; never send email or remote updates.",
+  "detectionMethod": "Missing-date/status count check and local operating log review; status-I/O fault test.",
+  "action": "Operations report owner confirms staffing/deadlines H5 and passes EV28; operations lead reviews any missed acknowledgement.",
+  "metric": "unacknowledged blocked dates past 12:00 UTC / blocked dates",
+  "kpi": "R2 completeness and R3 review effort",
+  "evalIds": [
+    "EV28",
+    "EV30",
+    "EV31",
+    "EV32"
+  ],
+  "acceptedRisk": false,
+  "commonToAll": false
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### FM9 · Exposure or uncontrolled retention
+
+Hypothetical prioritization only: S severity 1 negligible to 10 catastrophic; O occurrence 1 rare to 10 frequent; D detection 1 caught before harm to 10 hard to detect. RPN=72. No measured frequency or accepted residual risk. Prompt injection as model manipulation is inapplicable with zero LLMs; unsafe CSV/shell content is FM6. Remote unknown commits, tenant grants, compensation and revoked remote authority are outside this local-only scope.
+
+Reasoning: Score the concrete report failure, then require a matching test and owner.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "taskIds": [
+    "T4",
+    "T5"
+  ],
+  "componentIds": [
+    "C4",
+    "C6"
+  ],
+  "effect": "Unneeded order data is exposed or retained beyond agreed policy.",
+  "cause": "Raw rows in error logs, overly broad directory access or no approved cleanup practice.",
+  "severity": 6,
+  "occurrence": 3,
+  "detection": 4,
+  "control": "Persist minimized columns/hashes/counts; error row numbers only; dedicated private local root; H7 approval and manual retention procedure.",
+  "detectionMethod": "Inspect output/status contents and filesystem access/retention checklist.",
+  "action": "Data owner approves retention/access H7 and release EV29 before launch; implementation does not auto-delete reports.",
+  "metric": "raw-input payloads in status/logs and expired artifacts; target 0 after approved retention",
+  "kpi": "Privacy guardrail supporting R2 trustworthy report use",
+  "evalIds": [
+    "EV29",
+    "EV30",
+    "EV31",
+    "EV32"
+  ],
+  "acceptedRisk": false,
+  "commonToAll": false
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+
+## evals
+
+### EV1 · Positive one-row late delivery
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "componentIds": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C6"
+  ],
+  "failureModeIds": [
+    "FM1",
+    "FM2"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"COMPLETE\",\"exit_code\":0,\"csv_utf8\":\"order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late\\r\\nO1,2026-10-26T12:00:00.000000Z,2026-10-27T12:00:00.000001Z,86400.000001,true\\r\\n\",\"rows\":1,\"flagged_rows\":1}",
+  "passRule": "{\"all\":[\"csv bytes equal expected.csv_utf8\",\"C4 final report and COMPLETE manifest hashes match\",\"one final publish and no input mutation\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV2 · Exactly 24 hours is not late
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T3"
+  ],
+  "componentIds": [
+    "C3"
+  ],
+  "failureModeIds": [
+    "FM2"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"COMPLETE\",\"csv_utf8\":\"order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late\\r\\nO1,2026-10-26T12:00:00.000000Z,2026-10-27T12:00:00.000000Z,86400.000000,false\\r\\n\",\"flagged_rows\":0}",
+  "passRule": "{\"all\":[\"csv bytes equal expected.csv_utf8\",\"boolean is false, not >= threshold\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV3 · Duplicate promised ID fails even with identical rows
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T2"
+  ],
+  "componentIds": [
+    "C2"
+  ],
+  "failureModeIds": [
+    "FM1"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_INVALID\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"DUPLICATE_ID\",\"file_role\":\"promised\",\"row_number\":3}",
+  "passRule": "{\"all\":[\"C2.reason == DUPLICATE_ID\",\"error file and row equal expected\",\"no final report or C3/C4 invocation\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV4 · Duplicate actual ID fails
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T2"
+  ],
+  "componentIds": [
+    "C2"
+  ],
+  "failureModeIds": [
+    "FM1"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_INVALID\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"DUPLICATE_ID\",\"file_role\":\"actual\",\"row_number\":3}",
+  "passRule": "{\"all\":[\"C2.reason == DUPLICATE_ID\",\"error row_number == 3\",\"no final report or C3/C4 invocation\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV5 · Formula-like ID is inert and rejected
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C2",
+    "C4"
+  ],
+  "failureModeIds": [
+    "FM1",
+    "FM6"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\n=1+1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\n=1+1,2026-10-27T12:00:00Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_INVALID\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"INVALID_ID\",\"file_role\":\"promised\",\"row_number\":2}",
+  "passRule": "{\"all\":[\"C2.reason == INVALID_ID\",\"no evaluation, shell invocation or network call\",\"no final report\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV6 · UTC day, sorting, leading zero and early delivery
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T3"
+  ],
+  "componentIds": [
+    "C3"
+  ],
+  "failureModeIds": [
+    "FM2"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\n001,2026-10-26T00:00:00Z\\r\\nO2,2026-10-28T00:00:00Z\\r\\nO3,2026-10-26T00:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO3,2026-10-28T00:00:00Z\\r\\nO2,2026-10-27T23:59:59.999999+00:00\\r\\n001,2026-10-27T00:00:00Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"COMPLETE\",\"csv_utf8\":\"order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late\\r\\n001,2026-10-26T00:00:00.000000Z,2026-10-27T00:00:00.000000Z,86400.000000,false\\r\\nO2,2026-10-28T00:00:00.000000Z,2026-10-27T23:59:59.999999Z,-0.000001,false\\r\\n\",\"rows\":2,\"excluded_out_of_window\":1}",
+  "passRule": "{\"all\":[\"csv bytes equal expected.csv_utf8\",\"day start included; next midnight excluded\",\"negative delta exact; 001 retains leading zeros\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV7 · Delivered order missing promise
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2"
+  ],
+  "componentIds": [
+    "C1",
+    "C2"
+  ],
+  "failureModeIds": [
+    "FM3"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_INVALID\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"MISSING_PROMISE\",\"file_role\":\"actual\",\"row_number\":2}",
+  "passRule": "{\"all\":[\"C2.reason == MISSING_PROMISE\",\"exact error file/row match\",\"no final report or row skipping\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV8 · Invalid actual date
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2"
+  ],
+  "componentIds": [
+    "C1",
+    "C2"
+  ],
+  "failureModeIds": [
+    "FM3"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-02-30T12:00:00Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_INVALID\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"INVALID_TIMESTAMP\",\"file_role\":\"actual\",\"row_number\":2}",
+  "passRule": "{\"all\":[\"C2.reason == INVALID_TIMESTAMP\",\"exact error file/row match\",\"no final report or row skipping\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV9 · Non-UTC actual offset
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2"
+  ],
+  "componentIds": [
+    "C1",
+    "C2"
+  ],
+  "failureModeIds": [
+    "FM3"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00+01:00\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_INVALID\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"NON_UTC\",\"file_role\":\"actual\",\"row_number\":2}",
+  "passRule": "{\"all\":[\"C2.reason == NON_UTC\",\"exact error file/row match\",\"no final report or row skipping\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV10 · Missing required header
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2"
+  ],
+  "componentIds": [
+    "C1",
+    "C2"
+  ],
+  "failureModeIds": [
+    "FM3"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promise\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_INVALID\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"MISSING_HEADER\",\"file_role\":\"promised\",\"row_number\":1}",
+  "passRule": "{\"all\":[\"C2.reason == MISSING_HEADER\",\"exact error file/row match\",\"no final report or row skipping\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV11 · Duplicate header
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2"
+  ],
+  "componentIds": [
+    "C1",
+    "C2"
+  ],
+  "failureModeIds": [
+    "FM3"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,order_id,promised_delivery_utc\\r\\nO1,O1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_INVALID\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"DUPLICATE_HEADER\",\"file_role\":\"promised\",\"row_number\":1}",
+  "passRule": "{\"all\":[\"C2.reason == DUPLICATE_HEADER\",\"exact error file/row match\",\"no final report or row skipping\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV12 · CSV row width mismatch
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2"
+  ],
+  "componentIds": [
+    "C1",
+    "C2"
+  ],
+  "failureModeIds": [
+    "FM3"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z,extra\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_INVALID\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"ROW_SHAPE\",\"file_role\":\"promised\",\"row_number\":2}",
+  "passRule": "{\"all\":[\"C2.reason == ROW_SHAPE\",\"exact error file/row match\",\"no final report or row skipping\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV13 · Known pre-publication disk-full
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T4"
+  ],
+  "componentIds": [
+    "C4",
+    "C5"
+  ],
+  "failureModeIds": [
+    "FM4"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C4.write_staging_csv\",\"result\":\"ENOSPC_BEFORE_RENAME\"}]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"OUTPUT_IO\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"STAGE_IO\"}",
+  "passRule": "{\"all\":[\"C4.outcome == NOT_COMMITTED\",\"no final report and zero rename attempts\",\"staging cleanup attempted; exit 2\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV14 · Unknown commit reconciles without duplicate publish
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T4"
+  ],
+  "componentIds": [
+    "C4",
+    "C5"
+  ],
+  "failureModeIds": [
+    "FM4"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C4.rename\",\"result\":\"COMMITTED_BUT_ACK_LOST\"},{\"operation\":\"C5.readback\",\"result\":\"MATCHING_COMPLETE_MANIFEST_AND_CSV_DERIVED_FROM_FIXTURE\"}]}",
+  "expected": "{\"terminal\":\"COMPLETE\",\"exit_code\":0,\"csv_utf8\":\"order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late\\r\\nO1,2026-10-26T12:00:00.000000Z,2026-10-27T12:00:00.000001Z,86400.000001,true\\r\\n\",\"rename_attempts\":1,\"reconciliations\":1}",
+  "passRule": "{\"all\":[\"C4 UNKNOWN routes C5 once\",\"C5 proof hashes derived from fixture match\",\"no second rename; final CSV equals expected\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV15 · Proven absent permits one retry
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T4"
+  ],
+  "componentIds": [
+    "C4",
+    "C5"
+  ],
+  "failureModeIds": [
+    "FM4"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C4.rename\",\"result\":\"ACK_LOST_FINAL_ABSENT\"},{\"operation\":\"C5.readback\",\"result\":\"ABSENT\"},{\"operation\":\"C4.rename\",\"result\":\"COMMITTED\"}]}",
+  "expected": "{\"terminal\":\"COMPLETE\",\"rename_attempts\":2,\"retry_count\":1,\"csv_utf8\":\"order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late\\r\\nO1,2026-10-26T12:00:00.000000Z,2026-10-27T12:00:00.000001Z,86400.000001,true\\r\\n\"}",
+  "passRule": "{\"all\":[\"C5 ABSENT precedes second C4\",\"retry_count incremented before retry\",\"exactly one final directory and matching COMPLETE proof\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV16 · Unresolved publication is blocked
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T3",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C3",
+    "C4",
+    "C5"
+  ],
+  "failureModeIds": [
+    "FM4",
+    "FM7"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C4.rename\",\"result\":\"COMMIT_STATE_UNKNOWN\"},{\"operation\":\"C5.readback\",\"result\":\"EIO\"}]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"PUBLICATION_UNKNOWN\",\"exit_code\":2,\"rename_attempts\":1,\"publication_state\":\"UNKNOWN\"}",
+  "passRule": "{\"all\":[\"no retry after C5 UNKNOWN\",\"no COMPLETE/CANCELLED claim without proof\",\"local owned status retains run_key for manual inspection\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV17 · Concurrent run cannot write
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C4"
+  ],
+  "failureModeIds": [
+    "FM5"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"HELD_BY_OTHER_PROCESS\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"BUSY\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0}",
+  "passRule": "{\"all\":[\"C1.outcome == BUSY\",\"no read/join/staging/publish after lock refusal\",\"other process lock not removed\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV18 · Changed input never overwrites report
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C4"
+  ],
+  "failureModeIds": [
+    "FM5"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"COMPLETE_FOR_SAME_DATE_DIFFERENT_INPUT_HASHES\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C4.inspect_existing\",\"result\":\"READABLE_MANIFEST_RUN_KEY_DIFFERENT\"}]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"CONFLICT\",\"exit_code\":2,\"existing_report_unchanged\":true,\"new_final_writes\":0}",
+  "passRule": "{\"all\":[\"C4.outcome == CONFLICT\",\"existing bytes preserved\",\"no rename or correction command\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV19 · Undelivered and promised-only produce empty valid CSV
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2"
+  ],
+  "componentIds": [
+    "C1",
+    "C2"
+  ],
+  "failureModeIds": [
+    "FM3"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\nO2,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"COMPLETE\",\"csv_utf8\":\"order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late\\r\\n\",\"rows\":0,\"flagged_rows\":0,\"excluded_undelivered\":1,\"promised_only_rows\":1}",
+  "passRule": "{\"all\":[\"header-only CSV equals expected\",\"blank actual excluded without invented timestamp\",\"COMPLETE manifest counts match\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV20 · Revoked local write permission fails safely
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C2",
+    "C4",
+    "C5"
+  ],
+  "failureModeIds": [
+    "FM4",
+    "FM6"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C4.fresh_permission_check\",\"result\":\"DENIED_BEFORE_STAGE\"}]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"OUTPUT_IO\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"PERMISSION_DENIED\"}",
+  "passRule": "{\"all\":[\"no staging or final write after denial\",\"exit 2, stderr fallback permitted if status path also denied\",\"no privilege escalation\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV21 · Symlink path cannot escape input scope
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C2",
+    "C4"
+  ],
+  "failureModeIds": [
+    "FM6"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"PROMISED_SYMLINK_TO_OUTSIDE_ALLOWLIST\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"OUTPUT_IO\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"PATH_DENIED\"}",
+  "passRule": "{\"all\":[\"C1 blocks before input read\",\"outside file is neither read nor written\",\"no final report\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV22 · Input size exceeds configured bound
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5"
+  ],
+  "failureModeIds": [
+    "FM3",
+    "FM7"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C1.stat_promised\",\"result\":{\"size_bytes\":52428801}}]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_IO\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"component_reason\":\"FILE_TOO_LARGE\"}",
+  "passRule": "{\"all\":[\"C1 rejects before reading oversized bytes\",\"no truncation or final report\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV23 · Retry budget cannot loop
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T4"
+  ],
+  "componentIds": [
+    "C4",
+    "C5"
+  ],
+  "failureModeIds": [
+    "FM4"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C4.rename\",\"result\":\"ACK_LOST_FINAL_ABSENT\"},{\"operation\":\"C5.readback\",\"result\":\"ABSENT\"},{\"operation\":\"C4.rename\",\"result\":\"ACK_LOST_FINAL_ABSENT\"},{\"operation\":\"C5.readback\",\"result\":\"ABSENT\"}]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"OUTPUT_IO\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"rename_attempts\":2,\"retry_count\":1}",
+  "passRule": "{\"all\":[\"exactly two C4 attempts and two C5 readbacks\",\"no third rename\",\"final absent; BLOCKED/OUTPUT_IO\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV24 · Exact rerun returns durable no-op
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C4"
+  ],
+  "failureModeIds": [
+    "FM5"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"COMPLETE_FOR_EXACT_FIXTURE_INPUT_AND_CONFIG_HASHES\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C4.inspect_existing\",\"result\":\"MATCHING_COMPLETE_MANIFEST_AND_CSV_DERIVED_FROM_FIXTURE\"}]}",
+  "expected": "{\"terminal\":\"COMPLETE\",\"reason\":\"ALREADY_COMPLETE\",\"exit_code\":0,\"csv_utf8\":\"order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late\\r\\nO1,2026-10-26T12:00:00.000000Z,2026-10-27T12:00:00.000001Z,86400.000001,true\\r\\n\",\"new_final_writes\":0}",
+  "passRule": "{\"all\":[\"verify stored report hash and run_key before ALREADY_COMPLETE\",\"zero stage/rename calls\",\"input/config hash equality, not filename equality\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV25 · Stale lock is never auto-broken
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C4"
+  ],
+  "failureModeIds": [
+    "FM5"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"STALE_METADATA_PROCESS_NOT_VERIFIED\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"BUSY\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0}",
+  "passRule": "{\"all\":[\"no automatic lock deletion or publication\",\"local outcome names manual inspection owner\",\"no unsupported claim that old process is dead\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV26 · Cancellation before publication
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T3",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C3",
+    "C4",
+    "C5"
+  ],
+  "failureModeIds": [
+    "FM7"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C4.before_rename\",\"result\":\"SIGINT\"}]}",
+  "expected": "{\"terminal\":\"CANCELLED\",\"reason\":\"CANCELLED\",\"exit_code\":130,\"final_dir_exists\":false,\"write_count_final\":0}",
+  "passRule": "{\"all\":[\"staging cleanup attempted\",\"zero rename calls; owned lock released when possible\",\"local cancellation outcome; no success claim\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV27 · Cancellation after commit start defers to proof
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T1",
+    "T3",
+    "T4"
+  ],
+  "componentIds": [
+    "C1",
+    "C3",
+    "C4",
+    "C5"
+  ],
+  "failureModeIds": [
+    "FM7"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[{\"operation\":\"C4.rename\",\"result\":\"COMMITTED_AND_SIGINT_AFTER_START\"},{\"operation\":\"C5.readback\",\"result\":\"MATCHING_COMPLETE_MANIFEST_AND_CSV_DERIVED_FROM_FIXTURE\"}]}",
+  "expected": "{\"terminal\":\"COMPLETE\",\"exit_code\":0,\"csv_utf8\":\"order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late\\r\\nO1,2026-10-26T12:00:00.000000Z,2026-10-27T12:00:00.000001Z,86400.000001,true\\r\\n\",\"rename_attempts\":1}",
+  "passRule": "{\"all\":[\"C4 returns UNKNOWN then C5 COMMITTED\",\"published report proof takes precedence over cancellation\",\"no compensation, deletion or second publication\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV28 · Local status failure remains visible
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T5"
+  ],
+  "componentIds": [
+    "C6"
+  ],
+  "failureModeIds": [
+    "FM8"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc\\r\\nO1,2026-10-26T12:00:00Z\\r\\nO1,2026-10-26T12:00:00Z\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"UNWRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"BLOCKED\",\"reason\":\"INPUT_INVALID\",\"exit_code\":2,\"final_dir_exists\":false,\"write_count_final\":0,\"status_proof\":\"STDERR_ONLY\",\"component_reason\":\"DUPLICATE_ID\",\"stderr_contains\":[\"BLOCKED\",\"INPUT_INVALID\",\"Operations report owner\"]}",
+  "passRule": "{\"all\":[\"exit 2 with structured stderr owner and manual next action\",\"no external messages\",\"no completed report or false durable-status claim\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV29 · Extra data is minimized from outputs and logs
+
+Planned synthetic business-harness test, not executed by design_io. The fixture is self-contained, with no inherited or hidden base. The harness must compute hashes/canonical manifests from these exact bytes and verify all assertions.
+
+Reasoning: Isolate one guard where possible and assert both the expected outcome and forbidden effects.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "golden",
+  "taskIds": [
+    "T4",
+    "T5"
+  ],
+  "componentIds": [
+    "C4",
+    "C6"
+  ],
+  "failureModeIds": [
+    "FM9"
+  ],
+  "input": "{\"fixture_version\":\"csv-report-fixture-v1\",\"synthetic\":true,\"command\":{\"promised_path\":\"/sandbox/in/promised.csv\",\"actual_path\":\"/sandbox/in/actual.csv\",\"output_root\":\"/sandbox/out\",\"report_date\":\"2026-10-27\"},\"config\":{\"schema_version\":\"delivery-report-v1\",\"threshold_microseconds\":86400000000,\"allowlisted_roots\":[\"/sandbox/in\"],\"max_rows\":100000,\"max_bytes_per_file\":52428800,\"deadline_seconds\":120},\"clock_utc\":\"2026-10-28T08:00:00Z\",\"files\":{\"/sandbox/in/promised.csv\":\"order_id,promised_delivery_utc,customer_secret\\r\\nO1,2026-10-26T12:00:00Z,PRIVATE_MARKER_92\\r\\n\",\"/sandbox/in/actual.csv\":\"order_id,actual_delivery_utc\\r\\nO1,2026-10-27T12:00:00.000001Z\\r\\n\"},\"environment\":{\"exclusive_lock\":\"AVAILABLE\",\"paths\":\"ALLOWLISTED_REGULAR_NO_SYMLINKS\",\"permissions\":\"READ_INPUT_WRITE_OUTPUT\",\"before_after_input_stat\":\"UNCHANGED\",\"final_dir\":\"ABSENT\",\"staging\":\"ABSENT\",\"status_dir\":\"WRITABLE\"},\"ordered_mocks\":[]}",
+  "expected": "{\"terminal\":\"COMPLETE\",\"csv_utf8\":\"order_id,promised_delivery_utc,actual_delivery_utc,lateness_seconds,is_more_than_24h_late\\r\\nO1,2026-10-26T12:00:00.000000Z,2026-10-27T12:00:00.000001Z,86400.000001,true\\r\\n\",\"forbidden_output_substrings\":[\"PRIVATE_MARKER_92\",\"customer_secret\"]}",
+  "passRule": "{\"all\":[\"CSV equals expected exact five-column bytes\",\"manifest/status/stderr contain no forbidden substring or raw row\",\"no input copy, remote action or automatic retention deletion\"]}",
+  "metric": "Exact fixture assertion pass fraction",
+  "kpi": "R1 record accuracy; R2 publication completeness; privacy/time guardrail as mapped by failure IDs",
+  "target": "100% of assertions; any failure blocks release",
+  "testSet": "Synthetic complete fixtures EV1-EV29; each independently materialized under isolated /sandbox roots.",
+  "labelling": "Expected threshold and UTC boundary outputs hand-computed; second operations reviewer checks proposed fixture labels before launch.",
+  "cadence": "Every relevant code/config change and before release; not run in this design exercise.",
+  "alertThreshold": "Any unexpected final CSV, wrong terminal/reason, incorrect flag or forbidden effect fails."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### EV30 · Offline parser, invariants and end-to-end suite
+
+Planned evaluation; business tests and live checks are not executed by this skill.
+
+Reasoning: Connect measurable evidence to the actual report failure and release decision.
+
+Assumptions:
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "offline",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "componentIds": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+  ],
+  "failureModeIds": [
+    "FM1",
+    "FM2",
+    "FM3",
+    "FM4",
+    "FM5",
+    "FM6",
+    "FM7",
+    "FM8",
+    "FM9"
+  ],
+  "input": "Run EV1-EV29 as isolated temporary-root end-to-end fixtures plus component/property cases for C1-C6. Add generated timestamp pairs around -1us/0/24h/+1us and midnight, empty files versus header-only files, 100000/100001 row bounds, malformed UTF-8 (bytes hex ff), unterminated quoted CSV, padded/case-distinct IDs, duplicate extra headers, 7-digit fractions, leap seconds, current/future date, changed inode/mtime during read, 120s timeout and status/lock cleanup failures. No network capability in harness.",
+  "expected": "All exact goldens and component invariants pass. For every output row, recomputation from unique source rows agrees; counted partitions sum to actual-map rows; canonical output/hash stable under input row permutations. Duplicate and malformed data never publishes.",
+  "passRule": "Release failure if any golden fails; run at least all listed deterministic component classes, seeded property corpus with seed recorded and an independent reference join using Decimal/timedelta microseconds. Record actual counts/results, not just suite existence.",
+  "metric": "Exact assertion pass fraction; published-invalid-report count",
+  "kpi": "R1 accuracy; R2 completeness",
+  "target": "100%; zero invalid publication",
+  "testSet": "EV1-EV29 plus explicit component/property classes in input; isolated synthetic files, not customer data.",
+  "labelling": "Implementer writes harness; operations reviewer verifies hand labels and real-source strata after H1/H2 confirmation.",
+  "cadence": "Each code/config change and before any rollout phase",
+  "alertThreshold": "Any failed assertion blocks release; owner Implementation owner."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+### EV31 · Daily local report and failure monitor
+
+Planned evaluation; business tests and live checks are not executed by this skill.
+
+Reasoning: Connect measurable evidence to the actual report failure and release decision.
+
+Assumptions:
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "online",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "componentIds": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+  ],
+  "failureModeIds": [
+    "FM1",
+    "FM2",
+    "FM3",
+    "FM4",
+    "FM5",
+    "FM6",
+    "FM7",
+    "FM8",
+    "FM9"
+  ],
+  "input": "For each expected UTC date inspect only local date directory/manifest/hash/status and operating log; compare approved export cutoff evidence and input counts. Review ID/flag anomalies against source. Check no raw data in logs, retention age and overdue acknowledgement.",
+  "expected": "One valid completed report or explicit owned blocked/cancelled status per invocation; missing scheduled invocation visible by 10:00 UTC. Unknown/conflicting publication is never marked complete. Failures acknowledged by 12:00 UTC.",
+  "passRule": "Record count of missing dates, hash mismatches, unacknowledged blocks and invalid/extra/missing flags; any integrity/privacy violation stops consumption and owner investigates. Volume shifts are reviewed, not proof of incorrectness. Manual escalation only; no remote updates.",
+  "metric": "Complete dates / expected dates; checksum validity; sampled exact match; overdue ack count",
+  "kpi": "R1 accuracy; R2 completeness; R3 effort",
+  "target": "Completeness target 100% (hypothesis), integrity breaches 0; baseline collection before target claims.",
+  "testSet": "Actual report metadata and authorized source samples after launch only.",
+  "labelling": "Operations report owner checks manifest and source cutoff; implementation owner investigates integrity faults; no automated truth claim from hashes.",
+  "cadence": "Every expected day by 10:00 UTC; ack check 12:00 UTC; weekly retention review.",
+  "alertThreshold": "Any wrong/missing/extra row or checksum mismatch stops use; missing date/overdue ack requires manual action."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+### EV32 · Release gate and deployment filesystem proof
+
+Planned evaluation; business tests and live checks are not executed by this skill.
+
+Reasoning: Connect measurable evidence to the actual report failure and release decision.
+
+Assumptions:
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "release",
+  "taskIds": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "componentIds": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+  ],
+  "failureModeIds": [
+    "FM1",
+    "FM2",
+    "FM3",
+    "FM4",
+    "FM5",
+    "FM6",
+    "FM7",
+    "FM8",
+    "FM9"
+  ],
+  "input": "Collect executed EV1-EV29 and EV30 result files, real-source H1/H2/H4 approval, verified H5 staffing/schedule/budget, H6 allowlist/lock/fsync/rename fault proof, H7 access/retention approval and H8 correction runbook. Run EV31 shadow monitor procedure without live consumer dependence.",
+  "expected": "Versioned build/config hashes; all named suites pass and all launch dependencies have owner evidence; no unresolved integrity issue. Design review alone never satisfies this release gate.",
+  "passRule": "{\"required_golden_ids\": [\"EV1\", \"EV2\", \"EV3\", \"EV4\", \"EV5\", \"EV6\", \"EV7\", \"EV8\", \"EV9\", \"EV10\", \"EV11\", \"EV12\", \"EV13\", \"EV14\", \"EV15\", \"EV16\", \"EV17\", \"EV18\", \"EV19\", \"EV20\", \"EV21\", \"EV22\", \"EV23\", \"EV24\", \"EV25\", \"EV26\", \"EV27\", \"EV28\", \"EV29\"], \"require_all_pass\": true, \"required_additional_ids\": [\"EV30\"], \"required_assumption_evidence\": [\"H1\", \"H2\", \"H3\", \"H4\", \"H5\", \"H6\", \"H7\", \"H8\"], \"no_unresolved_integrity_findings\": true, \"owner\": \"Operations report owner and Implementation owner\", \"live_checks\": \"EV31 procedure demonstrated in shadow; ongoing results are not fabricated\"}",
+  "metric": "Release-gate checklist evidence completeness",
+  "kpi": "R1/R2 protected before operational use",
+  "target": "100% evidence; zero unresolved integrity failures",
+  "testSet": "Exact enumerated suite EV1-EV29, offline EV30, operating-monitor rehearsal EV31 and dependency evidence H1-H8.",
+  "labelling": "Owners inspect actual result files and source-contract evidence; scores in review.json do not substitute.",
+  "cadence": "Before shadow→assist and every material code/config/parser change.",
+  "alertThreshold": "Any missing result, failed fixture or unverified launch blocker prevents operational consumption."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+
+## rollout
+
+### R1 · Exact report accuracy and business evidence
+
+Operations can prioritize late deliveries only when IDs, daily inclusion and strict flags are correct. No downstream business outcome is promised.
+
+Reasoning: Operational release requires evidence and named proposed accountability, not a design score.
+
+Assumptions:
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "kpi",
+  "businessKpi": "Daily record accuracy = correctly included/flagged rows divided by independently expected rows; track missing and extra rows separately so denominator cannot hide omissions. Weekly aggregate is secondary to any integrity breach. Baseline unknown: manual source comparison in shadow. Target hypothesis: exact agreement 100%; any error blocks consumption.",
+  "aiMetrics": [
+    "No AI metrics. Exact join/UTC fixture pass fraction causally protects correct queue selection by eliminating date/identity errors. Source freshness is separately required: correct arithmetic cannot repair omitted deliveries."
+  ],
+  "phase": "All phases",
+  "gate": "Do not declare production accuracy from synthetic EVs; record verified manual sample denominator and mismatch counts daily; all known integrity defects must be zero.",
+  "owner": "Operations data owner",
+  "experiment": "R5 measures operations effort only after accuracy gates pass."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### R2 · Completeness and durable report KPI
+
+Durability and visible failure prevent the operations team treating a missing or partial report as a valid zero-late day.
+
+Reasoning: Operational release requires evidence and named proposed accountability, not a design score.
+
+Assumptions:
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "kpi",
+  "businessKpi": "Publication completeness = expected report dates with one checksum-verified COMPLETE directory by 10:00 UTC / expected scheduled report dates in each UTC week; blocked/cancelled/missing dates remain in denominator. Baseline unknown; target hypothesis 100%.",
+  "aiMetrics": [
+    "Guardrail: false-complete count must be 0; correct durable proof makes a report safely consumable. Busy/conflict/unknown counts diagnose reliability, not delivery performance."
+  ],
+  "phase": "All phases",
+  "gate": "Any invalid hash/false completion stops report use immediately, irrespective of average timeliness.",
+  "owner": "Operations report owner",
+  "experiment": "Observe during shadow before proposing service level."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### R3 · Manual review effort
+
+A complete CSV can reduce repeated manual joins; unmeasured time savings remain a hypothesis.
+
+Reasoning: Operational release requires evidence and named proposed accountability, not a design score.
+
+Assumptions:
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "kpi",
+  "businessKpi": "Operations review effort = minutes from export pair availability to verified daily queue, including correction/investigation time, per UTC report day. Baseline unknown; collect manual timers during shadow. Target hypothesis: reduce median time without any accuracy/completeness breach.",
+  "aiMetrics": [
+    "Runtime p95 under provisional 120s and output verification time are operational metrics. Runtime affects availability but is not a substitute for correctness. Human ack rate is a guardrail for failures."
+  ],
+  "phase": "Shadow onward",
+  "gate": "Do not claim savings before R5 measurement; safety/error gates are applied per day.",
+  "owner": "Operations report owner",
+  "experiment": "R5 uses date-level paired observations and continuous-outcome power analysis."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### R4 · Shadow then assist-only rollout
+
+This is a read-and-export workflow. An assist-only end state is justified; no pilot of customer/order actions is in scope. Every phase has entry evidence distinct from its own exit evidence.
+
+Reasoning: Operational release requires evidence and named proposed accountability, not a design score.
+
+Assumptions:
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "phase",
+  "businessKpi": "R1/R2/R3 definitions above.",
+  "aiMetrics": [
+    "EV1-EV30 executed pass; local monitor EV31 and release evidence EV32."
+  ],
+  "phase": "Shadow → Assist-only → Routine assist; no autonomous operations action phase.",
+  "gate": "Shadow entry: implemented CLI/harness and EV32 local synthetic/dependency evidence complete; no user consumption. Shadow exit: five consecutive complete daily export pairs spanning approved source strata, exact manually adjudicated report agreement and no unknown publication, with H2 source cutoff checks. Assist entry: shadow exit signed locally by proposed owners. Assist exit: five additional days with checks and failure drill; R5 effort evidence may extend duration. Routine assist entry: owners approve runbook and monitoring. Any wrong row, privacy leak, invalid proof or unowned failure stops consumption; preserve artifacts, disable schedule manually and use current manual join procedure. Re-enable only after cause fixed and EV32 rerun.",
+  "owner": "Operations report owner owns stop/restore; Implementation owner repairs; Data owner confirms source truth.",
+  "experiment": "No expansion of side-effect authority at any phase. Shadow/assist day counts are proposed minimum coverage, not statistical power or observed data."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### R5 · Measure effort with paired days
+
+Time is continuous, so binary proportion formulas would be inappropriate. No fabricated baseline, sample-size number, confidence interval or measured benefit is supplied.
+
+Reasoning: Operational release requires evidence and named proposed accountability, not a design score.
+
+Assumptions:
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "experiment",
+  "businessKpi": "R3 minutes per report day; R1/R2 integrity are non-negotiable guardrails.",
+  "aiMetrics": [
+    "Paired difference in independently timed manual versus tool-assisted review minutes; medians and mean paired difference with confidence interval; no AI accuracy claim."
+  ],
+  "phase": "During shadow/assist after deterministic release gates.",
+  "gate": "Eligibility: complete approved source pairs in the requested UTC day; strata by row-count bands and late-order prevalence measured from sources. Each day is one paired block. Two separate operators review same snapshot independently; randomize method-to-operator order within day and rotate roles. Hide each other’s result until timing/labels recorded; reconcile afterwards. Start with baseline collection across weekdays/volume strata, estimate paired-difference SD, choose minimum meaningful minutes reduction with owner, use paired continuous-mean power calculation for 80% power and two-sided alpha 0.05. Adjust for repeated operator/week clusters using estimated intracluster correlation or cluster bootstrap; report uncertainty when sample size is insufficient. Continue complete weekly cycles until precomputed sample and strata achieved; five-day phase minima are not a powered sample. Any integrity breach stops experiment use, not averaged away.",
+  "owner": "Operations report owner approves effect threshold; analyst/implementation owner computes sample and review.",
+  "experiment": "Unit is UTC report date; no randomization of customer service. Operators must not share report outputs before timing. If independent operators unavailable, record limitation and run descriptive timings without causal savings claim."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+### R6 · Accountability and manual recovery
+
+Local failures are visible through status/exit/stderr and a manual operating queue. Unassigned people, policy and capacity are launch dependencies.
+
+Reasoning: Operational release requires evidence and named proposed accountability, not a design score.
+
+Assumptions:
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "category": "owner",
+  "businessKpi": "R1 source correctness: Data owner. R2 schedule/outcome/ack: Report owner. R3 timing: Report owner. Code/filesystem/control repairs: Implementation owner.",
+  "aiMetrics": [
+    "Local status proof, overdue acknowledgements and source export checks."
+  ],
+  "phase": "All phases",
+  "gate": "Before launch each proposed role must be assigned to an actual person. Report owner checks by 10:00 UTC, ack by 12:00 UTC and manual escalation to operations lead thereafter. No automated messaging is added. Unknown publication: lock out rerun, inspect final manifest/hash under read-only check, document disposition. Stale lock: confirm no active process and inspect report before manual removal. Correction: archive old date directory with owner approval outside this job, preserve evidence then rerun. Retention deletion is a separate manual procedure.",
+  "owner": "Proposed roles only; appointment and capacity require H5/H7/H8 evidence.",
+  "experiment": "Owners approve rollout and residual risk explicitly; acceptedRisk remains false in this design."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+
+## export
+
+### X1 · Build the bounded daily CSV report
+
+Implement only the final canonical design, preserving IDs in code docs/test names. This package is proposed design, not the report implementation or an executed operational run.
+
+Reasoning: Observable byte-level behavior, contract checks and real future evidence make the handoff implementable.
+
+Assumptions:
+
+- H1: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H2: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H3: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H4: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H5: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H6: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H7: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+- H8: proposed assumption; full statement, owner and verification plan are in the top-level ledger.
+
+Data:
+
+```json
+{
+  "acceptanceCriteria": [
+    "CTX2/F1: implement a local deterministic CLI only; zero LLM/network calls, emails, remote updates, forecasts or conversation.",
+    "T1/C1: accept only allowed no-symlink paths, completed UTC date and bounded immutable file bytes; enforce exclusive date lock and exact run/config/input hashes.",
+    "T2/C2: enforce H1/H4 over complete files, exact IDs, unique headers/IDs, valid UTC timestamps and promised match for every delivered actual; fail entire run with exact reason/row and no final report.",
+    "T3/C3: all and only delivered actual rows inside H3 half-open day, strict integer-microsecond >24h, negative deltas false, sorted stable output; EV1/EV2/EV6/EV19 exact CSV bytes pass.",
+    "T4/C4/C5: committed report is immutable with COMPLETE manifest+matching CSV SHA256; identical rerun verified no-op, conflict never overwrite; uncertain publication readback before at most one retry; EV13-EV18 and EV23-EV27 pass.",
+    "T5/C6: proof-required exit 0; failure exit 2, cancellation 130; local owner/deadline/next action, stderr fallback and visible cleanup warnings; no remote notification.",
+    "FM1-FM9/EV1-EV32: implement future isolated harness and store actual results; no synthetic assertion is counted as executed before harness runs; release suite enumerates all EV1-EV29.",
+    "R4/R6: owners verify H1-H8 and EV32 evidence before consumption, execute shadow then assist-only runbook and manual rollback; no hidden schedule provisioning or permission expansion.",
+    "F5/EV29: persist only five output columns, hashes/counts and error row numbers; no raw-input copies/contents or extra customer fields in output/status/stderr.",
+    "ISSUE2/ISSUE3 repair: deterministic exact CTX4 manifest/config/run key JSON bindings; full stored manifest checks, distinct -a0/-a1 stage paths, and post-start cancellation always reconciled."
+  ],
+  "buildInstructions": "Build a Python 3 standard-library CLI with modules for C1 acquisition/config/locks, C2 strict CSV validation, C3 join/render, C4 staged immutable publication, C5 readback reconciliation and C6 local outcomes. Start at W1 and implement the exact enums/exclusive transitions through W9/W10/W11. Use strings for order IDs, aware UTC integer-microsecond timestamps and fixed decimal seconds; no float comparison. State ownership: C1 owns immutable snapshot/lock/run identity, C2 maps, C3 deterministic bytes/counts, C4 final write, C5 proof, C6 terminal status. Include stable config_digest/run_key canonical sorted compact JSON serialization and complete manifest shape from CTX4. Capability scope, no-symlink and trusted-host assumptions are F4/H6; no credentials or network adapters are required. Every expected error is explicit in C1-C6; an unexpected exception must block without inventing completion. Existing status failure cannot fabricate rollback of a proved final report. Implement in isolated /sandbox roots for EV1-EV29; materialize each complete fixture, compute hashes from its exact bytes, capture ordered mock calls and assert expected records and forbidden effects. Add EV30 component/property classes and fault injection on selected deployment filesystem. Store actual executed results separately; do not mistake design_io validation for a business harness. Verify H1-H8 source/schema/timing/permissions/retention/correction dependencies with proposed owners, then use EV32 release gate and R4/R6 runbook. Manual rollback disables local schedule and returns to manual join without deleting evidence. No email, messaging, remote update, forecasting, chat UI, order mutation, automatic overwrite or remote cloud provisioning. Persist stable error codes/row numbers only. Open questions are explicit launch dependencies, not permission to invent source guarantees. Use the exact CTX4 manifest and canonical digest fields. C4 stages at an attempt-specific -a0/-a1 path and signals after rename begins return UNKNOWN for C5 proof. Never reuse an orphan stage or treat matching filenames as a matching report."
+}
+```
+
+
+Sources:
+
+- context / user-brief: Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.
+
+- hypothesis / H1: The proposed CSV contract is UTF-8 with optional BOM, comma delimiter and one header; promised columns are order_id,promised_delivery_utc and actual columns are order_id,actual_delivery_utc. Extra columns are ignored. IDs are case-sensitive ASCII [A-Za-z0-9][A-Za-z0-9_-]{0,63}, unique within each file; empty or padded IDs are errors.
+
+- hypothesis / H2: Operations supplies two complete snapshots from the same order namespace and consistent export cutoff after the requested day ends. CSVs have no authoritative dataset/as-of metadata; the job cannot independently prove their business freshness or shared provenance.
+
+- hypothesis / H3: The daily report covers actual deliveries in the previous UTC calendar day by default, with an explicit --report-date override for backfills. It contains all delivered rows in that day, not only late rows; a boolean identifies lateness.
+
+- hypothesis / H4: Accepted timestamps use YYYY-MM-DDTHH:MM:SS[.ffffff]Z or +00:00, with 1-6 fractional digits, valid Gregorian dates and seconds 00-59. Empty actual means undelivered; non-UTC offsets, missing promised values, leap seconds and greater precision fail validation.
+
+- hypothesis / H5: Proposed operational budget is at most 100,000 rows and 50 MiB per file, 120 seconds per run, and a once-daily invocation at 08:00 UTC after exports are ready. Operations reviews local status by 10:00 UTC and acknowledges failures by 12:00 UTC; after that the operations lead manually escalates.
+
+- hypothesis / H6: Run on one trusted local host/account with two allowlisted input roots, a dedicated output root and same-filesystem staging. Only the job may mutate its output root; no symlinks are permitted in resolved input/output paths. An operator grants these local capabilities in configuration.
+
+- hypothesis / H7: Keep committed CSVs, manifests and local failure records for 30 days. Do not copy raw input files; persist hashes, counts and error row numbers without row contents. Delete expired files locally only through a separate operator-maintained procedure.
+
+- hypothesis / H8: A date with an existing valid completed report is immutable: identical input/config returns ALREADY_COMPLETE; changed input/config returns CONFLICT. Corrections require the owner to archive the old date directory outside this job and rerun; no replacement action is implemented.
+
+

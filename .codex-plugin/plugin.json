@@ -1,0 +1,32 @@
+{
+  "name": "agent-design-studio",
+  "version": "1.0.0",
+  "description": "Turn one brief into a complete PDF system design, reviewed PRD and coding-agent handoff.",
+  "author": {
+    "name": "Anand Pareek",
+    "url": "https://github.com/APareek89"
+  },
+  "homepage": "https://github.com/APareek89/agent-design-studio-skill",
+  "repository": "https://github.com/APareek89/agent-design-studio-skill",
+  "license": "MIT",
+  "keywords": [
+    "agent-design",
+    "prd",
+    "architecture",
+    "fmea",
+    "evals",
+    "skills",
+    "pdf"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agent Design Studio",
+    "shortDescription": "One brief to a reviewed PDF system design",
+    "longDescription": "Builds a complete PDF design report covering PRD, task map, typed contracts, workflow, architecture, model budget, FMEA, evaluations and rollout. Uses the host assistant with no extra API key, then asks whether the user wants an optional visual HTML view in the same ten-stage structure.",
+    "developerName": "Anand Pareek",
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use $agent-design-studio to turn this brief into a complete reviewed PDF design report and coding-agent handoff."
+    ]
+  }
+}

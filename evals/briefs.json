@@ -1,0 +1,26 @@
+[
+  {
+    "id": "civic",
+    "brief": "I need a system for a small city team to handle streetlight repair requests: classify reports, find existing tickets and route to the right maintenance crew. Five operators handle about 200 reports a day. It must not remotely control equipment."
+  },
+  {
+    "id": "csv-report",
+    "brief": "Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface."
+  },
+  {
+    "id": "customer-support",
+    "brief": "Help a small shop triage customer support and draft useful replies. Staff review every reply before sending."
+  },
+  {
+    "id": "finance-review",
+    "brief": "Read invoice documents, explain PO mismatches and prepare an AP analyst review packet. No posting, payment or supplier-master updates."
+  },
+  {
+    "id": "research-assist",
+    "brief": "Help a product team find evidence in its supplied research notes and draft a weekly decision brief. Cite evidence and state disagreement."
+  },
+  {
+    "id": "vague-brief",
+    "brief": "I want to automate our onboarding."
+  }
+]

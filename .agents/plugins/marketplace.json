@@ -1,0 +1,19 @@
+{
+  "name": "apareek89-design-tools",
+  "interface": {
+    "displayName": "Agent Design Studio"
+  },
+  "plugins": [
+    {
+      "name": "agent-design-studio",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

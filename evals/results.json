@@ -1,0 +1,91 @@
+{
+  "method": "Two independent session agents each received only a synthetic brief and the skill resources, then authored and self-reviewed their own designs in isolated temporary folders. No intended design answers were supplied. PDF presentation checks are recorded separately after the output-format update.",
+  "cases": [
+    {
+      "id": "civic",
+      "brief": "I need a system for a small city team to handle streetlight repair requests: classify reports, find existing tickets and route to the right maintenance crew. Five operators handle about 200 reports a day. It must not remotely control equipment.",
+      "canonicalSha256": "e9d7b1af06895ab14332f6df9b6ea467f104ba9b9aa17b825f76b300554be6ac",
+      "counts": {
+        "context": 6,
+        "tasks": 14,
+        "components": 8,
+        "workflow": 13,
+        "framework": 5,
+        "models": 1,
+        "fmea": 12,
+        "evals": 27,
+        "rollout": 8,
+        "export": 1
+      },
+      "assumptions": 11,
+      "goldenSpecifications": 24,
+      "structuralValidation": "structural-pass",
+      "review": {
+        "method": "self-review",
+        "status": "pass",
+        "round": 2
+      },
+      "businessControlsExecuted": false
+    },
+    {
+      "id": "csv-report",
+      "brief": "Design a small daily report that joins two CSV files by order ID. One has promised-delivery timestamps and the other actual-delivery timestamps, both ISO UTC. Flag delivered orders more than 24 hours late and export a CSV for the operations team. No emails, remote updates, forecasting or conversational interface.",
+      "canonicalSha256": "c6ee5c5f4fd25e5636635c684580b3c8f087a9b026a8034b6011cda7ab758ff6",
+      "counts": {
+        "context": 5,
+        "tasks": 9,
+        "components": 6,
+        "workflow": 8,
+        "framework": 5,
+        "models": 0,
+        "fmea": 9,
+        "evals": 32,
+        "rollout": 6,
+        "export": 1
+      },
+      "assumptions": 8,
+      "goldenSpecifications": 29,
+      "structuralValidation": "structural-pass",
+      "review": {
+        "method": "self-review",
+        "status": "pass",
+        "round": 3
+      },
+      "businessControlsExecuted": false
+    }
+  ],
+  "limitations": [
+    "The semantic design scores are author self-review, not independent grading or empirical accuracy.",
+    "Helper execution checks formats and relations; business integrations and generated control assertions were not executed.",
+    "Only these two of the six supplied regression briefs were forward-tested.",
+    "No extra provider keys, real accounts or business-system actions were used."
+  ],
+  "observedRepairs": [
+    "Co-located design/review/export input protection fixed before publication.",
+    "Nonterminal terminalDisposition and shared successor predicates aligned with documented contract.",
+    "Inapplicable rollout experiment field validation corrected after forward feedback.",
+    "PDF made primary, avoiding repeated raw-packet presentation; optional HTML is opt-in."
+  ],
+  "presentationChecks": {
+    "pdfPrimary": true,
+    "htmlRequiresOptIn": true,
+    "pythonUnitTests": 58,
+    "allTestsPassed": true,
+    "reportlabVersion": "4.4.9",
+    "pypdfVersion": "6.10.0",
+    "pdfs": [
+      {
+        "case": "civic",
+        "pages": 30,
+        "sha256": "92e1af01905a18b67cade1d74f23d9fc737f71ca4d5dca323d5297ec6045b66d"
+      },
+      {
+        "case": "csv-report",
+        "pages": 27,
+        "sha256": "13adabdb5edd94bfc19c37267ebc74fd5b07d1304e594a2b4f5f84281f74f8ce"
+      }
+    ],
+    "visualQa": "All57 rendered pages inspected in contact sheets; four dense/cover/table pages inspected at120dpi. No clipping,overlap or unreadable glyph defect identified.",
+    "htmlQa": "14 static/render/output-safety tests pass. Browser visualQA unavailable; no browser was opened and no userHTMLdeliverable generated."
+  }
+}
