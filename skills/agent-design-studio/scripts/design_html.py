@@ -210,6 +210,8 @@ class Model:
             for t in sem.get("transitions", [])
             if isinstance(t, dict)
         }
+        intake = design.get("intake")
+        self.intake = intake if isinstance(intake, dict) else None
         research = design.get("research")
         self.research = research if isinstance(research, dict) else None
         self.finding = {f["id"]: f for f in (self.research or {}).get("findings", []) if isinstance(f, dict)}
@@ -508,7 +510,31 @@ def view_context(m):
         + '<div class="sec"><div class="tw"><table><thead><tr><th>Field</th><th>Design reading</th></tr></thead><tbody>'
         + rows
         + "</tbody></table></div></div>"
+        + intake_section(m)
         + research_section(m)
+    )
+
+
+def intake_section(m):
+    """Answers the user gave to the one-time intake questions, when recorded."""
+    q = m.intake
+    if q is None:
+        return ""
+    if not q["asked"]:
+        return (
+            '<div class="sec"><h3>What the user added</h3><div class="panel box"><p class="small">No intake question was asked'
+            + (": " + esc(q["tool"]) if q["tool"] else "")
+            + ". Missing facts became assumptions with owners.</p></div></div>"
+        )
+    rows = "".join(
+        f'<tr><td class="mono nowrap">{esc(x["id"])}</td><td>{esc(x["question"])}</td><td>{esc(x["answer"]) if x["source"] == "user" else "<span class=" + chr(34) + "mini" + chr(34) + ">" + esc(x["source"]) + "; became an assumption</span>"}</td></tr>'
+        for x in q["questions"]
+    )
+    return (
+        f'<div class="sec"><h3>What the user added</h3><p class="sub">Asked once through {esc(q["tool"])}. A user answer is a fact from the user; a skipped question became a labelled assumption.</p>'
+        '<div class="tw"><table><thead><tr><th>ID</th><th>Question</th><th>Answer</th></tr></thead><tbody>'
+        + rows
+        + "</tbody></table></div></div>"
     )
 
 

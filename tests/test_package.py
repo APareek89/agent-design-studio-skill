@@ -14,8 +14,15 @@ class PackageTests(unittest.TestCase):
     def test_manifests_agree_and_require_no_connection(self):
         root = json.loads((ROOT / "plugin.json").read_text())
         compat = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
+        claude = json.loads((ROOT / ".claude-plugin/plugin.json").read_text())
+        market = json.loads((ROOT / ".claude-plugin/marketplace.json").read_text())
         for field in ["name", "version", "repository", "license"]:
             self.assertEqual(root[field], compat[field])
+            self.assertEqual(root[field], claude[field])
+        self.assertEqual(market["plugins"][0]["name"], root["name"])
+        self.assertEqual(market["plugins"][0]["version"], root["version"])
+        skill = (ROOT / "skills/agent-design-studio/SKILL.md").read_text()
+        self.assertIn('version: "' + root["version"] + '"', skill)
         self.assertEqual(compat["skills"], "./skills/")
         self.assertEqual(
             compat["interface"], root["extensions"]["com.openai"]["interface"]
@@ -69,6 +76,7 @@ class PackageTests(unittest.TestCase):
                 for file in [
                     "plugin.json",
                     ".codex-plugin/plugin.json",
+                    ".claude-plugin/plugin.json",
                     "LICENSE",
                     "README.md",
                     "skills/agent-design-studio/SKILL.md",

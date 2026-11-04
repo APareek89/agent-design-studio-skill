@@ -27,6 +27,8 @@ Use `design.json` as the single source for all generated documents. The script r
 
 Add the required `semantics` declarations from [semantic-contract.md](semantic-contract.md), plus reader summaries, selected milestones and run options from [report-contract.md](report-contract.md). Legacy 1.0 stays readable with semantic coverage explicitly unverified.
 
+Record the one-time intake in an optional top-level `intake` object: `asked` (whether a question dialog was shown), `tool` (for example `AskUserQuestion`, `request_user_input`, or the reason none was available) and `questions`, each `{id:"Q1", topic, question, answer, source}` with source `user`, `skipped` or `unavailable`. A `user` answer is quotable as a `context` source with `file:"user-intake"` and the exact answer as passage; a skipped or unavailable question becomes an H assumption with an owner.
+
 Record web research in an optional top-level `research` object. `performed` says whether a web tool was used; `tool` names it; `unavailableReason` explains a false `performed`; `queries` lists the generic search terms used (never the brief or confidential names); `findings` holds what the design relies on:
 
 ```json
@@ -62,6 +64,10 @@ Use these complete `data` fields; use empty strings/arrays only for inapplicable
 - **Handoff** `X1...`, kind `export`: `acceptanceCriteria,buildInstructions`. Arrays for acceptance criteria; string instructions. Derive from earlier design decisions and IDs without adding capability or permission.
 
 For a field/type error, inspect only that stage in `stage-schemas.json` or use the validator's precise path. The schemas bound item size and arrays, so split long responsibilities into real items; do not omit required detail merely to fit a single response.
+
+## Expected information (coverage)
+
+`design_io.py validate --strict-coverage` and `design_io.py coverage` report whether the design carries the information a reader expects. Required: COV1 decision and boundary, COV2 actors and owners, COV3 trigger, scope and non-goals, COV4 success measures, COV5 constraints and privacy, COV6 evidence limits (all read from the context cards), COV7 reader layer, COV8 milestones (not in lite), COV9 research record, COV10 a tooling card for each capability the brief implies, COV11 a human trigger where the brief implies money or record writes. Recommended: COV12 volume, COV13 KPI baselines or a collection plan, COV14 two examples per leaf, COV15 a checked candidate per tooling card. A gap is justified by an assumption string starting with its ID, for example `COV10: the brief mentions email only as today's channel; the first release replies in the portal`. Coverage looks for expected information by field and keyword; it never judges quality, so the D1–D12 review remains the judgement.
 
 ## Review record
 

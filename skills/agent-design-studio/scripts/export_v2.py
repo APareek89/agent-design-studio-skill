@@ -16,7 +16,18 @@ def _module(name):
     spec=importlib.util.spec_from_file_location('studio_export_'+name,Path(__file__).with_name(name+'.py'));m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 
 
-def readme(design, review, mode, milestone_count):
+def coverage_lines(structural):
+    cov=structural.get('coverage') if isinstance(structural,dict) else None
+    if not cov:return []
+    lines=['## Expected information','',f"{cov['coveredRequired']} of {cov['required']} required items covered"+(f"; justified: {', '.join(cov['justified'])}" if cov['justified'] else '')+'.']
+    if cov['missingRequired']:lines.append('Missing: '+'; '.join(f"{c['id']} {c['title']} ({c['evidence']})" for c in cov['checks'] if c['id'] in cov['missingRequired']))
+    if cov['missingRecommended']:lines.append('Recommended: '+'; '.join(f"{c['id']} {c['title']}" for c in cov['checks'] if c['id'] in cov['missingRecommended']))
+    lines.append('Coverage checks look for expected information; they do not judge its quality. Details: validation.json.')
+    lines.append('')
+    return lines
+
+
+def readme(design, review, mode, milestone_count, structural=None):
     lines=['# '+design['title'],'',f'> {review["status"].upper()} | DESIGN ONLY. {review["method"]}; round {review["round"]}. A proposed design, not an approved or built system.','',
            '## Open first','','1. `DESIGN.html`: the clickable read-only view. Decision brief, then the ten steps, then assumptions and review.',
            '2. `DESIGN.pdf`: the same design as a readable report'+(' (at most 12 pages).' if mode=='standard' else ' with appendices.' if mode=='full' else ' (four pages).'),'',
@@ -28,7 +39,7 @@ def readme(design, review, mode, milestone_count):
         rows+= [('_evidence/eval-set.json','Complete evaluation fixtures and assertions.'),('_evidence/fmea-register.csv','Scored risks with controls, owners and linked tests.'),('_evidence/assumptions.md','Proposed facts with owners, verification and launch blockers.'),
                 ('_evidence/PRD.md','Readable summary of all ten stages.'),('_evidence/architecture.md','Exact component, workflow, architecture and model contracts.')]
     lines+=[f'- `{name}`: {text}' for name,text in rows]
-    lines+=['','Code owns money, identity, dates and limits. Models suggest or explain; they hold no write authority. A design review is not stakeholder approval, measured accuracy or an executed business control.','']
+    lines+=['']+coverage_lines(structural)+['Code owns money, identity, dates and limits. Models suggest or explain; they hold no write authority. A design review is not stakeholder approval, measured accuracy or an executed business control.','']
     return '\n'.join(lines)
 
 
@@ -103,7 +114,7 @@ def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode)
     if used!=comps.keys():raise ValueError('Every component must belong to at least one milestone.')
     if covered_workflow!={w['id'] for w in design['stages']['workflow']['items']}:raise ValueError('Every workflow contract must belong to a milestone.')
     files['build/00-overview.md']=overview
-    files['README.md']=readme(design,review,mode,len(milestones))
+    files['README.md']=readme(design,review,mode,len(milestones),structural)
     if mode=='standard':
         oversize=[f for f,v in files.items() if len(v.encode())>25000]
         if oversize or sum(len(v.encode()) for v in files.values())>100000:

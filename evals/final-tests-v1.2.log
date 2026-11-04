@@ -64,8 +64,17 @@ test_pdf_never_overwrites_existing_user_files_or_inputs (test_design_pdf.ActualP
 test_untrusted_markup_and_long_identifiers_render_as_text (test_design_pdf.ActualPdfTests.test_untrusted_markup_and_long_identifiers_render_as_text) ... ok
 test_fixture_summary_avoids_large_raw_mock_dump (test_design_pdf.DependencyTests.test_fixture_summary_avoids_large_raw_mock_dump) ... ok
 test_reportlab_is_optional_and_error_is_actionable (test_design_pdf.DependencyTests.test_reportlab_is_optional_and_error_is_actionable) ... ok
+test_capability_and_write_hints_from_the_brief (test_intake_coverage.CoverageTests.test_capability_and_write_hints_from_the_brief) ... ok
+test_examples_report_coverage_and_strict_flag_exits_one (test_intake_coverage.CoverageTests.test_examples_report_coverage_and_strict_flag_exits_one) ... ok
+test_fixture_gaps_are_findings_not_errors_and_can_be_justified (test_intake_coverage.CoverageTests.test_fixture_gaps_are_findings_not_errors_and_can_be_justified) ... ok
+test_install_copies_skill_and_backs_up_previous_copy (test_intake_coverage.InstallScriptTests.test_install_copies_skill_and_backs_up_previous_copy) ... ok
+test_cli_reads_stdin_and_rejects_empty_brief (test_intake_coverage.IntakeTests.test_cli_reads_stdin_and_rejects_empty_brief) ... ok
+test_detailed_briefs_ask_less_and_complete_briefs_ask_nothing (test_intake_coverage.IntakeTests.test_detailed_briefs_ask_less_and_complete_briefs_ask_nothing) ... ok
+test_minimal_brief_asks_autonomy_first_and_at_most_four (test_intake_coverage.IntakeTests.test_minimal_brief_asks_autonomy_first_and_at_most_four) ... ok
+test_html_and_assumptions_show_what_the_user_added (test_intake_coverage.IntakeValidationTests.test_html_and_assumptions_show_what_the_user_added) ... ok
+test_user_answers_are_citable_facts (test_intake_coverage.IntakeValidationTests.test_user_answers_are_citable_facts) ... ok
 test_all_ten_stage_schemas_are_self_contained (test_package.PackageTests.test_all_ten_stage_schemas_are_self_contained) ... ok
-test_distribution_is_self_contained_and_excludes_generated_work (test_package.PackageTests.test_distribution_is_self_contained_and_excludes_generated_work) ... {"archive": "/tmp/tmpinexy34o/agent-design-studio-1.2.0.zip", "sha256": "84b63a73689bf6803c7fec41aeb040f6024fc282151ed183f2836e6bbbaa6d9d", "files": 24}
+test_distribution_is_self_contained_and_excludes_generated_work (test_package.PackageTests.test_distribution_is_self_contained_and_excludes_generated_work) ... {"archive": "/tmp/tmp6hgdkzal/agent-design-studio-1.2.0.zip", "sha256": "2cdbef2803102f659671768242367f4bc9aac39e0ccd563f47dd3524396d43ad", "files": 26}
 ok
 test_manifests_agree_and_require_no_connection (test_package.PackageTests.test_manifests_agree_and_require_no_connection) ... ok
 test_skill_links_resolve_inside_package (test_package.PackageTests.test_skill_links_resolve_inside_package) ... ok
@@ -119,12 +128,12 @@ test_mode_and_reader_metadata_types_are_checked (test_v2_reports.ModeTests.test_
 test_oversized_standard_handoff_fails_without_hiding_contract (test_v2_reports.ModeTests.test_oversized_standard_handoff_fails_without_hiding_contract) ... ok
 test_pdf_modes_pages_real_paths_and_page_one (test_v2_reports.ModeTests.test_pdf_modes_pages_real_paths_and_page_one) ... ok
 test_reexport_removes_only_unchanged_obsolete_milestones (test_v2_reports.ModeTests.test_reexport_removes_only_unchanged_obsolete_milestones) ... ok
-test_scripted_checkpoint_removes_task_and_owned_component (test_v2_reports.ModeTests.test_scripted_checkpoint_removes_task_and_owned_component) ... {"ok": true, "folder": "/tmp/tmp2a04zzjz/proof", "removed": ["T99"], "validator": "pass"}
+test_scripted_checkpoint_removes_task_and_owned_component (test_v2_reports.ModeTests.test_scripted_checkpoint_removes_task_and_owned_component) ... {"ok": true, "folder": "/tmp/tmpfq_g6dsg/proof", "removed": ["T99"], "validator": "pass"}
 ok
 test_selected_workflow_contract_cannot_be_dropped (test_v2_reports.ModeTests.test_selected_workflow_contract_cannot_be_dropped) ... ok
 test_standard_split_keeps_exact_contracts_and_avoids_whole_design_dump (test_v2_reports.ModeTests.test_standard_split_keeps_exact_contracts_and_avoids_whole_design_dump) ... ok
 
 ----------------------------------------------------------------------
-Ran 123 tests in 6.558s
+Ran 132 tests in 5.533s
 
 OK

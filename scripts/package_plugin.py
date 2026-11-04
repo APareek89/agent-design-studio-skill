@@ -14,6 +14,7 @@ def package(output):
     files = [
         root / "plugin.json",
         root / ".codex-plugin/plugin.json",
+        root / ".claude-plugin/plugin.json",
         root / "LICENSE",
         root / "README.md",
         root / "CHANGELOG.md",
