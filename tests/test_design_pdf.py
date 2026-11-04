@@ -108,8 +108,13 @@ class ActualPdfTests(unittest.TestCase):
             "human",
         ):
             self.assertIn(token, text)
-        self.assertIn(design_pdf.HTML_QUESTION, text.replace("\n", " "))
-        self.assertIn("Generate HTML only after opt-in", text.replace("\n", " "))
+        flat = text.replace("\n", " ")
+        self.assertIn("DESIGN.html is delivered with DESIGN.pdf", flat)
+        self.assertNotIn("Would you also like", flat)
+        for number, (key, title) in enumerate(design_pdf.SECTIONS, 1):
+            self.assertIn(f"{number}. {title}", flat)
+        self.assertIn("UNDERSTAND", flat)
+        self.assertIn("PROVE", flat)
         self.assertIn("No issues were recorded", text)
 
     def test_untrusted_markup_and_long_identifiers_render_as_text(self):

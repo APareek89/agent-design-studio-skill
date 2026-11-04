@@ -1182,7 +1182,7 @@ def render_exports(
     )
     build = (
         overview
-        + "## Coding-agent handoff\n\nTreat unresolved issues and launch dependencies as blockers. Do not infer authority,acceptance or completed execution from this design. Preserve record proof,source boundaries and the defined deterministic controls.\n\nAfter delivering DESIGN.pdf, ask the user: Would you also like a visual HTML version in the same ten-stage structure as the app? Generate HTML only after opt-in, unless already requested.\n\n"
+        + "## Coding-agent handoff\n\nTreat unresolved issues and launch dependencies as blockers. Do not infer authority,acceptance or completed execution from this design. Preserve record proof,source boundaries and the defined deterministic controls.\n\nDESIGN.html is delivered with DESIGN.pdf in every mode; it is a read-only view of this design, not an approval tool.\n\n"
         + _stage_md(design, "export")
         + "\n## Complete canonical design\n\n"
         + _fence(_dump(design), "json")
@@ -1323,13 +1323,13 @@ def _preflight_output(out, inputs):
     return resolved
 
 
-def export_design(design_path, out, review_path, mode=None):
+def export_design(design_path, out, review_path, mode=None, html=True):
     if mode is not None:
         import importlib.util
         spec = importlib.util.spec_from_file_location("studio_export_v2", Path(__file__).with_name("export_v2.py"))
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        return module.export_mode(type("ExportNamespace", (), globals()), design_path, out, review_path, mode)
+        return module.export_mode(type("ExportNamespace", (), globals()), design_path, out, review_path, mode, html)
     design_path = Path(design_path)
     review_path = Path(review_path)
     out = Path(out)
@@ -1408,13 +1408,18 @@ def main(argv=None):
     exp.add_argument("--out", required=True)
     exp.add_argument("--review", required=True)
     exp.add_argument("--mode", choices=("lite", "standard", "full"), default="standard")
+    exp.add_argument(
+        "--no-html",
+        action="store_true",
+        help="Skip DESIGN.html for hosts that cannot write it; the PDF and companions are unchanged.",
+    )
     args = parser.parse_args(argv)
     try:
         if args.command == "validate":
             result = validate_design(load_json(args.design))
             code = 0 if result["valid"] else 1
         else:
-            result = export_design(args.design, args.out, args.review, args.mode)
+            result = export_design(args.design, args.out, args.review, args.mode, not args.no_html)
             code = 0 if result["ok"] else 1
     except (ValueError, OSError, UnicodeError) as exc:
         result = {

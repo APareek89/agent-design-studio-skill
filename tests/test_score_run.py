@@ -100,6 +100,19 @@ class ScoreTests(unittest.TestCase):
         result=self.run_score()['S9']
         self.assertFalse(result['pass']);self.assertTrue(result['evidence']['unsupportedPass'])
 
+    def html(self,mode='standard'):
+        hspec=importlib.util.spec_from_file_location('test_score_design_html',ROOT/'skills/agent-design-studio/scripts/design_html.py')
+        H=importlib.util.module_from_spec(hspec);hspec.loader.exec_module(H)
+        (self.folder/'DESIGN.html').write_text(H.render_html(make_semantic_design(),make_review(),mode),encoding='utf-8');return H
+    def test_html_view_needs_independent_grading_and_every_view_at_three(self):
+        self.assertFalse(self.run_score()['S13']['evaluated'])
+        H=self.html();r=self.run_score()['S13']
+        self.assertFalse(r['evaluated']);self.assertTrue(r['evidence']['htmlPresent']);self.assertEqual(r['evidence']['rendererRefusals'],[])
+        g={'method':'independent-agent','agentId':'html-grader-other-context','sourceHashes':self.hashes('design.json','DESIGN.html'),'views':{v:4 for v in H.VIEW_ORDER}}
+        self.write('html-grader.json',g);r=self.run_score()['S13'];self.assertTrue(r['pass'],r)
+        g['views']['workflow']=2;self.write('html-grader.json',g);self.assertFalse(self.run_score()['S13']['pass'])
+        g['views']['workflow']=4;g['method']='self-review';self.write('html-grader.json',g);self.assertFalse(self.run_score()['S13']['evaluated'])
+        g['method']='independent-agent';self.write('html-grader.json',g);self.html('lite');self.assertFalse(self.run_score()['S13']['pass'])
     def test_author_claim_is_not_independent_grading(self):
         g=self.grader();g['method']='self-review';self.write('grader.json',g)
         self.assertFalse(self.run_score()['S3']['evaluated']);self.assertFalse(self.run_score()['S8']['evaluated'])

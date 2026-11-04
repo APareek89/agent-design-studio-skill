@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Score measured run artifacts against S1–S12; missing evidence never passes."""
+"""Score measured run artifacts against S1–S13; missing evidence never passes."""
 import argparse
 import hashlib
 import importlib.util
@@ -166,7 +166,32 @@ def score(folder,baseline=None,brief=None,validator_script=None):
         passed=i.get('scripted') is True and after.get('runOptions',{}).get('interactive') is True and bound_evidence(i,folder,tuple(['design.json',i['beforeDesign'],i['edits'],i['checkpoint']]+([i['afterDesign']] if i.get('afterDesign') else []))) and checkpoint_matches and bool(expected_removed) and removed==expected_removed and removed<=before_tasks and components==expected_components and not (removed|components)&downstream and validation['valid'] and after_valid
         put('S12',passed,{'removedTasks':sorted(removed),'removedComponents':sorted(components),'checkpointMatches':checkpoint_matches,'absentDownstream':not bool((removed|components)&downstream),'validationPass':validation['valid']})
     except (OSError,ValueError,KeyError,TypeError) as e:unavailable('S12','Scripted task-removal/checkpoint evidence unavailable: '+str(e))
-    return {'version':'1.1','folder':str(folder),'mode':mode,'brief':brief,'validatorScript':str(validator_script or ROOT/'skills/agent-design-studio/scripts/design_io.py'),'allPass':all(r['pass'] for r in results.values()),'scores':{k:results[k] for k in sorted(results,key=lambda x:int(x[1:]))}}
+    try:
+        hspec=importlib.util.spec_from_file_location('score_design_html',ROOT/'skills/agent-design-studio/scripts/design_html.py')
+        H=importlib.util.module_from_spec(hspec);hspec.loader.exec_module(H)
+        html_path=folder/'DESIGN.html';present=html_path.is_file()
+        refusals=[];rendered={}
+        if design is not None and validation['valid']:
+            review=load(folder/'review.json')
+            for m in ('lite','standard','full'):
+                try:rendered[m]=H.render_html(design,review,m).count('<section data-view=')
+                except (ValueError,KeyError,TypeError) as e:refusals.append({'mode':m,'error':str(e)})
+        on_disk=html_path.read_text(encoding='utf-8').count('<section data-view=') if present else 0
+        expected_views={'lite':len(H.LITE_VIEWS)}.get(mode,len(H.VIEW_ORDER))
+        needed=list(H.LITE_VIEWS if mode=='lite' else H.VIEW_ORDER)
+        try:hg=load(folder/'html-grader.json')
+        except (OSError,ValueError):hg={}
+        graded=isinstance(hg,dict) and hg.get('method')=='independent-agent' and isinstance(hg.get('agentId'),str) and bool(hg['agentId'].strip()) and bound_evidence(hg,folder,('design.json','DESIGN.html'))
+        scores=hg.get('views',{}) if graded and isinstance(hg.get('views'),dict) else {}
+        view_scores={v:scores.get(v) for v in needed}
+        mechanical={'htmlPresent':present,'viewsOnDisk':on_disk,'expectedViews':expected_views,'rendersPerMode':rendered,'rendererRefusals':refusals}
+        if not graded:
+            unavailable('S13',dict(mechanical,reason='Independent HTML visual grading with matching design.json/DESIGN.html hashes unavailable.'))
+        else:
+            ok_views=all(type(x) is int and x>=3 for x in view_scores.values())
+            put('S13',present and not refusals and len(rendered)==3 and on_disk==expected_views and ok_views,dict(mechanical,independentAgent=hg['agentId'],viewScores=view_scores,threshold=3))
+    except (OSError,ValueError,KeyError,TypeError) as e:unavailable('S13','HTML view evidence unavailable: '+str(e))
+    return {'version':'1.2','folder':str(folder),'mode':mode,'brief':brief,'validatorScript':str(validator_script or ROOT/'skills/agent-design-studio/scripts/design_io.py'),'allPass':all(r['pass'] for r in results.values()),'scores':{k:results[k] for k in sorted(results,key=lambda x:int(x[1:]))}}
 
 
 def main():

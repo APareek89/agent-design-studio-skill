@@ -62,7 +62,8 @@ class ModeTests(unittest.TestCase):
     def test_lite_reexport_and_standard_to_lite_are_safe(self):
         out=self.folder/'out';test_design_io.design_io.export_design(self.dp,out,self.rp,mode='standard')
         test_design_io.design_io.export_design(self.dp,out,self.rp,mode='lite')
-        self.assertFalse((out/'build').exists());self.assertFalse((out/'PRD.md').exists())
+        self.assertFalse((out/'build').exists());self.assertFalse((out/'_evidence').exists());self.assertFalse((out/'README.md').exists())
+        self.assertTrue((out/'DESIGN.html').is_file())
         self.assertTrue(test_design_io.design_io.export_design(self.dp,out,self.rp,mode='lite')['ok'])
 
     def test_mode_and_reader_metadata_types_are_checked(self):
@@ -102,7 +103,10 @@ class ModeTests(unittest.TestCase):
         text='\n'.join(f.read_text() for f in files)
         self.assertIn('requestId:string!',text)
         self.assertIn('EV1',text);self.assertNotIn('"stages":',text)
-        self.assertIn('Would you also like a visual HTML',text)
+        self.assertIn('DESIGN.html is delivered with DESIGN.pdf',text);self.assertNotIn('Would you also like',text)
+        self.assertIn('_evidence/eval-set.json',text)
+        self.assertTrue((out/'DESIGN.html').is_file());self.assertTrue((out/'README.md').is_file());self.assertTrue((out/'_evidence/eval-set.json').is_file())
+        manifest=json.loads((out/'validation.json').read_text());self.assertIn('DESIGN.html',manifest['fileSha256']);self.assertIn('_evidence/PRD.md',manifest['generatedFiles'])
         test_design_io.design_io.export_design(self.dp,out,self.rp,mode='standard')
         files[0].write_text('User edit')
         with self.assertRaisesRegex(ValueError,'unrelated or edited'):
