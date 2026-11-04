@@ -385,6 +385,9 @@ class Report:
         self.heading('Glossary')
         for term,meaning in GLOSSARY.items():self.text(term+': '+meaning,'small')
         self.text(HTML_NOTE+' Open DESIGN.html for the clickable task map, flow and risk views.','small')
+        research=self.design.get('research')
+        if isinstance(research,dict):
+            self.text((f'Web research: {len(research["findings"])} findings from {research["tool"]} inform the design; see assumptions.md. They do not verify this organisation.' if research['performed'] else 'No web research was performed: '+research['unavailableReason']+' Tool candidates are unverified.'),'small')
         self.text('Full assumptions, owners and evidence: assumptions.md. Review method and failed rounds are preserved in review.json and review-round-*.json.','small')
         self.finish_page()
 

@@ -322,6 +322,36 @@ def _report_schemas():
             "milestones": {"type": "array", "minItems": 1, "items": milestone}}
 
 
+def _research_schema():
+    text = {"type": "string", "minLength": 1}
+    finding = {
+        "type": "object",
+        "required": ["id", "topic", "url", "title", "retrievedAt", "summary", "usedBy"],
+        "properties": {
+            "id": {"type": "string", "pattern": r"^RS[1-9]\d*$"},
+            "topic": {"type": "string", "minLength": 1, "maxLength": 120},
+            "url": {"type": "string", "pattern": r"^https?://\S+$", "maxLength": 2000},
+            "title": {"type": "string", "minLength": 1, "maxLength": 300},
+            "retrievedAt": {"type": "string", "pattern": r"^\d{4}-\d{2}-\d{2}$"},
+            "summary": {"type": "string", "minLength": 1, "maxLength": 1200},
+            "usedBy": {"type": "array", "items": text, "maxItems": 60},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "type": "object",
+        "required": ["performed", "tool", "unavailableReason", "queries", "findings"],
+        "properties": {
+            "performed": {"type": "boolean"},
+            "tool": {"type": "string", "maxLength": 200},
+            "unavailableReason": {"type": "string", "maxLength": 600},
+            "queries": {"type": "array", "items": {"type": "string", "minLength": 1, "maxLength": 300}, "maxItems": 60},
+            "findings": {"type": "array", "items": finding, "maxItems": 60},
+        },
+        "additionalProperties": False,
+    }
+
+
 def validate_design(design, schemas=None):
     errors, warnings = [], []
     schemas = load_json(SCHEMA_PATH) if schemas is None else schemas
@@ -377,6 +407,7 @@ def validate_design(design, schemas=None):
         "properties": {
             "schemaVersion": {"enum": ["1.0", "1.1"]},
             "semantics": {"type": "object"},
+            "research": _research_schema(),
             "presentation": {"type": "object"},
             "runOptions": {"type": "object"},
             "milestones": {"type": "array"},
@@ -415,6 +446,25 @@ def validate_design(design, schemas=None):
         for field in ("statement", "why", "owner", "validation"):
             if not _nonempty(h[field]):
                 _issue(errors, p + "." + field, "Must contain meaningful text.")
+    research = design.get("research")
+    findings = {}
+    if isinstance(research, dict):
+        for i, f in enumerate(research["findings"]):
+            fp = f"$.research.findings[{i}]"
+            if f["id"] in findings:
+                _issue(errors, fp + ".id", "Duplicate research finding ID " + f["id"] + ".")
+            findings[f["id"]] = f
+            for field in ("topic", "title", "summary"):
+                if not _nonempty(f[field]):
+                    _issue(errors, fp + "." + field, "Research finding needs real " + field + " text.")
+        if research["performed"]:
+            if not _nonempty(research["tool"]):
+                _issue(errors, "$.research.tool", "Name the web search or fetch tool that was used.")
+        else:
+            if research["findings"]:
+                _issue(errors, "$.research.findings", "A research record marked not performed cannot carry findings.")
+            if not _nonempty(research["unavailableReason"]):
+                _issue(errors, "$.research.unavailableReason", "State why no web research was performed.")
     packets = design["stages"]
     all_items = []
     by_stage = {}
@@ -464,6 +514,14 @@ def validate_design(design, schemas=None):
                             errors,
                             sp,
                             "Hypothesis source must name an existing H ID and its exact statement.",
+                        )
+                elif source["type"] == "research":
+                    f = findings.get(source["file"])
+                    if f is None or source["passage"] != f["summary"]:
+                        _issue(
+                            errors,
+                            sp,
+                            "Research source must name an existing RS ID in $.research.findings and its exact summary.",
                         )
                 else:
                     _issue(
@@ -550,6 +608,19 @@ def validate_design(design, schemas=None):
                     p + ".data.alternatives",
                     "Record the rejected alternative and rationale.",
                 )
+            candidates = d.get("candidates", [])
+            if d["category"] == "tooling":
+                if not _nonempty(d.get("capability", "")):
+                    _issue(errors, p + ".data.capability", "A tooling card names the capability it serves.")
+                if not candidates:
+                    _issue(errors, p + ".data.candidates", "A tooling card lists at least one candidate with its verification status.")
+            for j, cand in enumerate(candidates):
+                cp = f"{p}.data.candidates[{j}]"
+                if cand["verified"] and not cand["sourceIds"]:
+                    _issue(errors, cp + ".verified", "A verified candidate cites at least one research finding; otherwise mark it unverified.")
+                for rs in cand["sourceIds"]:
+                    if rs not in findings:
+                        _issue(errors, cp + ".sourceIds", "Candidate cites a missing research finding " + rs + ".")
         if key == "fmea":
             for field in (
                 "effect",
@@ -621,6 +692,10 @@ def validate_design(design, schemas=None):
                     p + ".data.buildInstructions",
                     "Provide a real canonical handoff.",
                 )
+    for i, f in enumerate(findings.values()):
+        for j, used in enumerate(f["usedBy"]):
+            if used not in global_ids and used not in ledger:
+                _issue(errors, f"$.research.findings[{i}].usedBy[{j}]", "Research finding cites a missing item or assumption ID " + used + ".")
     roots = [t for t in tasks.values() if not t["data"]["parentId"]]
     if len(roots) != 1:
         _issue(
@@ -1246,6 +1321,15 @@ def render_exports(
         for item in design["stages"][key]["items"]:
             for text in item["assumptions"]:
                 assumptions += "- " + key + "/" + item["id"] + ": " + text + "\n"
+    research = design.get("research")
+    if isinstance(research, dict):
+        assumptions += "\n## Research used\n\n"
+        if research["performed"]:
+            assumptions += f"Web research with {research['tool']}; {len(research['queries'])} queries. Findings are the author's summaries of public pages; they do not verify this organisation's policies, contracts or systems.\n\n"
+            for f in research["findings"]:
+                assumptions += f"- {f['id']} ({f['topic']}, retrieved {f['retrievedAt']}): {f['title']} <{f['url']}> — {f['summary']} Used by: {', '.join(f['usedBy']) or 'none'}\n"
+        else:
+            assumptions += "No web research was performed: " + research["unavailableReason"] + " Tool candidates are unverified.\n"
     assumptions += (
         "\n## Review and tooling limitations\n\n"
         + "\n".join("- " + s for s in review["limitations"] + LIMITATIONS)

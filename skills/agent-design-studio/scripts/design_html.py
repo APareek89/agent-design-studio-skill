@@ -210,6 +210,9 @@ class Model:
             for t in sem.get("transitions", [])
             if isinstance(t, dict)
         }
+        research = design.get("research")
+        self.research = research if isinstance(research, dict) else None
+        self.finding = {f["id"]: f for f in (self.research or {}).get("findings", []) if isinstance(f, dict)}
         pres = design.get("presentation")
         self.derived = not isinstance(pres, dict)
         self.pres = pres if isinstance(pres, dict) else {}
@@ -503,6 +506,32 @@ def view_context(m):
         head(STEP_BY_KEY["context"][3], "The brief as given, and how this design reads it. Facts the brief did not give are assumptions with owners.")
         + f'<div class="panel box"><div class="lb">Brief (verbatim)</div><div class="brief-text">{esc(m.d["brief"])}</div></div>'
         + '<div class="sec"><div class="tw"><table><thead><tr><th>Field</th><th>Design reading</th></tr></thead><tbody>'
+        + rows
+        + "</tbody></table></div></div>"
+        + research_section(m)
+    )
+
+
+def research_section(m):
+    """Web research the author used, when the design carries a research record."""
+    r = m.research
+    if r is None:
+        return ""
+    if not r["performed"]:
+        return (
+            '<div class="sec"><h3>Research used</h3><div class="panel box"><p class="small">No web research was performed: '
+            + esc(r["unavailableReason"])
+            + ' Industry facts rest on the author\'s own knowledge and tool candidates are unverified.</p></div></div>'
+        )
+    rows = "".join(
+        f'<tr><td class="mono nowrap">{esc(f["id"])}</td><td>{esc(f["topic"])}</td><td>{esc(f["title"])}<div class="mono tiny" style="color:var(--muted);overflow-wrap:anywhere">{esc(f["url"])}</div></td>'
+        f'<td class="mono small nowrap">{esc(f["retrievedAt"])}</td><td>{esc(f["summary"])}</td><td>{m.links(f["usedBy"])}</td></tr>'
+        for f in r["findings"]
+    ) or '<tr><td colspan="6" class="mini">Research was run but no finding was kept.</td></tr>'
+    return (
+        f'<div class="sec"><h3>Research used</h3><p class="sub">Web research with {esc(r["tool"])}: {len(r["queries"])} queries, {len(r["findings"])} findings kept. '
+        "Findings are the author's summaries of public pages with a retrieval date; they inform the design and do not verify this organisation's own policies, contracts or systems.</p>"
+        '<div class="tw"><table><thead><tr><th>ID</th><th>Topic</th><th>Source</th><th>Retrieved</th><th>What it says</th><th>Used by</th></tr></thead><tbody>'
         + rows
         + "</tbody></table></div></div>"
     )
@@ -1066,26 +1095,49 @@ def view_workflow(m):
 
 
 def view_framework(m):
-    names = {"fit": "Fit and autonomy", "architecture": "Architecture", "orchestration": "Orchestration", "permission": "Permissions", "data": "Data"}
+    names = {"fit": "Fit and autonomy", "architecture": "Architecture", "orchestration": "Orchestration", "permission": "Permissions", "data": "Data", "tooling": "Tooling"}
     cards = ""
+    tooling = [f for f in m.framework if f["data"]["category"] == "tooling"]
+    if tooling:
+        summary = "".join(
+            f'<tr><td>{esc(f["data"].get("capability", ""))}</td><td>{esc(f["title"])}</td><td class="num">{len(f["data"].get("candidates", []))}</td>'
+            f'<td>{"Checked" if any(c["verified"] for c in f["data"].get("candidates", [])) else "Unverified"}</td></tr>'
+            for f in tooling
+        )
+        cards += (
+            '<div class="sec first"><h3>Tools by capability</h3><p class="sub">One card per capability the design needs beyond the model. A checked candidate cites a research finding; an unverified one is a name to confirm before build.</p>'
+            '<div class="tw"><table><thead><tr><th>Capability</th><th>Chosen</th><th>Candidates</th><th>Status</th></tr></thead><tbody>'
+            + summary
+            + "</tbody></table></div></div>"
+        )
     for f in m.framework:
         d = f["data"]
-        crumb = f'{f["id"]} · {names.get(d["category"], d["category"])}' + (f' · {d["permission"]}' if d["permission"] != "none" else "")
+        crumb = f'{f["id"]} · {names.get(d["category"], d["category"])}' + (f' · {d["capability"]}' if d.get("capability") else "") + (f' · {d["permission"]}' if d["permission"] != "none" else "")
         pairs = [
             ("Choice", esc(d["choice"])),
             ("Rejected", "<br>".join(esc(a) for a in d["alternatives"])),
             ("Trade-off", esc(d["tradeoffs"])),
         ]
+        if d.get("candidates"):
+            crows = ""
+            for c in d["candidates"]:
+                evidence = (
+                    " ".join(f'<span class="chip mono" title="{esc(m.finding[rs]["title"]) if rs in m.finding else ""}">{esc(rs)}</span>' for rs in c["sourceIds"])
+                    if c["verified"] and c["sourceIds"]
+                    else '<span class="warn">unverified</span>'
+                )
+                crows += f'<tr><td>{esc(c["name"])}</td><td>{esc(c["kind"])}</td><td>{esc(c["note"])}</td><td>{evidence}</td></tr>'
+            pairs.append(("Candidates", '<div class="tw"><table><thead><tr><th>Candidate</th><th>Kind</th><th>Note</th><th>Evidence</th></tr></thead><tbody>' + crows + "</tbody></table></div>"))
         if d["category"] == "permission" or d["permission"] != "none":
             pairs += [("Blast radius", esc(d["blastRadius"])), ("Approval", esc(d["approvalRule"])), ("Least privilege", esc(d["leastPrivilege"]))]
         cloud = [(label, d[key]) for key, label in (("aws", "AWS"), ("gcp", "Google Cloud"), ("azure", "Azure"), ("openSource", "Open source"))]
         if any(v for _, v in cloud):
             pairs.append(("Options", '<div class="tw"><table><tbody>' + "".join(f"<tr><td>{esc(k)}</td><td>{esc(v)}</td></tr>" for k, v in cloud if v) + "</tbody></table></div>"))
         cards += f'<div class="panel box card"><div class="crumb">{esc(crumb)}</div><h3 class="card-title">{esc(f["title"])}</h3>{kv_rows(pairs)}</div>'
-    return (
-        head(STEP_BY_KEY["framework"][3], "Each choice names the option it rejected. Vendor features are candidates to verify, not claims.")
-        + cards
-    )
+    lead = "Each choice names the option it rejected. Vendor features are candidates to verify, not claims."
+    if tooling:
+        lead += " A checked candidate cites the research finding behind it."
+    return head(STEP_BY_KEY["framework"][3], lead) + cards
 
 
 def view_models(m):

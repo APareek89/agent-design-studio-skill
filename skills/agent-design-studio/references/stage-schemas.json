@@ -47,7 +47,8 @@
                     "enum": [
                       "upload",
                       "hypothesis",
-                      "context"
+                      "context",
+                      "research"
                     ]
                   },
                   "file": {
@@ -171,7 +172,8 @@
                         "enum": [
                           "upload",
                           "hypothesis",
-                          "context"
+                          "context",
+                          "research"
                         ]
                       },
                       "file": {
@@ -305,7 +307,8 @@
                         "enum": [
                           "upload",
                           "hypothesis",
-                          "context"
+                          "context",
+                          "research"
                         ]
                       },
                       "file": {
@@ -436,7 +439,8 @@
                     "enum": [
                       "upload",
                       "hypothesis",
-                      "context"
+                      "context",
+                      "research"
                     ]
                   },
                   "file": {
@@ -590,7 +594,8 @@
                     "enum": [
                       "upload",
                       "hypothesis",
-                      "context"
+                      "context",
+                      "research"
                     ]
                   },
                   "file": {
@@ -729,7 +734,8 @@
                     "enum": [
                       "upload",
                       "hypothesis",
-                      "context"
+                      "context",
+                      "research"
                     ]
                   },
                   "file": {
@@ -761,7 +767,8 @@
                     "architecture",
                     "orchestration",
                     "permission",
-                    "data"
+                    "data",
+                    "tooling"
                   ]
                 },
                 "taskIds": {
@@ -823,6 +830,56 @@
                 "openSource": {
                   "type": "string",
                   "maxLength": 8000
+                },
+                "capability": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "candidates": {
+                  "type": "array",
+                  "maxItems": 12,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "kind",
+                      "note",
+                      "verified",
+                      "sourceIds"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                      },
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "managed",
+                          "open-source",
+                          "self-hosted",
+                          "unknown"
+                        ]
+                      },
+                      "note": {
+                        "type": "string",
+                        "maxLength": 600
+                      },
+                      "verified": {
+                        "type": "boolean"
+                      },
+                      "sourceIds": {
+                        "type": "array",
+                        "maxItems": 12,
+                        "items": {
+                          "type": "string",
+                          "pattern": "^RS[1-9]\\d*$"
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  }
                 }
               },
               "required": [
@@ -919,7 +976,8 @@
                     "enum": [
                       "upload",
                       "hypothesis",
-                      "context"
+                      "context",
+                      "research"
                     ]
                   },
                   "file": {
@@ -1080,7 +1138,8 @@
                     "enum": [
                       "upload",
                       "hypothesis",
-                      "context"
+                      "context",
+                      "research"
                     ]
                   },
                   "file": {
@@ -1275,7 +1334,8 @@
                     "enum": [
                       "upload",
                       "hypothesis",
-                      "context"
+                      "context",
+                      "research"
                     ]
                   },
                   "file": {
@@ -1469,7 +1529,8 @@
                     "enum": [
                       "upload",
                       "hypothesis",
-                      "context"
+                      "context",
+                      "research"
                     ]
                   },
                   "file": {
@@ -1620,7 +1681,8 @@
                     "enum": [
                       "upload",
                       "hypothesis",
-                      "context"
+                      "context",
+                      "research"
                     ]
                   },
                   "file": {

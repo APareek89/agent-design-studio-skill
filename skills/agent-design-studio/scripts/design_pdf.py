@@ -789,6 +789,21 @@ def create_pdf(design_path, review_path, out, mode=None):
         )
     for text in dict.fromkeys(review["limitations"] + D.LIMITATIONS):
         add(text, "small")
+    research = design.get("research")
+    if isinstance(research, dict):
+        section("C", "Research used")
+        if research["performed"]:
+            add(
+                f"Web research with {research['tool']}: {len(research['queries'])} queries, {len(research['findings'])} findings kept. Findings are the author's summaries of public pages; they do not verify this organisation's policies, contracts or systems.",
+                "small",
+            )
+            for f in research["findings"]:
+                add(f["id"] + " - " + f["title"] + " (" + f["topic"] + ", retrieved " + f["retrievedAt"] + ")", "card")
+                add(f["url"], "small")
+                add(f["summary"])
+                label("Used by", ", ".join(f["usedBy"]) or "none", None, "small")
+        else:
+            add("No web research was performed: " + research["unavailableReason"] + " Tool candidates are unverified.", "small")
     add(
         "Canonical design SHA256: "
         + hashlib.sha256(design_path.read_bytes()).hexdigest(),

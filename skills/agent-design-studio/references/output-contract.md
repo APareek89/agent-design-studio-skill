@@ -27,9 +27,26 @@ Use `design.json` as the single source for all generated documents. The script r
 
 Add the required `semantics` declarations from [semantic-contract.md](semantic-contract.md), plus reader summaries, selected milestones and run options from [report-contract.md](report-contract.md). Legacy 1.0 stays readable with semantic coverage explicitly unverified.
 
+Record web research in an optional top-level `research` object. `performed` says whether a web tool was used; `tool` names it; `unavailableReason` explains a false `performed`; `queries` lists the generic search terms used (never the brief or confidential names); `findings` holds what the design relies on:
+
+```json
+{
+  "research": {
+    "performed": true, "tool": "host web search", "unavailableReason": "",
+    "queries": ["telecom complaint handling regulation India", "PII redaction service streaming text"],
+    "findings": [
+      {"id":"RS1","topic":"industry: complaint handling","url":"https://example.org/rules","title":"Regulator complaint timelines",
+       "retrievedAt":"2026-11-04","summary":"Operators must acknowledge a complaint within a stated period and resolve within a longer one.","usedBy":["CTX1","H3"]}
+    ]
+  }
+}
+```
+
+A finding is the author's own short summary with URL, title and retrieval date, not a pasted page. `usedBy` names the items and H assumptions it informed. A finding never verifies the user's own organisation; organisation-specific facts stay H assumptions.
+
 The empty arrays above illustrate the container, not a completed design. Populate every stage; only Models may have zero items, and only with zero LLM components. Keep the brief unchanged. `H1...` record proposed facts, permissions, owners, thresholds, volumes and prices that the user did not supply. Empty assumptions is valid when nothing is assumed. All stage packet `assumptions` arrays contain concise strings; the top-level ledger carries the details.
 
-Every item has `id`, `kind`, `title`, `description`, `reasoning`, `assumptions` (strings), `sources` and `data`. Source entries are `{type,file,passage}`: `context` uses `file:"user-brief"` and an exact quote; `hypothesis` uses an existing H ID and its statement. Do not fabricate an upload or verified citation. If optional source material is supplied, record what it actually establishes in the assumption ledger and prose; do not claim the basic validator verified external material. IDs are stable within a stage; links always use their real responsibility.
+Every item has `id`, `kind`, `title`, `description`, `reasoning`, `assumptions` (strings), `sources` and `data`. Source entries are `{type,file,passage}`: `context` uses `file:"user-brief"` and an exact quote; `hypothesis` uses an existing H ID and its statement; `research` uses an existing RS ID from `research.findings` and its exact summary. Do not fabricate an upload or verified citation. If optional source material is supplied, record what it actually establishes in the assumption ledger and prose; do not claim the basic validator verified external material. IDs are stable within a stage; links always use their real responsibility.
 
 Use these complete `data` fields; use empty strings/arrays only for inapplicable fields:
 
@@ -37,7 +54,7 @@ Use these complete `data` fields; use empty strings/arrays only for inapplicable
 - **Tasks** `T0,T1,T1.1...`, kind `task`: `parentId,mode,basis,examples,autonomy,frequency,risk`. Modes `sequence|choose one|leaf`; risks `low|medium|high`. Root `parentId:""`; depth at most root → task → subtask. Examples are strings. Kind `attribute`, IDs `A1...`: `taskIds,sourceSystem,loaded` (`session start|on demand`).
 - **Components** `C1...`, kind `component`: `group,taskIds,inputs,outputs,whyCode,approvalRule`. Groups `Agents (LLM)|Code: tools|Code: validation|Code: human triggers`. Inputs/outputs are arrays of compact typed-field strings, including conditional required fields. Deterministic components require a `whyCode` explanation.
 - **Workflow** `W1...`, kind `workflow`: `componentId,taskIds,next,decision,example`. The item `description` is a JSON string with `state`, `transitions:[{to,when,mode}]`, `failureDisposition`, `timeout`, `retryPolicy`, `terminalDisposition`. Each next edge has a matching predicate; terminals have no next edges and a nonempty terminal disposition. Put typed producer bindings for guard variables in this contract. Conditional commands and every tool outcome need coherent paths.
-- **Architecture** `F1...`, kind `framework`: `category,taskIds,choice,alternatives,tradeoffs,permission,blastRadius,approvalRule,leastPrivilege,aws,gcp,azure,openSource`. Categories `fit|architecture|orchestration|permission|data`; permission `read|write|none`. State a chosen pattern and rejected alternative. Cloud/vendor options can be unverified candidates, clearly labelled; unsupported service/pricing facts are not required.
+- **Architecture** `F1...`, kind `framework`: `category,taskIds,choice,alternatives,tradeoffs,permission,blastRadius,approvalRule,leastPrivilege,aws,gcp,azure,openSource`, plus optional `capability` and `candidates`. Categories `fit|architecture|orchestration|permission|data|tooling`; permission `read|write|none`. State a chosen pattern and rejected alternative. A `tooling` card serves one capability (see `tool-catalog.md`): nonempty `capability` and at least one candidate `{name,kind,note,verified,sourceIds}` with kind `managed|open-source|self-hosted|unknown`; a `verified` candidate cites research `sourceIds`, an unchecked one is `verified:false`. Cloud/vendor options can be unverified candidates, clearly labelled; unsupported service/pricing facts are not required.
 - **Models** `M1...`, kind `model`: `componentId,tier,rationale,fineTuneWhen,callsPerCase,inputTokens,outputTokens,inputPrice,outputPrice`. One per LLM component, zero for code. Tier `small|standard|reasoning`. Calls, tokens and USD per million token prices are numeric illustrative budgets unless measured. Derive calls from workflow nodes and bounded retries; explain unknown prices, branch mix and excluded costs. Zero cost inputs mean unpriced, not free service.
 - **FMEA** `FM1...`, kind `fmea`: `taskIds,componentIds,effect,cause,severity,occurrence,detection,control,detectionMethod,action,metric,kpi,evalIds,acceptedRisk,commonToAll`. S/O/D are integer 1–10; RPN=S×O×D. `acceptedRisk:false` unless the user supplied a specific acceptance. Severity≥8 or RPN≥150 needs an owner and release gate in `action`. Do not manufacture human acceptance.
 - **Evaluations** `EV1...`, kind `eval`: `category,taskIds,componentIds,failureModeIds,input,expected,passRule,metric,kpi,target,testSet,labelling,cadence,alertThreshold`. Categories `golden|offline|online|release`. Golden input/expected/passRule are JSON strings containing concrete fixtures, outcomes and assertions. Every unaccepted failure and high-risk leaf needs substantive golden coverage. All risk/eval links, including monitoring/release links, must agree in both directions. Planned tests are not executed tests.

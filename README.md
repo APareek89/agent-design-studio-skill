@@ -30,6 +30,8 @@ The brief is sufficient. Unknown facts become proposed assumptions with owners a
 
 Both artifacts open on the same decision brief: the system in one sentence, chosen and rejected options, autonomy, top risks, blockers, illustrative cost and one-line review status. The steps follow one naming table: Brief and scope, Task map, Building blocks, Flow, Stack and permissions, Models and cost, Risks, Tests, Measure and roll out, Handoff, then Assumptions and Review as evidence. The HTML draws a clickable task tree, an SVG flow with labelled conditions and handoff notes, a risk heat table, coverage tables and a cost calculator from `design.json`; it is read-only, self-contained and loads nothing from the network. The PDF draws vector task and workflow diagrams plus risk heat and evaluation coverage tables.
 
+When the host has web search, the skill first researches the industry and the tools for each capability the brief needs (voice, guardrails and PII, search, embeddings and vector stores, knowledge graphs, document AI and more, listed in the skill's tool catalog), records each finding with its URL and date in `design.json`, and shows them in the Brief and scope and Stack and permissions views. Findings inform the design; the user's own policies and systems stay labelled assumptions.
+
 For co-design, add `interactive: true`. The assistant pauses after the task map and after components for edits or removal. Default brief-only mode has no checkpoints. Task edits invalidate downstream work before rebuilding; they do not approve a live business action.
 
 ## Install the checked-out skill

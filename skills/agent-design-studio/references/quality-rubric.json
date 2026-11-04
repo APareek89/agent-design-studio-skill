@@ -76,7 +76,8 @@
         "Architecture choice follows workflow state/durability/approval needs and includes a rejected alternative.",
         "Relevant orchestration options use identical criteria; simple deterministic systems may need no framework.",
         "Tools/permissions and data categories compare AWS/GCP/Azure/open-source alternatives fairly.",
-        "Tradeoffs, constraints, operational ownership and evidence boundaries support a defensible selection."
+        "Tradeoffs, constraints, operational ownership and evidence boundaries support a defensible selection.",
+        "Each capability the design needs beyond the model has a tooling card naming the chosen candidate, the rejected ones and whether the choice was checked against a cited current source; unchecked candidates are labelled unverified."
       ]
     },
     {

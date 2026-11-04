@@ -65,10 +65,18 @@ test_untrusted_markup_and_long_identifiers_render_as_text (test_design_pdf.Actua
 test_fixture_summary_avoids_large_raw_mock_dump (test_design_pdf.DependencyTests.test_fixture_summary_avoids_large_raw_mock_dump) ... ok
 test_reportlab_is_optional_and_error_is_actionable (test_design_pdf.DependencyTests.test_reportlab_is_optional_and_error_is_actionable) ... ok
 test_all_ten_stage_schemas_are_self_contained (test_package.PackageTests.test_all_ten_stage_schemas_are_self_contained) ... ok
-test_distribution_is_self_contained_and_excludes_generated_work (test_package.PackageTests.test_distribution_is_self_contained_and_excludes_generated_work) ... {"archive": "/tmp/tmph9ikna4q/agent-design-studio-1.2.0.zip", "sha256": "805268aa1883bfe753f1fb9f549092e30ef18a51c10455db72dab602a743810a", "files": 23}
+test_distribution_is_self_contained_and_excludes_generated_work (test_package.PackageTests.test_distribution_is_self_contained_and_excludes_generated_work) ... {"archive": "/tmp/tmpinexy34o/agent-design-studio-1.2.0.zip", "sha256": "84b63a73689bf6803c7fec41aeb040f6024fc282151ed183f2836e6bbbaa6d9d", "files": 24}
 ok
 test_manifests_agree_and_require_no_connection (test_package.PackageTests.test_manifests_agree_and_require_no_connection) ... ok
 test_skill_links_resolve_inside_package (test_package.PackageTests.test_skill_links_resolve_inside_package) ... ok
+test_assumptions_export_lists_research (test_research_tooling.ExportTests.test_assumptions_export_lists_research) ... ok
+test_committed_example_html_matches_the_renderer (test_research_tooling.RenderTests.test_committed_example_html_matches_the_renderer) ... ok
+test_html_shows_research_table_and_tooling_candidates_without_links (test_research_tooling.RenderTests.test_html_shows_research_table_and_tooling_candidates_without_links) ... ok
+test_unperformed_research_and_legacy_designs_render_honestly (test_research_tooling.RenderTests.test_unperformed_research_and_legacy_designs_render_honestly) ... ok
+test_research_citations_must_match_recorded_findings (test_research_tooling.ValidationTests.test_research_citations_must_match_recorded_findings) ... ok
+test_researched_design_is_valid_and_legacy_examples_still_validate (test_research_tooling.ValidationTests.test_researched_design_is_valid_and_legacy_examples_still_validate) ... ok
+test_tooling_cards_need_capability_candidates_and_backed_verification (test_research_tooling.ValidationTests.test_tooling_cards_need_capability_candidates_and_backed_verification) ... ok
+test_unperformed_research_is_honest (test_research_tooling.ValidationTests.test_unperformed_research_is_honest) ... ok
 test_author_claim_is_not_independent_grading (test_score_run.ScoreTests.test_author_claim_is_not_independent_grading) ... ok
 test_banned_whole_words_and_phrase_line_wrap (test_score_run.ScoreTests.test_banned_whole_words_and_phrase_line_wrap) ... ok
 test_exact_brief_blocks_order_and_score_table (test_score_run.ScoreTests.test_exact_brief_blocks_order_and_score_table) ... ok
@@ -111,12 +119,12 @@ test_mode_and_reader_metadata_types_are_checked (test_v2_reports.ModeTests.test_
 test_oversized_standard_handoff_fails_without_hiding_contract (test_v2_reports.ModeTests.test_oversized_standard_handoff_fails_without_hiding_contract) ... ok
 test_pdf_modes_pages_real_paths_and_page_one (test_v2_reports.ModeTests.test_pdf_modes_pages_real_paths_and_page_one) ... ok
 test_reexport_removes_only_unchanged_obsolete_milestones (test_v2_reports.ModeTests.test_reexport_removes_only_unchanged_obsolete_milestones) ... ok
-test_scripted_checkpoint_removes_task_and_owned_component (test_v2_reports.ModeTests.test_scripted_checkpoint_removes_task_and_owned_component) ... {"ok": true, "folder": "/tmp/tmp_ms105vt/proof", "removed": ["T99"], "validator": "pass"}
+test_scripted_checkpoint_removes_task_and_owned_component (test_v2_reports.ModeTests.test_scripted_checkpoint_removes_task_and_owned_component) ... {"ok": true, "folder": "/tmp/tmp2a04zzjz/proof", "removed": ["T99"], "validator": "pass"}
 ok
 test_selected_workflow_contract_cannot_be_dropped (test_v2_reports.ModeTests.test_selected_workflow_contract_cannot_be_dropped) ... ok
 test_standard_split_keeps_exact_contracts_and_avoids_whole_design_dump (test_v2_reports.ModeTests.test_standard_split_keeps_exact_contracts_and_avoids_whole_design_dump) ... ok
 
 ----------------------------------------------------------------------
-Ran 115 tests in 5.576s
+Ran 123 tests in 6.558s
 
 OK
