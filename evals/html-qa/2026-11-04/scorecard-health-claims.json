@@ -1,0 +1,442 @@
+{
+  "version": "1.2",
+  "folder": "examples/health-claims",
+  "mode": "standard",
+  "brief": "health-claims",
+  "validatorScript": "/home/user/agent-design-studio-skill/skills/agent-design-studio/scripts/design_io.py",
+  "allPass": false,
+  "scores": {
+    "S1": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "mode": "standard",
+        "pages": 12,
+        "limit": 12
+      }
+    },
+    "S2": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "blocks": {
+          "The system in one sentence": true,
+          "Key design calls": true,
+          "Who acts and who decides": true,
+          "Top risks by RPN": true,
+          "Launch blockers and owners": true,
+          "Illustrative cost per case": true,
+          "Review status:": true
+        },
+        "inOrder": true,
+        "dimensionTableOnPage1": false
+      }
+    },
+    "S3": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "independentAgent": "final_health_review",
+        "vectorOperatorsPresent": true,
+        "judgment": {
+          "taskTreeVector": true,
+          "workflowVector": true,
+          "legibleAt100Percent": true,
+          "evidence": [
+            "PDF page 2: 0 raster images; 130 vector path operators; 838 extractable text characters.",
+            "PDF page 3: 0 raster images; 226 vector path operators; 614 extractable text characters.",
+            "Actual iteration05 DESIGN.pdf pages 1\u20133 rendered via pdftoppm at 72dpi and inspected at 100%; text/task/decision boxes readable and uncut. Recovery arrows dense; exact predicates available in architecture.md.",
+            "Page 1 shows independent-agent round 2 pass; PDF 12 pages.",
+            "Final reader-layer iteration6: regenerated from unchanged canonical design/review, preserved prior PDF as DESIGN-before-reader-fix.pdf. Actual current pages 1\u20133, 6 (architecture) and 11 (measurement/rollout) rendered at 72dpi and inspected at 100%; all readable without overlap/crop, 12 pages total.",
+            "Pages6/11 now display actual selected/rejected architecture and rollout gate/owner fields as labelled reader summaries. Independent exact-string check confirms full framework choice/alternatives/tradeoffs/access and rollout KPI/AI metrics/phase/gate/owner/experiment values survive in PRD.md."
+          ]
+        }
+      }
+    },
+    "S4": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "fleschReadingEase": 55.857554489973836,
+        "averageWordsPerSentence": 10.054054054054054,
+        "bannedTerms": [],
+        "method": "textstat"
+      }
+    },
+    "S5": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "fileBytes": {
+          "build/00-overview.md": 1469,
+          "build/01-milestone.md": 10297,
+          "build/02-milestone.md": 11914,
+          "build/03-milestone.md": 11034,
+          "build/04-milestone.md": 18737
+        },
+        "totalBytes": 53451,
+        "perFileLimit": 25000,
+        "standardTotalLimit": 100000
+      }
+    },
+    "S6": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": [
+        {
+          "file": "sem001-faulty.json",
+          "expectedRule": "SEM001",
+          "observedRules": [
+            "SEM001"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem002-faulty.json",
+          "expectedRule": "SEM002",
+          "observedRules": [
+            "SEM002"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem003-faulty.json",
+          "expectedRule": "SEM003",
+          "observedRules": [
+            "SEM003"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem004-faulty.json",
+          "expectedRule": "SEM004",
+          "observedRules": [
+            "SEM004"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem005-faulty.json",
+          "expectedRule": "SEM005",
+          "observedRules": [
+            "SEM005"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem006-faulty.json",
+          "expectedRule": "SEM006",
+          "observedRules": [
+            "SEM006"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem007-faulty.json",
+          "expectedRule": "SEM007",
+          "observedRules": [
+            "SEM007"
+          ],
+          "pass": true
+        }
+      ]
+    },
+    "S7": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": [
+        {
+          "file": "s7-refund-no-guard.json",
+          "expectedRule": "SEM001",
+          "observedRules": [
+            "SEM001"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        },
+        {
+          "file": "s7-48h-no-notice.json",
+          "expectedRule": "SEM002",
+          "observedRules": [
+            "SEM002"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        },
+        {
+          "file": "s7-llm-amount.json",
+          "expectedRule": "SEM005",
+          "observedRules": [
+            "SEM005"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        },
+        {
+          "file": "s7-no-positive-golden.json",
+          "expectedRule": "SEM003",
+          "observedRules": [
+            "SEM003"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        },
+        {
+          "file": "s7-unversioned-inheritance.json",
+          "expectedRule": "SEM004",
+          "observedRules": [
+            "SEM004"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        },
+        {
+          "file": "s7-llm-customer-id.json",
+          "expectedRule": "SEM005",
+          "observedRules": [
+            "SEM005"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        }
+      ]
+    },
+    "S8": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "brief": "health-claims",
+        "found": 5,
+        "required": 5,
+        "checks": [
+          {
+            "id": 1,
+            "pass": true,
+            "evidence": [
+              "CTX3",
+              "C4",
+              "EV3",
+              "EV22",
+              "H2"
+            ]
+          },
+          {
+            "id": 2,
+            "pass": true,
+            "evidence": [
+              "C4",
+              "EV1",
+              "EV4",
+              "EV5",
+              "EV23",
+              "EV30",
+              "EV32",
+              "EV33"
+            ]
+          },
+          {
+            "id": 3,
+            "pass": true,
+            "evidence": [
+              "H1",
+              "C5",
+              "EV27",
+              "CTX2"
+            ]
+          },
+          {
+            "id": 4,
+            "pass": true,
+            "evidence": [
+              "CTX4",
+              "C2",
+              "C3",
+              "EV9",
+              "EV26"
+            ]
+          },
+          {
+            "id": 5,
+            "pass": true,
+            "evidence": [
+              "C3",
+              "C4",
+              "EV6",
+              "EV7",
+              "EV8"
+            ]
+          },
+          {
+            "id": 6,
+            "pass": false,
+            "evidence": [
+              "H1",
+              "CTX2",
+              "R2",
+              "F3"
+            ]
+          }
+        ],
+        "independentAgent": "final_health_review"
+      }
+    },
+    "S9": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "reviewValid": true,
+        "preservedRounds": true,
+        "priorReviewRecordsValid": true,
+        "reportedRoundsMatch": true,
+        "methodEvidence": true,
+        "unsupportedPass": false,
+        "method": "independent-agent",
+        "status": "pass"
+      }
+    },
+    "S10": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "testEvidence": {
+          "command": "python3 -m unittest discover -s tests -v",
+          "exitCode": 0,
+          "passed": 132,
+          "testsCollected": 132,
+          "failed": 0,
+          "skipped": 0,
+          "log": "../../evals/final-tests-v1.2.log",
+          "briefOutputs": [
+            "../civic",
+            "../csv-report",
+            "../../evals/regression-v2/customer-support",
+            "../../evals/regression-v2/finance-review",
+            "../../evals/regression-v2/research-assist",
+            "../../evals/regression-v2/vague-brief"
+          ],
+          "sourceHashes": {
+            "../../tests/test_design_io.py": "cfd0d65a0535eb598a5f652553736a8f2510f9c56309464a9fed7f1e7748092c",
+            "../../tests/test_package.py": "5c07bb6a9779160dcad36376e0697ba29cd9cb92a70df56d998bc306b6b4bef9",
+            "../../tests/test_design_html.py": "88a35e156dd902d5310611b9123b63e44f8c1bd3a70aa2ea74f9d01d02c2d1d8",
+            "../../tests/test_score_run.py": "fad834fc8f2ca33a9ff88c521df08e526d94982df8b40dfb9f83f78db90fe5b3",
+            "../../tests/test_design_pdf.py": "e8d16ae238709e9c5596101a473f3f1f75ee4eab80ccc0b0eac3aa856f7612d8",
+            "../../tests/test_v2_reports.py": "9e4a55e27864298bb400af65d7385d04ca1e2b68a1a5ea96f4979d1f6cf766b7",
+            "../../tests/test_semantics.py": "39ff09ee9a38e3bda9150bcd762271e9b4a3a452b0999ae184c3536ee06c5a06",
+            "../../skills/agent-design-studio/scripts/design_html.py": "53e3d87906152eac3646a058c2389bd27136d424b7be24e5af00a89bbbd8e652",
+            "../../skills/agent-design-studio/scripts/run_report.py": "0b51be2d4c713354cf172cf74f5896c5e47ec814cd64a67a06173019efda6fa6",
+            "../../skills/agent-design-studio/scripts/semantic_checks.py": "b4f4c9b918c9815c5331c2642c1e40792e2ba578d3c7a3de55b7fe27322913db",
+            "../../skills/agent-design-studio/scripts/design_session.py": "a84769ace143a5febc6978237959068567a15bbebf58a2bde33f3818c5369254",
+            "../../skills/agent-design-studio/scripts/export_v2.py": "1299c6aff56c31245d71429c7a0cb9e63f699610e7d3615a9dc3f4c6c4f74388",
+            "../../skills/agent-design-studio/scripts/design_io.py": "1c3fc6deccd85521a65f01b4bfd354e4bcfa3824bb633698ef75b15cf7831fd6",
+            "../../skills/agent-design-studio/scripts/design_pdf.py": "2a01ebf716ded76c58ae6ba221d09da415c89c31db7fc233aa4bbc773c68cad2",
+            "../../skills/agent-design-studio/scripts/report_v2.py": "6fb22b04c04e1704fb678bc74506e642075e152a28a3dc81e0e83005decbe1b7",
+            "../../scripts/package_plugin.py": "57ff232184aa5f0bb09662589fede60508406b215e0159aa9d9050bb6e60d20e",
+            "../../scripts/check_interactive.py": "e08d965562e2ed805d96a2f9b16ef5a8dd0efae42f810f646c727f40d4a42218",
+            "../../scripts/score_run.py": "9241b09de74540aa934aedf43535db5969b5a5b93b040de3b40d7a2a2b7c9994",
+            "../../skills/agent-design-studio/references/report-contract.md": "47c0fb4e33b4068fcd6f52fa4368be47620d8f25fa4dd1ddd215e8574918311c",
+            "../../skills/agent-design-studio/references/visual-output.md": "bc46dbea4a375ce5842509b6af34bcfc1a68735d91a33a58a08b8983710ef8eb",
+            "../../skills/agent-design-studio/references/output-contract.md": "8d9618c9c052d1967e3cb2f5da4d2f0e04874a6460eed1e37223893ce262ccca",
+            "../../skills/agent-design-studio/references/quality-rubric.json": "7fa9c88760fd1c2c96871ceef52205f3ca5b1b0d302fc05b824d44db9aabd040",
+            "../../skills/agent-design-studio/references/personas.md": "cd54042c3f47f3626188523796ef3863e27262543aba296dc7d2c2d46050b0d6",
+            "../../skills/agent-design-studio/references/stage-schemas.json": "d83b372a6c65651de4640d771fa9fabcf11656ba20859592b6c3c245e301ae03",
+            "../../skills/agent-design-studio/references/semantic-contract.md": "ac1de93ba374f5e560eb68454969f9b2b7709dd91e51897c831c55739c3db6ec",
+            "../../skills/agent-design-studio/SKILL.md": "39780d8d247088eb4718b71ac5f658660915c43d16a8ef5274f755d0f7d616df",
+            "../../requirements-eval.txt": "29fd449a3ee6cb8f849d5edd1389b5079a2ef5a8392f8f8cafff40c3f12a515f",
+            "../../skills/agent-design-studio/requirements-pdf.txt": "fa28e3c05759ec5a47995f1b2ea724aac51f64764610ef219f92ef8c49bb146f",
+            "../../evals/final-tests-v1.2.log": "398148b53a9db1f41c90741a4200d085a9c10d4ff17d7b6bccdbc94f24520037",
+            "../../tests/test_design_html_v2.py": "b10a57259c86ee32f594e5315a46505797a4660cd4195abf557bfbff6d36c2d4",
+            "../../scripts/html_qa.js": "543f1fac64c9115b5bad346cd9e6af60a902b97e214ca76cff69175b02b2ac0e",
+            "../../docs/html-design-spec.md": "5da5997d7a617c129b82553df58f1ef2a44d353ad9a2ea50b8f9de8a90962a97",
+            "../../tests/test_research_tooling.py": "70d348e2f47b72287ad38fb00fd2d812fa40d1034321b79f9a1a1d051d10e6b7",
+            "../../skills/agent-design-studio/references/tool-catalog.md": "3483382f1d4bb37f38cfa843f0a6a219f79ccd00509f88232db49b2bfd39daed",
+            "../../tests/test_intake_coverage.py": "4d40b22aff30d9c46acdb0a4196372c70c338fcfdcb2332f5e59b506c05b6116",
+            "../../skills/agent-design-studio/scripts/design_intake.py": "f83c99e7b135993f3e2426851fa7d9fa9696780604eeedaae1bd88f38d8a33f8",
+            "../../scripts/install_skill.sh": "36af4a60a084e04d15a8ae161001301ad12c783c6f9f96243d2a9d8e4f536cfb",
+            "../../.claude-plugin/plugin.json": "a365b786525de8e584c602f23ceb69de88cd7f740329b2bd994fb7688ac6c9e3"
+          }
+        },
+        "briefValidation": [
+          {
+            "folder": "../civic",
+            "valid": true
+          },
+          {
+            "folder": "../csv-report",
+            "valid": true
+          },
+          {
+            "folder": "../../evals/regression-v2/customer-support",
+            "valid": true
+          },
+          {
+            "folder": "../../evals/regression-v2/finance-review",
+            "valid": true
+          },
+          {
+            "folder": "../../evals/regression-v2/research-assist",
+            "valid": true
+          },
+          {
+            "folder": "../../evals/regression-v2/vague-brief",
+            "valid": true
+          }
+        ],
+        "currentValidation": true,
+        "currentTestMethods": 132,
+        "completeSuite": true
+      }
+    },
+    "S11": {
+      "pass": false,
+      "evaluated": false,
+      "evidence": "Comparable standard-mode host token measurements with the same tokenMethod unavailable; artifact size is not inference usage."
+    },
+    "S12": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "removedTasks": [
+          "T99"
+        ],
+        "removedComponents": [
+          "C99"
+        ],
+        "checkpointMatches": true,
+        "absentDownstream": true,
+        "validationPass": true
+      }
+    },
+    "S13": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "htmlPresent": true,
+        "viewsOnDisk": 13,
+        "expectedViews": 13,
+        "rendersPerMode": {
+          "lite": 4,
+          "standard": 13,
+          "full": 13
+        },
+        "rendererRefusals": [],
+        "independentAgent": "html-visual-grader-2026-11-04",
+        "viewScores": {
+          "brief": 4,
+          "context": 4,
+          "tasks": 4,
+          "components": 4,
+          "workflow": 3,
+          "framework": 4,
+          "models": 4,
+          "fmea": 4,
+          "evals": 4,
+          "rollout": 4,
+          "export": 4,
+          "assumptions": 4,
+          "review": 4
+        },
+        "threshold": 3
+      }
+    }
+  }
+}

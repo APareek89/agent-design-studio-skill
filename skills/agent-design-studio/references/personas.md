@@ -4,7 +4,7 @@ Adapted from the studio's v2.1 workflow for brief-only use. Brief-only runs use 
 
 ## Shared rules
 
-Use the brief and current canonical decisions as scope. Cite supplied facts exactly and link proposed facts to H-ID assumptions. Unknown prices, volumes, thresholds, policies and baselines stay illustrative with verification owners. Research actual primary sources if available and needed for a vendor capability claim; otherwise use a generic pattern or label the option unverified. Research is not required to complete a proposed design.
+Use the brief and current canonical decisions as scope. Cite supplied facts exactly and link proposed facts to H-ID assumptions. Unknown prices, volumes, thresholds, policies and baselines stay illustrative with verification owners. When the host offers web search or page fetch, run the bounded research pass described in SKILL.md before authoring: the industry and use case first, then the tools for each capability the brief needs. Record what you used in `research.findings`, cite it with `research` sources, and label anything you could not check as unverified. Never send the brief, customer names or confidential details to a search engine; search generic terms. Research informs the design; it does not verify the user's own policies, contracts or systems, which stay H assumptions. Without a web tool, use a generic pattern or label the option unverified; the design is still complete.
 
 The LLM recommends, explains or abstains. Code owns money, dates, identity, hard limits and authorization. Writes need fresh resource/action/subject/tenant/version-bound checks at the action API, canonical payload binding, business identity/idempotency and durable record proof. Unknown external commits require reconciliation before another write. Compensation needs separate authority.
 
@@ -16,7 +16,7 @@ Establish business decision/value, actor, trigger, current process, inputs/outpu
 
 Define each KPI with numerator/denominator or unit, observation window, unknown-baseline collection and target hypothesis. Identify authoritative systems, action permission, human capacity, privacy/retention and integration dependencies. Unknown policy/authority defaults to no autonomous write until verified, while the logical workflow is fully specified.
 
-Do not ask a questionnaire or leave Q cards unanswered: `question` is empty, and unknowns become assumptions with verification plans. Support scoped provisional intake before evidence exists. Differentiate initial, correction, appeal and cancellation commands when needed; do not require documents before the step that obtains them.
+Answers the user gave in the one-time intake are user facts: cite them with a `context` source whose file is `user-intake` and whose passage is the exact answer; a skipped question becomes an H assumption with an owner. Use research findings for industry norms, regulation, standard process steps, typical volumes and KPI baselines; cite each with a `research` source and keep the organisation-specific version as an H assumption with an owner. Name in the evidence-limits card whether web research was performed. Do not ask a questionnaire or leave Q cards unanswered: `question` is empty, and unknowns become assumptions with verification plans. Support scoped provisional intake before evidence exists. Differentiate initial, correction, appeal and cancellation commands when needed; do not require documents before the step that obtains them.
 
 ## 2. Task Mapper
 
@@ -44,7 +44,9 @@ Each write path shows fresh authority, payload/version binding, idempotency and 
 
 Choose code workflow, bounded single agent or multi-agent from actual judgement, durability, human wait, retry, audit and ownership needs. Record a rejected alternative and reason. Do not add an LLM or framework to satisfy a label.
 
-Compare relevant orchestration options on identical criteria. Studio candidates included LangGraph, Temporal, AWS Step Functions, Strands/AgentCore, Google ADK and Microsoft Agent Framework; these are optional candidates, not verified current capabilities or a mandatory checklist. Use primary documentation or an explicit verification spike for concrete vendor claims.
+Compare relevant orchestration options on identical criteria; `tool-catalog.md` lists candidates per capability. They are starting points, not verified current capabilities or a mandatory checklist. Use primary documentation found by web search, or an explicit verification spike, for concrete vendor claims.
+
+For every capability the design needs beyond the LLM (voice and telephony, speech, guardrails and PII handling, web search, retrieval with embeddings and a vector store, knowledge graph, document AI and OCR, LLM gateway, observability and evaluation, messaging channels, identity, human review queue) add one `tooling` card: `capability`, the chosen candidate and reason as `choice`, the rejected candidates in `alternatives`, and a `candidates` list with kind, a one-line note on what was checked, `verified` and the research `sourceIds` behind it. A candidate without a finding stays `verified: false`. Do not add a capability the brief does not need, and do not let a tool's features widen the model's authority.
 
 For tools give read/write/none, scope, blast radius, approval enforcement and least privilege. For actual data categories compare coherent AWS/GCP/Azure/open-source options and tradeoffs; keep retrieval separate from authoritative ledgers. Define minimization, audit, secrets, retention/residency assumptions and operational ownership without asking for credentials.
 
@@ -88,7 +90,7 @@ Use actual IDs and scope for observable acceptance criteria and an implementable
 
 Cross-check guard/payload fields, task/component/graph/risk/eval/KPI links and canonical cost assumptions. An implementer should not invent material branch, action or ownership decisions. Real adapter/policy verification can remain an explicit launch prerequisite. A design review is not stakeholder approval or operational evidence.
 
-The final human deliverable is a mode-aware PDF with the plain decision brief first; standard summarizes all ten stages within twelve pages and puts full contracts in companions. Keep full machine artifacts separately. Include a coding-agent instruction to ask, after delivering the PDF: “Would you also like a visual HTML version in the same ten-stage structure as the app?” Generate HTML only after opt-in, unless already requested.
+The final human deliverables are a read-only `DESIGN.html` and a mode-aware `DESIGN.pdf`, both opening on the plain decision brief; standard summarizes all ten stages within twelve PDF pages and puts full contracts in `_evidence/` companions. Keep full machine artifacts separately. The handoff states that both files are delivered together and that neither grants write authority; there is no opt-in question.
 
 ## 11. Reviewer
 

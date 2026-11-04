@@ -6,8 +6,41 @@ import os
 import re
 from pathlib import Path
 import tempfile
+import importlib.util
 
-QUESTION='Would you also like a visual HTML version in the same ten-stage structure as the app?'
+EVIDENCE='_evidence/'
+COMPANIONS=('PRD.md','architecture.md','eval-set.json','fmea-register.csv','assumptions.md')
+
+
+def _module(name):
+    spec=importlib.util.spec_from_file_location('studio_export_'+name,Path(__file__).with_name(name+'.py'));m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+
+
+def coverage_lines(structural):
+    cov=structural.get('coverage') if isinstance(structural,dict) else None
+    if not cov:return []
+    lines=['## Expected information','',f"{cov['coveredRequired']} of {cov['required']} required items covered"+(f"; justified: {', '.join(cov['justified'])}" if cov['justified'] else '')+'.']
+    if cov['missingRequired']:lines.append('Missing: '+'; '.join(f"{c['id']} {c['title']} ({c['evidence']})" for c in cov['checks'] if c['id'] in cov['missingRequired']))
+    if cov['missingRecommended']:lines.append('Recommended: '+'; '.join(f"{c['id']} {c['title']}" for c in cov['checks'] if c['id'] in cov['missingRecommended']))
+    lines.append('Coverage checks look for expected information; they do not judge its quality. Details: validation.json.')
+    lines.append('')
+    return lines
+
+
+def readme(design, review, mode, milestone_count, structural=None):
+    lines=['# '+design['title'],'',f'> {review["status"].upper()} | DESIGN ONLY. {review["method"]}; round {review["round"]}. A proposed design, not an approved or built system.','',
+           '## Open first','','1. `DESIGN.html`: the clickable read-only view. Decision brief, then the ten steps, then assumptions and review.',
+           '2. `DESIGN.pdf`: the same design as a readable report'+(' (at most 12 pages).' if mode=='standard' else ' with appendices.' if mode=='full' else ' (four pages).'),'',
+           '## Files','']
+    rows=[('DESIGN.html','Read-only visual view; no approval controls, no network assets.'),('DESIGN.pdf','Decision brief on page 1, then the design steps.'),('design.json','The single source for every ID, contract and fixture.'),
+          ('review.json','Review record; earlier rounds are kept as review-round-N.json.'),('validation.json','Structural checks and generated-file hashes.'),('run-report.json','Timing, sizes, pages and validator results, when recorded.')]
+    if mode!='lite':
+        rows.insert(2,('build/',f'00-overview.md plus {milestone_count} milestone file(s), each under 25 KB in standard mode.'))
+        rows+= [('_evidence/eval-set.json','Complete evaluation fixtures and assertions.'),('_evidence/fmea-register.csv','Scored risks with controls, owners and linked tests.'),('_evidence/assumptions.md','Proposed facts with owners, verification and launch blockers.'),
+                ('_evidence/PRD.md','Readable summary of all ten stages.'),('_evidence/architecture.md','Exact component, workflow, architecture and model contracts.')]
+    lines+=[f'- `{name}`: {text}' for name,text in rows]
+    lines+=['']+coverage_lines(structural)+['Code owns money, identity, dates and limits. Models suggest or explain; they hold no write authority. A design review is not stakeholder approval, measured accuracy or an executed business control.','']
+    return '\n'.join(lines)
 
 
 def dump(value):return json.dumps(value,ensure_ascii=False,indent=2)+'\n'
@@ -15,7 +48,9 @@ def dump(value):return json.dumps(value,ensure_ascii=False,indent=2)+'\n'
 
 def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode):
     # Reuse exact risk/eval/assumption exports; do not duplicate the whole design in prose.
-    docs=D.render_exports(design,review,structural,rr,design_hash,review_hash)
+    R=_module('report_v2')
+    base=D.render_exports(design,review,structural,rr,design_hash,review_hash)
+    docs={(EVIDENCE+name if name in COMPANIONS else name):text for name,text in base.items()}
     banner=f'> {review["status"].upper()} | DESIGN ONLY. {review["method"]}; round {review["round"]}.\n\n'
     prd='# '+design['title']+'\n\n'+banner+'## Original brief\n\n'+design['brief']+'\n\n'
     for key in D.STAGES:
@@ -23,14 +58,14 @@ def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode)
         for item in design['stages'][key]['items']:
             prd+=D._item_md(item)+'\n' if key in ('framework','rollout','export') else f"- **{item['id']} {item['title']}**: {item['description']}\n"
         prd+='\n'
-    prd+='Full exact data and source evidence: [design.json](design.json). Launch facts and owners: [assumptions.md](assumptions.md).\n'
-    docs['PRD.md']=prd
+    prd+='Full exact data and source evidence: [design.json](../design.json). Launch facts and owners: [assumptions.md](assumptions.md).\n'
+    docs[EVIDENCE+'PRD.md']=prd
     tasks,flow=D._graphs(design)
     architecture='# Architecture\n\n'+banner+'## Task tree\n\n'+D._fence(tasks,'mermaid')+'\n## Workflow\n\n'+D._fence(flow,'mermaid')
     architecture+='\n## Exact component and branch contracts\n\n'
     for key in ('components','workflow','framework','models'):
         architecture+=D._stage_md(design,key)+'\n'
-    docs['architecture.md']=architecture
+    docs[EVIDENCE+'architecture.md']=architecture
     milestones=design.get('milestones')
     if not milestones:
         # Compatibility for old designs: one responsibility per milestone.
@@ -40,9 +75,9 @@ def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode)
                                'taskIds':comp['data']['taskIds'],'evalIds':[e['id'] for e in design['stages']['evals']['items'] if comp['id'] in e['data']['componentIds']],
                                'acceptanceCriteria':['Implement the declared contract and all named assertions; do not execute live actions without user authority.']})
     overview='# Build overview\n\n'+banner+design['brief']+'\n\n'
-    overview+='Load one milestone file at a time. Contracts below are selected by component; full source is ../design.json. Test IDs resolve to complete fixtures in ../eval-set.json. Do not load the entire design unless a dependency requires it.\n\n'
-    overview+='Code owns money, identity, dates and limits. The agent never holds write authority. Keep proposed policies and owners distinct from verified facts. Launch blockers: ../assumptions.md. Complete rollout gates and owners: ../PRD.md#rollout.\n\n'
-    overview+='After delivering DESIGN.pdf, ask the user: '+QUESTION+' Generate HTML only after opt-in, unless already requested.\n\n'
+    overview+='Load one milestone file at a time. Contracts below are selected by component; full source is ../design.json. Test IDs resolve to complete fixtures in ../_evidence/eval-set.json. Do not load the entire design unless a dependency requires it.\n\n'
+    overview+='Code owns money, identity, dates and limits. The agent never holds write authority. Keep proposed policies and owners distinct from verified facts. Launch blockers: ../_evidence/assumptions.md. Complete rollout gates and owners: ../_evidence/PRD.md#rollout.\n\n'
+    overview+=R.HTML_NOTE+' Deliver DESIGN.html and DESIGN.pdf together; neither grants write authority.\n\n'
     comps={c['id']:c for c in design['stages']['components']['items']}
     used=set(); covered_workflow=set(); files={}; component_files={}
     for index,m in enumerate(milestones,1):
@@ -67,7 +102,7 @@ def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode)
         covered_workflow.update(eligible if workflow_ids is None else workflow_ids)
         for w in design['stages']['workflow']['items']:
             if w['data']['componentId'] in ids and (workflow_ids is None or w['id'] in workflow_ids):text+=D._item_md(w)+'\n'
-        text+='## Required tests\n\nFor each ID below, load ../eval-set.json items[id].data.input, .expected and .passRule. These are the full fixture, expected result and exact assertions; no inherited test context is assumed.\n\n'
+        text+='## Required tests\n\nFor each ID below, load ../_evidence/eval-set.json items[id].data.input, .expected and .passRule. These are the full fixture, expected result and exact assertions; no inherited test context is assumed.\n\n'
         wanted=set(m['evalIds'])
         actual={e['id'] for e in design['stages']['evals']['items'] if ids.intersection(e['data']['componentIds'])}
         if not actual<=wanted:raise ValueError(f'Milestone {m["id"]} omits tests {sorted(actual-wanted)}.')
@@ -79,6 +114,7 @@ def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode)
     if used!=comps.keys():raise ValueError('Every component must belong to at least one milestone.')
     if covered_workflow!={w['id'] for w in design['stages']['workflow']['items']}:raise ValueError('Every workflow contract must belong to a milestone.')
     files['build/00-overview.md']=overview
+    files['README.md']=readme(design,review,mode,len(milestones),structural)
     if mode=='standard':
         oversize=[f for f,v in files.items() if len(v.encode())>25000]
         if oversize or sum(len(v.encode()) for v in files.values())>100000:
@@ -89,20 +125,35 @@ def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode)
     report['fileSha256']={name:hashlib.sha256(value.encode()).hexdigest() for name,value in docs.items() if name!='validation.json'}
     docs['validation.json']=dump(report)
     if mode=='lite':
-        # User-facing artifacts are the four-page PDF and design.json; review and check evidence are retained.
+        # User-facing artifacts are the four-page PDF, DESIGN.html and design.json; review and check evidence are retained.
         docs={name:docs[name] for name in ('validation.json',)}
         report['generatedFiles']=list(docs);report['fileSha256']={};docs['validation.json']=dump(report)
     return docs
 
 
-def export_mode(D,design_path,out,review_path,mode):
+def add_html(docs, design, review, mode, rounds):
+    """Render DESIGN.html as a tracked generated file; the manifest hash covers it."""
+    html=_module('design_html').render_html(design,review,mode,rounds)
+    report=json.loads(docs['validation.json'])
+    docs['DESIGN.html']=html
+    report['generatedFiles']=list(docs)
+    report.setdefault('fileSha256',{})['DESIGN.html']=hashlib.sha256(html.encode()).hexdigest()
+    docs['validation.json']=dump(report)
+    return docs
+
+
+def export_mode(D,design_path,out,review_path,mode,html=True):
     if mode not in ('lite','standard','full'):raise ValueError('Unknown output mode.')
     design_path,review_path,out=Path(design_path),Path(review_path),Path(out)
     design=D.load_json(design_path);structural=D.validate_design(design)
     if not structural['valid']:return {'ok':False,'status':'structural-errors','errors':structural['errors']}
     review=D.load_json(review_path);rr=D.validate_review(review,True)
     if not rr['valid']:return {'ok':False,'status':'invalid-review','errors':rr['errors']}
+    R=_module('report_v2')
     docs=make_docs(D,design,review,structural,rr,hashlib.sha256(design_path.read_bytes()).hexdigest(),hashlib.sha256(review_path.read_bytes()).hexdigest(),mode)
+    if html:
+        rounds=sorted({p.name for folder in {review_path.parent,out} if folder.is_dir() for p in folder.glob('review-round-*.json') if p.is_file()})
+        docs=add_html(docs,design,review,mode,rounds)
     if out.is_symlink() or out.exists() and not out.is_dir():raise ValueError('Output must be an ordinary directory.')
     prior={}; recognized=False
     manifest=out/'validation.json'
@@ -123,7 +174,7 @@ def export_mode(D,design_path,out,review_path,mode):
             elif prior.get(name)!=hashlib.sha256(dest.read_bytes()).hexdigest():
                 raise ValueError('Refusing to overwrite an unrelated or edited file: '+str(dest))
     stale=[]
-    allowed={'PRD.md','architecture.md','build-prompt.md','eval-set.json','fmea-register.csv','assumptions.md'}
+    allowed={'PRD.md','architecture.md','build-prompt.md','eval-set.json','fmea-register.csv','assumptions.md','DESIGN.html','README.md'}|{EVIDENCE+c for c in COMPANIONS}
     for name,expected_hash in prior.items():
         if name in docs:continue
         if name not in allowed and not re.fullmatch(r'build/(?:00-overview|[0-9]{2}-milestone)\.md',name):raise ValueError('Unexpected prior generated path; refusing cleanup: '+name)
@@ -145,6 +196,7 @@ def export_mode(D,design_path,out,review_path,mode):
         finally:
             if tmp and tmp.exists():tmp.unlink()
     for old in stale:old.unlink()
-    build_dir=out/'build'
-    if build_dir.is_dir() and not build_dir.is_symlink() and not any(build_dir.iterdir()):build_dir.rmdir()
-    return {'ok':True,'mode':mode,'status':rr['status'],'files':[str((out/name).resolve()) for name in docs],'designOnly':True}
+    for sub in ('build','_evidence'):
+        folder=out/sub
+        if folder.is_dir() and not folder.is_symlink() and not any(folder.iterdir()):folder.rmdir()
+    return {'ok':True,'mode':mode,'status':rr['status'],'html':html,'files':[str((out/name).resolve()) for name in docs],'designOnly':True}

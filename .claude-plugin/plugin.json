@@ -1,0 +1,22 @@
+{
+  "name": "agent-design-studio",
+  "version": "1.2.0",
+  "description": "Turn one brief into a reviewed system design as a clickable HTML view and a PDF, with a coding-agent handoff.",
+  "author": {
+    "name": "Anand Pareek",
+    "url": "https://github.com/APareek89"
+  },
+  "homepage": "https://github.com/APareek89/agent-design-studio-skill",
+  "repository": "https://github.com/APareek89/agent-design-studio-skill",
+  "license": "MIT",
+  "keywords": [
+    "agent-design",
+    "prd",
+    "architecture",
+    "fmea",
+    "evals",
+    "skills",
+    "pdf",
+    "html"
+  ]
+}

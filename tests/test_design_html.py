@@ -1,4 +1,4 @@
-"""Optional HTML artifact tests; synthetic fixtures, no business execution."""
+"""HTML artifact tests on the synthetic fixture; no business execution."""
 
 import copy
 from html.parser import HTMLParser
@@ -6,6 +6,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -52,58 +53,47 @@ class RenderTests(unittest.TestCase):
         self.design = fixtures.make_design()
         self.review = fixtures.make_review()
 
-    def render(self):
-        return design_html.render_html(self.design, self.review)
+    def render(self, mode="standard"):
+        return design_html.render_html(self.design, self.review, mode)
 
-    def test_exact_ten_stage_order_and_self_contained_layout(self):
+    def test_twelve_views_in_order_and_self_contained_layout(self):
         document = self.render()
         page = Page(document)
-        expected = list(design_html.STAGES)
-        self.assertEqual(
-            [a["data-stage"] for _, a in page.elements if "data-stage" in a], expected
-        )
-        self.assertEqual(
-            [
-                a["data-stage-panel"]
-                for _, a in page.elements
-                if "data-stage-panel" in a
-            ],
-            expected,
-        )
-        self.assertIn("@media(max-width:820px)", document)
+        views = [a["data-view"] for t, a in page.elements if t == "section" and "data-view" in a]
+        self.assertEqual(views, list(design_html.VIEW_ORDER))
+        self.assertEqual(len(views), 13)  # brief + ten steps + assumptions + review
+        side = [a["data-step"] for t, a in page.elements if "data-step" in a and "step" in a.get("class", "")]
+        self.assertEqual(side, list(design_html.VIEW_ORDER))
+        self.assertIn("@media (max-width:900px)", document)
         self.assertIn("overflow-x:auto", document)
-        self.assertIn('aria-label="Design stages"', document)
+        self.assertIn('aria-label="Design steps"', document)
+        self.assertIn('aria-label="Steps"', document)
         self.assertEqual(len(page.scripts), 1)
         for tag, attrs in page.elements:
-            self.assertNotIn(tag, ("iframe", "img", "form", "input"))
+            self.assertNotIn(tag, ("iframe", "img", "form", "link", "object", "embed"))
             self.assertNotIn("src", attrs)
+            if tag == "input":
+                self.assertEqual(attrs.get("type"), "number")
+                self.assertIn("data-calc", attrs)
             for name, value in attrs.items():
                 self.assertFalse(name.startswith("on"))
                 if name == "href":
                     self.assertTrue(value.startswith("#"))
-        self.assertIn(
-            "connect-src &#x27;none&#x27;", design_html.esc("connect-src 'none'")
-        )
+        self.assertIn("connect-src &#x27;none&#x27;", design_html.esc("connect-src 'none'"))
         self.assertIn("connect-src 'none'", document)
-        for forbidden in (
-            "fetch(",
-            "XMLHttpRequest",
-            "new WebSocket",
-            "eval(",
-            "innerHTML",
-            "document.write",
-        ):
+        for forbidden in ("fetch(", "XMLHttpRequest", "new WebSocket", "eval(", "innerHTML", "document.write", "http://", "https://"):
             self.assertNotIn(forbidden, page.scripts[0])
+        self.assertNotIn("@import", document)
+        self.assertIsNone(re.search(r"url\((?!#)", document))  # only the in-page SVG marker reference
 
     def test_untrusted_text_never_becomes_markup_or_script(self):
-        payload = "</script><script>window.PWNED=true</script><img src=x onerror=alert(1)>\u2028\u2029&\"'"
+        payload = "</script><script>window.PWNED=true</script><img src=x onerror=alert(1)>  &\"'"
         self.design["title"] = payload
         self.design["assumptions"][0]["statement"] = payload
         self.design["stages"]["components"]["items"][0]["data"]["inputs"] = [payload]
         self.design["stages"]["components"]["items"][0]["description"] = payload
-        self.design["stages"]["evals"]["items"][0]["data"]["input"] = json.dumps(
-            {"payload": payload}
-        )
+        self.design["stages"]["evals"]["items"][0]["data"]["input"] = json.dumps({"payload": payload})
+        self.design["stages"]["workflow"]["items"][0]["data"]["example"] = payload
         self.review["limitations"] = [payload]
         self.review["dimensions"][0]["evidence"] = [payload]
         self.review["issues"] = [
@@ -128,27 +118,32 @@ class RenderTests(unittest.TestCase):
     def test_code_only_is_explicit_and_no_model_claims_are_fabricated(self):
         self.design = fixtures.make_design(False)
         document = self.render()
-        self.assertIn("Zero LLM components", document)
+        self.assertIn("No LLM component", document)
         self.assertIn("No model calls or model token spend", document)
         self.assertIn("does not imply zero hosting", document)
-        self.assertIn("no workflow execution", document)
+        self.assertIn("No model calls: the model budget is zero", document)
+        self.assertNotIn('data-month-cost="', document)
+        self.assertIn("Read-only view. Not approved by stakeholders", document)
 
-    def test_task_tree_typed_contracts_rpn_categories_and_coverage(self):
+    def test_tree_contracts_rpn_coverage_and_reader_layer_note(self):
         document = self.render()
-        self.assertIn("Outcome tree", document)
-        self.assertIn('href="#item-T1"', document)
-        self.assertIn("Inputs · typed contract", document)
-        self.assertIn("<code>requestId:string!</code>", document)
-        self.assertIn("<td><strong>120</strong></td>", document)
-        self.assertIn("golden: 1", document)
-        self.assertIn("offline: 1", document)
-        self.assertIn("online: 1", document)
-        self.assertIn("release: 1", document)
-        self.assertIn("High-risk leaves", document)
-        self.assertIn("Pass assertions", document)
+        self.assertIn('data-leaf="T1"', document)
+        self.assertIn('data-leaf-detail="T1"', document)
+        self.assertIn("Prepare owned triage", document)
+        self.assertIn("Inputs and outputs", document)
+        self.assertIn("<li>requestId:string!</li>", document)
+        self.assertIn('class="rpn hi">120<', document)
+        self.assertIn("Act-now rule", document)
+        self.assertIn("Must hold", document)
+        self.assertIn("equals.disposition == &quot;ABSTAIN&quot;", document)
+        self.assertIn(">Covered<", document)
+        self.assertIn("Reader layer derived from the ten stages", document)
+        self.assertIn("zero prices mean unpriced, not free", document)
         self.assertNotIn("application/json", document)
+        self.assertIn('data-calc="volume"', document)
+        self.assertIn("data-month-cost", document)
 
-    def test_guarded_workflow_and_terminal_are_readable(self):
+    def test_guarded_workflow_terminal_and_labels_are_readable(self):
         node = self.design["stages"]["workflow"]["items"][0]
         terminal = copy.deepcopy(node)
         terminal["id"] = "W2"
@@ -161,31 +156,35 @@ class RenderTests(unittest.TestCase):
         node["description"] = json.dumps(contract)
         node["data"].update(next=["W2"], decision=True)
         document = self.render()
-        self.assertIn("Guarded edges", document)
-        self.assertIn("W1 → W2", document)
-        self.assertIn("subject is present &amp; verified", document)
-        self.assertIn("Terminal disposition", document)
-        self.assertIn("Recovery, guards", document)
+        self.assertIn('data-node="W1"', document)
+        self.assertIn('data-node="W2"', document)
+        self.assertIn('data-edge="W1-W2"', document)
+        self.assertIn("subject is present &amp;", document)
+        self.assertIn("Ends here.", document)
+        self.assertIn("State contract", document)
+        self.assertIn("· decides", document)
+        self.assertIn('rx="14"', document)
 
-    def test_assumptions_central_and_large_text_collapsed(self):
+    def test_assumptions_view_keeps_item_notes_and_full_text(self):
         statement = self.design["assumptions"][0]["statement"]
         item = self.design["stages"]["components"]["items"][0]
         item["sources"] = [{"type": "hypothesis", "file": "H1", "passage": statement}]
-        item["assumptions"] = ["H1: " + statement, "Keep this custom item assumption."]
+        item["assumptions"] = ["H1", "Keep this custom item assumption."]
         item["description"] = "LONG_FIELD_" * 150
         document = self.render()
-        self.assertEqual(document.count(statement), 1)
-        self.assertIn('data-central="assumptions"', document)
+        self.assertIn('data-view="assumptions"', document)
         self.assertIn("Keep this custom item assumption.", document)
-        self.assertIn("Read full text", document)
-        self.assertIn("Reasoning &amp; provenance", document)
+        self.assertIn("LONG_FIELD_" * 150, document)
+        self.assertNotIn("Read full text", document)
+        self.assertNotIn("…", document)
+        self.assertIn("Blocks launch", document)
 
     def test_needs_work_view_is_honest_and_false_pass_refused(self):
         self.review["status"] = "needs-work"
         self.review["dimensions"][0]["score"] = 2
         document = self.render()
         self.assertIn("DESIGN ONLY · NEEDS-WORK", document)
-        self.assertIn('id="review" open', document)
+        self.assertIn("round 1: needs-work. Read-only view", document)
         self.review["status"] = "pass"
         with self.assertRaises(ValueError):
             self.render()
@@ -193,6 +192,17 @@ class RenderTests(unittest.TestCase):
         self.design["stages"]["components"]["items"][0]["data"]["taskIds"] = ["MISSING"]
         with self.assertRaises(ValueError):
             self.render()
+
+    def test_lite_mode_renders_four_views_and_no_approval_controls(self):
+        document = self.render("lite")
+        page = Page(document)
+        views = [a["data-view"] for t, a in page.elements if t == "section" and "data-view" in a]
+        self.assertEqual(views, list(design_html.LITE_VIEWS))
+        self.assertNotIn("Approve", document)
+        self.assertNotIn("Regenerate", document)
+        self.assertIn("read-only", document)
+        with self.assertRaises(ValueError):
+            self.render("tiny")
 
 
 class ExportTests(unittest.TestCase):
@@ -202,45 +212,35 @@ class ExportTests(unittest.TestCase):
         self.design_path = self.root / "design.json"
         self.review_path = self.root / "review.json"
         self.output = self.root / "DESIGN.html"
-        self.design_path.write_text(
-            json.dumps(fixtures.make_design(False)), encoding="utf-8"
-        )
-        self.review_path.write_text(
-            json.dumps(fixtures.make_review()), encoding="utf-8"
-        )
+        self.design_path.write_text(json.dumps(fixtures.make_design(False)), encoding="utf-8")
+        self.review_path.write_text(json.dumps(fixtures.make_review()), encoding="utf-8")
 
     def tearDown(self):
         self.temp.cleanup()
 
-    def export(self, out=None):
-        return design_html.export_html(
-            self.design_path, self.review_path, out or self.output
-        )
+    def export(self, out=None, **kwargs):
+        return design_html.export_html(self.design_path, self.review_path, out or self.output, **kwargs)
 
     def test_actual_cli_export_and_input_preservation(self):
+        (self.root / "review-round-1.json").write_text(json.dumps(fixtures.make_review("needs-work")))
         before = (self.design_path.read_bytes(), self.review_path.read_bytes())
         result = subprocess.run(
-            [
-                sys.executable,
-                str(SCRIPT),
-                str(self.design_path),
-                "--review",
-                str(self.review_path),
-                "--out",
-                str(self.output),
-            ],
+            [sys.executable, str(SCRIPT), str(self.design_path), "--review", str(self.review_path), "--out", str(self.output), "--mode", "lite"],
             capture_output=True,
             text=True,
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         status = json.loads(result.stdout)
         self.assertTrue(status["ok"])
-        self.assertTrue(status["optionalVisualView"])
+        self.assertTrue(status["readOnlyView"])
         self.assertTrue(status["designOnly"])
+        self.assertEqual(status["mode"], "lite")
+        self.assertEqual(status["views"], list(design_html.LITE_VIEWS))
         self.assertGreater(self.output.stat().st_size, 1000)
-        self.assertEqual(
-            before, (self.design_path.read_bytes(), self.review_path.read_bytes())
-        )
+        self.assertEqual(before, (self.design_path.read_bytes(), self.review_path.read_bytes()))
+        standard = self.root / "standard.html"
+        self.assertTrue(self.export(standard)["ok"])
+        self.assertIn("review-round-1.json", standard.read_text(encoding="utf-8"))
 
     def test_existing_output_and_both_input_aliases_refused(self):
         self.output.write_text("existing private document")
@@ -296,9 +296,7 @@ class ExportTests(unittest.TestCase):
         self.assertFalse(self.output.exists())
 
     def test_failed_write_removes_only_own_partial_output(self):
-        with mock.patch.object(
-            design_html.os, "fsync", side_effect=OSError("synthetic disk failure")
-        ):
+        with mock.patch.object(design_html.os, "fsync", side_effect=OSError("synthetic disk failure")):
             with self.assertRaises(OSError):
                 self.export()
         self.assertFalse(self.output.exists())
@@ -307,15 +305,7 @@ class ExportTests(unittest.TestCase):
     def test_cli_failure_nonzero_and_no_implicit_directories(self):
         missing = self.root / "missing" / "DESIGN.html"
         result = subprocess.run(
-            [
-                sys.executable,
-                str(SCRIPT),
-                str(self.design_path),
-                "--review",
-                str(self.review_path),
-                "--out",
-                str(missing),
-            ],
+            [sys.executable, str(SCRIPT), str(self.design_path), "--review", str(self.review_path), "--out", str(missing)],
             capture_output=True,
             text=True,
         )

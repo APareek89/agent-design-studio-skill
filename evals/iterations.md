@@ -35,3 +35,8 @@ Telecom EV13 was repaired in iterations/06 to follow C8 UNKNOWN_COMMIT → three
 The original six briefs were validated exactly. Their S1–S6 and S9–S10 checks pass; S11 is unmeasured. Four independently reviewed additional drafts remain needs-work on real contract/fixture issues and were not promoted to pass. The final two domain cases pass 11/12 targets, with S11 unavailable. There are no two consecutive all-target passes.
 
 Stopped at the six-iteration cap. No push, release tag or publication. Full baseline/final scorecard and limits are in v1.1-scorecard.md; machine summary in v1.1-summary.json.
+
+## v1.2 — HTML becomes a default deliverable
+
+The v1.1 HTML renderer produced a ten-stage card list that disagreed with the PDF and ignored the reader layer. v1.2 rewrites it to the HTML design spec (`docs/html-design-spec.md`) against two reference pages in `evals/target/`, makes `design_io.py export` write `DESIGN.html` in every mode, moves the detailed companions under `_evidence/`, and names the steps from one shared table in both renderers. Every view of the telecom and health-claims examples was captured offline with Playwright at 1440 px and 400 px (`evals/html-qa/2026-11-04/`), with zero console errors, zero external requests and no page-level horizontal scroll. A separate grader agent scored each view against the references; its report and the per-example `html-grader.json` sit beside the captures, and `score_run.py` reads them as S13. 113 tests pass; no validator rule, rubric threshold or seeded defect changed. Example PDFs were not re-rendered because their independent grader hashes bind to them.
+

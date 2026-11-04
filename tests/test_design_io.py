@@ -598,18 +598,10 @@ class ExportTests(unittest.TestCase):
             text = (self.out / name).read_text()
             self.assertIn("CANONICAL-UPDATED-C1", text)
             self.assertIn("DESIGN ONLY", text)
-        self.assertIn(
-            "Would you also like a visual HTML version in the same ten-stage structure as the app?",
-            (self.out / "build-prompt.md").read_text(),
-        )
-        self.assertIn(
-            "After delivering DESIGN.pdf, ask the user:",
-            (self.out / "build-prompt.md").read_text(),
-        )
-        self.assertIn(
-            "Generate HTML only after opt-in, unless already requested.",
-            (self.out / "build-prompt.md").read_text(),
-        )
+        handoff = (self.out / "build-prompt.md").read_text()
+        self.assertIn("DESIGN.html is delivered with DESIGN.pdf in every mode", handoff)
+        self.assertNotIn("Would you also like a visual HTML", handoff)
+        self.assertNotIn("opt-in", handoff)
         architecture = (self.out / "architecture.md").read_text()
         self.assertIn("flowchart TD", architecture)
         self.assertIn("task_T0 --> task_T1", architecture)

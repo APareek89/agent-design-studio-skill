@@ -58,6 +58,12 @@ class ScoreTests(unittest.TestCase):
         self.assertFalse(self.run_score(text=self.text+' Digest')['S4']['pass'])
         self.assertFalse(self.run_score(text=self.text+' payload\nbinding')['S4']['pass'])
         self.assertTrue(self.run_score(text=self.text+' digested')['S4']['pass'])
+    def test_readability_runtime_error_is_unmeasured_not_a_crash(self):
+        pdf=types.SimpleNamespace(PdfReader=lambda p:types.SimpleNamespace(pages=[FakePage(self.text)]+[FakePage('A simple page.')]*2))
+        def boom(text):raise LookupError('Resource cmudict not found.')
+        ts=types.SimpleNamespace(flesch_reading_ease=boom,lexicon_count=lambda text,removepunct:100,sentence_count=lambda text:10)
+        with patch.dict(sys.modules,{'pypdf':pdf,'textstat':ts}):r=S.score(self.folder,None,'telecom')['scores']
+        self.assertFalse(r['S4']['pass']);self.assertFalse(r['S4']['evaluated']);self.assertIn('cmudict',r['S4']['evidence']['reason']);self.assertTrue(r['S1']['pass'])
     def test_handoff_per_file_size(self):
         (self.folder/'build/large.md').write_bytes(b'x'*(25*1024+1));self.assertFalse(self.run_score()['S5']['pass'])
     def test_independent_grader_hash_binding_and_threshold(self):
@@ -100,6 +106,19 @@ class ScoreTests(unittest.TestCase):
         result=self.run_score()['S9']
         self.assertFalse(result['pass']);self.assertTrue(result['evidence']['unsupportedPass'])
 
+    def html(self,mode='standard'):
+        hspec=importlib.util.spec_from_file_location('test_score_design_html',ROOT/'skills/agent-design-studio/scripts/design_html.py')
+        H=importlib.util.module_from_spec(hspec);hspec.loader.exec_module(H)
+        (self.folder/'DESIGN.html').write_text(H.render_html(make_semantic_design(),make_review(),mode),encoding='utf-8');return H
+    def test_html_view_needs_independent_grading_and_every_view_at_three(self):
+        self.assertFalse(self.run_score()['S13']['evaluated'])
+        H=self.html();r=self.run_score()['S13']
+        self.assertFalse(r['evaluated']);self.assertTrue(r['evidence']['htmlPresent']);self.assertEqual(r['evidence']['rendererRefusals'],[])
+        g={'method':'independent-agent','agentId':'html-grader-other-context','sourceHashes':self.hashes('design.json','DESIGN.html'),'views':{v:4 for v in H.VIEW_ORDER}}
+        self.write('html-grader.json',g);r=self.run_score()['S13'];self.assertTrue(r['pass'],r)
+        g['views']['workflow']=2;self.write('html-grader.json',g);self.assertFalse(self.run_score()['S13']['pass'])
+        g['views']['workflow']=4;g['method']='self-review';self.write('html-grader.json',g);self.assertFalse(self.run_score()['S13']['evaluated'])
+        g['method']='independent-agent';self.write('html-grader.json',g);self.html('lite');self.assertFalse(self.run_score()['S13']['pass'])
     def test_author_claim_is_not_independent_grading(self):
         g=self.grader();g['method']='self-review';self.write('grader.json',g)
         self.assertFalse(self.run_score()['S3']['evaluated']);self.assertFalse(self.run_score()['S8']['evaluated'])

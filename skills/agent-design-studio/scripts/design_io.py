@@ -322,6 +322,176 @@ def _report_schemas():
             "milestones": {"type": "array", "minItems": 1, "items": milestone}}
 
 
+def _research_schema():
+    text = {"type": "string", "minLength": 1}
+    finding = {
+        "type": "object",
+        "required": ["id", "topic", "url", "title", "retrievedAt", "summary", "usedBy"],
+        "properties": {
+            "id": {"type": "string", "pattern": r"^RS[1-9]\d*$"},
+            "topic": {"type": "string", "minLength": 1, "maxLength": 120},
+            "url": {"type": "string", "pattern": r"^https?://\S+$", "maxLength": 2000},
+            "title": {"type": "string", "minLength": 1, "maxLength": 300},
+            "retrievedAt": {"type": "string", "pattern": r"^\d{4}-\d{2}-\d{2}$"},
+            "summary": {"type": "string", "minLength": 1, "maxLength": 1200},
+            "usedBy": {"type": "array", "items": text, "maxItems": 60},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "type": "object",
+        "required": ["performed", "tool", "unavailableReason", "queries", "findings"],
+        "properties": {
+            "performed": {"type": "boolean"},
+            "tool": {"type": "string", "maxLength": 200},
+            "unavailableReason": {"type": "string", "maxLength": 600},
+            "queries": {"type": "array", "items": {"type": "string", "minLength": 1, "maxLength": 300}, "maxItems": 60},
+            "findings": {"type": "array", "items": finding, "maxItems": 60},
+        },
+        "additionalProperties": False,
+    }
+
+
+def _intake_schema():
+    question = {
+        "type": "object",
+        "required": ["id", "topic", "question", "answer", "source"],
+        "properties": {
+            "id": {"type": "string", "pattern": r"^Q[1-9]\d*$"},
+            "topic": {"type": "string", "minLength": 1, "maxLength": 80},
+            "question": {"type": "string", "minLength": 1, "maxLength": 400},
+            "answer": {"type": "string", "maxLength": 2000},
+            "source": {"enum": ["user", "skipped", "unavailable"]},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "type": "object",
+        "required": ["asked", "tool", "questions"],
+        "properties": {
+            "asked": {"type": "boolean"},
+            "tool": {"type": "string", "maxLength": 120},
+            "questions": {"type": "array", "items": question, "maxItems": 12},
+        },
+        "additionalProperties": False,
+    }
+
+
+CONTEXT_EXPECTATIONS = (
+    ("COV1", "Business decision and boundary", r"decision|boundar|goal|purpose|objective|problem"),
+    ("COV2", "Actors and decision owners", r"actor|owner|people|role|user|customer|staff|who |stakeholder"),
+    ("COV3", "Trigger, first-release scope and non-goals", r"scope|trigger|non-goal|first release|exclu|out of scope|boundar"),
+    ("COV4", "Success measures or end conditions", r"kpi|success|measure|metric|outcome|end condition|value"),
+    ("COV5", "Constraints, regulation and privacy", r"constraint|regulat|compliance|privacy|retention|residen|limit|law|policy|consent"),
+    ("COV6", "Evidence limits and unknowns", r"evidence|assumption|unknown|unverified|limit|hypothes"),
+)
+CAPABILITY_HINTS = (
+    ("voice and telephony", r"\b(voice|phone|telephon\w*|ivr|call cent(?:re|er)|phone calls?)\b", r"voice|telephon|speech|call"),
+    ("guardrails and PII detection", r"\b(pii|personal data|sensitive data|redact\w*|gdpr|hipaa|dpdp|pci)\b", r"guardrail|pii|redact|privacy|sensitive"),
+    ("web search", r"\b(web search|search the web|internet|latest (?:news|information)|online sources)\b", r"web search|search api|internet"),
+    ("retrieval and embeddings", r"\b(knowledge base|policy wording|manuals?|faq|documentation|retriev\w*|rag)\b", r"retriev|embedding|vector|knowledge base|rag"),
+    ("knowledge graph", r"\b(knowledge graph|graph database|ontology)\b", r"graph"),
+    ("document AI and OCR", r"\b(pdfs?|scans?|scanned|ocr|handwrit\w*|uploaded documents?|attachments?)\b", r"document|ocr|extraction"),
+    ("messaging channels", r"\b(whatsapp|sms|e-?mail|slack|microsoft teams|push notification)\b", r"channel|messag|whatsapp|sms|e-?mail|notification"),
+)
+WRITE_HINTS = r"\b(refunds?|credits?|payments?|pay|payout\w*|invoices?|transfers?|disburs\w*|approve claims?|settle\w*|reimburs\w*)\b"
+
+
+def coverage_report(design):
+    """Does the design cover the information a reader expects? Gaps are findings, not structural errors.
+
+    A gap can be justified by any assumption string that starts with its ID, e.g.
+    "COV9: the host offered no web search tool". Required gaps fail
+    `validate --strict-coverage`; recommended gaps are advice.
+    """
+    checks = []
+    justified = {}
+    texts = [h["statement"] for h in design.get("assumptions", [])]
+    for key in STAGES:
+        packet = design["stages"][key]
+        texts += list(packet.get("assumptions", []))
+        for item in packet.get("items", []):
+            texts += list(item.get("assumptions", []))
+    for text in texts:
+        match = re.match(r"^\s*(COV\d+)\s*:\s*(.+)$", str(text), re.S)
+        if match:
+            justified[match.group(1).upper()] = match.group(2).strip()
+
+    def add(cid, title, covered, evidence, required=True):
+        if covered:
+            status = "covered"
+        elif cid in justified:
+            status, evidence = "justified", justified[cid]
+        else:
+            status = "missing"
+        checks.append({"id": cid, "title": title, "status": status, "required": required, "evidence": evidence})
+
+    context_text = " ".join(
+        item["title"] + " " + item["data"].get("field", "") + " " + item["data"].get("value", "")
+        for item in design["stages"]["context"]["items"]
+    ).lower()
+    for cid, title, pattern in CONTEXT_EXPECTATIONS:
+        hit = re.search(pattern, context_text)
+        add(cid, title, bool(hit), ("Context mentions '" + hit.group(0).strip() + "'.") if hit else "No context card covers this; add one or justify.")
+    pres = design.get("presentation") if isinstance(design.get("presentation"), dict) else None
+    add("COV7", "Reader layer (system sentence, design calls, autonomy, scope summary)",
+        bool(pres) and bool(pres.get("systemSentence")) and len(pres.get("designCalls", [])) >= 3 and bool(pres.get("autonomy")) and bool(pres.get("scopeSummary")),
+        "presentation present with scope summary." if pres and pres.get("scopeSummary") else "Add presentation with systemSentence, 3-5 designCalls, autonomy and scopeSummary.")
+    mode = (design.get("runOptions") or {}).get("mode", "standard") if isinstance(design.get("runOptions"), dict) else "standard"
+    if mode == "lite":
+        checks.append({"id": "COV8", "title": "Build milestones", "status": "n/a", "required": False, "evidence": "Lite mode has no build files."})
+    else:
+        add("COV8", "Build milestones", bool(design.get("milestones")), f"{len(design.get('milestones') or [])} milestones." if design.get("milestones") else "Add milestones so the handoff is split into bounded build files.")
+    research = design.get("research") if isinstance(design.get("research"), dict) else None
+    add("COV9", "Web research record (performed, or why not)", research is not None,
+        (f"{len(research['findings'])} findings via {research['tool']}." if research and research["performed"] else "Not performed: " + research["unavailableReason"]) if research else "No research record; run the research pass or record why it was not possible.")
+    brief = str(design.get("brief", "")).lower()
+    frameworks = design["stages"]["framework"]["items"]
+    missing_caps, found_caps = [], []
+    for name, hint, card_pattern in CAPABILITY_HINTS:
+        if not re.search(hint, brief):
+            continue
+        matched = any(
+            re.search(card_pattern, (f["data"].get("capability", "") + " " + (f["title"] if f["data"].get("category") == "tooling" else "")).lower())
+            for f in frameworks
+        )
+        (found_caps if matched else missing_caps).append(name)
+    if found_caps or missing_caps:
+        add("COV10", "Tooling card for each capability the brief implies", not missing_caps,
+            ("Covered: " + ", ".join(found_caps) + ". " if found_caps else "") + ("Missing tooling card for: " + ", ".join(missing_caps) + "." if missing_caps else ""))
+    else:
+        checks.append({"id": "COV10", "title": "Tooling card for each capability the brief implies", "status": "n/a", "required": False, "evidence": "The brief names no capability beyond the model."})
+    if re.search(WRITE_HINTS, brief):
+        human = [c["id"] for c in design["stages"]["components"]["items"] if c["data"]["group"] == "Code: human triggers"]
+        add("COV11", "Human trigger for money or record writes the brief implies", bool(human), ("Human triggers: " + ", ".join(human) + ".") if human else "The brief implies money or record writes but no component is a human trigger.")
+    else:
+        checks.append({"id": "COV11", "title": "Human trigger for money or record writes the brief implies", "status": "n/a", "required": False, "evidence": "The brief implies no money or record write."})
+    volume_pool = " ".join([brief] + [h["statement"] for h in design["assumptions"]] + [c["data"].get("value", "") for c in design["stages"]["context"]["items"]])
+    add("COV12", "Volume stated (cases per period)", bool(re.search(r"\d[\d,]*\s*(?:k|thousand|million)?\s*\w*\s*(?:/|per|a|each|every)\s*(?:day|week|month|year|hour)", volume_pool, re.I)), "A volume per period is stated." if re.search(r"(?:/|per|a|each|every)\s*(?:day|week|month|year|hour)", volume_pool, re.I) else "State an illustrative volume as an assumption; it drives cost and queue sizing.", required=False)
+    kpis = [r for r in design["stages"]["rollout"]["items"] if r["data"]["category"] == "kpi"]
+    weak = [r["id"] for r in kpis if not re.search(r"baseline|→|->|from .{1,30} to |unknown|collect", r["data"]["businessKpi"] + " " + r["data"]["gate"], re.I)]
+    add("COV13", "Each KPI states a baseline and target, or says the baseline is unknown and how it is collected", not weak, ("All KPI cards state baseline handling." if kpis else "No KPI card.") if not weak else "KPI cards without baseline or collection plan: " + ", ".join(weak) + ".", required=False)
+    leaves = [t for t in design["stages"]["tasks"]["items"] if t["kind"] == "task" and t["data"]["mode"] == "leaf"]
+    thin = [t["id"] for t in leaves if len(t["data"]["examples"]) < 2]
+    add("COV14", "Every leaf task has at least two concrete examples", not thin, "All leaves carry two or more examples." if not thin else "Leaves with fewer than two examples: " + ", ".join(thin) + ".", required=False)
+    tooling = [f for f in frameworks if f["data"].get("category") == "tooling"]
+    unchecked = [f["id"] for f in tooling if not any(c.get("verified") for c in f["data"].get("candidates", []))]
+    if tooling:
+        add("COV15", "Each tooling card has at least one candidate checked against a cited source", not unchecked, "All tooling cards cite a checked candidate." if not unchecked else "Tooling cards with no checked candidate: " + ", ".join(unchecked) + ".", required=False)
+    else:
+        checks.append({"id": "COV15", "title": "Each tooling card has at least one candidate checked against a cited source", "status": "n/a", "required": False, "evidence": "No tooling card."})
+    required = [c for c in checks if c["required"]]
+    return {
+        "required": len(required),
+        "coveredRequired": sum(1 for c in required if c["status"] in ("covered", "justified")),
+        "missingRequired": [c["id"] for c in required if c["status"] == "missing"],
+        "justified": [c["id"] for c in checks if c["status"] == "justified"],
+        "missingRecommended": [c["id"] for c in checks if not c["required"] and c["status"] == "missing"],
+        "checks": checks,
+        "note": "Coverage checks look for expected information by field and keyword; they do not judge its quality. Justify a gap with an assumption string that starts with its ID.",
+    }
+
+
 def validate_design(design, schemas=None):
     errors, warnings = [], []
     schemas = load_json(SCHEMA_PATH) if schemas is None else schemas
@@ -377,6 +547,8 @@ def validate_design(design, schemas=None):
         "properties": {
             "schemaVersion": {"enum": ["1.0", "1.1"]},
             "semantics": {"type": "object"},
+            "research": _research_schema(),
+            "intake": _intake_schema(),
             "presentation": {"type": "object"},
             "runOptions": {"type": "object"},
             "milestones": {"type": "array"},
@@ -415,6 +587,36 @@ def validate_design(design, schemas=None):
         for field in ("statement", "why", "owner", "validation"):
             if not _nonempty(h[field]):
                 _issue(errors, p + "." + field, "Must contain meaningful text.")
+    intake = design.get("intake")
+    intake_answers = set()
+    if isinstance(intake, dict):
+        if intake["asked"] and not _nonempty(intake["tool"]):
+            _issue(errors, "$.intake.tool", "Name the question dialog that was used (for example AskUserQuestion).")
+        for i, q in enumerate(intake["questions"]):
+            if q["source"] == "user":
+                if not _nonempty(q["answer"]):
+                    _issue(errors, f"$.intake.questions[{i}].answer", "A user-sourced answer must carry the user's words.")
+                else:
+                    intake_answers.add(q["answer"])
+    research = design.get("research")
+    findings = {}
+    if isinstance(research, dict):
+        for i, f in enumerate(research["findings"]):
+            fp = f"$.research.findings[{i}]"
+            if f["id"] in findings:
+                _issue(errors, fp + ".id", "Duplicate research finding ID " + f["id"] + ".")
+            findings[f["id"]] = f
+            for field in ("topic", "title", "summary"):
+                if not _nonempty(f[field]):
+                    _issue(errors, fp + "." + field, "Research finding needs real " + field + " text.")
+        if research["performed"]:
+            if not _nonempty(research["tool"]):
+                _issue(errors, "$.research.tool", "Name the web search or fetch tool that was used.")
+        else:
+            if research["findings"]:
+                _issue(errors, "$.research.findings", "A research record marked not performed cannot carry findings.")
+            if not _nonempty(research["unavailableReason"]):
+                _issue(errors, "$.research.unavailableReason", "State why no web research was performed.")
     packets = design["stages"]
     all_items = []
     by_stage = {}
@@ -447,7 +649,10 @@ def validate_design(design, schemas=None):
             for j, source in enumerate(item["sources"]):
                 sp = f"{p}.sources[{j}]"
                 if source["type"] == "context":
-                    if (
+                    if source["file"] == "user-intake":
+                        if source["passage"] not in intake_answers:
+                            _issue(errors, sp, "Intake source must quote an exact user answer recorded in $.intake.questions with source user.")
+                    elif (
                         source["file"] != "user-brief"
                         or not _nonempty(source["passage"])
                         or source["passage"] not in design["brief"]
@@ -455,7 +660,7 @@ def validate_design(design, schemas=None):
                         _issue(
                             errors,
                             sp,
-                            "Context source must name user-brief and quote an exact nonempty passage from brief.",
+                            "Context source must name user-brief (or user-intake) and quote an exact nonempty passage.",
                         )
                 elif source["type"] == "hypothesis":
                     h = ledger.get(source["file"])
@@ -464,6 +669,14 @@ def validate_design(design, schemas=None):
                             errors,
                             sp,
                             "Hypothesis source must name an existing H ID and its exact statement.",
+                        )
+                elif source["type"] == "research":
+                    f = findings.get(source["file"])
+                    if f is None or source["passage"] != f["summary"]:
+                        _issue(
+                            errors,
+                            sp,
+                            "Research source must name an existing RS ID in $.research.findings and its exact summary.",
                         )
                 else:
                     _issue(
@@ -550,6 +763,19 @@ def validate_design(design, schemas=None):
                     p + ".data.alternatives",
                     "Record the rejected alternative and rationale.",
                 )
+            candidates = d.get("candidates", [])
+            if d["category"] == "tooling":
+                if not _nonempty(d.get("capability", "")):
+                    _issue(errors, p + ".data.capability", "A tooling card names the capability it serves.")
+                if not candidates:
+                    _issue(errors, p + ".data.candidates", "A tooling card lists at least one candidate with its verification status.")
+            for j, cand in enumerate(candidates):
+                cp = f"{p}.data.candidates[{j}]"
+                if cand["verified"] and not cand["sourceIds"]:
+                    _issue(errors, cp + ".verified", "A verified candidate cites at least one research finding; otherwise mark it unverified.")
+                for rs in cand["sourceIds"]:
+                    if rs not in findings:
+                        _issue(errors, cp + ".sourceIds", "Candidate cites a missing research finding " + rs + ".")
         if key == "fmea":
             for field in (
                 "effect",
@@ -621,6 +847,10 @@ def validate_design(design, schemas=None):
                     p + ".data.buildInstructions",
                     "Provide a real canonical handoff.",
                 )
+    for i, f in enumerate(findings.values()):
+        for j, used in enumerate(f["usedBy"]):
+            if used not in global_ids and used not in ledger:
+                _issue(errors, f"$.research.findings[{i}].usedBy[{j}]", "Research finding cites a missing item or assumption ID " + used + ".")
     roots = [t for t in tasks.values() if not t["data"]["parentId"]]
     if len(roots) != 1:
         _issue(
@@ -863,6 +1093,12 @@ def validate_design(design, schemas=None):
         semantic_coverage = "failed" if semantic_errors else "verified-declarations"
     else:
         warnings.append({"path": "$.semantics", "message": "Legacy schema 1.0: semantic coverage unverified; author new designs as schema 1.1 with complete semantic metadata."})
+    coverage = None
+    if not errors:
+        coverage = coverage_report(design)
+        for check in coverage["checks"]:
+            if check["required"] and check["status"] == "missing":
+                warnings.append({"path": "$.coverage." + check["id"], "message": check["title"] + ": " + check["evidence"]})
     return {
         "semanticCoverage": semantic_coverage,
         "valid": not errors,
@@ -870,6 +1106,7 @@ def validate_design(design, schemas=None):
         "errors": errors,
         "warnings": warnings,
         "counts": {k: len(packets[k]["items"]) for k in STAGES},
+        "coverage": coverage,
         "limitations": LIMITATIONS,
     }
 
@@ -1182,7 +1419,7 @@ def render_exports(
     )
     build = (
         overview
-        + "## Coding-agent handoff\n\nTreat unresolved issues and launch dependencies as blockers. Do not infer authority,acceptance or completed execution from this design. Preserve record proof,source boundaries and the defined deterministic controls.\n\nAfter delivering DESIGN.pdf, ask the user: Would you also like a visual HTML version in the same ten-stage structure as the app? Generate HTML only after opt-in, unless already requested.\n\n"
+        + "## Coding-agent handoff\n\nTreat unresolved issues and launch dependencies as blockers. Do not infer authority,acceptance or completed execution from this design. Preserve record proof,source boundaries and the defined deterministic controls.\n\nDESIGN.html is delivered with DESIGN.pdf in every mode; it is a read-only view of this design, not an approval tool.\n\n"
         + _stage_md(design, "export")
         + "\n## Complete canonical design\n\n"
         + _fence(_dump(design), "json")
@@ -1246,6 +1483,24 @@ def render_exports(
         for item in design["stages"][key]["items"]:
             for text in item["assumptions"]:
                 assumptions += "- " + key + "/" + item["id"] + ": " + text + "\n"
+    intake = design.get("intake")
+    if isinstance(intake, dict):
+        assumptions += "\n## What the user added\n\n"
+        if intake["asked"]:
+            assumptions += f"Asked once through {intake['tool']}. Skipped questions became assumptions above.\n\n"
+        else:
+            assumptions += "No intake question was asked" + (": " + intake["tool"] if intake["tool"] else "") + ".\n\n"
+        for q in intake["questions"]:
+            assumptions += f"- {q['id']} {q['question']} — " + (q["answer"] if q["source"] == "user" else q["source"]) + "\n"
+    research = design.get("research")
+    if isinstance(research, dict):
+        assumptions += "\n## Research used\n\n"
+        if research["performed"]:
+            assumptions += f"Web research with {research['tool']}; {len(research['queries'])} queries. Findings are the author's summaries of public pages; they do not verify this organisation's policies, contracts or systems.\n\n"
+            for f in research["findings"]:
+                assumptions += f"- {f['id']} ({f['topic']}, retrieved {f['retrievedAt']}): {f['title']} <{f['url']}> — {f['summary']} Used by: {', '.join(f['usedBy']) or 'none'}\n"
+        else:
+            assumptions += "No web research was performed: " + research["unavailableReason"] + " Tool candidates are unverified.\n"
     assumptions += (
         "\n## Review and tooling limitations\n\n"
         + "\n".join("- " + s for s in review["limitations"] + LIMITATIONS)
@@ -1323,13 +1578,13 @@ def _preflight_output(out, inputs):
     return resolved
 
 
-def export_design(design_path, out, review_path, mode=None):
+def export_design(design_path, out, review_path, mode=None, html=True):
     if mode is not None:
         import importlib.util
         spec = importlib.util.spec_from_file_location("studio_export_v2", Path(__file__).with_name("export_v2.py"))
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        return module.export_mode(type("ExportNamespace", (), globals()), design_path, out, review_path, mode)
+        return module.export_mode(type("ExportNamespace", (), globals()), design_path, out, review_path, mode, html)
     design_path = Path(design_path)
     review_path = Path(review_path)
     out = Path(out)
@@ -1400,6 +1655,16 @@ def main(argv=None):
         help="Validate a canonical design; output JSON,exit1 on structural errors.",
     )
     val.add_argument("design")
+    val.add_argument(
+        "--strict-coverage",
+        action="store_true",
+        help="Exit 1 when a required expected-information check is missing and not justified.",
+    )
+    cov = sub.add_parser(
+        "coverage",
+        help="Report whether the design covers the information a reader expects; exit 1 on unjustified required gaps.",
+    )
+    cov.add_argument("design")
     exp = sub.add_parser(
         "export",
         help="Validate design and supplied review,then render design-only documents.",
@@ -1408,13 +1673,30 @@ def main(argv=None):
     exp.add_argument("--out", required=True)
     exp.add_argument("--review", required=True)
     exp.add_argument("--mode", choices=("lite", "standard", "full"), default="standard")
+    exp.add_argument(
+        "--no-html",
+        action="store_true",
+        help="Skip DESIGN.html for hosts that cannot write it; the PDF and companions are unchanged.",
+    )
     args = parser.parse_args(argv)
     try:
         if args.command == "validate":
             result = validate_design(load_json(args.design))
             code = 0 if result["valid"] else 1
+            if args.strict_coverage and result["valid"] and result["coverage"]["missingRequired"]:
+                result["status"] = "coverage-gaps"
+                code = 1
+        elif args.command == "coverage":
+            design = load_json(args.design)
+            structural = validate_design(design)
+            if not structural["valid"]:
+                result = {"ok": False, "status": "structural-errors", "errors": structural["errors"]}
+                code = 1
+            else:
+                result = dict(structural["coverage"], ok=not structural["coverage"]["missingRequired"])
+                code = 0 if result["ok"] else 1
         else:
-            result = export_design(args.design, args.out, args.review, args.mode)
+            result = export_design(args.design, args.out, args.review, args.mode, not args.no_html)
             code = 0 if result["ok"] else 1
     except (ValueError, OSError, UnicodeError) as exc:
         result = {

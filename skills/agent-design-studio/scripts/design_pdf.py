@@ -20,19 +20,23 @@ import re
 import sys
 from types import SimpleNamespace
 
-HTML_QUESTION = "Would you also like a visual HTML version in the same ten-stage structure as the app?"
-SECTIONS = (
-    ("context", "Context"),
-    ("tasks", "Task map"),
-    ("components", "Components"),
-    ("workflow", "Workflow map"),
-    ("framework", "Framework, tools and data"),
-    ("models", "Models and cost"),
-    ("fmea", "Failure modes"),
-    ("evals", "Evaluations"),
-    ("rollout", "Measurement and rollout"),
-    ("export", "Coding handoff"),
-)
+
+
+def _report_module():
+    path = Path(__file__).with_name("report_v2.py")
+    spec = importlib.util.spec_from_file_location("agent_design_studio_pdf_report", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+_REPORT = _report_module()
+STEPS = _REPORT.STEPS
+HTML_NOTE = _REPORT.HTML_NOTE
+# Section titles come from the shared step table so the PDF and HTML never drift.
+SECTIONS = tuple((row[0], row[3]) for row in STEPS)
+GROUPS = {row[0]: row[2] for row in STEPS}
+CAPTIONS = {row[0]: row[4] for row in STEPS}
 
 
 def _io_module():
@@ -387,9 +391,11 @@ def create_pdf(design_path, review_path, out, mode=None):
         story.append(R.CondPageBreak(62))
         add(item["id"] + " - " + item["title"], "card")
 
-    def section(n, title):
+    def section(n, title, key=None):
         story.append(R.CondPageBreak(110))
-        add(str(n) + "  " + title, "section")
+        if key in GROUPS:
+            add(GROUPS[key].upper() + " · " + CAPTIONS[key], "small")
+        add(str(n) + ". " + title, "section")
 
     add("AGENT DESIGN STUDIO", "small")
     add(design["title"], "title")
@@ -415,7 +421,7 @@ def create_pdf(design_path, review_path, out, mode=None):
     )
     stages = design["stages"]
     for number, (key, title) in enumerate(SECTIONS, 1):
-        section(number, title)
+        section(number, title, key)
         items = stages[key]["items"]
         if key == "context":
             add("Original brief", "card")
@@ -719,12 +725,7 @@ def create_pdf(design_path, review_path, out, mode=None):
                 for i, criterion in enumerate(d["acceptanceCriteria"], 1):
                     label("Acceptance " + str(i), criterion, None)
                 label("Build instructions", d["buildInstructions"], None)
-            add(
-                "After delivering DESIGN.pdf, ask the user: "
-                + HTML_QUESTION
-                + " Generate HTML only after opt-in, unless already requested.",
-                "card",
-            )
+            add(HTML_NOTE + " Open DESIGN.html for the clickable task map, flow and risk views.", "card")
     section("A", "Assumptions and launch dependencies")
     ledger, extra = _assumptions(design)
     if not ledger and not extra:
@@ -788,6 +789,21 @@ def create_pdf(design_path, review_path, out, mode=None):
         )
     for text in dict.fromkeys(review["limitations"] + D.LIMITATIONS):
         add(text, "small")
+    research = design.get("research")
+    if isinstance(research, dict):
+        section("C", "Research used")
+        if research["performed"]:
+            add(
+                f"Web research with {research['tool']}: {len(research['queries'])} queries, {len(research['findings'])} findings kept. Findings are the author's summaries of public pages; they do not verify this organisation's policies, contracts or systems.",
+                "small",
+            )
+            for f in research["findings"]:
+                add(f["id"] + " - " + f["title"] + " (" + f["topic"] + ", retrieved " + f["retrievedAt"] + ")", "card")
+                add(f["url"], "small")
+                add(f["summary"])
+                label("Used by", ", ".join(f["usedBy"]) or "none", None, "small")
+        else:
+            add("No web research was performed: " + research["unavailableReason"] + " Tool candidates are unverified.", "small")
     add(
         "Canonical design SHA256: "
         + hashlib.sha256(design_path.read_bytes()).hexdigest(),

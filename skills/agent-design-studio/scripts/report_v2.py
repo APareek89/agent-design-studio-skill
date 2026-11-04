@@ -16,6 +16,32 @@ GLOSSARY = {
 }
 GROUPS = {'Agents (LLM)': '#E8E0FA', 'Code: tools': '#E0EDF8',
           'Code: validation': '#DDF2E9', 'Code: human triggers': '#FFF0D5'}
+# One table of step names for the HTML and PDF renderers. Stage keys never change;
+# only the reader-facing number, group, name and caption live here.
+STEPS = (
+    ('context', 1, 'Understand', 'Brief and scope', 'What problem, for whom, with what limits?'),
+    ('tasks', 2, 'Understand', 'Task map', 'What must the system get done?'),
+    ('components', 3, 'Design', 'Building blocks', 'Which parts are code, which are a model, which are people?'),
+    ('workflow', 4, 'Design', 'Flow', 'In what order, with what checks and exits?'),
+    ('framework', 5, 'Design', 'Stack and permissions', 'What runs it, and what may it touch?'),
+    ('models', 6, 'Design', 'Models and cost', 'Which model where, at what price?'),
+    ('fmea', 7, 'Prove', 'Risks', 'What goes wrong, how bad, how do we catch it?'),
+    ('evals', 8, 'Prove', 'Tests', 'How do we know each risk is covered?'),
+    ('rollout', 9, 'Prove', 'Measure and roll out', 'How do we prove value and grow autonomy safely?'),
+    ('export', 10, 'Prove', 'Handoff', 'What does the builder receive?'),
+)
+BRIEF_STEP = ('brief', 0, 'Read this first', 'Decision brief', 'Read this first')
+EVIDENCE_STEPS = (
+    ('assumptions', None, 'Evidence', 'Assumptions', 'Facts the brief did not give, with owners'),
+    ('review', None, 'Evidence', 'Review', 'Method, scores, issues and limits'),
+)
+STEP_BY_KEY = {row[0]: row for row in STEPS}
+HTML_NOTE = 'DESIGN.html is delivered with DESIGN.pdf in every mode; it is a read-only view of this design, not an approval tool.'
+
+
+def step_heading(key):
+    row = STEP_BY_KEY[key]
+    return f'{row[1]}. {row[3]}'
 
 
 def plain(value):
@@ -283,14 +309,14 @@ class Report:
         self.text('Risk scores are proposed estimates. They are not measured odds or risk acceptance.','small')
 
     def coverage(self):
-        self.heading('Evaluation coverage matrix')
+        self.heading(step_heading('evals')+' - evaluation coverage matrix')
         tests=[e for e in self.design['stages']['evals']['items'] if e['data']['category']=='golden']
         targets=[(r['id'],'failureModeIds') for r in self.design['stages']['fmea']['items']]
         targets += [(t['id'],'taskIds') for t in self.design['stages']['tasks']['items'] if t['kind']=='task' and t['data']['mode']=='leaf' and t['data']['risk']=='high']
         for start in range(0,max(1,len(tests)),12):
             batch=tests[start:start+12]
             if start:
-                self.finish_page(); self.heading('Evaluation coverage matrix - continued')
+                self.finish_page(); self.heading(step_heading('evals')+' - coverage matrix, continued')
             self.table(['Risk / task']+[e['id'] for e in batch],[[ident]+['X' if ident in e['data'][key] else '-' for e in batch] for ident,key in targets], [85]+[426/max(1,len(batch))]*len(batch))
         self.text('X means the test is linked to that risk or task. It does not mean the test passed. Complete fixtures and assertions: eval-set.json.','small')
 
@@ -321,34 +347,34 @@ class Report:
 
     def build(self):
         self.decision(); self.finish_page()
-        self.heading('Task tree'); self.task_tree()
+        self.heading(step_heading('tasks')+' - task tree'); self.task_tree()
         self.text('Labels show each leaf mode and risk. Full task inputs, examples and limits are in design.json and PRD.md.','small')
         self.heading('Plain words and scope')
         self.text(plain(self.design.get('presentation',{}).get('scopeSummary','Only the actions shown in this plan are in scope. Missing policies and access rights must be checked before launch.')))
         self.text('A fingerprint is a check that the approved details have not changed. A record ID is proof from a tool that the change was saved.','small')
         self.finish_page()
-        self.heading('Workflow diagram'); self.workflow(); self.finish_page()
-        self.heading('Top risks and release checks'); self.risks()
+        self.heading(step_heading('workflow')+' - workflow diagram'); self.workflow(); self.finish_page()
+        self.heading(step_heading('fmea')+' - top risks and release checks'); self.risks()
         if self.mode=='lite':
             self.text('Full design and test links are in design.json. This short brief omits detailed contracts.','small')
             self.finish_page(); return
         self.finish_page()
-        self.heading('Components and contracts')
+        self.heading(step_heading('components')+' - components and contracts')
         self.text('This inventory is a summary. Exact typed inputs, outputs and permission rules are in architecture.md and the build milestone files.','small')
         self.table(['Component / group','Responsibility','Task IDs'],[[c['id']+' / '+c['data']['group'],sentence(c['title'],10),', '.join(c['data']['taskIds'])] for c in self.design['stages']['components']['items']],[153,261,97])
         self.heading('Shared control boundary'); self.text('Code checks identity, money, dates and limits. A model may suggest a choice. It cannot authorise or perform a business write.')
         self.finish_page()
-        self.heading('Architecture and model budget'); self.summary_stage('framework')
+        self.heading(step_heading('framework')+' - architecture'); self.summary_stage('framework')
         data=brief_data(self.design)
-        self.heading('Model cost')
+        self.heading(step_heading('models'))
         self.text(f'Illustrative model cost is USD {data["cost"]:.5f} per case. Unknown prices are not free service. Confirm rates, traffic, staff and tools before launch.')
         self.text('Full call counts, token budgets, rejected choices and costs: design.json, architecture.md and assumptions.md.','small'); self.finish_page()
         self.coverage(); self.finish_page()
-        self.heading('Evaluation plan')
+        self.heading(step_heading('evals')+' - evaluation plan')
         self.table(['Test','Layer','Purpose'],[[item['id'],item['data']['category'],sentence(item['title'],12)] for item in self.design['stages']['evals']['items']],[45,65,401])
         self.text('These are test plans. No business controls, provider quality or user outcomes were measured. See eval-set.json for fixtures and pass rules.','small'); self.finish_page()
-        self.heading('Measurement and rollout'); self.summary_stage('rollout'); self.finish_page()
-        self.heading('Build handoff and review')
+        self.heading(step_heading('rollout')); self.summary_stage('rollout'); self.finish_page()
+        self.heading(step_heading('export')+' - build handoff and review')
         self.text('Start with build/00-overview.md. Load one milestone file at a time. Exact source rules remain in design.json; do not treat design approval as live write permission.')
         for item in self.design['stages']['export']['items']:
             self.text(item['id']+': '+sentence(item['description'],28),'small')
@@ -358,7 +384,10 @@ class Report:
             self.text(issue['id']+' '+issue['severity']+' '+('resolved' if issue['resolved'] else 'OPEN')+': '+sentence(issue['message'],24),'small')
         self.heading('Glossary')
         for term,meaning in GLOSSARY.items():self.text(term+': '+meaning,'small')
-        self.text('After delivering DESIGN.pdf, ask the user: Would you also like a visual HTML version in the same ten-stage structure as the app? Generate HTML only after opt-in, unless already requested.','small')
+        self.text(HTML_NOTE+' Open DESIGN.html for the clickable task map, flow and risk views.','small')
+        research=self.design.get('research')
+        if isinstance(research,dict):
+            self.text((f'Web research: {len(research["findings"])} findings from {research["tool"]} inform the design; see assumptions.md. They do not verify this organisation.' if research['performed'] else 'No web research was performed: '+research['unavailableReason']+' Tool candidates are unverified.'),'small')
         self.text('Full assumptions, owners and evidence: assumptions.md. Review method and failed rounds are preserved in review.json and review-round-*.json.','small')
         self.finish_page()
 

@@ -27,9 +27,28 @@ Use `design.json` as the single source for all generated documents. The script r
 
 Add the required `semantics` declarations from [semantic-contract.md](semantic-contract.md), plus reader summaries, selected milestones and run options from [report-contract.md](report-contract.md). Legacy 1.0 stays readable with semantic coverage explicitly unverified.
 
+Record the one-time intake in an optional top-level `intake` object: `asked` (whether a question dialog was shown), `tool` (for example `AskUserQuestion`, `request_user_input`, or the reason none was available) and `questions`, each `{id:"Q1", topic, question, answer, source}` with source `user`, `skipped` or `unavailable`. A `user` answer is quotable as a `context` source with `file:"user-intake"` and the exact answer as passage; a skipped or unavailable question becomes an H assumption with an owner.
+
+Record web research in an optional top-level `research` object. `performed` says whether a web tool was used; `tool` names it; `unavailableReason` explains a false `performed`; `queries` lists the generic search terms used (never the brief or confidential names); `findings` holds what the design relies on:
+
+```json
+{
+  "research": {
+    "performed": true, "tool": "host web search", "unavailableReason": "",
+    "queries": ["telecom complaint handling regulation India", "PII redaction service streaming text"],
+    "findings": [
+      {"id":"RS1","topic":"industry: complaint handling","url":"https://example.org/rules","title":"Regulator complaint timelines",
+       "retrievedAt":"2026-11-04","summary":"Operators must acknowledge a complaint within a stated period and resolve within a longer one.","usedBy":["CTX1","H3"]}
+    ]
+  }
+}
+```
+
+A finding is the author's own short summary with URL, title and retrieval date, not a pasted page. `usedBy` names the items and H assumptions it informed. A finding never verifies the user's own organisation; organisation-specific facts stay H assumptions.
+
 The empty arrays above illustrate the container, not a completed design. Populate every stage; only Models may have zero items, and only with zero LLM components. Keep the brief unchanged. `H1...` record proposed facts, permissions, owners, thresholds, volumes and prices that the user did not supply. Empty assumptions is valid when nothing is assumed. All stage packet `assumptions` arrays contain concise strings; the top-level ledger carries the details.
 
-Every item has `id`, `kind`, `title`, `description`, `reasoning`, `assumptions` (strings), `sources` and `data`. Source entries are `{type,file,passage}`: `context` uses `file:"user-brief"` and an exact quote; `hypothesis` uses an existing H ID and its statement. Do not fabricate an upload or verified citation. If optional source material is supplied, record what it actually establishes in the assumption ledger and prose; do not claim the basic validator verified external material. IDs are stable within a stage; links always use their real responsibility.
+Every item has `id`, `kind`, `title`, `description`, `reasoning`, `assumptions` (strings), `sources` and `data`. Source entries are `{type,file,passage}`: `context` uses `file:"user-brief"` and an exact quote; `hypothesis` uses an existing H ID and its statement; `research` uses an existing RS ID from `research.findings` and its exact summary. Do not fabricate an upload or verified citation. If optional source material is supplied, record what it actually establishes in the assumption ledger and prose; do not claim the basic validator verified external material. IDs are stable within a stage; links always use their real responsibility.
 
 Use these complete `data` fields; use empty strings/arrays only for inapplicable fields:
 
@@ -37,7 +56,7 @@ Use these complete `data` fields; use empty strings/arrays only for inapplicable
 - **Tasks** `T0,T1,T1.1...`, kind `task`: `parentId,mode,basis,examples,autonomy,frequency,risk`. Modes `sequence|choose one|leaf`; risks `low|medium|high`. Root `parentId:""`; depth at most root → task → subtask. Examples are strings. Kind `attribute`, IDs `A1...`: `taskIds,sourceSystem,loaded` (`session start|on demand`).
 - **Components** `C1...`, kind `component`: `group,taskIds,inputs,outputs,whyCode,approvalRule`. Groups `Agents (LLM)|Code: tools|Code: validation|Code: human triggers`. Inputs/outputs are arrays of compact typed-field strings, including conditional required fields. Deterministic components require a `whyCode` explanation.
 - **Workflow** `W1...`, kind `workflow`: `componentId,taskIds,next,decision,example`. The item `description` is a JSON string with `state`, `transitions:[{to,when,mode}]`, `failureDisposition`, `timeout`, `retryPolicy`, `terminalDisposition`. Each next edge has a matching predicate; terminals have no next edges and a nonempty terminal disposition. Put typed producer bindings for guard variables in this contract. Conditional commands and every tool outcome need coherent paths.
-- **Architecture** `F1...`, kind `framework`: `category,taskIds,choice,alternatives,tradeoffs,permission,blastRadius,approvalRule,leastPrivilege,aws,gcp,azure,openSource`. Categories `fit|architecture|orchestration|permission|data`; permission `read|write|none`. State a chosen pattern and rejected alternative. Cloud/vendor options can be unverified candidates, clearly labelled; unsupported service/pricing facts are not required.
+- **Architecture** `F1...`, kind `framework`: `category,taskIds,choice,alternatives,tradeoffs,permission,blastRadius,approvalRule,leastPrivilege,aws,gcp,azure,openSource`, plus optional `capability` and `candidates`. Categories `fit|architecture|orchestration|permission|data|tooling`; permission `read|write|none`. State a chosen pattern and rejected alternative. A `tooling` card serves one capability (see `tool-catalog.md`): nonempty `capability` and at least one candidate `{name,kind,note,verified,sourceIds}` with kind `managed|open-source|self-hosted|unknown`; a `verified` candidate cites research `sourceIds`, an unchecked one is `verified:false`. Cloud/vendor options can be unverified candidates, clearly labelled; unsupported service/pricing facts are not required.
 - **Models** `M1...`, kind `model`: `componentId,tier,rationale,fineTuneWhen,callsPerCase,inputTokens,outputTokens,inputPrice,outputPrice`. One per LLM component, zero for code. Tier `small|standard|reasoning`. Calls, tokens and USD per million token prices are numeric illustrative budgets unless measured. Derive calls from workflow nodes and bounded retries; explain unknown prices, branch mix and excluded costs. Zero cost inputs mean unpriced, not free service.
 - **FMEA** `FM1...`, kind `fmea`: `taskIds,componentIds,effect,cause,severity,occurrence,detection,control,detectionMethod,action,metric,kpi,evalIds,acceptedRisk,commonToAll`. S/O/D are integer 1–10; RPN=S×O×D. `acceptedRisk:false` unless the user supplied a specific acceptance. Severity≥8 or RPN≥150 needs an owner and release gate in `action`. Do not manufacture human acceptance.
 - **Evaluations** `EV1...`, kind `eval`: `category,taskIds,componentIds,failureModeIds,input,expected,passRule,metric,kpi,target,testSet,labelling,cadence,alertThreshold`. Categories `golden|offline|online|release`. Golden input/expected/passRule are JSON strings containing concrete fixtures, outcomes and assertions. Every unaccepted failure and high-risk leaf needs substantive golden coverage. All risk/eval links, including monitoring/release links, must agree in both directions. Planned tests are not executed tests.
@@ -45,6 +64,10 @@ Use these complete `data` fields; use empty strings/arrays only for inapplicable
 - **Handoff** `X1...`, kind `export`: `acceptanceCriteria,buildInstructions`. Arrays for acceptance criteria; string instructions. Derive from earlier design decisions and IDs without adding capability or permission.
 
 For a field/type error, inspect only that stage in `stage-schemas.json` or use the validator's precise path. The schemas bound item size and arrays, so split long responsibilities into real items; do not omit required detail merely to fit a single response.
+
+## Expected information (coverage)
+
+`design_io.py validate --strict-coverage` and `design_io.py coverage` report whether the design carries the information a reader expects. Required: COV1 decision and boundary, COV2 actors and owners, COV3 trigger, scope and non-goals, COV4 success measures, COV5 constraints and privacy, COV6 evidence limits (all read from the context cards), COV7 reader layer, COV8 milestones (not in lite), COV9 research record, COV10 a tooling card for each capability the brief implies, COV11 a human trigger where the brief implies money or record writes. Recommended: COV12 volume, COV13 KPI baselines or a collection plan, COV14 two examples per leaf, COV15 a checked candidate per tooling card. A gap is justified by an assumption string starting with its ID, for example `COV10: the brief mentions email only as today's channel; the first release replies in the portal`. Coverage looks for expected information by field and keyword; it never judges quality, so the D1–D12 review remains the judgement.
 
 ## Review record
 
@@ -69,4 +92,4 @@ Prefer self-contained fixtures. If inheritance saves substantial repetition, eac
 
 ## Final presentation
 
-`DESIGN.pdf` is the primary user-facing deliverable. The first page is the plain-language decision brief in every mode. Standard defaults to at most 12 pages, lite to four, full includes appendices. The ten canonical stages and review remain the source; the PDF presents them without repeating complete packets or large inherited fixtures. Machine artifacts remain companions for coding agents. After PDF delivery, ask whether the user wants `DESIGN.html`, a read-only visual view in the same app stage order; do not generate that deliverable before opt-in. See `visual-output.md`.
+`DESIGN.html` and `DESIGN.pdf` are the user-facing deliverables in every mode. The HTML opens on the plain-language decision brief and then shows the ten steps under their reader names plus Assumptions and Review; the PDF's first page is the same decision brief. Standard PDFs default to at most 12 pages, lite to four, full includes appendices. The ten canonical stages and review remain the source; neither artifact repeats complete packets or large inherited fixtures. `design_io.py export` writes `DESIGN.html`, `README.md`, `build/` and the `_evidence/` companions (`PRD.md`, `architecture.md`, `eval-set.json`, `fmea-register.csv`, `assumptions.md`); `review.json`, `validation.json` and `run-report.json` stay at the top level. See `visual-output.md`.

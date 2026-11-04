@@ -1,0 +1,154 @@
+{
+  "html": "/home/user/agent-design-studio-skill/evals/target/telecom-target.html",
+  "views": [
+    {
+      "view": "brief",
+      "width": 1440,
+      "visible": "brief",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "brief-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "context",
+      "width": 1440,
+      "visible": "context",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "context-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "tasks",
+      "width": 1440,
+      "visible": "tasks",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "tasks-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "components",
+      "width": 1440,
+      "visible": "components",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "components-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "workflow",
+      "width": 1440,
+      "visible": "workflow",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "workflow-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "framework",
+      "width": 1440,
+      "visible": "framework",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "framework-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "models",
+      "width": 1440,
+      "visible": "models",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "models-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "fmea",
+      "width": 1440,
+      "visible": "fmea",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "fmea-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "evals",
+      "width": 1440,
+      "visible": "evals",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "evals-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "measure",
+      "width": 1440,
+      "visible": "measure",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "measure-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "export",
+      "width": 1440,
+      "visible": "export",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "export-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "assumptions",
+      "width": 1440,
+      "visible": "assumptions",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "assumptions-1440.jpg",
+      "reference": true
+    },
+    {
+      "view": "review",
+      "width": 1440,
+      "visible": "review",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "review-1440.jpg",
+      "reference": true
+    }
+  ],
+  "consoleErrors": [
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED",
+    "1440: Failed to load resource: net::ERR_FAILED"
+  ],
+  "externalRequests": [
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+  ]
+}

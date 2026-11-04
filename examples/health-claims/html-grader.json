@@ -1,0 +1,66 @@
+{
+  "method": "independent-agent",
+  "agentId": "html-visual-grader-2026-11-04",
+  "date": "2026-11-04",
+  "rubric": "4 = same blocks in the same order with the same interactions as the reference; 3 = same blocks and order with minor spacing or label differences; 2 = a block missing or out of order; 1 = view present but a table where a diagram or card layout is required; 0 = view missing.",
+  "limitations": [
+    "Interactions (clickable task leaves and flow nodes, the task filter bar, expandable risk rows, collapsible inputs/outputs, fixtures and build instructions, the editable volume field) were judged from the controls and populated detail panels visible in the captures; nothing was clicked, so hover, focus, keyboard activation and dimming behaviour were not verified.",
+    "Full-page JPEG captures show only the default state of each view (first leaf, first node, no filter, no expanded row), so the content of a second node's detail, an expanded FMEA strip or an opened fixture was not seen.",
+    "The 400 px captures cannot show whether a table or diagram that is clipped at its panel edge actually scrolls inside its container; that was inferred from the spec and from qa.json reporting pageScrollWidth 400 with no horizontal page scroll."
+  ],
+  "sourceHashes": {
+    "design.json": "24a23210fff216b5fb69bb9ed7a887fddec25781497e177f9dd4fc1b036f8233",
+    "DESIGN.html": "a72187ee84fe32be21a944b5117e02938bed0cdf51c143f9b85a85ca791e6b1a"
+  },
+  "reference": [
+    "evals/html-qa/2026-11-04/reference/claim-adjudication (context through export)",
+    "evals/html-qa/2026-11-04/reference/telecom-target (brief, assumptions, review)"
+  ],
+  "screenshots": "evals/html-qa/2026-11-04/health-claims",
+  "views": {
+    "brief": 4,
+    "context": 4,
+    "tasks": 4,
+    "components": 4,
+    "workflow": 3,
+    "framework": 4,
+    "models": 4,
+    "fmea": 4,
+    "evals": 4,
+    "rollout": 4,
+    "export": 4,
+    "assumptions": 4,
+    "review": 4
+  },
+  "evidence": {
+    "brief": "Re-scored on the regenerated capture. Against the telecom-target brief: system sentence and scope summary, four numbered design calls with 'Rejected:' lines (now 'Automatic settlement. Payment authority is unknown.' with a single full stop; the doubled stop seen in the first capture is fixed), the autonomy table, then KPI block (one KPI, 'see definition'), 'Top 5 risks' with RPN pills, 'Launch blockers' H1-H4 with owners, 'Cost' per case and per month citing H5, 'Review' line and the status bar. Same blocks and order.",
+    "context": "The claim-adjudication reference is an editable form with uploads and gap questions, so this was judged against the spec table and the telecom reference: verbatim brief box first, then the two-column FIELD / DESIGN READING table with the 'Scope First release' row first and CTX1-CTX4 below. Matches.",
+    "tasks": "Risk-rule callout with '7 of 7 subtasks are high risk', dark root box 'sequence: all run . 7 tasks', connector, seven task columns each rendered as a bordered leaf card (all top-level tasks are leaves) with basis, example bullet, autonomy and risk with reason; the tree overflows its panel to the right exactly as the reference tree does. Detail panel for T1 has breadcrumb, name, what it does, resolved by, example quote, autonomy, frequency and risk, component and failure-mode chips, 'Show in flow'; 'Key attributes' grid with T1-T7 ticks, Source and Loaded follows.",
+    "components": "Interpretation inventory table first (one row for C3), then Agents (LLM), Code: tools, Code: validation, Code: human triggers with heading chips; cards carry ID, name, 'Code: write tool' chip on C7, description where it differs from the why-code text, the blue-ruled 'Why code' callout, Authority, collapsible 'Inputs and outputs' and task chips. The reference's four groups appear in the same order; the reference has no inventory table, which the spec requires and the render supplies. C4's very long why-code text makes its row extremely tall, which is data rather than structure.",
+    "workflow": "Re-scored on the regenerated capture (renderer word-break fix). Filter bar (All tasks, T1-T7, wrapping to two rows), type legend with 'rounded box = decision step', SVG with lane captions, nodes headed 'W1 . C1 . decides' with bold title and muted example, condition plates, red handoff notes, detail panel (type chip, IDs, task chip, example, what the part does, Next steps table with three go-to rows, if it fails, timeout and retry, failure mode, collapsible State contract) and the Coverage table. Same blocks, order and interactions as the reference. The W2 handoff note no longer wraps mid-word ('{missing,conflict,invalid,' / 'unavailable}'). Still 3 because the diagram is a single row occupying the top third of its panel with a large empty dotted area beneath, W4 onward sits behind an in-panel scroll where the reference's grid fits in view, and at the W2->W3 and W3->W4 positions two edge plates are drawn on top of each other ('documentStatus=valid' over 'intake in {missing, ... cancelled}', and 'draftStatus in {abstain, unavailable}' over a second plate whose fragments show at either side), which was also present before the fix.",
+    "framework": "Against the spec and telecom reference (the claim reference uses summary tables): one card per item F1-F4 with breadcrumb, title, Choice, Rejected, Trade-off; F2 and F3 add Blast radius, Approval and Least privilege; each card has the AWS / Google Cloud / Azure / Open source table. Matches.",
+    "models": "Table with part, tier, why and rejected tier, fine-tune only when, calls per case, USD per case (one row, C3), then the 'Cost' block with an editable 'CASES PER MONTH' field, formula and notes, and 'USD 0.021' in large mono with the per-month figure. Same blocks as the claim reference's table plus calculator, in the spec's order.",
+    "fmea": "'Severity x occurrence' heat table (all cells red because every risk has S >= 8) beside the 'Act-now rule' box with '8 of 8 risks qualify', then the register sorted by RPN with ID and name, muted effect, subtask chips, S, O, D, RPN pill, control, test IDs and the 'Click a row' hint for expandable rows. The claim reference lacks the heat table and act-now box that the spec requires; the render supplies both in the right order.",
+    "evals": "Coverage table first (FM1-FM8 and T1-T7 high-risk leaves, tests, key test, Covered), then 33 golden-case cards with mono ID and name, FM chip, 'MUST HOLD' block and collapsible 'Fixture and expected result', then the 'Offline, online and release' table with layer, metric, target, cadence and alert. Same blocks as the claim reference's layers/goldens/monitoring, reordered as the spec requires (coverage first, one combined layer table last).",
+    "rollout": "'KPI tree' card with name, definition, AI metric bullet and mechanism line, 'Rollout' with one phase panel ('Shadow then assist': what happens, Gate line, mono owner), then the experiment box and the owners box side by side. Same blocks and order as the claim measure view; a single phase is what the data provides.",
+    "export": "File list (DESIGN.html, DESIGN.pdf, build/, design.json, README.md, review/validation/run-report, _evidence/) with one-line purposes, numbered 'Build milestones' with component IDs, 'Acceptance criteria' list and a collapsed 'Build instructions' row. The claim reference shows download cards for four files; the spec's file list, milestones, criteria and collapsed instructions are all present in order.",
+    "assumptions": "Against the telecom reference: table with ID, assumption, owner (proposed), how to verify and 'Blocks launch' with Yes in red for H1-H4 and No for H5-H6. design.json holds no stage or item notes, so no notes block was expected.",
+    "review": "Method, round and status line, dimension table D1-D12 with score and evidence, Issues table (IR1, IR2 with Resolved status), Limits list and 'Earlier rounds kept' naming review-round-1.json. Same blocks and order as the telecom reference."
+  },
+  "narrowScreen": "At 400 px every view stacks to one column: the step list becomes a horizontal strip, the rail is hidden, the brief's right column, the cost calculator, the rollout boxes and all card grids stack, and the page never scrolls sideways (qa.json reports pageScrollWidth 400 for all 13 views). The task tree, the flow diagram and the wide tables (key attributes, models, risk register, eval coverage status column, assumptions, review dimensions and issues) are clipped at their panel edge and rely on in-container scrolling; the Review view's Evidence column is entirely off-screen so each dimension row is a tall near-empty band, but nothing is truncated with an ellipsis.",
+  "rescore": {
+    "date": "2026-11-04",
+    "reason": "Renderer fixes: comma/semicolon/slash/bracket word-break in SVG plates and flow notes; no doubled full stop in Decision brief rejections.",
+    "viewsReread": [
+      "workflow",
+      "brief",
+      "components",
+      "evals",
+      "rollout"
+    ],
+    "spotChecked400": [
+      "workflow"
+    ],
+    "scoreChanges": "none"
+  }
+}
