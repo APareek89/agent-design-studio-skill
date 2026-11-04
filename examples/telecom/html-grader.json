@@ -1,0 +1,50 @@
+{
+  "method": "independent-agent",
+  "agentId": "html-visual-grader-2026-11-04",
+  "date": "2026-11-04",
+  "rubric": "4 = same blocks in the same order with the same interactions as the reference; 3 = same blocks and order with minor spacing or label differences; 2 = a block missing or out of order; 1 = view present but a table where a diagram or card layout is required; 0 = view missing.",
+  "limitations": [
+    "Interactions (clickable task leaves and flow nodes, the task filter bar, expandable risk rows, collapsible inputs/outputs, fixtures and build instructions, the editable volume field) were judged from the controls and populated detail panels visible in the captures; nothing was clicked, so hover, focus, keyboard activation and dimming behaviour were not verified.",
+    "Full-page JPEG captures show only the default state of each view (first leaf, first node, no filter, no expanded row), so the content of a second node's detail, an expanded FMEA strip or an opened fixture was not seen.",
+    "The 400 px captures cannot show whether a table or diagram that is clipped at its panel edge actually scrolls inside its container; that was inferred from the spec and from qa.json reporting pageScrollWidth 400 with no horizontal page scroll."
+  ],
+  "sourceHashes": {
+    "design.json": "7c2981b87a64fcf6178382f8d446fa2eb49d3e7b3b7783a47659a4179453fdd8",
+    "DESIGN.html": "265a96f422e26993fdb4674f9ac1b7a68f9c0badf9e071a3841fd72f8b066a2f"
+  },
+  "reference": [
+    "evals/html-qa/2026-11-04/reference/telecom-target"
+  ],
+  "screenshots": "evals/html-qa/2026-11-04/telecom",
+  "views": {
+    "brief": 4,
+    "context": 4,
+    "tasks": 4,
+    "components": 4,
+    "workflow": 3,
+    "framework": 4,
+    "models": 4,
+    "fmea": 4,
+    "evals": 4,
+    "rollout": 4,
+    "export": 4,
+    "assumptions": 4,
+    "review": 4
+  },
+  "evidence": {
+    "brief": "System sentence and scope summary, four numbered design calls each with a 'Rejected:' line, the 'Who acts and who decides' autonomy table, then the right column in reference order: 'How we will know it works' KPI block (one KPI, 'see definition' because the KPI text states no baseline/target), 'Top 5 risks' with RPN pills and one-line controls, 'Launch blockers' H1-H4 with owners, 'Cost' per case and per month naming H5 as the volume source, 'Review' line, status bar with 'Next -> 1 Brief and scope'. Extra chevron rail and 'READ THIS FIRST' label do not displace anything.",
+    "context": "'BRIEF (VERBATIM)' box first, then the two-column FIELD / DESIGN READING table with the 'Scope First release' row first and CTX1-CTX3 below, same as the reference; the reference adds a muted second line per row that this design's data does not carry.",
+    "tasks": "Risk-rule callout with '4 of 6 subtasks are high risk', dark root box with mode and task count, horizontal connector, one column per task with bordered boxes; T1, T2 and T4 render as bordered leaf cards, T3 shows 'choose one per case' with three leaf cards on a left rail; leaves carry basis line, example bullet, autonomy line and 'high risk (acts on identity)'. Detail panel (T1 selected) has breadcrumb, name, what it does, resolved by, example quote box, autonomy, frequency and risk, component chip, failure-mode chip and 'Show in flow'; 'Key attributes' grid with ticks, Source and Loaded follows.",
+    "components": "'Where input needs interpreting' table (input, why it is hard, handled by, signal, fallback) first with one row for C3, then Agents (LLM), Code: tools, Code: validation, Code: human triggers, each with a heading chip; cards show ID, name, 'Code: write tool' chip on C8, the 'Why code' callout with a blue left rule, an Authority line, a collapsible 'Inputs and outputs' and task ID chips. Same block order and card anatomy as the reference.",
+    "workflow": "Filter bar (All tasks, T1-T4), legend of type chips plus 'rounded box = decision step', SVG with mono-caps lane captions, nodes headed 'W1 . C1 . decides', condition plates on edges, red handoff notes, a populated detail panel (type chip, IDs, task chip, example, what the part does, Next steps go-to/when table, if it fails, timeout and retry, failure modes, collapsible State contract) and the Coverage table: same blocks, order and interactions. Scored 3 because the nodes carry no muted one-line example under the title and the diagram is a single row that fills only the top third of its panel, leaving a large empty dotted area and pushing W4 onward behind an in-panel scroll, where the reference shows a branching layout that fits.",
+    "framework": "One card per item F1-F4 with mono breadcrumb (ID, category, permission), title, Choice, Rejected, Trade-off; F3 and F4 add Blast radius, Approval and Least privilege; every card has the AWS / Google Cloud / Azure / Open source options table. Same anatomy and order as the reference.",
+    "models": "Table with part, tier, why and rejected tier, fine-tune only when, calls per case and USD per case, followed by the 'Cost' calculator: editable 'CASES PER MONTH' field, formula and notes (volume source H5, exclusions, placeholder prices) and a right box with 'USD 0.0035' in large mono plus the per-month figure. Matches the reference.",
+    "fmea": "'Severity x occurrence' heat table with FM IDs in red, amber and green cells beside the 'Act-now rule' box with '9 of 9 risks qualify', then the register sorted by RPN with ID and name, muted effect, subtask chips, S, O, D, RPN pill, control and test IDs, and the 'Click a row for cause, detection, metric and owner' hint for the expandable rows. Same blocks and order as the reference.",
+    "evals": "Coverage table first (risk or subtask with 'high risk' markers, tests, key test, Covered in green), then golden cases as cards with mono 'EVn . name', an FM chip, a 'MUST HOLD' block of assertions and a collapsible 'Fixture and expected result', then the single 'Offline, online and release' table (test, layer, metric, target, cadence, alert). Same order as the reference.",
+    "rollout": "'KPI tree' card with name, definition, the AI metrics as bullets and the mechanism line (no baseline -> target because none is stated), 'Rollout' as four joined phase panels with name, what happens, 'Gate:' line and mono owner, then the experiment box and the owners box side by side. Same blocks and order as the reference measure view.",
+    "export": "File list with mono names and one-line purposes (DESIGN.html, DESIGN.pdf, build/, design.json, README.md, review/validation/run-report, _evidence/), numbered 'Build milestones' with component IDs, 'Acceptance criteria' list and a collapsed 'Build instructions' row. Matches the reference and adds the DESIGN.html row and collapsed instructions the spec requires.",
+    "assumptions": "Table with ID, assumption, owner (proposed), how to verify and 'Blocks launch' with Yes in red for H1-H4, matching the reference; design.json holds no stage or item notes, so no notes block was expected below.",
+    "review": "Method, round and status line under the title, the dimension table with name, score and evidence, the Issues table with severity, item, note and coloured status, the Limits list and an 'Earlier rounds kept' list naming review-round-1.json. Same blocks and order as the reference."
+  },
+  "narrowScreen": "At 400 px every view stacks to one column: the left step list becomes a horizontal strip, the chevron rail is hidden, the brief's two columns, the cost calculator, the rollout phases and all card grids stack, and the page never scrolls sideways (qa.json reports pageScrollWidth 400 for all 13 views). Wide tables (risk register, key attributes, models, assumptions, review dimensions and issues, the eval layer table), the task tree and the flow diagram are clipped at their panel edge and rely on in-container scrolling; in Review the whole Evidence column sits off-screen leaving tall near-empty rows, and in Assumptions the statement column is squeezed to two or three words per line, but no text is truncated with an ellipsis."
+}
