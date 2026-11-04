@@ -58,6 +58,12 @@ class ScoreTests(unittest.TestCase):
         self.assertFalse(self.run_score(text=self.text+' Digest')['S4']['pass'])
         self.assertFalse(self.run_score(text=self.text+' payload\nbinding')['S4']['pass'])
         self.assertTrue(self.run_score(text=self.text+' digested')['S4']['pass'])
+    def test_readability_runtime_error_is_unmeasured_not_a_crash(self):
+        pdf=types.SimpleNamespace(PdfReader=lambda p:types.SimpleNamespace(pages=[FakePage(self.text)]+[FakePage('A simple page.')]*2))
+        def boom(text):raise LookupError('Resource cmudict not found.')
+        ts=types.SimpleNamespace(flesch_reading_ease=boom,lexicon_count=lambda text,removepunct:100,sentence_count=lambda text:10)
+        with patch.dict(sys.modules,{'pypdf':pdf,'textstat':ts}):r=S.score(self.folder,None,'telecom')['scores']
+        self.assertFalse(r['S4']['pass']);self.assertFalse(r['S4']['evaluated']);self.assertIn('cmudict',r['S4']['evidence']['reason']);self.assertTrue(r['S1']['pass'])
     def test_handoff_per_file_size(self):
         (self.folder/'build/large.md').write_bytes(b'x'*(25*1024+1));self.assertFalse(self.run_score()['S5']['pass'])
     def test_independent_grader_hash_binding_and_threshold(self):

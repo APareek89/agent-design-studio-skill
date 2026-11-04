@@ -70,6 +70,7 @@ def score(folder,baseline=None,brief=None,validator_script=None):
             average=words/sentences if sentences else float('inf')
             put('S4',ease>=50 and average<=20 and not banned,{'fleschReadingEase':ease,'averageWordsPerSentence':average,'bannedTerms':banned,'method':'textstat'})
         except ImportError:unavailable('S4',{'reason':'textstat unavailable; readability not evaluated','bannedTerms':banned})
+        except Exception as e:unavailable('S4',{'reason':'textstat could not score this text (missing language data or runtime error); readability not evaluated: '+str(e).split('\n')[0][:160],'bannedTerms':banned})  # a crashed measurement is unmeasured, never a pass
     else:
         for k in ('S1','S2','S4'):unavailable(k,'PDF inspection unavailable: '+pdf_error)
     try:g=load(folder/'grader.json')
