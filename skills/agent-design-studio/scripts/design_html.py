@@ -82,24 +82,31 @@ def plain(value):
     return report.plain(str(value))
 
 
+def _pieces(word, width):
+    """Split an over-long token after punctuation where possible, never dropping text."""
+    out = []
+    while len(word) > width:
+        cut = max(word.rfind(ch, 1, width) for ch in ",;|/)}]")
+        if cut < width // 3:
+            cut = width - 1
+        out.append(word[: cut + 1])
+        word = word[cut + 1 :]
+    out.append(word)
+    return out
+
+
 def wrap(text, width):
     """Word-wrap into lines of at most `width` characters; nothing is dropped."""
-    words = str(text).split()
     lines, current = [], ""
-    for word in words:
-        while len(word) > width:
-            if current:
+    for word in str(text).split():
+        for part in _pieces(word, width):
+            if not current:
+                current = part
+            elif len(current) + 1 + len(part) <= width:
+                current += " " + part
+            else:
                 lines.append(current)
-                current = ""
-            lines.append(word[:width])
-            word = word[width:]
-        if not current:
-            current = word
-        elif len(current) + 1 + len(word) <= width:
-            current += " " + word
-        else:
-            lines.append(current)
-            current = word
+                current = part
     if current:
         lines.append(current)
     return lines or [""]
@@ -418,7 +425,7 @@ def view_brief(m):
     p = m.pres
     calls = "".join(
         f'<li class="panel"><span class="n">{i}</span><div>{esc(plain(c["choice"]))}'
-        f'<div class="rej"><b>Rejected:</b> {esc(plain(c["rejected"]))}. {esc(plain(c["why"]))}</div></div></li>'
+        f'<div class="rej"><b>Rejected:</b> {esc(plain(c["rejected"]).rstrip(". "))}. {esc(plain(c["why"]))}</div></div></li>'
         for i, c in enumerate(b["calls"], 1)
     )
     autonomy = "".join(

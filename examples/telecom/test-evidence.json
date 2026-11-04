@@ -1,8 +1,8 @@
 {
   "command": "python3 -m unittest discover -s tests -v",
   "exitCode": 0,
-  "passed": 114,
-  "testsCollected": 114,
+  "passed": 115,
+  "testsCollected": 115,
   "failed": 0,
   "skipped": 0,
   "log": "../../evals/final-tests-v1.2.log",
@@ -22,7 +22,7 @@
     "../../tests/test_design_pdf.py": "e8d16ae238709e9c5596101a473f3f1f75ee4eab80ccc0b0eac3aa856f7612d8",
     "../../tests/test_v2_reports.py": "9e4a55e27864298bb400af65d7385d04ca1e2b68a1a5ea96f4979d1f6cf766b7",
     "../../tests/test_semantics.py": "39ff09ee9a38e3bda9150bcd762271e9b4a3a452b0999ae184c3536ee06c5a06",
-    "../../skills/agent-design-studio/scripts/design_html.py": "0e603f9b758fdfd616137fb7e457c36b95d88ae7454810dfa08de8724875aab9",
+    "../../skills/agent-design-studio/scripts/design_html.py": "5b20ff831c4a90eacd9edc20c05888d45887d7c6134792481765c432d4077b95",
     "../../skills/agent-design-studio/scripts/run_report.py": "0b51be2d4c713354cf172cf74f5896c5e47ec814cd64a67a06173019efda6fa6",
     "../../skills/agent-design-studio/scripts/semantic_checks.py": "b4f4c9b918c9815c5331c2642c1e40792e2ba578d3c7a3de55b7fe27322913db",
     "../../skills/agent-design-studio/scripts/design_session.py": "a84769ace143a5febc6978237959068567a15bbebf58a2bde33f3818c5369254",
@@ -43,8 +43,8 @@
     "../../skills/agent-design-studio/SKILL.md": "51938bc6278298dbff3d217dde3eed196ed2c23b0a9b5335a6846c3551d228a1",
     "../../requirements-eval.txt": "29fd449a3ee6cb8f849d5edd1389b5079a2ef5a8392f8f8cafff40c3f12a515f",
     "../../skills/agent-design-studio/requirements-pdf.txt": "fa28e3c05759ec5a47995f1b2ea724aac51f64764610ef219f92ef8c49bb146f",
-    "../../evals/final-tests-v1.2.log": "66d2503759cce1143a65b7b55e951b4c877a8bac793d00502ea46296c9f2186f",
-    "../../tests/test_design_html_v2.py": "9abca823328ea24edd3b9b54af293d05b3b0d0cb9fa36f6e3e5de09c5ae54bb3",
+    "../../evals/final-tests-v1.2.log": "ff63c2184cb87b6229c4bfe3d26a8250f9a590d63a49fe3ee58216a3227019a6",
+    "../../tests/test_design_html_v2.py": "b10a57259c86ee32f594e5315a46505797a4660cd4195abf557bfbff6d36c2d4",
     "../../scripts/html_qa.js": "543f1fac64c9115b5bad346cd9e6af60a902b97e214ca76cff69175b02b2ac0e",
     "../../docs/html-design-spec.md": "2246aed4b599cf62e76a4b9512ab6239e0eb3b8a712da57f6c3130cc80f5b53f"
   }

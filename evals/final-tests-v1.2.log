@@ -23,6 +23,7 @@ test_one_tree_box_per_task_and_one_svg_node_per_workflow_item (test_design_html_
 test_reader_layer_uses_presentation_and_has_no_truncation (test_design_html_v2.SeedViewTests.test_reader_layer_uses_presentation_and_has_no_truncation) ... ok
 test_fan_out_edges_are_all_labelled_and_back_edge_drawn_above (test_design_html_v2.SyntheticGraphTests.test_fan_out_edges_are_all_labelled_and_back_edge_drawn_above) ... ok
 test_long_chain_splits_into_bands_and_keeps_every_node (test_design_html_v2.SyntheticGraphTests.test_long_chain_splits_into_bands_and_keeps_every_node) ... ok
+test_long_tokens_break_after_punctuation_and_keep_every_character (test_design_html_v2.WrapTests.test_long_tokens_break_after_punctuation_and_keep_every_character) ... ok
 test_all_category_reciprocity_and_golden_coverage (test_design_io.DesignTests.test_all_category_reciprocity_and_golden_coverage) ... ok
 test_complete_fixture_and_no_llm (test_design_io.DesignTests.test_complete_fixture_and_no_llm) ... ok
 test_duplicate_ids_and_hypotheses (test_design_io.DesignTests.test_duplicate_ids_and_hypotheses) ... ok
@@ -64,7 +65,7 @@ test_untrusted_markup_and_long_identifiers_render_as_text (test_design_pdf.Actua
 test_fixture_summary_avoids_large_raw_mock_dump (test_design_pdf.DependencyTests.test_fixture_summary_avoids_large_raw_mock_dump) ... ok
 test_reportlab_is_optional_and_error_is_actionable (test_design_pdf.DependencyTests.test_reportlab_is_optional_and_error_is_actionable) ... ok
 test_all_ten_stage_schemas_are_self_contained (test_package.PackageTests.test_all_ten_stage_schemas_are_self_contained) ... ok
-test_distribution_is_self_contained_and_excludes_generated_work (test_package.PackageTests.test_distribution_is_self_contained_and_excludes_generated_work) ... {"archive": "/tmp/tmpmvejn2rv/agent-design-studio-1.2.0.zip", "sha256": "0058e34ad805d10b15c998ecc65eb2805ad2c9d58c47ea04a0f926fdba4fc058", "files": 23}
+test_distribution_is_self_contained_and_excludes_generated_work (test_package.PackageTests.test_distribution_is_self_contained_and_excludes_generated_work) ... {"archive": "/tmp/tmph9ikna4q/agent-design-studio-1.2.0.zip", "sha256": "805268aa1883bfe753f1fb9f549092e30ef18a51c10455db72dab602a743810a", "files": 23}
 ok
 test_manifests_agree_and_require_no_connection (test_package.PackageTests.test_manifests_agree_and_require_no_connection) ... ok
 test_skill_links_resolve_inside_package (test_package.PackageTests.test_skill_links_resolve_inside_package) ... ok
@@ -110,12 +111,12 @@ test_mode_and_reader_metadata_types_are_checked (test_v2_reports.ModeTests.test_
 test_oversized_standard_handoff_fails_without_hiding_contract (test_v2_reports.ModeTests.test_oversized_standard_handoff_fails_without_hiding_contract) ... ok
 test_pdf_modes_pages_real_paths_and_page_one (test_v2_reports.ModeTests.test_pdf_modes_pages_real_paths_and_page_one) ... ok
 test_reexport_removes_only_unchanged_obsolete_milestones (test_v2_reports.ModeTests.test_reexport_removes_only_unchanged_obsolete_milestones) ... ok
-test_scripted_checkpoint_removes_task_and_owned_component (test_v2_reports.ModeTests.test_scripted_checkpoint_removes_task_and_owned_component) ... {"ok": true, "folder": "/tmp/tmp5y1hk7jh/proof", "removed": ["T99"], "validator": "pass"}
+test_scripted_checkpoint_removes_task_and_owned_component (test_v2_reports.ModeTests.test_scripted_checkpoint_removes_task_and_owned_component) ... {"ok": true, "folder": "/tmp/tmp_ms105vt/proof", "removed": ["T99"], "validator": "pass"}
 ok
 test_selected_workflow_contract_cannot_be_dropped (test_v2_reports.ModeTests.test_selected_workflow_contract_cannot_be_dropped) ... ok
 test_standard_split_keeps_exact_contracts_and_avoids_whole_design_dump (test_v2_reports.ModeTests.test_standard_split_keeps_exact_contracts_and_avoids_whole_design_dump) ... ok
 
 ----------------------------------------------------------------------
-Ran 114 tests in 5.400s
+Ran 115 tests in 5.576s
 
 OK

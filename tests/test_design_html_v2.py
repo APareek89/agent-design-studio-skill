@@ -169,6 +169,18 @@ class SeedViewTests(unittest.TestCase):
         self.assertIn('data-month-cost="', document)
 
 
+class WrapTests(unittest.TestCase):
+    def test_long_tokens_break_after_punctuation_and_keep_every_character(self):
+        token = "documentStatus in {missing,conflict,invalid,unavailable}"
+        lines = design_html.wrap(token, 32)
+        self.assertTrue(all(len(line) <= 32 for line in lines), lines)
+        self.assertEqual(lines[0], "documentStatus in")
+        self.assertTrue(lines[1].endswith(","), lines)
+        self.assertEqual("".join(lines).replace(" ", ""), token.replace(" ", ""))
+        self.assertEqual(design_html.wrap("x" * 70, 20), ["x" * 20, "x" * 20, "x" * 20, "x" * 10])
+        self.assertEqual(design_html.wrap("", 10), [""])
+
+
 class SyntheticGraphTests(unittest.TestCase):
     def chain(self, length, fan_out_at=None):
         design = fixtures.make_design()

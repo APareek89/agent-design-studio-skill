@@ -16,6 +16,7 @@
 - It is a view, not a session: no editing, approval, ticking items out of scope, regenerate or upload. Nothing a reader does changes `design.json`, and only the last opened view is remembered in the browser.
 - The task tree is a CSS grid like the reference, not SVG; only the flow is SVG. Flows over 16 layers continue in a second band with "continues at" notes rather than a single picture.
 - Edge conditions are shown verbatim on plates; long predicates wrap to several lines and can crowd a dense gap. The node's detail table is the readable fallback.
+- The flow is laid out automatically in layers and scrolls inside its panel; a long chain with a few multi-row layers leaves empty space in the panel and puts later nodes behind the in-panel scroll, where a hand-placed reference fits its branches in view. The task filter and node detail do not need the whole picture on screen.
 - Lane captions, handoff and exit notes, high-risk reasons and the per-month volume are derived from the design's edges, effects and text, not authored; a design can override only task and node names through `presentation`.
 - The cost calculator multiplies the per-case model budget by a volume; it prices no hosting, tools, retrieval or staff time.
 - Visual grading is a separate agent's structure judgement from screenshots against hand-made reference pages that use different content and manual positions. It is not accessibility certification, user testing or proof that every interaction works in every browser.
