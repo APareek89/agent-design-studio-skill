@@ -10,7 +10,7 @@
 
 An installable skill and skills-only plugin. The host assistant expands a short brief into the PRD, task map, component contracts, workflow, model budget, risk register, evaluation fixtures and rollout. It uses the host model; no extra LLM API key, account or server is required. Normal host usage limits still apply.
 
-**v1.2.0 is a local review candidate. It has not been published or tagged.** See the [HTML design spec](docs/html-design-spec.md), the [visual QA captures and grader report](evals/html-qa/2026-11-04/), the [v1.1 measured scorecard](evals/v1.1-scorecard.md), the [iteration record](evals/iterations.md) and [known limits](CHANGELOG.md).
+**v1.2.0 is a local review candidate. It has not been published or tagged.** An independent grader scored all 26 HTML views of the two seed examples at 3 or above against the reference pages. See the [HTML design spec](docs/html-design-spec.md), the [visual QA captures, grader report and scorecards](evals/html-qa/2026-11-04/), the [v1.1 measured scorecard](evals/v1.1-scorecard.md), the [iteration record](evals/iterations.md) and [known limits](CHANGELOG.md).
 
 ## Use it
 

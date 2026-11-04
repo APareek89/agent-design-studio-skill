@@ -10,7 +10,7 @@
   ],
   "sourceHashes": {
     "design.json": "7c2981b87a64fcf6178382f8d446fa2eb49d3e7b3b7783a47659a4179453fdd8",
-    "DESIGN.html": "265a96f422e26993fdb4674f9ac1b7a68f9c0badf9e071a3841fd72f8b066a2f"
+    "DESIGN.html": "278674c7a1a41356da782f4b606cf6e51659077fdb1cd188aa036b99669b4e5d"
   },
   "reference": [
     "evals/html-qa/2026-11-04/reference/telecom-target"
@@ -36,7 +36,7 @@
     "context": "'BRIEF (VERBATIM)' box first, then the two-column FIELD / DESIGN READING table with the 'Scope First release' row first and CTX1-CTX3 below, same as the reference; the reference adds a muted second line per row that this design's data does not carry.",
     "tasks": "Risk-rule callout with '4 of 6 subtasks are high risk', dark root box with mode and task count, horizontal connector, one column per task with bordered boxes; T1, T2 and T4 render as bordered leaf cards, T3 shows 'choose one per case' with three leaf cards on a left rail; leaves carry basis line, example bullet, autonomy line and 'high risk (acts on identity)'. Detail panel (T1 selected) has breadcrumb, name, what it does, resolved by, example quote box, autonomy, frequency and risk, component chip, failure-mode chip and 'Show in flow'; 'Key attributes' grid with ticks, Source and Loaded follows.",
     "components": "'Where input needs interpreting' table (input, why it is hard, handled by, signal, fallback) first with one row for C3, then Agents (LLM), Code: tools, Code: validation, Code: human triggers, each with a heading chip; cards show ID, name, 'Code: write tool' chip on C8, the 'Why code' callout with a blue left rule, an Authority line, a collapsible 'Inputs and outputs' and task ID chips. Same block order and card anatomy as the reference.",
-    "workflow": "Filter bar (All tasks, T1-T4), legend of type chips plus 'rounded box = decision step', SVG with mono-caps lane captions, nodes headed 'W1 . C1 . decides', condition plates on edges, red handoff notes, a populated detail panel (type chip, IDs, task chip, example, what the part does, Next steps go-to/when table, if it fails, timeout and retry, failure modes, collapsible State contract) and the Coverage table: same blocks, order and interactions. Scored 3 because the nodes carry no muted one-line example under the title and the diagram is a single row that fills only the top third of its panel, leaving a large empty dotted area and pushing W4 onward behind an in-panel scroll, where the reference shows a branching layout that fits.",
+    "workflow": "Re-scored on the regenerated capture (renderer word-break fix). Filter bar (All tasks, T1-T4), legend of type chips plus 'rounded box = decision step', SVG with mono-caps lane captions, nodes headed 'W1 . C1 . decides', condition plates on edges (the W3->W4 plate now breaks after the comma: '{MISSING,CONFLICT,' / 'UNAVAILABLE}'), red handoff notes, a populated detail panel (type chip, IDs, task chip, example, what the part does, Next steps go-to/when table, if it fails, timeout and retry, failure modes, collapsible State contract) and the Coverage table: same blocks, order and interactions as the reference. Still 3 because the nodes carry no muted one-line example under the title and the diagram is a single row that fills only the top third of its panel, leaving a large empty dotted area and pushing W4 onward behind an in-panel scroll, where the reference's branching layout fits in view.",
     "framework": "One card per item F1-F4 with mono breadcrumb (ID, category, permission), title, Choice, Rejected, Trade-off; F3 and F4 add Blast radius, Approval and Least privilege; every card has the AWS / Google Cloud / Azure / Open source options table. Same anatomy and order as the reference.",
     "models": "Table with part, tier, why and rejected tier, fine-tune only when, calls per case and USD per case, followed by the 'Cost' calculator: editable 'CASES PER MONTH' field, formula and notes (volume source H5, exclusions, placeholder prices) and a right box with 'USD 0.0035' in large mono plus the per-month figure. Matches the reference.",
     "fmea": "'Severity x occurrence' heat table with FM IDs in red, amber and green cells beside the 'Act-now rule' box with '9 of 9 risks qualify', then the register sorted by RPN with ID and name, muted effect, subtask chips, S, O, D, RPN pill, control and test IDs, and the 'Click a row for cause, detection, metric and owner' hint for the expandable rows. Same blocks and order as the reference.",
@@ -46,5 +46,19 @@
     "assumptions": "Table with ID, assumption, owner (proposed), how to verify and 'Blocks launch' with Yes in red for H1-H4, matching the reference; design.json holds no stage or item notes, so no notes block was expected below.",
     "review": "Method, round and status line under the title, the dimension table with name, score and evidence, the Issues table with severity, item, note and coloured status, the Limits list and an 'Earlier rounds kept' list naming review-round-1.json. Same blocks and order as the reference."
   },
-  "narrowScreen": "At 400 px every view stacks to one column: the left step list becomes a horizontal strip, the chevron rail is hidden, the brief's two columns, the cost calculator, the rollout phases and all card grids stack, and the page never scrolls sideways (qa.json reports pageScrollWidth 400 for all 13 views). Wide tables (risk register, key attributes, models, assumptions, review dimensions and issues, the eval layer table), the task tree and the flow diagram are clipped at their panel edge and rely on in-container scrolling; in Review the whole Evidence column sits off-screen leaving tall near-empty rows, and in Assumptions the statement column is squeezed to two or three words per line, but no text is truncated with an ellipsis."
+  "narrowScreen": "At 400 px every view stacks to one column: the left step list becomes a horizontal strip, the chevron rail is hidden, the brief's two columns, the cost calculator, the rollout phases and all card grids stack, and the page never scrolls sideways (qa.json reports pageScrollWidth 400 for all 13 views). Wide tables (risk register, key attributes, models, assumptions, review dimensions and issues, the eval layer table), the task tree and the flow diagram are clipped at their panel edge and rely on in-container scrolling; in Review the whole Evidence column sits off-screen leaving tall near-empty rows, and in Assumptions the statement column is squeezed to two or three words per line, but no text is truncated with an ellipsis.",
+  "rescore": {
+    "date": "2026-11-04",
+    "reason": "Renderer fixes: comma/semicolon/slash/bracket word-break in SVG plates and flow notes; no doubled full stop in Decision brief rejections.",
+    "viewsReread": [
+      "workflow",
+      "components"
+    ],
+    "spotChecked400": [
+      "workflow",
+      "assumptions",
+      "models"
+    ],
+    "scoreChanges": "none"
+  }
 }

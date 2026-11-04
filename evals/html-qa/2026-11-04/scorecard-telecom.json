@@ -1,0 +1,462 @@
+{
+  "version": "1.2",
+  "folder": "examples/telecom",
+  "mode": "standard",
+  "brief": "telecom",
+  "validatorScript": "/home/user/agent-design-studio-skill/skills/agent-design-studio/scripts/design_io.py",
+  "allPass": false,
+  "scores": {
+    "S1": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "mode": "standard",
+        "pages": 11,
+        "limit": 12
+      }
+    },
+    "S2": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "blocks": {
+          "The system in one sentence": true,
+          "Key design calls": true,
+          "Who acts and who decides": true,
+          "Top risks by RPN": true,
+          "Launch blockers and owners": true,
+          "Illustrative cost per case": true,
+          "Review status:": true
+        },
+        "inOrder": true,
+        "dimensionTableOnPage1": false
+      }
+    },
+    "S3": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "independentAgent": "final_telecom_review",
+        "vectorOperatorsPresent": true,
+        "judgment": {
+          "taskTreeVector": true,
+          "workflowVector": true,
+          "legibleAt100Percent": true,
+          "evidence": [
+            "Actual iteration06 DESIGN.pdf pages1\u20133 rendered with pdftoppm -r72 at596x842 and visually inspected at100%. Page1 reports independent-agent round2 pass.",
+            "PDF page2: zero image resources,23 vector stroke operators,850 selectable text characters. Page3: zero images,97 vector stroke operators,723 selectable text characters.",
+            "Labels, arrows and role colors readable at native size. Exact predicates are in architecture.md; page6 includes actual framework choices/rejected alternatives and page10 includes actual rollout phase gates."
+          ]
+        }
+      }
+    },
+    "S4": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "fleschReadingEase": 55.14034722222226,
+        "averageWordsPerSentence": 10.125,
+        "bannedTerms": [],
+        "method": "textstat"
+      }
+    },
+    "S5": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "fileBytes": {
+          "build/00-overview.md": 1464,
+          "build/01-milestone.md": 17709,
+          "build/02-milestone.md": 17011,
+          "build/03-milestone.md": 23021
+        },
+        "totalBytes": 59205,
+        "perFileLimit": 25000,
+        "standardTotalLimit": 100000
+      }
+    },
+    "S6": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": [
+        {
+          "file": "sem001-faulty.json",
+          "expectedRule": "SEM001",
+          "observedRules": [
+            "SEM001"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem002-faulty.json",
+          "expectedRule": "SEM002",
+          "observedRules": [
+            "SEM002"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem003-faulty.json",
+          "expectedRule": "SEM003",
+          "observedRules": [
+            "SEM003"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem004-faulty.json",
+          "expectedRule": "SEM004",
+          "observedRules": [
+            "SEM004"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem005-faulty.json",
+          "expectedRule": "SEM005",
+          "observedRules": [
+            "SEM005"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem006-faulty.json",
+          "expectedRule": "SEM006",
+          "observedRules": [
+            "SEM006"
+          ],
+          "pass": true
+        },
+        {
+          "file": "sem007-faulty.json",
+          "expectedRule": "SEM007",
+          "observedRules": [
+            "SEM007"
+          ],
+          "pass": true
+        }
+      ]
+    },
+    "S7": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": [
+        {
+          "file": "s7-refund-no-guard.json",
+          "expectedRule": "SEM001",
+          "observedRules": [
+            "SEM001"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        },
+        {
+          "file": "s7-48h-no-notice.json",
+          "expectedRule": "SEM002",
+          "observedRules": [
+            "SEM002"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        },
+        {
+          "file": "s7-llm-amount.json",
+          "expectedRule": "SEM005",
+          "observedRules": [
+            "SEM005"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        },
+        {
+          "file": "s7-no-positive-golden.json",
+          "expectedRule": "SEM003",
+          "observedRules": [
+            "SEM003"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        },
+        {
+          "file": "s7-unversioned-inheritance.json",
+          "expectedRule": "SEM004",
+          "observedRules": [
+            "SEM004"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        },
+        {
+          "file": "s7-llm-customer-id.json",
+          "expectedRule": "SEM005",
+          "observedRules": [
+            "SEM005"
+          ],
+          "pass": true,
+          "reviewMajorOrCritical": true
+        }
+      ]
+    },
+    "S8": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "brief": "telecom",
+        "found": 8,
+        "required": 7,
+        "checks": [
+          {
+            "id": 1,
+            "pass": true,
+            "evidence": [
+              "H1",
+              "C3",
+              "C4",
+              "EV1",
+              "EV2",
+              "EV18"
+            ]
+          },
+          {
+            "id": 2,
+            "pass": true,
+            "evidence": [
+              "H2",
+              "C7",
+              "C8",
+              "EV5",
+              "EV7",
+              "EV24"
+            ]
+          },
+          {
+            "id": 3,
+            "pass": true,
+            "evidence": [
+              "C1",
+              "C2",
+              "C3",
+              "EV3",
+              "EV12"
+            ]
+          },
+          {
+            "id": 4,
+            "pass": true,
+            "evidence": [
+              "H1",
+              "C4",
+              "C7",
+              "C8",
+              "EV18",
+              "EV24"
+            ]
+          },
+          {
+            "id": 5,
+            "pass": true,
+            "evidence": [
+              "T1",
+              "C1",
+              "W1",
+              "EV25"
+            ]
+          },
+          {
+            "id": 6,
+            "pass": true,
+            "evidence": [
+              "C8",
+              "C9",
+              "C10",
+              "C11",
+              "W11",
+              "W12",
+              "W13",
+              "EV13"
+            ]
+          },
+          {
+            "id": 7,
+            "pass": true,
+            "evidence": [
+              "C8",
+              "C9",
+              "W9",
+              "W10",
+              "EV9",
+              "EV10",
+              "EV11",
+              "EV13"
+            ]
+          },
+          {
+            "id": 8,
+            "pass": true,
+            "evidence": [
+              "C5",
+              "C7",
+              "C8",
+              "EV2",
+              "EV6",
+              "EV26"
+            ]
+          }
+        ],
+        "independentAgent": "final_telecom_review"
+      }
+    },
+    "S9": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "reviewValid": true,
+        "preservedRounds": true,
+        "priorReviewRecordsValid": true,
+        "reportedRoundsMatch": true,
+        "methodEvidence": true,
+        "unsupportedPass": false,
+        "method": "independent-agent",
+        "status": "pass"
+      }
+    },
+    "S10": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "testEvidence": {
+          "command": "python3 -m unittest discover -s tests -v",
+          "exitCode": 0,
+          "passed": 115,
+          "testsCollected": 115,
+          "failed": 0,
+          "skipped": 0,
+          "log": "../../evals/final-tests-v1.2.log",
+          "briefOutputs": [
+            "../civic",
+            "../csv-report",
+            "../../evals/regression-v2/customer-support",
+            "../../evals/regression-v2/finance-review",
+            "../../evals/regression-v2/research-assist",
+            "../../evals/regression-v2/vague-brief"
+          ],
+          "sourceHashes": {
+            "../../tests/test_design_io.py": "cfd0d65a0535eb598a5f652553736a8f2510f9c56309464a9fed7f1e7748092c",
+            "../../tests/test_package.py": "190bfe67bc75bc9c1d14a21ae2a4377f44568748e2b89903daf085229c6f08ad",
+            "../../tests/test_design_html.py": "88a35e156dd902d5310611b9123b63e44f8c1bd3a70aa2ea74f9d01d02c2d1d8",
+            "../../tests/test_score_run.py": "fad834fc8f2ca33a9ff88c521df08e526d94982df8b40dfb9f83f78db90fe5b3",
+            "../../tests/test_design_pdf.py": "e8d16ae238709e9c5596101a473f3f1f75ee4eab80ccc0b0eac3aa856f7612d8",
+            "../../tests/test_v2_reports.py": "9e4a55e27864298bb400af65d7385d04ca1e2b68a1a5ea96f4979d1f6cf766b7",
+            "../../tests/test_semantics.py": "39ff09ee9a38e3bda9150bcd762271e9b4a3a452b0999ae184c3536ee06c5a06",
+            "../../skills/agent-design-studio/scripts/design_html.py": "5b20ff831c4a90eacd9edc20c05888d45887d7c6134792481765c432d4077b95",
+            "../../skills/agent-design-studio/scripts/run_report.py": "0b51be2d4c713354cf172cf74f5896c5e47ec814cd64a67a06173019efda6fa6",
+            "../../skills/agent-design-studio/scripts/semantic_checks.py": "b4f4c9b918c9815c5331c2642c1e40792e2ba578d3c7a3de55b7fe27322913db",
+            "../../skills/agent-design-studio/scripts/design_session.py": "a84769ace143a5febc6978237959068567a15bbebf58a2bde33f3818c5369254",
+            "../../skills/agent-design-studio/scripts/export_v2.py": "75dde4584962bc3719a0e85380d73240b77b5a265286d1a03ebae5f0aa3b98d5",
+            "../../skills/agent-design-studio/scripts/design_io.py": "9df5c8592d75ebe8b6419e8df537b30c82fb156b1e5f55ea04ee894778b5de22",
+            "../../skills/agent-design-studio/scripts/design_pdf.py": "4c52a98ef5b2e3c89e87aa4e71c4331a90227b5601564996ca409ab3fe3ed19c",
+            "../../skills/agent-design-studio/scripts/report_v2.py": "b0e258c8070c343f4ec77f9d07abefe54a6a610dbda98a06eb39829c193a8aa4",
+            "../../scripts/package_plugin.py": "627644151d27df602abceda27649ce6e3643c7b5fced42535c3b51d981eb12a3",
+            "../../scripts/check_interactive.py": "e08d965562e2ed805d96a2f9b16ef5a8dd0efae42f810f646c727f40d4a42218",
+            "../../scripts/score_run.py": "9241b09de74540aa934aedf43535db5969b5a5b93b040de3b40d7a2a2b7c9994",
+            "../../skills/agent-design-studio/references/report-contract.md": "47c0fb4e33b4068fcd6f52fa4368be47620d8f25fa4dd1ddd215e8574918311c",
+            "../../skills/agent-design-studio/references/visual-output.md": "bc46dbea4a375ce5842509b6af34bcfc1a68735d91a33a58a08b8983710ef8eb",
+            "../../skills/agent-design-studio/references/output-contract.md": "57c806e09f6db6e009c611c02bfffa534049d4923b7df97040e86664149addc6",
+            "../../skills/agent-design-studio/references/quality-rubric.json": "7396c624f0165150eab5e3cad8700e4f090b4ee5542807158c772d253370fd3b",
+            "../../skills/agent-design-studio/references/personas.md": "e83c2dcec235ba03371bfaf0f0704e41fd269fb2aa2d03ee8398d2cc33bf73b3",
+            "../../skills/agent-design-studio/references/stage-schemas.json": "6a110c6bd0c8319404bbe9dfaf6f881ddee3e1e1fab664341d9650e76551862f",
+            "../../skills/agent-design-studio/references/semantic-contract.md": "ac1de93ba374f5e560eb68454969f9b2b7709dd91e51897c831c55739c3db6ec",
+            "../../skills/agent-design-studio/SKILL.md": "51938bc6278298dbff3d217dde3eed196ed2c23b0a9b5335a6846c3551d228a1",
+            "../../requirements-eval.txt": "29fd449a3ee6cb8f849d5edd1389b5079a2ef5a8392f8f8cafff40c3f12a515f",
+            "../../skills/agent-design-studio/requirements-pdf.txt": "fa28e3c05759ec5a47995f1b2ea724aac51f64764610ef219f92ef8c49bb146f",
+            "../../evals/final-tests-v1.2.log": "ff63c2184cb87b6229c4bfe3d26a8250f9a590d63a49fe3ee58216a3227019a6",
+            "../../tests/test_design_html_v2.py": "b10a57259c86ee32f594e5315a46505797a4660cd4195abf557bfbff6d36c2d4",
+            "../../scripts/html_qa.js": "543f1fac64c9115b5bad346cd9e6af60a902b97e214ca76cff69175b02b2ac0e",
+            "../../docs/html-design-spec.md": "2246aed4b599cf62e76a4b9512ab6239e0eb3b8a712da57f6c3130cc80f5b53f"
+          }
+        },
+        "briefValidation": [
+          {
+            "folder": "../civic",
+            "valid": true
+          },
+          {
+            "folder": "../csv-report",
+            "valid": true
+          },
+          {
+            "folder": "../../evals/regression-v2/customer-support",
+            "valid": true
+          },
+          {
+            "folder": "../../evals/regression-v2/finance-review",
+            "valid": true
+          },
+          {
+            "folder": "../../evals/regression-v2/research-assist",
+            "valid": true
+          },
+          {
+            "folder": "../../evals/regression-v2/vague-brief",
+            "valid": true
+          }
+        ],
+        "currentValidation": true,
+        "currentTestMethods": 115,
+        "completeSuite": true
+      }
+    },
+    "S11": {
+      "pass": false,
+      "evaluated": false,
+      "evidence": "Comparable standard-mode host token measurements with the same tokenMethod unavailable; artifact size is not inference usage."
+    },
+    "S12": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "removedTasks": [
+          "T99"
+        ],
+        "removedComponents": [
+          "C99"
+        ],
+        "checkpointMatches": true,
+        "absentDownstream": true,
+        "validationPass": true
+      }
+    },
+    "S13": {
+      "pass": true,
+      "evaluated": true,
+      "evidence": {
+        "htmlPresent": true,
+        "viewsOnDisk": 13,
+        "expectedViews": 13,
+        "rendersPerMode": {
+          "lite": 4,
+          "standard": 13,
+          "full": 13
+        },
+        "rendererRefusals": [],
+        "independentAgent": "html-visual-grader-2026-11-04",
+        "viewScores": {
+          "brief": 4,
+          "context": 4,
+          "tasks": 4,
+          "components": 4,
+          "workflow": 3,
+          "framework": 4,
+          "models": 4,
+          "fmea": 4,
+          "evals": 4,
+          "rollout": 4,
+          "export": 4,
+          "assumptions": 4,
+          "review": 4
+        },
+        "threshold": 3
+      }
+    }
+  }
+}

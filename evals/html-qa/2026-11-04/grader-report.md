@@ -1,5 +1,7 @@
 # HTML visual grader report, 2026-11-04
 
+Revision 2 (same day): re-scored after two renderer fixes; see 'Re-score after renderer fixes' below. Source hashes in both html-grader.json files are bound to the regenerated DESIGN.html files (telecom 278674c7..., health-claims a72187ee...); design.json hashes are unchanged.
+
 Grader: independent agent `html-visual-grader-2026-11-04`. Inputs: rendered captures in `evals/html-qa/2026-11-04/telecom` and `evals/html-qa/2026-11-04/health-claims` (13 views at 1440 px and 400 px each), reference captures in `evals/html-qa/2026-11-04/reference/telecom-target` (13 views) and `reference/claim-adjudication` (10 views). Rubric from `docs/html-design-spec.md`: 4 same blocks, order and interactions; 3 same blocks and order with minor spacing or label differences; 2 a block missing or out of order; 1 a table where a diagram or cards are required; 0 view missing. Pass threshold 3 per view. Scores and per-view evidence are in `examples/telecom/html-grader.json` and `examples/health-claims/html-grader.json`.
 
 Mapping: rendered `rollout` was compared with reference `measure`. Health-claims used the claim-adjudication reference for context through export and the telecom-target reference for brief, assumptions and review. Reference approval, regenerate, upload and checkbox controls were ignored because the rendered page is read-only by rule.
@@ -27,7 +29,7 @@ Result: 26 of 26 view scores are at or above the pass threshold of 3. No view sc
 ## Views scoring 3 (nothing below 3)
 
 - Telecom `workflow` (3): all required blocks are present in order (filter bar, legend, SVG, detail panel, coverage table) and the interactions are visible, but the nodes carry no muted one-line example under the title, and the diagram is a single horizontal row filling only the top third of its panel, with a large empty dotted area below and W4 onward hidden behind an in-panel scroll where the reference's branching layout fits in view.
-- Health-claims `workflow` (3): same block set, order and interactions; the diagram again occupies the top third of its panel with empty space beneath and needs in-panel scrolling past W4, and the W2 handoff note wraps mid-word (`unavai` / `lable`).
+- Health-claims `workflow` (3): same block set, order and interactions; the diagram again occupies the top third of its panel with empty space beneath and needs in-panel scrolling past W4, and at the W2->W3 and W3->W4 positions two edge-condition plates are drawn on top of each other (`documentStatus=valid` over `intake in {missing, ... cancelled}`; `draftStatus in {abstain, unavailable}` over a second plate whose fragments show at either side), so neither condition is fully legible.
 
 ## Differences from the references that did not cost points
 
@@ -41,13 +43,29 @@ Result: 26 of 26 view scores are at or above the pass threshold of 3. No view sc
 - Measure and roll out: health-claims has a single phase panel (`Shadow then assist`) because the design defines one phase; KPI cards have no `baseline -> target` for the same reason as the brief.
 - Handoff adds `DESIGN.html` in the file list and a collapsed `Build instructions` row, both required by the spec but absent from the telecom reference; the claim reference's download cards were not expected on a read-only page.
 - Assumptions: no stage or item notes block appears; `design.json` contains no notes for either design.
-- Health-claims brief design calls print a double full stop (`Automatic settlement.. Payment authority is unknown.`) because the rejected option already ends in a period; a copy nit, not a block or label change.
+- (Fixed in revision 2) Health-claims brief design calls printed a double full stop (`Automatic settlement.. Payment authority is unknown.`); the regenerated capture shows a single stop.
 
 ## Narrow-screen (400 px) observations
 
 - All 26 captures stack to one column: the left step list becomes a horizontal strip that wraps to two rows, the chevron rail is hidden, the brief's right column, the cost calculator, the rollout phase panels, the experiment/owner boxes and every card grid stack vertically, and the status bar stacks its button under the text. `qa.json` reports `pageScrollWidth` 400 and no horizontal page scroll for every view of both designs.
 - Containers that scroll inside themselves are clipped at the panel edge in the capture rather than cut off the page: the task tree (only T1 and part of T2 visible), the flow diagram (only W1 and the first edge visible), and wide tables (key attributes, models, risk register with the RPN pill half visible, assumptions, review dimensions and issues, the eval layer table, the flow detail's Next steps table).
 - Two views are hard to read at this width without scrolling the table: Review, where the Evidence column is entirely off-screen so each dimension row is a tall near-empty band, and Assumptions, where the statement column is squeezed to two or three words per line. Nothing is truncated with an ellipsis, and no text overlaps.
+
+## Re-score after renderer fixes (revision 2)
+
+The coordinator reported two renderer changes and regenerated every capture in `telecom/` and `health-claims/` (references unchanged): (1) long space-free tokens now break after a comma, semicolon, slash or bracket instead of mid-word in SVG edge plates and flow notes; (2) the Decision brief no longer doubles a full stop after a rejected option that already ends in one.
+
+Re-read at 1440 px: telecom and health-claims `workflow`, health-claims `brief`; spot-checked telecom and health-claims `components`, health-claims `evals` and `rollout`. Re-read at 400 px: both `workflow` captures, telecom `assumptions` and `models`. No score changed.
+
+| Observation from revision 1 | Status in revision 2 |
+| --- | --- |
+| Health-claims W2 handoff note wrapped mid-word (`unavai` / `lable`) | Fixed: now breaks after the comma (`invalid,` / `unavailable}`) |
+| Telecom W3->W4 plate wrapped `{MISSING,CONFLICT,UN` / `AVAILABLE}` | Fixed: now `{MISSING,CONFLICT,` / `UNAVAILABLE}` |
+| Health-claims brief printed `Automatic settlement.. Payment authority is unknown.` | Fixed: single full stop in all four rejected lines |
+| Flow diagram is a single row filling the top third of its panel; W4 onward behind in-panel scroll (both designs) | Remains; keeps both `workflow` scores at 3 |
+| Telecom flow nodes have no muted one-line example | Remains |
+| Health-claims edge plates overlap at W2->W3 and W3->W4 | Remains (was present before the fix; now easier to see because the wrapped text is wider) |
+| Narrow-screen behaviour (one column, in-container scroll for tables, tree and diagram) | Unchanged in the re-read 400 px captures |
 
 ## Limits of this grading
 
