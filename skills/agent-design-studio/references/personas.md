@@ -88,7 +88,7 @@ Use actual IDs and scope for observable acceptance criteria and an implementable
 
 Cross-check guard/payload fields, task/component/graph/risk/eval/KPI links and canonical cost assumptions. An implementer should not invent material branch, action or ownership decisions. Real adapter/policy verification can remain an explicit launch prerequisite. A design review is not stakeholder approval or operational evidence.
 
-The final human deliverable is a mode-aware PDF with the plain decision brief first; standard summarizes all ten stages within twelve pages and puts full contracts in companions. Keep full machine artifacts separately. Include a coding-agent instruction to ask, after delivering the PDF: “Would you also like a visual HTML version in the same ten-stage structure as the app?” Generate HTML only after opt-in, unless already requested.
+The final human deliverables are a read-only `DESIGN.html` and a mode-aware `DESIGN.pdf`, both opening on the plain decision brief; standard summarizes all ten stages within twelve PDF pages and puts full contracts in `_evidence/` companions. Keep full machine artifacts separately. The handoff states that both files are delivered together and that neither grants write authority; there is no opt-in question.
 
 ## 11. Reviewer
 

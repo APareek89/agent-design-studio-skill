@@ -9,3 +9,7 @@ Useful behavior checks: no follow-up questionnaire or extra API key; all ten sta
 Structural unit tests and AI forward-tests are complementary. Neither establishes live provider accuracy, business-control correctness or production readiness. App-era review scores are not scores for this new skill.
 
 Synthetic worked examples, including PDFs, are in `examples/civic/` and `examples/csv-report/`. Their review records say self-review; independent forward-test authorship is not independent grading of their own designs.
+
+## HTML visual QA (v1.2)
+
+`target/` holds the two reference pages the HTML renderer must match: `claim-adjudication-design.html` (Task map onward) and `telecom-target.html` (Decision brief). `html-qa/<date>/` holds Playwright captures of every rendered view at 1440 px and 400 px for the telecom and health-claims examples, reference captures at 1440 px, the `qa.json` reports (console errors, blocked external requests, page scroll width) and the independent grader report. The grader scores each view 0 to 4 against the reference; `html-grader.json` next to each example binds the score to the hashes of `design.json` and `DESIGN.html`, and `scripts/score_run.py` reads it as S13. Captures are JPEG to keep the repository small; rerun `node scripts/html_qa.js` for lossless PNGs.

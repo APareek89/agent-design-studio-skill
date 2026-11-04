@@ -4,7 +4,8 @@
  * screenshot every view at 1440 px and 400 px, and record network requests.
  *
  * Usage: node scripts/html_qa.js <DESIGN.html> <out-dir> [--views brief,tasks,...]
- *        [--hash-views brief,tasks,...] [--jpeg] [--executable <chromium>]
+ *        [--hash-views brief,tasks,...] [--jpeg] [--quality 60] [--widths 1440,400]
+ *        [--executable <chromium>]
  *
  * --hash-views drives a page by URL hash instead of section[data-view]; it is
  * how the reference files in evals/target/ are captured for the grader.
@@ -25,21 +26,25 @@ async function main() {
   let only = null;
   let hashViews = null;
   let jpeg = false;
+  let quality = 60;
+  let widths = [1440, 400];
   let executablePath;
   for (let i = 0; i < rest.length; i++) {
     if (rest[i] === "--views") only = rest[++i].split(",");
     if (rest[i] === "--hash-views") hashViews = rest[++i].split(",");
     if (rest[i] === "--jpeg") jpeg = true;
+    if (rest[i] === "--quality") quality = parseInt(rest[++i], 10);
+    if (rest[i] === "--widths") widths = rest[++i].split(",").map(Number);
     if (rest[i] === "--executable") executablePath = rest[++i];
   }
   const ext = jpeg ? "jpg" : "png";
-  const shot = { fullPage: true, ...(jpeg ? { type: "jpeg", quality: 72 } : {}) };
+  const shot = { fullPage: true, ...(jpeg ? { type: "jpeg", quality } : {}) };
   const { chromium } = require("playwright");
   fs.mkdirSync(outDir, { recursive: true });
   const browser = await chromium.launch(executablePath ? { executablePath } : {});
   const report = { html: path.resolve(htmlPath), views: [], consoleErrors: [], externalRequests: [] };
   const fileUrl = "file://" + path.resolve(htmlPath);
-  for (const width of [1440, 400]) {
+  for (const width of widths) {
     const context = await browser.newContext({ viewport: { width, height: width === 1440 ? 900 : 800 }, deviceScaleFactor: 1 });
     await context.route("**/*", route => {
       const url = route.request().url();

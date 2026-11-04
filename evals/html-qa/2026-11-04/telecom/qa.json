@@ -1,0 +1,215 @@
+{
+  "html": "/home/user/agent-design-studio-skill/examples/telecom/DESIGN.html",
+  "views": [
+    {
+      "view": "brief",
+      "width": 1440,
+      "visible": "brief",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "brief-1440.jpg"
+    },
+    {
+      "view": "context",
+      "width": 1440,
+      "visible": "context",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "context-1440.jpg"
+    },
+    {
+      "view": "tasks",
+      "width": 1440,
+      "visible": "tasks",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "tasks-1440.jpg"
+    },
+    {
+      "view": "components",
+      "width": 1440,
+      "visible": "components",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "components-1440.jpg"
+    },
+    {
+      "view": "workflow",
+      "width": 1440,
+      "visible": "workflow",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "workflow-1440.jpg"
+    },
+    {
+      "view": "framework",
+      "width": 1440,
+      "visible": "framework",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "framework-1440.jpg"
+    },
+    {
+      "view": "models",
+      "width": 1440,
+      "visible": "models",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "models-1440.jpg"
+    },
+    {
+      "view": "fmea",
+      "width": 1440,
+      "visible": "fmea",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "fmea-1440.jpg"
+    },
+    {
+      "view": "evals",
+      "width": 1440,
+      "visible": "evals",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "evals-1440.jpg"
+    },
+    {
+      "view": "rollout",
+      "width": 1440,
+      "visible": "rollout",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "rollout-1440.jpg"
+    },
+    {
+      "view": "export",
+      "width": 1440,
+      "visible": "export",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "export-1440.jpg"
+    },
+    {
+      "view": "assumptions",
+      "width": 1440,
+      "visible": "assumptions",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "assumptions-1440.jpg"
+    },
+    {
+      "view": "review",
+      "width": 1440,
+      "visible": "review",
+      "pageScrollWidth": 1440,
+      "horizontalPageScroll": false,
+      "file": "review-1440.jpg"
+    },
+    {
+      "view": "brief",
+      "width": 400,
+      "visible": "brief",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "brief-400.jpg"
+    },
+    {
+      "view": "context",
+      "width": 400,
+      "visible": "context",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "context-400.jpg"
+    },
+    {
+      "view": "tasks",
+      "width": 400,
+      "visible": "tasks",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "tasks-400.jpg"
+    },
+    {
+      "view": "components",
+      "width": 400,
+      "visible": "components",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "components-400.jpg"
+    },
+    {
+      "view": "workflow",
+      "width": 400,
+      "visible": "workflow",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "workflow-400.jpg"
+    },
+    {
+      "view": "framework",
+      "width": 400,
+      "visible": "framework",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "framework-400.jpg"
+    },
+    {
+      "view": "models",
+      "width": 400,
+      "visible": "models",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "models-400.jpg"
+    },
+    {
+      "view": "fmea",
+      "width": 400,
+      "visible": "fmea",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "fmea-400.jpg"
+    },
+    {
+      "view": "evals",
+      "width": 400,
+      "visible": "evals",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "evals-400.jpg"
+    },
+    {
+      "view": "rollout",
+      "width": 400,
+      "visible": "rollout",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "rollout-400.jpg"
+    },
+    {
+      "view": "export",
+      "width": 400,
+      "visible": "export",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "export-400.jpg"
+    },
+    {
+      "view": "assumptions",
+      "width": 400,
+      "visible": "assumptions",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "assumptions-400.jpg"
+    },
+    {
+      "view": "review",
+      "width": 400,
+      "visible": "review",
+      "pageScrollWidth": 400,
+      "horizontalPageScroll": false,
+      "file": "review-400.jpg"
+    }
+  ],
+  "consoleErrors": [],
+  "externalRequests": []
+}
