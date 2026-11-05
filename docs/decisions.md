@@ -190,3 +190,56 @@ is an enum so it cannot claim both, but the limitations and issues are free
 text and were where the claim actually appeared. Setting the telecom review to
 `self-review` now fails until its limitations are rewritten, which is the
 point.
+
+## Fix 10, strict coverage on the seeds
+
+**COV9 is answered with a research record, not a justification string.** The
+check asks for a record saying research was performed or why not. Both
+examples now carry `research.performed = false` with the reason that they
+were authored before the skill ran a research pass and that every tool name
+in them is an unverified candidate. That puts the fact in the field designed
+to hold it rather than hiding it in an assumption.
+
+**COV4 and COV6 on health-claims take the justification the contract allows.**
+Its success measures are on the rollout KPI cards and its evidence limits are
+in the assumption ledger and the review limitations. Both are true, so the
+justification strings say where to look rather than duplicating content into
+context cards to satisfy a keyword.
+
+**The test that asserted the old failure was rewritten, not deleted.** It
+asserted `--strict-coverage` exits 1 on the seeds, which was documenting the
+bug. It now asserts both seeds pass, and a separate test keeps the strict flag
+honest by failing a synthetic design with a real gap.
+
+## Fix 11, the authoring scaffold
+
+**The scaffold fills bookkeeping and refuses to guess judgement.** It writes
+every node, component effect, transition and model-output row, and the field
+names of every write binding, because those follow mechanically from the
+stages. It leaves the transition outcome, output category, binding source,
+action class, wait duration and every golden blank, because a wrong guess
+there is worse than a blank an author must fill.
+
+**Blanks are the string "TODO" and fail validation.** The validator says so in
+those words and names the scaffold, so an author filling one is not left
+reading "malformed semantic row". Only the literal marker counts as a blank: a
+null is legitimate in a finished contract, and treating every null as a blank
+mislabelled real errors.
+
+## S15, the three profile seeds
+
+**Not delivered, and the scorecard says so rather than passing.** S15 asks for
+a seed design per profile that passes validation, strict coverage and review.
+The existing seeds are 400 to 575 KB with 86 items, full semantic contracts,
+23 goldens and an independent review. Producing three more to that standard
+means running the skill end to end three times, which is authoring work, not a
+code fix. Hand-writing JSON that passes the validator while being filler, and
+signing a review of my own filler, would make S15 green and the examples
+worthless, which is the opposite of what the check is for.
+
+S15 therefore reports `present: false` per profile with the folder it expects,
+so it is actionable rather than silently absent, in the same way S11 has
+stayed unmeasured since 1.1. The rules the seeds would exercise are covered by
+`tests/test_brief_profiles.py`, which builds satisfiable read-only and
+multi-tenant variants and proves both the failing and the passing side of
+every new rule.

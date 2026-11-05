@@ -212,7 +212,9 @@
           }
         }
       ],
-      "assumptions": []
+      "assumptions": [
+        "COV6: evidence limits and unknowns are carried by the assumption ledger H1-H6 and the review limitations rather than by a context card."
+      ]
     },
     "tasks": {
       "items": [
@@ -1978,7 +1980,7 @@
           "id": "FM1",
           "kind": "fmea",
           "title": "Wrong subject medical disclosure",
-          "description": "Hypothetical prioritization: S 1 negligible\u201310 catastrophic; O 1 rare\u201310 frequent; D 1 caught early\u201310 hard to detect. Not measured probabilities.",
+          "description": "Hypothetical prioritization: S 1 negligible–10 catastrophic; O 1 rare–10 frequent; D 1 caught early–10 hard to detect. Not measured probabilities.",
           "reasoning": "Bounded responsibility with an owned safe outcome.",
           "assumptions": [
             "H1",
@@ -2039,7 +2041,7 @@
           "id": "FM2",
           "kind": "fmea",
           "title": "Wrong coverage or room adjustment",
-          "description": "Hypothetical prioritization: S 1 negligible\u201310 catastrophic; O 1 rare\u201310 frequent; D 1 caught early\u201310 hard to detect. Not measured probabilities.",
+          "description": "Hypothetical prioritization: S 1 negligible–10 catastrophic; O 1 rare–10 frequent; D 1 caught early–10 hard to detect. Not measured probabilities.",
           "reasoning": "Bounded responsibility with an owned safe outcome.",
           "assumptions": [
             "H1",
@@ -2108,7 +2110,7 @@
           "id": "FM3",
           "kind": "fmea",
           "title": "Forged citation or malicious document",
-          "description": "Hypothetical prioritization: S 1 negligible\u201310 catastrophic; O 1 rare\u201310 frequent; D 1 caught early\u201310 hard to detect. Not measured probabilities.",
+          "description": "Hypothetical prioritization: S 1 negligible–10 catastrophic; O 1 rare–10 frequent; D 1 caught early–10 hard to detect. Not measured probabilities.",
           "reasoning": "Bounded responsibility with an owned safe outcome.",
           "assumptions": [
             "H1",
@@ -2176,7 +2178,7 @@
           "id": "FM4",
           "kind": "fmea",
           "title": "Duplicate/concurrent drafts confuse adjudication",
-          "description": "Hypothetical prioritization: S 1 negligible\u201310 catastrophic; O 1 rare\u201310 frequent; D 1 caught early\u201310 hard to detect. Not measured probabilities.",
+          "description": "Hypothetical prioritization: S 1 negligible–10 catastrophic; O 1 rare–10 frequent; D 1 caught early–10 hard to detect. Not measured probabilities.",
           "reasoning": "Bounded responsibility with an owned safe outcome.",
           "assumptions": [
             "H1",
@@ -2237,7 +2239,7 @@
           "id": "FM5",
           "kind": "fmea",
           "title": "Uncertain save lost or repeated",
-          "description": "Hypothetical prioritization: S 1 negligible\u201310 catastrophic; O 1 rare\u201310 frequent; D 1 caught early\u201310 hard to detect. Not measured probabilities.",
+          "description": "Hypothetical prioritization: S 1 negligible–10 catastrophic; O 1 rare–10 frequent; D 1 caught early–10 hard to detect. Not measured probabilities.",
           "reasoning": "Bounded responsibility with an owned safe outcome.",
           "assumptions": [
             "H1",
@@ -2301,7 +2303,7 @@
           "id": "FM6",
           "kind": "fmea",
           "title": "False completion without proof",
-          "description": "Hypothetical prioritization: S 1 negligible\u201310 catastrophic; O 1 rare\u201310 frequent; D 1 caught early\u201310 hard to detect. Not measured probabilities.",
+          "description": "Hypothetical prioritization: S 1 negligible–10 catastrophic; O 1 rare–10 frequent; D 1 caught early–10 hard to detect. Not measured probabilities.",
           "reasoning": "Bounded responsibility with an owned safe outcome.",
           "assumptions": [
             "H1",
@@ -2361,7 +2363,7 @@
           "id": "FM7",
           "kind": "fmea",
           "title": "Revoked authority still writes",
-          "description": "Hypothetical prioritization: S 1 negligible\u201310 catastrophic; O 1 rare\u201310 frequent; D 1 caught early\u201310 hard to detect. Not measured probabilities.",
+          "description": "Hypothetical prioritization: S 1 negligible–10 catastrophic; O 1 rare–10 frequent; D 1 caught early–10 hard to detect. Not measured probabilities.",
           "reasoning": "Bounded responsibility with an owned safe outcome.",
           "assumptions": [
             "H1",
@@ -2422,7 +2424,7 @@
           "id": "FM8",
           "kind": "fmea",
           "title": "Human queue silently stalls",
-          "description": "Hypothetical prioritization: S 1 negligible\u201310 catastrophic; O 1 rare\u201310 frequent; D 1 caught early\u201310 hard to detect. Not measured probabilities.",
+          "description": "Hypothetical prioritization: S 1 negligible–10 catastrophic; O 1 rare–10 frequent; D 1 caught early–10 hard to detect. Not measured probabilities.",
           "reasoning": "Bounded responsibility with an owned safe outcome.",
           "assumptions": [
             "H1",
@@ -4213,7 +4215,7 @@
             "aiMetrics": [
               "Quote validity reduces review rework; exact arithmetic protects coverage quality; queue latency protects response time; token cost is operating guardrail"
             ],
-            "phase": "Shadow \u2192 assist",
+            "phase": "Shadow → assist",
             "gate": "Shadow entry H1-H4 verified and EV21 synthetic/adapter gate. Exit after two representative weeks: every safety assertion passes, experts inspect all policy/date/room-rule strata and disagreement reasons. Assist entry shadow exit + staffed queue. Assist exit after four weeks: zero safety events, acceptable examiner feedback and full audit joins. Remain assist-only; no automatic claim settlement pilot or scale in this scope.",
             "owner": "Claims director",
             "experiment": "Any disclosure, unsupported monetary total or false save stops suggestions immediately; preserve case ledger and reconcile in-flight operations. Human process continues."
@@ -4334,7 +4336,9 @@
           }
         }
       ],
-      "assumptions": []
+      "assumptions": [
+        "COV4: the success measures live on the rollout KPI cards rather than being repeated as a context card; see R1 and its gate."
+      ]
     },
     "export": {
       "items": [
@@ -4384,7 +4388,7 @@
               "All case records prove subject/version/operation bytes; no payment/denial permissions.",
               "Business harness executes every fixture and release gate; schema pass is not that execution."
             ],
-            "buildInstructions": "State ledger owns queue entry time, attempts, immutable operation bytes/hash, case versions, source/rule versions, staff actor events and proof. Implement APIs/errors in C1-C9, exclusive W1-W11 paths, least privilege F1-F4, PHI minimization and H3 deletion. Build source/citation and rule arithmetic harness before UI; wire EV20 alerts and R2 stop. Real API verification is H2 dependency, not permission to invent authority. After delivering DESIGN.pdf ask exactly once: \u201cWould you also like a visual HTML version in the same ten-stage structure as the app?\u201d Generate HTML only on opt-in. Preserve C2->C4 authoritative accumulator provenance and request/version receipt. Run EV32/EV33 source guards. EV10 requires two independently materialized byte/hash/authorization-bound operations before the CAS race. Never use operation output assessment as input evidence."
+            "buildInstructions": "State ledger owns queue entry time, attempts, immutable operation bytes/hash, case versions, source/rule versions, staff actor events and proof. Implement APIs/errors in C1-C9, exclusive W1-W11 paths, least privilege F1-F4, PHI minimization and H3 deletion. Build source/citation and rule arithmetic harness before UI; wire EV20 alerts and R2 stop. Real API verification is H2 dependency, not permission to invent authority. After delivering DESIGN.pdf ask exactly once: “Would you also like a visual HTML version in the same ten-stage structure as the app?” Generate HTML only on opt-in. Preserve C2->C4 authoritative accumulator provenance and request/version receipt. Run EV32/EV33 source guards. EV10 requires two independently materialized byte/hash/authorization-bound operations before the CAS race. Never use operation output assessment as input evidence."
           }
         }
       ],
@@ -10830,5 +10834,12 @@
         "Do not expand settlement authority; preserve failure ownership and source versions."
       ]
     }
-  ]
+  ],
+  "research": {
+    "performed": false,
+    "tool": "",
+    "unavailableReason": "This example was authored before the skill ran a web-research pass, so no search tool was offered and no finding is recorded. Every tool name in the design is therefore an unverified candidate, not a checked one.",
+    "queries": [],
+    "findings": []
+  }
 }

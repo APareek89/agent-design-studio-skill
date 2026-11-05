@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Score measured run artifacts against S1–S13; missing evidence never passes."""
+"""Score measured run artifacts against S1–S15; missing evidence never passes."""
 import argparse
 import hashlib
 import importlib.util
@@ -192,7 +192,81 @@ def score(folder,baseline=None,brief=None,validator_script=None):
             ok_views=all(type(x) is int and x>=3 for x in view_scores.values())
             put('S13',present and not refusals and len(rendered)==3 and on_disk==expected_views and ok_views,dict(mechanical,independentAgent=hg['agentId'],viewScores=view_scores,threshold=3))
     except (OSError,ValueError,KeyError,TypeError) as e:unavailable('S13','HTML view evidence unavailable: '+str(e))
-    return {'version':'1.2','folder':str(folder),'mode':mode,'brief':brief,'validatorScript':str(validator_script or ROOT/'skills/agent-design-studio/scripts/design_io.py'),'allPass':all(r['pass'] for r in results.values()),'scores':{k:results[k] for k in sorted(results,key=lambda x:int(x[1:]))}}
+
+    # S14: the brief classifier on the seven edge briefs. This is a property of
+    # the skill, not of one run, so it is scored from the repository.
+    try:
+        detail=score_classifier()
+        put('S14',detail['correct']==detail['total'] and detail['allSpeak'],detail)
+    except (OSError,ValueError,KeyError,TypeError) as e:unavailable('S14','Edge-brief expectations unavailable: '+str(e))
+
+    # S15: each brief profile has a seed design that passes validation, strict
+    # coverage and review.
+    try:
+        put('S15',*score_profile_seeds())
+    except (OSError,ValueError,KeyError,TypeError) as e:unavailable('S15','Profile seed evidence unavailable: '+str(e))
+    return {'version':'1.3','folder':str(folder),'mode':mode,'brief':brief,'validatorScript':str(validator_script or ROOT/'skills/agent-design-studio/scripts/design_io.py'),'allPass':all(r['pass'] for r in results.values()),'scores':{k:results[k] for k in sorted(results,key=lambda x:int(x[1:]))}}
+
+
+
+EDGE_DIR=ROOT/'evals/briefs/edge'
+PROFILE_SEEDS={'read-only':ROOT/'evals/seeds/read-only-qa','real-time':ROOT/'evals/seeds/voice-support','multi-tenant':ROOT/'evals/seeds/multi-tenant-desk'}
+
+
+def _dotted(value,path):
+    for part in path.split('.'):value=value[part]
+    return value
+
+
+def score_classifier():
+    """S14: does the classifier get all seven edge briefs right, and say something useful?
+
+    Accuracy alone is not enough: an edge brief must also produce either a
+    clear stop message or a profile that leads to a design in the right mode.
+    """
+    spec=importlib.util.spec_from_file_location('score_intake',ROOT/'skills/agent-design-studio/scripts/design_intake.py')
+    intake=importlib.util.module_from_spec(spec);spec.loader.exec_module(intake)
+    expected=json.loads((EDGE_DIR/'expected.json').read_text(encoding='utf-8'))['briefs']
+    correct,wrong,speaks=0,[],True
+    for name,expectation in expected.items():
+        profile=intake.classify((EDGE_DIR/name).read_text(encoding='utf-8'))
+        ok=all(_dotted(profile,path)==want for path,want in expectation['expect'].items())
+        raised={s['id'] for s in profile['signals']}
+        ok=ok and set(expectation['signals'])<=raised
+        ok=ok and [c['id'] for c in profile['briefConflicts']]==expectation.get('conflicts',[])
+        correct+=1 if ok else 0
+        if not ok:wrong.append(name)
+        # Either a stop message, or a profile that names the mode to author in.
+        said=[s['detail'] for s in profile['signals']]
+        if not said or not all(len(d.split())>5 for d in said):speaks=False
+        if expectation.get('stops') and profile['suggestedMode']!='lite':speaks=False
+    return {'total':len(expected),'correct':correct,'wrong':wrong,'allSpeak':speaks,
+            'briefs':sorted(expected),'threshold':'7 of 7'}
+
+
+def score_profile_seeds():
+    """S15: a seed design per brief profile that passes validation, coverage and review."""
+    detail={}
+    passed=True
+    for profile,folder in PROFILE_SEEDS.items():
+        if not (folder/'design.json').is_file():
+            detail[profile]={'present':False,'reason':'No seed design at '+str(folder.relative_to(ROOT))+'.'}
+            passed=False
+            continue
+        design=load(folder/'design.json')
+        validation=D.validate_design(design)
+        coverage=validation.get('coverage') or {}
+        review=load(folder/'review.json') if (folder/'review.json').is_file() else None
+        checked=D.validate_review(review,validation['valid']) if review else {'valid':False,'status':'missing'}
+        row={'present':True,'valid':validation['valid'],
+             'missingRequiredCoverage':coverage.get('missingRequired',['unknown']),
+             'reviewStatus':checked.get('status'),'reviewMethod':(review or {}).get('method'),
+             'semanticCoverage':validation['semanticCoverage']}
+        row['pass']=bool(validation['valid'] and not row['missingRequiredCoverage']
+                         and checked.get('valid') and checked.get('status')=='pass')
+        detail[profile]=row
+        passed=passed and row['pass']
+    return passed,detail
 
 
 def main():

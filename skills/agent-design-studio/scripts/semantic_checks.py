@@ -21,6 +21,19 @@ CATEGORIES = {'money','date','identity','other'}
 OUTCOMES = {'normal','TIMEOUT','unknown_commit','repeat','notice'}
 
 
+def _has_blanks(value):
+    """Is a scaffold blank still in here?
+
+    Only the literal "TODO" marker counts. A null is legitimate in a finished
+    contract, so treating every null as a blank would mislabel real errors.
+    """
+    if isinstance(value, dict):
+        return any(_has_blanks(v) for v in value.values())
+    if isinstance(value, list):
+        return any(_has_blanks(v) for v in value)
+    return value == 'TODO'
+
+
 def validate_semantics(design):
     errors = []
     def issue(rule, message, path='$.semantics'):
@@ -64,7 +77,14 @@ def validate_semantics(design):
     for a in s['writeActions']:
         if isinstance(a,dict) and isinstance(a.get('nodeIds'),list) and any(not isinstance(x,str) for x in a['nodeIds']): malformed=True
     if malformed:
-        issue('SEM000', 'Malformed semantic row: use the exact documented keys and JSON value types.')
+        # An unfinished scaffold is a common cause; say so rather than leaving
+        # the author to work out which key is wrong.
+        if _has_blanks(s):
+            issue('SEM000', 'This semantic contract still holds scaffold blanks ("TODO" or null). '
+                            'design_scaffold.py fills the bookkeeping and leaves every business decision '
+                            'blank on purpose; fill them before validating.')
+        else:
+            issue('SEM000', 'Malformed semantic row: use the exact documented keys and JSON value types.')
         return errors
     wf = {x['id']: x for x in design['stages']['workflow']['items']}
     comps = {x['id']: x for x in design['stages']['components']['items']}

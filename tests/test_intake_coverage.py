@@ -168,19 +168,50 @@ class CoverageTests(unittest.TestCase):
         self.assertIn("retrieval and embeddings", cov10["evidence"])
         self.assertEqual([c for c in cov["checks"] if c["id"] == "COV15"][0]["status"], "missing")
 
-    def test_examples_report_coverage_and_strict_flag_exits_one(self):
-        telecom = design_io.validate_design(design_io.load_json(ROOT / "examples/telecom/design.json"))
-        self.assertTrue(telecom["valid"])
-        self.assertEqual(telecom["coverage"]["missingRequired"], ["COV9"])
-        self.assertEqual([c for c in telecom["coverage"]["checks"] if c["id"] == "COV11"][0]["status"], "covered")
-        strict = subprocess.run([sys.executable, str(SCRIPTS / "design_io.py"), "validate", str(ROOT / "examples/telecom/design.json"), "--strict-coverage"], capture_output=True, text=True)
-        self.assertEqual(strict.returncode, 1)
-        self.assertEqual(json.loads(strict.stdout)["status"], "coverage-gaps")
-        plain = subprocess.run([sys.executable, str(SCRIPTS / "design_io.py"), "validate", str(ROOT / "examples/telecom/design.json")], capture_output=True, text=True)
-        self.assertEqual(plain.returncode, 0)
-        report = subprocess.run([sys.executable, str(SCRIPTS / "design_io.py"), "coverage", str(ROOT / "examples/telecom/design.json")], capture_output=True, text=True)
-        self.assertEqual(report.returncode, 1)
-        self.assertFalse(json.loads(report.stdout)["ok"])
+    def test_both_seed_examples_pass_strict_coverage(self):
+        """Fix 10: the skill's own examples must meet the bar it sets.
+
+        They used to fail COV9 because they predate the research pass. They
+        now carry a research record that says no search tool was offered, and
+        health-claims justifies COV4 and COV6 where the contract allows it.
+        """
+        for name in ("telecom", "health-claims"):
+            with self.subTest(example=name):
+                path = ROOT / "examples" / name / "design.json"
+                result = design_io.validate_design(design_io.load_json(path))
+                self.assertTrue(result["valid"], result["errors"][:3])
+                self.assertEqual(result["coverage"]["missingRequired"], [],
+                                 name + " must have no missing required coverage")
+                strict = subprocess.run(
+                    [sys.executable, str(SCRIPTS / "design_io.py"), "validate", str(path), "--strict-coverage"],
+                    capture_output=True, text=True)
+                self.assertEqual(strict.returncode, 0, strict.stdout[:400])
+                self.assertNotEqual(json.loads(strict.stdout)["status"], "coverage-gaps")
+
+    def test_the_seed_research_records_say_no_search_tool_was_offered(self):
+        for name in ("telecom", "health-claims"):
+            with self.subTest(example=name):
+                design = design_io.load_json(ROOT / "examples" / name / "design.json")
+                research = design["research"]
+                self.assertFalse(research["performed"])
+                self.assertIn("no search tool", research["unavailableReason"])
+                self.assertEqual(research["findings"], [])
+
+    def test_the_strict_flag_still_fails_a_design_with_a_real_gap(self):
+        # Structurally valid, but with no research record and a thin context.
+        design = fixtures.make_design()
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "design.json"
+            path.write_text(json.dumps(design))
+            strict = subprocess.run(
+                [sys.executable, str(SCRIPTS / "design_io.py"), "validate", str(path), "--strict-coverage"],
+                capture_output=True, text=True)
+            self.assertEqual(strict.returncode, 1)
+            self.assertEqual(json.loads(strict.stdout)["status"], "coverage-gaps")
+            plain = subprocess.run(
+                [sys.executable, str(SCRIPTS / "design_io.py"), "validate", str(path)],
+                capture_output=True, text=True)
+            self.assertEqual(plain.returncode, 0, "a gap is a warning without the flag")
 
 
 class InstallScriptTests(unittest.TestCase):

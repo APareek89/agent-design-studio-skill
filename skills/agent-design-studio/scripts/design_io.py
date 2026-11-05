@@ -505,6 +505,7 @@ def read_only_risk_gaps(design):
     return [name for name, pattern in READ_ONLY_RISK_FAMILIES if not re.search(pattern, text)]
 
 
+MAX_TASK_DEPTH = 2
 CONTEXT_EXPECTATIONS = (
     ("COV1", "Business decision and boundary", r"decision|boundar|goal|purpose|objective|problem"),
     ("COV2", "Actors and decision owners", r"actor|owner|people|role|user|customer|staff|who |stakeholder"),
@@ -1060,8 +1061,11 @@ def validate_design(design, schemas=None):
             seen.add(cursor)
             cursor = tasks[cursor]["data"]["parentId"]
             depth += 1
-            if depth > 2:
-                _issue(errors, p, "Task depth exceeds overall job -> task -> subtask.")
+            if depth > MAX_TASK_DEPTH:
+                _issue(errors, p,
+                       "Task depth %d exceeds the limit of %d levels (overall job -> task -> subtask). "
+                       "Flatten this branch or move the detail into the leaf's examples."
+                       % (depth + 1, MAX_TASK_DEPTH + 1))
                 break
     for leaf in leaves:
         if not any(leaf["id"] in c["data"]["taskIds"] for c in comps.values()):

@@ -382,7 +382,8 @@ class DesignTests(unittest.TestCase):
         b["id"] = "T1.1.1"
         b["data"].update(parentId="T1.1", mode="leaf")
         tasks.extend([a, b])
-        self.assertIn("depth exceeds", self.messages())
+        # The message names the limit, so an author knows what to flatten to.
+        self.assertIn("exceeds the limit of 3 levels", self.messages())
 
     def test_missing_links_component_coverage_and_canonical_task_consistency(self):
         self.design["stages"]["components"]["items"][0]["data"]["taskIds"] = ["NO_TASK"]

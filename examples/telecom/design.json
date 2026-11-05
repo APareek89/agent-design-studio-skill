@@ -5,7 +5,7 @@
   "assumptions": [
     {
       "id": "H1",
-      "statement": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review.",
+      "statement": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review.",
       "why": "A safe narrow first release needs an explicit rule.",
       "owner": "Billing policy owner",
       "validation": "Approve currency, tax, rounding, eligibility, caps, overlapping incidents and legal treatment.",
@@ -806,7 +806,7 @@
               "W12"
             ],
             "decision": true,
-            "example": "CUS1 active CON1, one-day outage: W1\u2192W2\u2192W3\u2192W4\u2192W8\u2192W9\u2192W11\u2192W13."
+            "example": "CUS1 active CON1, one-day outage: W1→W2→W3→W4→W8→W9→W11→W13."
           }
         },
         {
@@ -1340,7 +1340,7 @@
           "data": {
             "componentId": "C3",
             "tier": "small",
-            "rationale": "One W3 invocation for COMPLETE evidence; upper-bound cost assumes all cases reach W3. Small structured model is proposed; standard tier only if held-out evidence precision beats small after prompt fixes. Reasoning tier rejected: no authority or open planning needed. Max2 attempts; 10s timeout each then cited code template. H5 expected calls 1\u00d7(1+0.10)=1.10, worst2. At 2000 input and 300 output tokens, expected per case 1.10\u00d7(2000\u00d7$1+300\u00d7$4)/1e6=$0.00352; worst $0.0064. At 10000 cases/month=$35.20 model-only. Unknown provider prices remain H5 assumptions. Excludes database, tools, humans, network, retries in provider billing beyond declared attempts; 20s peak model budget plus read/post latency, human48h separate.",
+            "rationale": "One W3 invocation for COMPLETE evidence; upper-bound cost assumes all cases reach W3. Small structured model is proposed; standard tier only if held-out evidence precision beats small after prompt fixes. Reasoning tier rejected: no authority or open planning needed. Max2 attempts; 10s timeout each then cited code template. H5 expected calls 1×(1+0.10)=1.10, worst2. At 2000 input and 300 output tokens, expected per case 1.10×(2000×$1+300×$4)/1e6=$0.00352; worst $0.0064. At 10000 cases/month=$35.20 model-only. Unknown provider prices remain H5 assumptions. Excludes database, tools, humans, network, retries in provider billing beyond declared attempts; 20s peak model budget plus read/post latency, human48h separate.",
             "fineTuneWhen": "Only repeated labelled explanation failures after retrieval/prompt improvements; require held-out precision non-inferiority, zero new authority claims and net cost/latency gain before tuning.",
             "callsPerCase": 1.1,
             "inputTokens": 2000,
@@ -1369,7 +1369,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -1430,7 +1430,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -1493,7 +1493,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -1555,7 +1555,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -1615,7 +1615,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -1675,7 +1675,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -1735,7 +1735,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -1796,7 +1796,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -1859,7 +1859,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -1927,7 +1927,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -1989,7 +1989,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2048,7 +2048,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2103,7 +2103,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2158,7 +2158,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2211,7 +2211,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2266,7 +2266,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2318,7 +2318,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2373,7 +2373,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2429,7 +2429,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2484,7 +2484,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2538,7 +2538,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2594,7 +2594,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2648,7 +2648,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2704,7 +2704,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2759,7 +2759,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2816,7 +2816,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2874,7 +2874,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2927,7 +2927,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -2985,7 +2985,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3222,7 +3222,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3278,7 +3278,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3334,7 +3334,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3397,7 +3397,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3450,7 +3450,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3503,7 +3503,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3556,7 +3556,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3609,7 +3609,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3662,7 +3662,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3715,7 +3715,7 @@
             {
               "type": "hypothesis",
               "file": "H1",
-              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units \u00d7 verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
+              "passage": "Proposed pilot policy P1: verified outage credits equal floor(monthly recurring service charge in minor units × verified outage seconds / billing-period seconds), capped at the remaining recurring charge. Auto cap is 1000 minor units INR per incident; poor speed without a verified service breach and billing errors require supervisor review."
             },
             {
               "type": "hypothesis",
@@ -3780,7 +3780,7 @@
               "EV23 executes every EV1-EV20 and EV24-EV26; H1-H4 evidence verified before live launch.",
               "Record guards use required direct string IDs, actual workflow input bindings and authoritative conditional producer fields; no timeout proof. EV24-EV26 pass."
             ],
-            "buildInstructions": "Implement milestones01-03 only. Persist Case, CreditPlan, Approval, Operation, Inbox, Notice and Audit tables with versioned transitions. C1/C2/C7/C8/C9 adapters must be verified, not invented existing APIs. Contract fields and enums are in design.json; fixtures maintained in eval-set.json. Add transactional outbox and durable UTC timers; internal case/notice state is one workflow transaction, separate from external financial effect. Inject crashes between reserve/post/readback and callback dedup. Keep original event key locked during unknown commits even beyond24h and portal-session expiry. Map actual provider errors to C8 enum; malformed success becomes UNKNOWN_COMMIT. Deploy read-only Shadow then Assist; enable Pilot only through R4 gate. All deployment, real business actions and messages require separate authorization. No PDF in this authoring subtask. After actual PDF delivery, ask exactly once: \u201cWould you also like a visual HTML version in the same ten-stage structure as the app?\u201d Generate HTML only after opt-in. C10 receives direct C8/C9 committed postingId projections; C11 receives direct C1 authoritative caseRecordId. Never fabricate these fields or add model outputs. EV24 tests separate-incident invoice entitlement locking; EV25 explicit service clarification; EV26 signed amount tampering."
+            "buildInstructions": "Implement milestones01-03 only. Persist Case, CreditPlan, Approval, Operation, Inbox, Notice and Audit tables with versioned transitions. C1/C2/C7/C8/C9 adapters must be verified, not invented existing APIs. Contract fields and enums are in design.json; fixtures maintained in eval-set.json. Add transactional outbox and durable UTC timers; internal case/notice state is one workflow transaction, separate from external financial effect. Inject crashes between reserve/post/readback and callback dedup. Keep original event key locked during unknown commits even beyond24h and portal-session expiry. Map actual provider errors to C8 enum; malformed success becomes UNKNOWN_COMMIT. Deploy read-only Shadow then Assist; enable Pilot only through R4 gate. All deployment, real business actions and messages require separate authorization. No PDF in this authoring subtask. After actual PDF delivery, ask exactly once: “Would you also like a visual HTML version in the same ten-stage structure as the app?” Generate HTML only after opt-in. C10 receives direct C8/C9 committed postingId projections; C11 receives direct C1 authoritative caseRecordId. Never fabricate these fields or add model outputs. EV24 tests separate-incident invoice entitlement locking; EV25 explicit service clarification; EV26 signed amount tampering."
           }
         }
       ],
@@ -7224,5 +7224,12 @@
         "Preserve H1-H4 live-launch blockers and all retained pending owners."
       ]
     }
-  ]
+  ],
+  "research": {
+    "performed": false,
+    "tool": "",
+    "unavailableReason": "This example was authored before the skill ran a web-research pass, so no search tool was offered and no finding is recorded. Every tool name in the design is therefore an unverified candidate, not a checked one.",
+    "queries": [],
+    "findings": []
+  }
 }
