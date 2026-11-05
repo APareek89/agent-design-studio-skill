@@ -39,6 +39,14 @@ GROUPS = {row[0]: row[2] for row in STEPS}
 CAPTIONS = {row[0]: row[4] for row in STEPS}
 
 
+def _fonts_module():
+    path = Path(__file__).with_name("design_fonts.py")
+    spec = importlib.util.spec_from_file_location("agent_design_studio_fonts", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def _io_module():
     path = Path(__file__).with_name("design_io.py")
     spec = importlib.util.spec_from_file_location("agent_design_studio_pdf_io", path)
@@ -215,6 +223,26 @@ def _assumptions(design):
     return ledger, extra
 
 
+def _record_font_warnings(out, warnings):
+    """Add the font warnings to the validation.json beside the PDF, if there is one.
+
+    A missing glyph is never silent: it is a '?' in the page and a line here.
+    """
+    if not warnings:
+        return
+    manifest = Path(out).parent / "validation.json"
+    if not manifest.is_file():
+        return
+    try:
+        report = json.loads(manifest.read_text(encoding="utf-8"))
+        existing = [w for w in report.get("warnings", []) if not str(w).startswith("PDF fonts:")]
+        report["warnings"] = existing + list(warnings)
+        manifest.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    except (OSError, ValueError):
+        # The warning still reaches the caller through the command result.
+        pass
+
+
 def create_pdf(design_path, review_path, out, mode=None):
     D = _io_module()
     design_path = Path(design_path)
@@ -251,19 +279,10 @@ def create_pdf(design_path, review_path, out, mode=None):
         raise ValueError("Unknown PDF mode.")
     R = _libraries()
     colors = R.colors
-    body_font, bold_font, mono_font = "Helvetica", "Helvetica-Bold", "Courier"
-    fontdir = Path(R.reportlab.__file__).parent / "fonts"
-    if (fontdir / "Vera.ttf").is_file() and (fontdir / "VeraBd.ttf").is_file():
-        R.pdfmetrics.registerFont(R.TTFont("StudioBody", str(fontdir / "Vera.ttf")))
-        R.pdfmetrics.registerFont(R.TTFont("StudioBold", str(fontdir / "VeraBd.ttf")))
-        R.pdfmetrics.registerFontFamily(
-            "StudioBody",
-            normal="StudioBody",
-            bold="StudioBold",
-            italic="StudioBody",
-            boldItalic="StudioBold",
-        )
-        body_font, bold_font = "StudioBody", "StudioBold"
+    # Noto Sans and its per-script companions, so Devanagari, Arabic and CJK
+    # text renders instead of coming out as black squares.
+    fonts = _fonts_module().register()
+    body_font, bold_font, mono_font = fonts.body, fonts.bold, fonts.mono
     navy = colors.HexColor("#18324A")
     teal = colors.HexColor("#087F8C")
     muted = colors.HexColor("#566879")
@@ -340,9 +359,10 @@ def create_pdf(design_path, review_path, out, mode=None):
     story = []
 
     def p(text, style="body"):
-        # Only renderer-owned markup is interpreted. Every brief/card is escaped.
-        escaped = html.escape(_text(text), quote=False).replace("\n", "<br/>")
-        return R.Paragraph(escaped, styles[style])
+        # Only renderer-owned markup is interpreted. Every brief/card is escaped
+        # by fonts.markup, which also switches font per script.
+        base = bold_font if style in ("head", "title", "h1", "h2") else body_font
+        return R.Paragraph(fonts.markup(_text(text), base), styles[style])
 
     def add(text, style="body"):
         story.append(p(text, style))
@@ -350,10 +370,8 @@ def create_pdf(design_path, review_path, out, mode=None):
     def label(name, value, limit=700, style="body"):
         if value is None or value == "" or value == []:
             return
-        escaped_name = html.escape(name, quote=False)
-        escaped = html.escape(_readable(value, limit), quote=False).replace(
-            "\n", "<br/>"
-        )
+        escaped_name = fonts.markup(name, body_font)
+        escaped = fonts.markup(_readable(value, limit), body_font)
         story.append(
             R.Paragraph("<b>" + escaped_name + ":</b> " + escaped, styles[style])
         )
@@ -831,7 +849,7 @@ def create_pdf(design_path, review_path, out, mode=None):
         canvas.line(42, height - 34, width - 42, height - 34)
         canvas.setFillColor(muted)
         canvas.setFont(body_font, 7)
-        canvas.drawString(42, height - 25, _clip(design["title"], 90))
+        fonts.draw(canvas, 42, height - 25, _clip(design["title"], 90), 7, body_font)
         canvas.line(42, 32, width - 42, 32)
         canvas.drawString(42, 21, "Agent Design Studio | " + status + " | DESIGN ONLY")
         canvas.drawRightString(width - 42, 21, str(document.page))
@@ -860,6 +878,13 @@ def create_pdf(design_path, review_path, out, mode=None):
     # Exclusive creation also protects against a file appearing after preflight.
     with out.open("xb") as handle:
         handle.write(pdf_bytes)
+    warnings = list(fonts.warnings)
+    if not fonts.unicode:
+        warnings.append(
+            "PDF fonts: the Noto Sans family under skills/agent-design-studio/fonts/ was not found, so the PDF uses "
+            "ReportLab's Latin-1 base fonts and any non-Latin text was written as '?'."
+        )
+    _record_font_warnings(out, warnings)
     return {
         "ok": True,
         "status": rv["status"],
@@ -867,6 +892,7 @@ def create_pdf(design_path, review_path, out, mode=None):
         "file": str(out.resolve()),
         "pages": pages_count,
         "bytes": len(pdf_bytes),
+        "fontWarnings": warnings,
         "limitations": [
             "Readable summary; exact contracts and full machine fixtures remain canonical design.json/eval-set.json.",
             "This renderer executes no model,network or business controls.",

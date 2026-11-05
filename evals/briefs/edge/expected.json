@@ -1,0 +1,48 @@
+{
+  "note": "Expected briefProfile for each edge brief. The classifier is a heuristic, so only the fields that the brief unambiguously settles are asserted. S14 in score_run.py checks all seven.",
+  "briefs": {
+    "empty.md": {
+      "why": "Nothing to design from.",
+      "expect": {"length": "empty", "isAgentSystem": false, "suggestedMode": "lite"},
+      "signals": ["language", "thin"],
+      "stops": true
+    },
+    "vague.md": {
+      "why": "Four words; names an agent but no domain, user or system.",
+      "expect": {"language.code": "en", "length": "thin", "isAgentSystem": true, "suggestedMode": "lite"},
+      "signals": ["thin"],
+      "stops": false
+    },
+    "hindi.md": {
+      "why": "Devanagari script; the English keyword checks cannot be trusted on it.",
+      "expect": {"language.code": "hi", "language.script": "Devanagari", "shapeSignalsReliable": false, "gapCheckLanguage": "translation-required"},
+      "signals": ["language"],
+      "stops": false
+    },
+    "readonly.md": {
+      "why": "States outright that it never takes any action.",
+      "expect": {"language.code": "en", "writes": false, "isAgentSystem": true},
+      "signals": ["readOnly"],
+      "stops": false
+    },
+    "risky.md": {
+      "why": "Autonomous money movement with approvals explicitly forbidden.",
+      "expect": {"language.code": "en", "writes": true},
+      "signals": ["conflict"],
+      "conflicts": ["BC1", "BC4"],
+      "stops": false
+    },
+    "notagent.md": {
+      "why": "A nightly scraper that emails a CSV: no decision step.",
+      "expect": {"language.code": "en", "isAgentSystem": false, "suggestedMode": "lite"},
+      "signals": ["notAgent"],
+      "stops": false
+    },
+    "huge.md": {
+      "why": "60,000 words, far over the 6,000-word mark.",
+      "expect": {"length": "long", "suggestedMode": "standard"},
+      "signals": ["long"],
+      "stops": false
+    }
+  }
+}

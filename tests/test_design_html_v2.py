@@ -34,6 +34,10 @@ fixtures = importlib.util.module_from_spec(fixture_spec)
 fixture_spec.loader.exec_module(fixtures)
 
 SEEDS = ("telecom", "health-claims")
+# A design written to schema 1.0, or to 1.1 with no `presentation` block: the
+# reader layer is derived from the ten stages and must meet the same bar as an
+# authored one.
+DERIVED = ROOT / "evals/stress/out/13_no_presentation_1_1/design.json"
 VOID = {"br", "meta", "input", "hr", "path", "circle", "line", "rect", "use", "col", "wbr"}
 
 
@@ -167,6 +171,95 @@ class SeedViewTests(unittest.TestCase):
         self.assertNotIn("Next →", section(document, "review"))
         self.assertEqual(document.count('class="statusbar"'), len(design_html.VIEW_ORDER))
         self.assertIn('data-month-cost="', document)
+
+
+class DerivedReaderLayerTests(unittest.TestCase):
+    """The Decision brief built from the stages, with no presentation block.
+
+    The derived page used to cut design calls mid-sentence, list all eighteen
+    components as autonomy rows, print "(proposed) (proposed)", draw a KPI
+    arrow from a baseline it did not have, and repeat the title.
+    """
+
+    def setUp(self):
+        self.design = design_io.load_json(DERIVED)
+        self.review = design_io.load_json(ROOT / "examples/telecom/review.json")
+        self.assertNotIn("presentation", self.design, "this fixture must have no reader layer")
+        self.document = design_html.render_html(self.design, self.review)
+        self.brief = section(self.document, "brief")
+        self.text = re.sub(r"<[^>]+>", " ", self.brief)
+
+    def test_the_derived_page_says_it_is_derived(self):
+        self.assertIn("Reader layer derived", self.brief)
+
+    def test_nothing_in_the_derived_brief_is_cut_mid_sentence(self):
+        self.assertNotIn("...", self.text)
+        self.assertNotIn("\u2026", self.text)
+
+    def test_design_calls_come_from_decision_cards_and_keep_whole_sentences(self):
+        report = module("report_v2")
+        calls = report.derive_design_calls(self.design)
+        self.assertTrue(calls, "the telecom design records architecture and permission calls")
+        self.assertLessEqual(len(calls), 5)
+        for call in calls:
+            with self.subTest(call=call["choice"][:40]):
+                self.assertNotIn("...", call["choice"])
+                self.assertNotIn("...", call["rejected"])
+                self.assertIn(design_html.esc(design_html.plain(call["choice"])), self.brief)
+        categories = {f["data"].get("category") for f in self.design["stages"]["framework"]["items"]}
+        self.assertFalse(categories & {"data", "fit"} and any(
+            c["choice"].startswith(f["data"].get("choice", "\0")[:20])
+            for c in calls for f in self.design["stages"]["framework"]["items"]
+            if f["data"].get("category") in ("data", "fit")), "stack cards are not design calls")
+
+    def test_a_rejected_alternative_never_reads_as_a_cut_fragment(self):
+        self.assertNotRegex(self.text, r"rejected,\s*a\.")
+        for match in re.finditer(r"Rejected:\s*([^<]{0,200})", self.brief):
+            self.assertNotIn("...", match.group(1))
+
+    def test_autonomy_rows_are_action_classes_not_one_per_component(self):
+        rows = re.findall(r"<tr><td>(.*?)</td><td>(.*?)</td></tr>", self.brief, re.S)
+        components = len(self.design["stages"]["components"]["items"])
+        self.assertTrue(rows)
+        self.assertLess(len(rows), components, "autonomy is by action class, not by component")
+        self.assertLessEqual(len(rows), 8)
+        levels = {re.sub(r"<[^>]+>", "", level).strip().lower() for _, level in rows}
+        self.assertTrue(levels <= {"acts alone", "human decides", "suggests"}, levels)
+
+    def test_every_declared_write_action_is_its_own_autonomy_row(self):
+        actions = self.design["semantics"]["writeActions"]
+        self.assertTrue(actions)
+        for action in actions:
+            label = action["actionClass"].replace("_", " ")
+            self.assertIn(design_html.esc(label[:1].upper() + label[1:]), self.brief)
+
+    def test_an_owner_is_labelled_proposed_once(self):
+        self.assertNotIn("(proposed) (proposed)", self.document)
+        self.assertIn("(proposed)", self.brief)
+
+    def test_a_kpi_with_no_baseline_shows_a_target_or_says_see_definition(self):
+        self.assertNotRegex(self.brief, r'<span class="v">\s*\u2192')
+        for card in re.findall(r'<div class="kpimini">(.*?)</div></div>', self.brief, re.S):
+            value = re.search(r'<span class="v">(.*?)</span>', card, re.S)
+            self.assertTrue(value, card[:80])
+            shown = re.sub(r"<[^>]+>", "", value.group(1)).strip()
+            self.assertTrue(
+                "\u2192" in value.group(1) or shown.startswith("target:") or shown == "see definition",
+                shown)
+
+    def test_the_title_appears_once_on_the_derived_page(self):
+        self.assertNotIn(design_html.esc(self.design["title"]), self.text)
+        self.assertIn("Decision brief", self.brief)
+
+    def test_the_derived_document_is_balanced_and_has_no_external_asset(self):
+        balance = Balance(self.document)
+        self.assertEqual(balance.errors, 0, balance.stack[:5])
+        self.assertNotIn("http://", self.document.replace("http://www.w3.org", ""))
+
+    def test_every_view_still_renders_without_a_presentation_block(self):
+        for key in design_html.VIEW_ORDER:
+            with self.subTest(view=key):
+                self.assertTrue(section(self.document, key), key)
 
 
 class WrapTests(unittest.TestCase):

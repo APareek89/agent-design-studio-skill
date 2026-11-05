@@ -1,0 +1,1 @@
+A research assistant for analysts: answers questions from our internal reports, cites pages, never takes any action. 50 users. English only. No regulation.

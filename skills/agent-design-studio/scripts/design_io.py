@@ -365,6 +365,69 @@ def _intake_schema():
         },
         "additionalProperties": False,
     }
+    # What `design_intake.py classify` read from the brief before the questions
+    # were shaped. Heuristic: the host confirms it and may override it, and both
+    # the profile and the override are kept.
+    conflict = {
+        "type": "object",
+        "required": ["id", "rule", "briefAsks", "designKeeps"],
+        "properties": {
+            "id": {"type": "string", "minLength": 1, "maxLength": 20},
+            "rule": {"type": "string", "minLength": 1, "maxLength": 120},
+            "briefAsks": {"type": "string", "minLength": 1, "maxLength": 400},
+            "designKeeps": {"type": "string", "minLength": 1, "maxLength": 400},
+            "message": {"type": "string", "maxLength": 800},
+        },
+        "additionalProperties": False,
+    }
+    profile = {
+        "type": "object",
+        "required": ["language", "words", "length", "isAgentSystem", "writes", "realtime", "multiTenant"],
+        "properties": {
+            "language": {
+                "type": "object",
+                "required": ["code", "name"],
+                "properties": {
+                    "code": {"type": "string", "minLength": 2, "maxLength": 8},
+                    "name": {"type": "string", "minLength": 1, "maxLength": 40},
+                    "script": {"type": "string", "maxLength": 40},
+                    "confidence": {"enum": ["high", "medium", "low"]},
+                    "evidence": {"type": "string", "maxLength": 300},
+                },
+                "additionalProperties": False,
+            },
+            "words": {"type": "integer", "minimum": 0},
+            "length": {"enum": ["empty", "thin", "ok", "long"]},
+            "isAgentSystem": {"type": "boolean"},
+            "notAgentHints": {"type": "array", "items": {"type": "string", "maxLength": 80}, "maxItems": 10},
+            "writes": {"type": "boolean"},
+            "realtime": {"type": "boolean"},
+            "multiTenant": {"type": "boolean"},
+            "briefConflicts": {"type": "array", "items": conflict, "maxItems": 10},
+            "signals": {
+                "type": "array",
+                "maxItems": 12,
+                "items": {
+                    "type": "object",
+                    "required": ["id", "title", "detail"],
+                    "properties": {
+                        "id": {"type": "string", "minLength": 1, "maxLength": 40},
+                        "title": {"type": "string", "minLength": 1, "maxLength": 80},
+                        "detail": {"type": "string", "minLength": 1, "maxLength": 1200},
+                    },
+                    "additionalProperties": False,
+                },
+            },
+            "messages": {"type": "array", "items": {"type": "string", "maxLength": 1200}, "maxItems": 12},
+            "suggestedMode": {"enum": ["lite", "standard", "full"]},
+            "gapCheckLanguage": {"type": "string", "maxLength": 40},
+            "shapeSignalsReliable": {"type": "boolean"},
+            "confirmed": {"type": "boolean"},
+            "overriddenBy": {"type": "string", "maxLength": 400},
+            "note": {"type": "string", "maxLength": 600},
+        },
+        "additionalProperties": False,
+    }
     return {
         "type": "object",
         "required": ["asked", "tool", "questions"],
@@ -372,6 +435,7 @@ def _intake_schema():
             "asked": {"type": "boolean"},
             "tool": {"type": "string", "maxLength": 120},
             "questions": {"type": "array", "items": question, "maxItems": 12},
+            "briefProfile": profile,
         },
         "additionalProperties": False,
     }
@@ -598,6 +662,34 @@ def validate_design(design, schemas=None):
                     _issue(errors, f"$.intake.questions[{i}].answer", "A user-sourced answer must carry the user's words.")
                 else:
                     intake_answers.add(q["answer"])
+        # A brief that asks the design to drop a control the skill keeps must be
+        # answered in the open, not quietly redesigned around.
+        profile = intake.get("briefProfile")
+        if isinstance(profile, dict):
+            conflicts = profile.get("briefConflicts") or []
+            if conflicts:
+                scope_text = " ".join(
+                    c["title"] + " " + c["data"].get("field", "") + " " + c["data"].get("value", "")
+                    for c in design["stages"]["context"]["items"]
+                    if re.search(r"trigger|scope", c["title"] + " " + c["data"].get("field", ""), re.I)
+                ).lower()
+                pres = design.get("presentation") if isinstance(design.get("presentation"), dict) else {}
+                brief_text = " ".join(
+                    [str(pres.get("systemSentence", "")), str(pres.get("scopeSummary", ""))]
+                    + [str(c.get("choice", "")) + " " + str(c.get("because", "")) for c in pres.get("designCalls", [])]
+                ).lower()
+                for i, conflict in enumerate(conflicts):
+                    cid = conflict.get("id", str(i))
+                    if "override" not in scope_text:
+                        _issue(errors, "$.stages.context",
+                               "The brief conflicts with a rule the design keeps (" + cid + ": " + conflict["rule"]
+                               + "). The context card 'Trigger and first-release scope' must say what the brief asks, "
+                                 "what the design keeps instead and that an override needs a named owner.")
+                        break
+                if pres and "override" not in brief_text:
+                    _issue(errors, "$.presentation",
+                           "The brief conflicts with a rule the design keeps; the Decision brief must say what the "
+                           "brief asks, what the design keeps instead and that an override needs a named owner.")
     research = design.get("research")
     findings = {}
     if isinstance(research, dict):

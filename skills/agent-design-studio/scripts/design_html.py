@@ -217,7 +217,7 @@ class Model:
         self.finding = {f["id"]: f for f in (self.research or {}).get("findings", []) if isinstance(f, dict)}
         pres = design.get("presentation")
         self.derived = not isinstance(pres, dict)
-        self.pres = pres if isinstance(pres, dict) else {}
+        self.pres = pres if isinstance(pres, dict) else report.derive_presentation(design)
         self.brief = report.brief_data(design)
         self.task_labels = self.pres.get("taskLabels", {}) or {}
         self.node_labels = self.pres.get("workflowLabels", {}) or {}
@@ -404,6 +404,45 @@ def parse_range(text):
     return baseline, target
 
 
+def sentence_end(text):
+    """End a derived fragment with one full stop, never two."""
+    text = str(text).strip()
+    return text if not text or text[-1] in ".!?:" else text + "."
+
+
+UNIT = (r"%|percent|pp|ms|s|sec|secs|seconds?|min|mins|minutes?|hours?|hrs?|days?|weeks?|months?|"
+        r"x|bps|usd|eur|gbp|inr")
+# "target: 4 hours" and "goal 95%" are targets. A bare number inside a formula
+# ("reopened within 7d / complaints receiving a decision") is not.
+TARGET_NAMED = re.compile(r"(?:target|goal|aim|sla)\s*(?:of|:|=|is)?\s*"
+                          r"([\u2264\u2265<>]?\s*\d[\d,.]*\s*(?:" + UNIT + r")?)", re.I)
+TARGET_BOUNDED = re.compile(r"(?:under|below|over|above|at least|at most|within|no more than|"
+                            r"[\u2264\u2265<>]=?)\s*"
+                            r"(\d[\d,.]*\s*(?:" + UNIT + r"))", re.I)
+TARGET_PERCENT = re.compile(r"(\d[\d,.]*\s*%)")
+
+
+def parse_target(text):
+    """The target number from a KPI that states no baseline.
+
+    Only a number the design presents as a target counts. "Mean hours first
+    contact to closure" has none, so the card says "see definition" rather
+    than drawing an arrow from nothing, and a number inside a definition
+    formula is not mistaken for one.
+    """
+    text = str(text or "")
+    # Everything after "=" is the metric's definition, not its target.
+    head = text.split("=")[0]
+    for pattern, pool in ((TARGET_NAMED, text), (TARGET_BOUNDED, head), (TARGET_PERCENT, head)):
+        match = pattern.search(pool)
+        if not match:
+            continue
+        value = re.sub(r"\s+", " ", match.group(1)).strip(" ,;.")
+        if value and len(value) <= 32:
+            return value
+    return ""
+
+
 def must_hold(pass_rule):
     """Assertions from a golden pass rule; prose rules stay whole."""
     try:
@@ -428,11 +467,22 @@ def must_hold(pass_rule):
 def view_brief(m):
     b = m.brief
     p = m.pres
-    calls = "".join(
-        f'<li class="panel"><span class="n">{i}</span><div>{esc(plain(c["choice"]))}'
-        f'<div class="rej"><b>Rejected:</b> {esc(plain(c["rejected"]).rstrip(". "))}. {esc(plain(c["why"]))}</div></div></li>'
-        for i, c in enumerate(b["calls"], 1)
-    )
+    def call_item(i, c):
+        rejected = plain(c.get("rejected", "")).strip()
+        why = plain(c.get("why", "")).strip()
+        detail = ""
+        if rejected:
+            detail = f'<b>Rejected:</b> {esc(sentence_end(rejected))}'
+        if why:
+            detail += (" " if detail else "") + esc(sentence_end(why))
+        detail = f'<div class="rej">{detail}</div>' if detail else ""
+        return (f'<li class="panel"><span class="n">{i}</span><div>{esc(plain(c["choice"]))}'
+                f'{detail}</div></li>')
+
+    calls = "".join(call_item(i, c) for i, c in enumerate(b["calls"], 1))
+    if not calls:
+        calls = ('<li class="panel"><div class="mini">No framework card records an architecture, '
+                 "orchestration or permission decision.</div></li>")
     autonomy = "".join(
         f"<tr><td>{esc(plain(a['action']))}</td><td>{esc(LEVEL_TEXT.get(a['level'], a['level']))}</td></tr>"
         for a in b["autonomy"]
@@ -440,7 +490,12 @@ def view_brief(m):
     kpis = ""
     for r in [x for x in m.rollout if x["data"]["category"] == "kpi"]:
         span = parse_range(r["data"]["businessKpi"])
-        value = f'{esc(span[0])} → <b>{esc(span[1])}</b>' if span else '<span class="mini">see definition</span>'
+        if span:
+            value = f'{esc(span[0])} → <b>{esc(span[1])}</b>'
+        else:
+            target = parse_target(r["data"]["businessKpi"])
+            value = (f'target: <b>{esc(target)}</b>' if target
+                     else '<span class="mini">see definition</span>')
         kpis += f'<div class="kpimini"><span>{esc(plain(r["title"]))}</span><span class="v">{value}</span><span class="df">{esc(plain(r["data"]["businessKpi"]))}</span></div>'
     if not kpis:
         kpis = '<p class="mini">No KPI card in the rollout stage.</p>'
@@ -452,7 +507,7 @@ def view_brief(m):
         for f in top
     )
     blockers = "".join(
-        f'<div class="blk"><span class="mono">{esc(h["id"])}</span><span>{esc(plain(h["statement"]))}<span class="o">Owner: {esc(h["owner"])} (proposed)</span></span></div>'
+        f'<div class="blk"><span class="mono">{esc(h["id"])}</span><span>{esc(plain(h["statement"]))}<span class="o">Owner: {esc(report.strip_proposed(h["owner"]))} (proposed)</span></span></div>'
         for h in b["blockers"]
     ) or '<p class="mini">No launch blocker recorded. Confirm missing facts before launch.</p>'
     cost = b["cost"]
@@ -468,7 +523,7 @@ def view_brief(m):
         else ""
     )
     return (
-        head(m.d["title"], "Page 1 of the report. Everything below is a proposal built from one brief.")
+        head("Decision brief", "Page 1 of the report. Everything below is a proposal built from one brief.")
         + f'<p class="sentence">{esc(plain(b["sentence"]))}</p>'
         + scope
         + derived

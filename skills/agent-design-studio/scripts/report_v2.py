@@ -1,6 +1,7 @@
 """Compact, vector PDF reports. Full contracts remain in linked companion files."""
 from __future__ import annotations
 import html
+import importlib.util
 import io
 import json
 import math
@@ -59,20 +60,139 @@ def sentence(value, words=22):
     return ' '.join(text.split()[:words]).rstrip('.,;:') + '...'
 
 
+# A design written to schema 1.0, or to 1.1 without a `presentation` block, has
+# no reader layer of its own, so one is derived from the ten stages. Derived
+# content obeys the same rules as authored content: nothing is cut mid-sentence,
+# nothing is labelled twice, and a number is only shown when the design has one.
+
+# Framework categories that record a design call worth putting on page one.
+# `data` and `fit` cards describe the stack, not a decision between options.
+DESIGN_CALL_CATEGORIES = ("architecture", "orchestration", "permission")
+
+# Workflow node kinds collapsed into the action classes a reader cares about.
+# The autonomy table answers "who acts and who decides", which is a question
+# about classes of action, not about the 18 components that implement them.
+AUTONOMY_CLASSES = {
+    "human_wait": ("Decisions that wait for a person", "human decides"),
+    "approval": ("Approvals", "human decides"),
+    "write": ("Writes to a system of record", "acts alone"),
+    "validation": ("Checks in code", "acts alone"),
+    "record_id_guard": ("Checks in code", "acts alone"),
+    "reconcile": ("Checks in code", "acts alone"),
+    "requester_notice": ("Notices to the requester", "acts alone"),
+    "completion": ("Closing the case", "acts alone"),
+    "start": ("Intake", "acts alone"),
+    "other": ("Drafting and classification", "suggests"),
+}
+AUTONOMY_ORDER = ("human decides", "acts alone", "suggests")
+PROPOSED_SUFFIX = re.compile(r"\s*\(proposed\)\s*$", re.I)
+
+
+def strip_proposed(value):
+    """Remove a trailing '(proposed)' so a renderer can add its own."""
+    return PROPOSED_SUFFIX.sub("", str(value)).rstrip()
+
+
+def first_sentence(value):
+    """The first whole sentence, never a cut one.
+
+    `sentence()` clips to a word count and appends '...', which is right for a
+    diagram label and wrong for a design call: it produced calls that stopped
+    mid-clause and rejected alternatives that read 'rejected, a.'.
+    """
+    text = re.sub(r"\s+", " ", plain(value)).strip()
+    if not text:
+        return ""
+    match = re.search(r"(?<=[.!?])\s", text)
+    return text[: match.start()].strip() if match else text
+
+
+def humanise(value):
+    """'service_credit' -> 'Service credit'."""
+    text = re.sub(r"[_\-]+", " ", str(value)).strip()
+    return text[:1].upper() + text[1:] if text else text
+
+
+def derive_design_calls(design):
+    """Design calls from the framework cards that record a decision.
+
+    Takes the whole `choice` sentence and the first rejected alternative,
+    uncut. A card with no alternative still appears: the choice is the point.
+    """
+    calls = []
+    for item in design["stages"]["framework"]["items"]:
+        data = item["data"]
+        if data.get("category") not in DESIGN_CALL_CATEGORIES:
+            continue
+        alternatives = [a for a in data.get("alternatives", []) if str(a).strip()]
+        calls.append({
+            "choice": first_sentence(data.get("choice", "")) or plain(item["title"]),
+            "rejected": first_sentence(alternatives[0]) if alternatives else "",
+            "why": first_sentence(data.get("tradeoffs", "")),
+        })
+        if len(calls) == 5:
+            break
+    return calls
+
+
+def derive_autonomy(design):
+    """Autonomy by class of action, from the workflow graph.
+
+    Rows come from the workflow's nodes grouped by `semantics.writeActions` and
+    by node kind, never from the component list: a reader wants the handful of
+    things the system does, not a row per building block.
+    """
+    semantics = design.get("semantics") if isinstance(design.get("semantics"), dict) else {}
+    kinds = {n["id"]: n.get("kind", "other") for n in semantics.get("nodes", []) if isinstance(n, dict)}
+    write_actions = [w for w in semantics.get("writeActions", []) if isinstance(w, dict)]
+    named_writes = {node for w in write_actions for node in w.get("nodeIds", [])}
+
+    rows, seen = [], set()
+    # Every declared write action is its own row: this is what the system does
+    # to the outside world.
+    for action in write_actions:
+        label = humanise(action.get("actionClass", "write"))
+        if label.lower() in seen:
+            continue
+        seen.add(label.lower())
+        rows.append({"action": label, "level": "acts alone"})
+    # The rest of the graph, collapsed by kind.
+    for node in design["stages"]["workflow"]["items"]:
+        if node["id"] in named_writes:
+            continue
+        label, level = AUTONOMY_CLASSES.get(kinds.get(node["id"], "other"), AUTONOMY_CLASSES["other"])
+        if label.lower() in seen:
+            continue
+        seen.add(label.lower())
+        rows.append({"action": label, "level": level})
+    rows.sort(key=lambda r: AUTONOMY_ORDER.index(r["level"]) if r["level"] in AUTONOMY_ORDER else 9)
+    return rows
+
+
+def derive_presentation(design):
+    """The reader layer for a design that carries none of its own.
+
+    Returns the same shape as an authored `presentation` block, so every
+    renderer and every check downstream treats it identically.
+    """
+    return {
+        "systemSentence": first_sentence(design.get("brief", "")) or plain(design["title"]),
+        "designCalls": derive_design_calls(design),
+        "autonomy": derive_autonomy(design),
+        "scopeSummary": "",
+        "taskLabels": {},
+        "workflowLabels": {},
+        "derived": True,
+    }
+
+
 def brief_data(design):
-    p = design.get('presentation', {})
-    calls = p.get('designCalls', [])
-    if not calls:
-        calls = [{'choice': sentence(x['data']['choice'], 12),
-                  'rejected': sentence('; '.join(x['data']['alternatives']), 10),
-                  'why': sentence(x['data']['tradeoffs'], 12)}
-                 for x in design['stages']['framework']['items']][:5]
-    autonomy = p.get('autonomy', [])
-    if not autonomy:
-        autonomy = [{'action': sentence(x['title'], 8),
-                     'level': 'suggests' if x['data']['group'] == 'Agents (LLM)' else
-                              'human decides' if x['data']['group'] == 'Code: human triggers' else 'acts alone'}
-                    for x in design['stages']['components']['items']]
+    authored = design.get("presentation")
+    authored = authored if isinstance(authored, dict) else {}
+    derived = derive_presentation(design) if not authored else {}
+    p = authored or derived
+    calls = authored.get("designCalls") or derived.get("designCalls") or []
+    autonomy = authored.get("autonomy") or derived.get("autonomy") or []
     risk = sorted(design['stages']['fmea']['items'],
                   key=lambda x: math.prod(x['data'][k] for k in ('severity','occurrence','detection')), reverse=True)
     cost = sum(x['data']['callsPerCase'] * (x['data']['inputTokens'] * x['data']['inputPrice'] +
@@ -80,10 +200,10 @@ def brief_data(design):
                for x in design['stages']['models']['items'])
     priced = all(x['data']['inputPrice'] > 0 and x['data']['outputPrice'] > 0
                  for x in design['stages']['models']['items'])
-    return {'sentence': p.get('systemSentence', sentence(design['title'], 20)), 'calls': calls,
+    return {'sentence': p.get('systemSentence') or sentence(design['title'], 20), 'calls': calls,
             'autonomy': autonomy, 'risks': risk[:5],
             'blockers': [h for h in design['assumptions'] if h['launchBlocker']],
-            'cost': cost, 'priced': priced}
+            'cost': cost, 'priced': priced, 'derived': not authored}
 
 
 class Report:
@@ -95,6 +215,13 @@ class Report:
         from reportlab.platypus import Paragraph
         self.colors, self.Paragraph, self.Style = colors, Paragraph, ParagraphStyle
         self.design, self.review, self.mode = design, review, mode
+        # Noto Sans and its per-script companions: Devanagari, Arabic and CJK
+        # text renders instead of coming out as black squares.
+        spec = importlib.util.spec_from_file_location(
+            'studio_fonts', Path(__file__).with_name('design_fonts.py'))
+        fonts_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(fonts_module)
+        self.fonts = fonts_module.register()
         self.buf = io.BytesIO()
         self.c = canvas.Canvas(self.buf, pagesize=A4, pageCompression=1)
         self.c.setTitle(design['title'])
@@ -104,13 +231,14 @@ class Report:
         self.y, self.pages = self.top, 0
         self.styles = {name: ParagraphStyle(name, fontName=font, fontSize=size, leading=leading,
                        textColor=colors.HexColor('#18324A'), splitLongWords=True)
-                       for name, font, size, leading in [('body','Helvetica',10,14), ('small','Helvetica',8.3,11),
-                                                        ('title','Helvetica-Bold',20,24), ('head','Helvetica-Bold',12,16)]}
+                       for name, font, size, leading in [('body',self.fonts.body,10,14), ('small',self.fonts.body,8.3,11),
+                                                        ('title',self.fonts.bold,20,24), ('head',self.fonts.bold,12,16)]}
 
     def text(self, text, style='body', width=None, x=None):
         x = self.left if x is None else x
         width = self.right-x if width is None else width
-        para = self.Paragraph(html.escape(str(text)).replace('\n','<br/>'), self.styles[style])
+        base = self.fonts.bold if style in ('title','head') else self.fonts.body
+        para = self.Paragraph(self.fonts.markup(str(text), base), self.styles[style])
         _, height = para.wrap(width, 1000)
         if self.y-height < self.bottom:
             raise ValueError(f'Page {self.pages+1} is too dense near {str(text)[:60]!r}; shorten the summary or use full mode. No content was silently hidden.')
@@ -125,7 +253,7 @@ class Report:
         from reportlab.platypus import Table, TableStyle
         widths = widths or [(self.right-self.left)/len(headers)]*len(headers)
         def cell(v, bold=False):
-            txt = html.escape(str(v)).replace('\n','<br/>')
+            txt = self.fonts.markup(str(v), self.fonts.body)
             return self.Paragraph(('<b>'+txt+'</b>') if bold else txt, self.styles['small' if small else 'body'])
         cells = [[cell(v,True) for v in headers]]+[[cell(v) for v in row] for row in rows]
         tab = Table(cells,colWidths=widths,hAlign='LEFT')
@@ -151,7 +279,7 @@ class Report:
         self.c.setStrokeColor(self.colors.HexColor('#D9E3EB'))
         self.c.line(self.left,35,self.right,35)
         self.c.setFillColor(self.colors.HexColor('#566879'))
-        self.c.setFont('Helvetica',8)
+        self.c.setFont(self.fonts.body,8)
         self.c.drawString(self.left,22,'Agent Design Studio | '+self.mode+' | DESIGN ONLY')
         self.c.drawRightString(self.right,22,str(self.pages))
         self.c.showPage(); self.y=self.top
@@ -163,9 +291,10 @@ class Report:
             c.drawPath(p,fill=1,stroke=1)
         else:
             c.roundRect(x,y,w,h,5,fill=1,stroke=1)
-        c.setFillColor(self.colors.HexColor('#18324A')); c.setFont('Helvetica',8.5)
+        c.setFillColor(self.colors.HexColor('#18324A')); c.setFont(self.fonts.body,8.5)
         for i,line in enumerate(lines):
-            c.drawCentredString(x+w/2,y+h/2+(len(lines)-1)*5-i*10,line)
+            # Per-script fonts, so a node label in Hindi is not a row of boxes.
+            self.fonts.draw(c,x+w/2,y+h/2+(len(lines)-1)*5-i*10,line,8.5,self.fonts.body,align='centre')
 
     def arrow(self,x1,y1,x2,y2):
         c=self.c; c.setLineWidth(.7); c.setStrokeColor(self.colors.HexColor('#8BA1B1'))
@@ -269,7 +398,7 @@ class Report:
     def decision(self):
         data=brief_data(self.design)
         old_head=self.styles['head']
-        self.styles['head']=self.Style('BriefHead',fontName='Helvetica-Bold',fontSize=10,leading=12,textColor=self.colors.HexColor('#18324A'))
+        self.styles['head']=self.Style('BriefHead',fontName=self.fonts.bold,fontSize=10,leading=12,textColor=self.colors.HexColor('#18324A'))
         self.text(plain(self.design['title']),'title')
         self.heading('The system in one sentence'); self.text(plain(data['sentence']))
         self.heading('Key design calls')
@@ -392,6 +521,19 @@ class Report:
         self.finish_page()
 
 
+def _record_font_warnings(out,warnings):
+    """Add the font warnings to the validation.json beside the PDF, if there is one."""
+    if not warnings:return
+    manifest=Path(out).parent/'validation.json'
+    if not manifest.is_file():return
+    try:
+        report=json.loads(manifest.read_text(encoding='utf-8'))
+        report['warnings']=[w for w in report.get('warnings',[]) if not str(w).startswith('PDF fonts:')]+list(warnings)
+        manifest.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    except (OSError,ValueError):
+        pass
+
+
 def render(design,review,out,mode='standard'):
     if mode not in ('lite','standard'):raise ValueError('Compact PDF mode must be lite or standard.')
     r=Report(design,review,mode); r.build(); r.c.save()
@@ -399,4 +541,9 @@ def render(design,review,out,mode='standard'):
     if r.pages>limit:raise ValueError(f'{mode} PDF exceeds {limit} pages; move detailed appendices into companions.')
     path=Path(out); path.parent.mkdir(parents=True,exist_ok=True)
     with path.open('xb') as handle:handle.write(r.buf.getvalue())
-    return {'ok':True,'status':review['status'],'mode':mode,'pages':r.pages,'bytes':path.stat().st_size,'file':str(path.resolve()),'designOnly':True,'diagrams':['task-tree-vector','workflow-vector','fmea-heat-table']+(['eval-coverage-matrix'] if mode=='standard' else [])}
+    warnings=list(r.fonts.warnings)
+    if not r.fonts.unicode:
+        warnings.append("PDF fonts: the Noto Sans family under skills/agent-design-studio/fonts/ was not found, so the "
+                        "PDF uses ReportLab's Latin-1 base fonts and any non-Latin text was written as '?'.")
+    _record_font_warnings(path,warnings)
+    return {'ok':True,'status':review['status'],'mode':mode,'pages':r.pages,'bytes':path.stat().st_size,'file':str(path.resolve()),'designOnly':True,'fontWarnings':warnings,'diagrams':['task-tree-vector','workflow-vector','fmea-heat-table']+(['eval-coverage-matrix'] if mode=='standard' else [])}

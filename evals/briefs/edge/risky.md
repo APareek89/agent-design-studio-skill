@@ -1,0 +1,1 @@
+Design a trading agent that executes equity orders autonomously up to USD 1M per order based on news sentiment. No human approval. Volume 10,000 orders/day.

@@ -1,0 +1,1 @@
+Write a Python script that scrapes competitor prices nightly and emails me a CSV.
