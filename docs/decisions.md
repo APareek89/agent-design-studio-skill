@@ -278,3 +278,57 @@ consecutive runs."** Neither condition was reached: the work was eleven fixes
 done once each, and S11, S13 and S15 are open, so an all-target pass has not
 happened once. `evals/v1.3-scorecard.md` records what was measured and what
 was not.
+
+## The read-only seed example
+
+Built after the eleven fixes, as the worked example Fix 6 asked for. It
+answers the S15 read-only row; the real-time and multi-tenant rows are still
+absent, so S15 as a whole still fails.
+
+**Scoped deliberately smaller than telecom.** 136 KB against 400 KB, with 8
+components against 11 and 11 evaluations against 26. The aim was a design
+where every part is real rather than one that matches the other seeds by
+volume: six goldens with concrete fixtures beat twenty with filler, and the
+size is a consequence of that rather than a target.
+
+**The review is a self-review, and says so first.** The same agent authored
+the design and scored it, which is weaker evidence than the independent
+reviews behind the other two seeds. Rather than present it as equivalent, the
+method field is `self-review`, the first limitation says no separate reviewer
+was available, and Fix 9's run-conditions line repeats it on page 1 of the PDF
+and on every HTML view. A reader can see what kind of evidence this is without
+opening the review.
+
+**Scoring surfaced two real gaps, which were fixed rather than scored around.**
+C2 declared its passages but no response status, so an index timeout and an
+honestly empty library were indistinguishable to the sufficiency gate — an
+outage would have become a confident decline. It now declares a status enum
+with a required errorDetail. Separately, the register covered the six
+read-only families but said nothing about the write-shaped families the rubric
+asks for, so a reader could not tell whether they had been dismissed or
+forgotten; the fmea stage assumptions now justify each as inapplicable with
+the reason. Both are recorded as resolved major issues in the review rather
+than quietly fixed.
+
+**Ten dimensions at 3, two at 4.** D5 and D6 are at 4 because authority and
+uncertainty are where a read-only design can genuinely be comprehensive: there
+is no write to authorise, entitlement is checked twice by independent
+deterministic components with a zero-tolerance adversarial set behind it, and
+every assumption and tool candidate is labelled unverified. The other ten are
+at 3 with the reason for not being 4 written into the evidence, which is the
+honest reading of a design nobody has built.
+
+**Chunking and extraction are one stack card.** Six framework cards overflowed
+the standard PDF's page, and the renderer refused rather than shrinking the
+type — correct behaviour. Rather than cut the trade-off text, which is the
+part worth reading, F4 and F6 were merged: how a PDF becomes a citable passage
+is one decision, constrained by one requirement, so it reads better as one
+card. Content was moved, not dropped.
+
+**My own Fix 9 rule caught my own review.** The first draft of the limitations
+said the "usual independent check did not happen", and validation rejected it:
+a self-review may not contain the word "independent" anywhere. The rule is
+blunt by design, and the rewrite is better for it — it says what was done
+rather than what was not. Two other uses of the word survive in the design
+itself ("two independent deterministic components"), which is a different
+claim and correctly out of the rule's scope.

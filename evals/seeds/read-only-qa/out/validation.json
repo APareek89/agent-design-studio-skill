@@ -1,0 +1,399 @@
+{
+  "generator": "agent-design-studio.design_io/1.0",
+  "generatedFiles": [
+    "_evidence/PRD.md",
+    "_evidence/architecture.md",
+    "_evidence/eval-set.json",
+    "_evidence/fmea-register.csv",
+    "_evidence/assumptions.md",
+    "validation.json",
+    "build/01-milestone.md",
+    "build/02-milestone.md",
+    "build/03-milestone.md",
+    "build/00-overview.md",
+    "README.md",
+    "DESIGN.html"
+  ],
+  "designOnly": true,
+  "status": "pass",
+  "designSha256": "6f2e72d08814546211113fb7e9a291db00bb0830449be79bf3d4e9783ec215ec",
+  "reviewSha256": "e9ce9688a44b8be661b6298e16f3d3867c379b9cb3108ba6d7045302d4fa7af8",
+  "structuralValidation": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 6,
+      "tasks": 10,
+      "components": 8,
+      "workflow": 9,
+      "framework": 5,
+      "models": 2,
+      "fmea": 6,
+      "evals": 11,
+      "rollout": 6,
+      "export": 1
+    },
+    "coverage": {
+      "required": 12,
+      "coveredRequired": 12,
+      "missingRequired": [],
+      "justified": [
+        "COV15"
+      ],
+      "missingRecommended": [],
+      "checks": [
+        {
+          "id": "COV1",
+          "title": "Business decision and boundary",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'decision'."
+        },
+        {
+          "id": "COV2",
+          "title": "Actors and decision owners",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'actor'."
+        },
+        {
+          "id": "COV3",
+          "title": "Trigger, first-release scope and non-goals",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'boundar'."
+        },
+        {
+          "id": "COV4",
+          "title": "Success measures or end conditions",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'success'."
+        },
+        {
+          "id": "COV5",
+          "title": "Constraints, regulation and privacy",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'constraint'."
+        },
+        {
+          "id": "COV6",
+          "title": "Evidence limits and unknowns",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'limit'."
+        },
+        {
+          "id": "COV7",
+          "title": "Reader layer (system sentence, design calls, autonomy, scope summary)",
+          "status": "covered",
+          "required": true,
+          "evidence": "presentation present with scope summary."
+        },
+        {
+          "id": "COV8",
+          "title": "Build milestones",
+          "status": "covered",
+          "required": true,
+          "evidence": "3 milestones."
+        },
+        {
+          "id": "COV9",
+          "title": "Web research record (performed, or why not)",
+          "status": "covered",
+          "required": true,
+          "evidence": "Not performed: No web search tool was offered to the authoring session, so no search tool was used and no finding is recorded. Every tool named in the stack cards is an unverified candidate to check, not a recommendation."
+        },
+        {
+          "id": "COV10",
+          "title": "Tooling card for each capability the brief implies",
+          "status": "covered",
+          "required": true,
+          "evidence": "Covered: document AI and OCR. "
+        },
+        {
+          "id": "COV11",
+          "title": "Human trigger for money or record writes the brief implies",
+          "status": "n/a",
+          "required": false,
+          "evidence": "Read-only system: the design writes to no system of record, so there is nothing for a human trigger to gate."
+        },
+        {
+          "id": "COV12",
+          "title": "Volume stated (cases per period)",
+          "status": "covered",
+          "required": false,
+          "evidence": "A volume per period is stated."
+        },
+        {
+          "id": "COV13",
+          "title": "Each KPI states a baseline and target, or says the baseline is unknown and how it is collected",
+          "status": "covered",
+          "required": false,
+          "evidence": "All KPI cards state baseline handling."
+        },
+        {
+          "id": "COV14",
+          "title": "Every leaf task has at least two concrete examples",
+          "status": "covered",
+          "required": false,
+          "evidence": "All leaves carry two or more examples."
+        },
+        {
+          "id": "COV15",
+          "title": "Each tooling card has at least one candidate checked against a cited source",
+          "status": "justified",
+          "required": false,
+          "evidence": "no web search tool was offered, so every tool candidate on the stack cards is unverified rather than checked against a cited source."
+        },
+        {
+          "id": "COV16",
+          "title": "Read-only system: citation goldens and a document access statement",
+          "status": "covered",
+          "required": true,
+          "evidence": "Citation goldens: EV1, EV2, EV3, EV4, EV5, EV6; access control stated."
+        },
+        {
+          "id": "COV17",
+          "title": "Read-only risk families in the register",
+          "status": "covered",
+          "required": true,
+          "evidence": "All read-only risk families are covered."
+        }
+      ],
+      "note": "Coverage checks look for expected information by field and keyword; they do not judge its quality. Justify a gap with an assumption string that starts with its ID."
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewValidation": {
+    "valid": true,
+    "status": "pass",
+    "computedStatus": "pass",
+    "errors": [],
+    "blockerIds": [],
+    "method": "self-review",
+    "round": 1,
+    "scores": {
+      "D1": 3,
+      "D2": 3,
+      "D3": 3,
+      "D4": 3,
+      "D5": 4,
+      "D6": 4,
+      "D7": 3,
+      "D8": 3,
+      "D9": 3,
+      "D10": 3,
+      "D11": 3,
+      "D12": 3
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "review": {
+    "method": "self-review",
+    "round": 1,
+    "status": "pass",
+    "dimensions": [
+      {
+        "id": "D1",
+        "score": 3,
+        "evidence": [
+          "CTX1 states the decision and the boundary; CTX2 names the fifty analysts and Research Operations as the library owner; CTX3 gives the trigger, the in-scope corpus and four explicitly excluded actions.",
+          "CTX4 states both end conditions: an answer with a citation per claim, or a decline naming what was searched. A decline is defined as a finished case, not a failure, which is what makes the sufficiency gate meaningful.",
+          "The tree partitions the job without overlap: understand (T1), find (T2 with retrieval and sufficiency as separate leaves), answer (T3), decline (T4). Sequence and leaf modes are coherent and the tree is three levels deep.",
+          "Held at 3 rather than 4: the first release scope is stated but the design does not say what happens when the library grows a new report type, such as the client decks that are not in the 4,000 PDFs."
+        ]
+      },
+      {
+        "id": "D2",
+        "score": 3,
+        "evidence": [
+          "Every leaf reaches a component, a workflow node and at least one evaluation; the validator reports no broken trace and no orphan component.",
+          "The failure-mode to evaluation relation is generated from one COVERAGE table in author_design.py and read in both directions, so FM.evalIds and eval.failureModeIds cannot disagree.",
+          "Each of the six failure modes carries at least one golden, one offline or online check and the release suite EV11.",
+          "Held at 3: the trace is complete but the milestone-to-evaluation mapping repeats EV11 in all three milestones, which is correct and slightly redundant to read."
+        ]
+      },
+      {
+        "id": "D3",
+        "score": 3,
+        "evidence": [
+          "W1 is the only entry and the only semantic root; W8 and W9 are explicit terminals with nonempty terminal dispositions and no outgoing edges.",
+          "Every edge carries a predicate and all three decision nodes (W3, W5, W7) have mutually exclusive outcomes. The graph is acyclic, so there is no loop needing a bounded exit.",
+          "Every node states a timeout and a failure disposition, and each failure disposition returns a decline rather than a partial answer.",
+          "Held at 3: recovery is uniform by design because nothing is written, so there is no retry, reconciliation or cancellation path to specify. That is defensible here and is stated on every node, but it means the workflow has had less recovery design than a writing system would need."
+        ]
+      },
+      {
+        "id": "D4",
+        "score": 3,
+        "evidence": [
+          "All eight components carry typed input and output declarations; C2 names its status enum and a required errorDetail, so INDEX_UNAVAILABLE is distinguishable from an honestly empty result.",
+          "Each of the five deterministic components states a whyCode explaining why the responsibility is code rather than judgement; C5's reason, that a model checking its own citations will agree with itself, is the load-bearing one.",
+          "Abstention is a first-class contract: C6 outputs a boolean and a reason, and C7 renders either an answer or a decline through one typed outcome enum.",
+          "Held at 3: no component declares a record proof, because the design has no write to prove. The read-only case is the reason, not an omission."
+        ]
+      },
+      {
+        "id": "D5",
+        "score": 4,
+        "evidence": [
+          "There is no write node, no write action class and no write component. The service holds one read-only credential and F3 states the write scope is not configured rather than merely unused.",
+          "Entitlement is enforced twice by independent deterministic components: C2 filters inside the search query so a restricted passage is never retrieved, and C3 re-checks every returned passage against the directory and drops any that fails.",
+          "Every LLM output is categorised in semantics.modelOutputs, and none supplies money, a date or an identity to anything; no model output reaches an action because no action exists.",
+          "Identity comes from the corporate directory at session start (H5) and is never taken from the request or inferred by the model, which is what the second check is checking against.",
+          "Objective evidence exists for both halves: EV6 asserts the cross-team drop on a fixture and EV8 is a 60-case adversarial entitlement set with a zero tolerance."
+        ]
+      },
+      {
+        "id": "D6",
+        "score": 4,
+        "evidence": [
+          "Six H assumptions carry a why, a named owner role, the evidence that would confirm them and a launch-blocker flag; H1, H2 and H5 block launch and the handoff repeats that.",
+          "No vendor fact is asserted: research.performed is false with the reason, and every one of the nine tool candidates is verified:false with a note saying it is a name to check rather than a recommendation.",
+          "The volume is labelled illustrative (H4) and the twenty-minute baseline is labelled as taken from the brief and not yet measured (H6); R1's gate requires measuring it before the shadow phase, so no target is claimed against an unmeasured baseline.",
+          "CTX6 collects the unverified inputs in one place rather than leaving the reader to assemble them from the ledger."
+        ]
+      },
+      {
+        "id": "D7",
+        "score": 3,
+        "evidence": [
+          "F1 states plainly that most of the value is better search rather than the model, and rejects both a plain search box and a fine-tuned model, with the reason fine-tuning is rejected outright: it makes citation impossible and staleness invisible.",
+          "F2 chooses a fixed four-stage pipeline over a single model call and over a free agent loop, and gives the reason each is rejected rather than asserting the choice.",
+          "No orchestration framework is proposed, which the rubric permits for a simple deterministic system; F2 says a plain service is enough and names the cloud options per provider.",
+          "Held at 3: the cloud rows name plausible services per provider but none is checked, so the stack cards are a starting point for a build decision rather than a decision."
+        ]
+      },
+      {
+        "id": "D8",
+        "score": 3,
+        "evidence": [
+          "Exactly two model plans for exactly two LLM components, each with a bounded role, a tier rationale and a named rejected tier with the reason.",
+          "M2's rejected-tier reasoning is specific rather than generic: a small tier merged claims across passages, which the citation check then rejected, raising the failure rate rather than lowering cost.",
+          "Calls, tokens and prices are explicitly illustrative, and the design states that hosting, the index, extraction and analyst time are excluded from the per-case figure.",
+          "Held at 3: the token counts are estimates from the passage budget rather than measurements, and no price is bound to a dated quote."
+        ]
+      },
+      {
+        "id": "D9",
+        "score": 3,
+        "evidence": [
+          "All six read-only failure families are present with concrete causes tied to real component IDs: superseded source (FM1), uncited claim (FM2), answer from outside the corpus (FM3), prompt injection carried in a report (FM4), out-of-entitlement leak (FM5) and a confident answer when the corpus is silent (FM6).",
+          "The write-shaped families are justified as inapplicable in the fmea stage assumptions rather than silently absent: there is no write to duplicate, leave uncertain or falsely confirm, and no queue for work to age in.",
+          "Every failure scoring severity 8 or above, or RPN 150 or above, names an owner role and an objective release gate in its action; FM5's gate stops the service on a single live occurrence.",
+          "acceptedRisk is false throughout; no user acceptance is claimed.",
+          "Held at 3: occurrence scores are the author's estimates with no incident history behind them, which the S/O/D note says explicitly."
+        ]
+      },
+      {
+        "id": "D10",
+        "score": 3,
+        "evidence": [
+          "Six goldens carry concrete JSON fixtures with real passage IDs, report IDs and page numbers, and mechanically checkable pass rules; EV4 is an exact mutation of EV1 that changes one passage ID to one that was never retrieved.",
+          "The read-only pair SEM008 requires is present and checked: EV1 answers with two citations and EV2 declines with zero, each naming C2 as a read source and citationList as the asserted field.",
+          "Both high-risk leaves have substantive goldens: T2.1 through EV6 and T3 through EV1 and EV4. Every unaccepted failure mode has at least one golden.",
+          "Offline layers state their strata, size and labelling; online checks state cadence, threshold and a response owner; EV11 requires a new golden to be added to the release suite in the same change that adds it.",
+          "Held at 3: these are specifications. Nothing here has been executed, which every testSet field says."
+        ]
+      },
+      {
+        "id": "D11",
+        "score": 3,
+        "evidence": [
+          "R1 and R2 both state their definition and their baseline status honestly: R1's baseline is the brief's twenty minutes, marked unmeasured, and R2 has no baseline because no system exists today, so it is collected in the first shadow week.",
+          "R3 and R4 state entry and exit evidence that does not require the results of the phase being gated; shadow exists to collect the baselines that the pilot comparison later needs.",
+          "Each gate names an accountable role, and R6 collects all four owners against what they own.",
+          "R5 tests a genuine open question rather than a foregone one, and its hedged arm still carries a citation per claim, so the experiment cannot be read as permission to answer without evidence.",
+          "Held at 3: the acceptance targets of 85 and 70 per cent are chosen by the author, not derived from anything measured."
+        ]
+      },
+      {
+        "id": "D12",
+        "score": 3,
+        "evidence": [
+          "X1's six acceptance criteria each name the evaluation that proves them, and the last one is about configuration rather than code: the write scope is not configured, not merely unused.",
+          "The three milestones cover all eight components and every evaluation linked to them, and each carries acceptance criteria drawn from the stage decisions rather than restating the brief.",
+          "The build instructions add no capability: they name the four stages, repeat which assumptions block launch, and list three things not to add, each of which this design does not authorise.",
+          "Held at 3: the handoff does not specify the index schema or the re-indexing trigger beyond F4's description, so the builder has one real design decision left to make."
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "id": "IR1",
+        "severity": "major",
+        "stage": "components",
+        "itemId": "C2",
+        "message": "The retriever declared its passages and count but no response status, so an index timeout and an honestly empty library were indistinguishable to every downstream component. A silent library is the input to the sufficiency gate, so this could have turned an outage into a confident decline. Resolved in this round: C2 now declares a status enum of OK, NO_MATCH, INDEX_UNAVAILABLE and ENTITLEMENT_UNRESOLVED with a required errorDetail, and W2's failure disposition returns a decline that says the library could not be searched.",
+        "resolved": true
+      },
+      {
+        "id": "IR2",
+        "severity": "major",
+        "stage": "fmea",
+        "itemId": "FM1",
+        "message": "The register covered the six read-only families but said nothing about the write-shaped families the rubric asks for, leaving a reader unable to tell whether they were considered and dismissed or simply forgotten. Resolved in this round: the fmea stage assumptions justify duplicate and concurrent write, uncertain commit, false completion and human queue failure as inapplicable with the reason, and state where tool timeout is handled instead.",
+        "resolved": true
+      },
+      {
+        "id": "IR3",
+        "severity": "minor",
+        "stage": "models",
+        "itemId": "M1",
+        "message": "Token counts are derived from the passage budget rather than measured against a real corpus, so the per-case cost is an order-of-magnitude estimate. Not resolved: it cannot be resolved before the index exists. Recorded so the cost figure is not read as a quote.",
+        "resolved": false
+      },
+      {
+        "id": "IR4",
+        "severity": "minor",
+        "stage": "rollout",
+        "itemId": "R2",
+        "message": "The 85 per cent acceptance target is the author's judgement, not a figure derived from a comparable system. Not resolved: it should be revisited once the shadow phase produces a first distribution. Recorded so the gate is not read as externally grounded.",
+        "resolved": false
+      }
+    ],
+    "limitations": [
+      "This is a self-review: the same agent authored the design and scored it against the rubric. No separate reviewing agent was available in this session, so no second party checked these scores, and they should carry less weight than the ones on the telecom and health-claims examples.",
+      "Nothing here was executed. Every golden, offline set and online check is a specification; no fixture has been run against a built system, and no retrieval index, model or report corpus exists.",
+      "Every fact about the report library is an unverified assumption, including that the index exposes entitlement metadata (H1), that reports carry a superseded-by field (H2) and that extracted page numbers match the printed page (H3). The design does not work if any of the three is false.",
+      "No web research was performed, so all nine tool candidates are unchecked names rather than recommendations, and no claim here rests on a current vendor capability.",
+      "The S/O/D scores are the author's estimates to prioritise review. They are not measured probabilities and there is no incident history behind them.",
+      "The design was not reviewed by anyone at the organisation in the brief. Entitlement rules, the restricted-client policy and the twenty-minute baseline are all taken from the brief's wording rather than confirmed with an owner."
+    ]
+  },
+  "limitations": [
+    "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+    "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+    "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+    "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+  ],
+  "mode": "standard",
+  "fileSha256": {
+    "_evidence/PRD.md": "60f5bff4aedf4269c8f094bcb1cdce3557a346f14a50e9fa5595ad27913f449b",
+    "_evidence/architecture.md": "695353353ab497704d8f1e77055e287351ab4a14a2fa660f8abe40c7c50c09eb",
+    "_evidence/eval-set.json": "af22a713add328a1f98e95ccfc95ee06221d5b70051aa76206552541b0cbfcbb",
+    "_evidence/fmea-register.csv": "b95a685acf04adc9ffa49d67bc143c5424e800ccb314a6b29fb437e64ef90c75",
+    "_evidence/assumptions.md": "2264bf39bfc0e531bbeb3fc3227e0d2d8a816dbcfdc63d0a91691065a3ed727c",
+    "build/01-milestone.md": "c36940508d212a21b75e6c576a33ce5631ecda03fe0e89045bd14723c080b6a2",
+    "build/02-milestone.md": "68cf327f43c081b32b199b04fd8a4963719c37551b1ae7389b3805fd8fcd131f",
+    "build/03-milestone.md": "956f10bbe654a70335a16bcb86057e3fa51a6764192a0d35a75c807272a7ece6",
+    "build/00-overview.md": "84ec590c68f90e293a6be1db80e30bac64a7d3f3e574a06de38f51933223d3d8",
+    "README.md": "3751c3b8e3f788eb0e8fde4bc646d57de01666bc59d4507671e6fd7595e55fdd",
+    "DESIGN.html": "13d0d875d71a470b91562051290a7abcca9f65a95c3d0a9f3dd0db477aecbd6d"
+  }
+}

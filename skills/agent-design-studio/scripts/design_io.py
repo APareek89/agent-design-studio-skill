@@ -630,7 +630,8 @@ def coverage_report(design):
         if not has_access:
             missing.append("a statement of who may see which documents")
         add("COV16", "Read-only system: citation goldens and a document access statement", not missing,
-            ("Citation goldens: " + ", ".join(cited + declines) + "; access control stated.") if not missing
+            ("Citation goldens: " + ", ".join(dict.fromkeys(cited + declines)) + "; access control stated.")
+            if not missing
             else "A read-only assistant needs " + ", ".join(missing) + ".")
         gaps = read_only_risk_gaps(design)
         add("COV17", "Read-only risk families in the register", not gaps,

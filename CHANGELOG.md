@@ -97,13 +97,26 @@ identity, dates and limits" rule is untouched. Decisions are recorded in
   the scaffold rather than "malformed semantic row". SEM000 is where weaker
   and smaller-context models burn rounds; this is the bookkeeping, not the
   design.
+- **A read-only seed example.** `evals/seeds/read-only-qa/` is a third worked
+  design, from a brief that never writes: an assistant for 50 analysts that
+  answers from 4,000 internal report PDFs, cites the page behind every claim,
+  and declines when the reports are silent. It validates with a verified
+  semantic contract, passes `--strict-coverage` with 12 of 12 required checks
+  and none recommended missing, and renders to 10 standard-mode pages. It is
+  the first example to exercise the read-only profile end to end: SEM008's
+  answer golden pair, COV16, COV17's six risk families, COV11 reported "n/a"
+  with its reason, and the "answers with citation" authority table. Its review
+  is a **self-review** and says so on page 1. `author_design.py` rebuilds it
+  from scratch, and `tests/test_read_only_seed.py` keeps it from drifting,
+  including three tests that remove what the profile requires to prove the
+  rules fire rather than pass vacuously.
 - **The task-depth rejection names its limit**: "Task depth 4 exceeds the
   limit of 3 levels (overall job -> task -> subtask)."
-- **Tests: 270 pass**, up from 132. New files: `test_brief_classifier.py`,
+- **Tests: 286 pass**, up from 132. New files: `test_brief_classifier.py`,
   `test_pdf_unicode.py`, `test_long_brief.py`, `test_flow_layout.py` (which
   reads the rendered SVG and checks the geometry itself),
   `test_brief_profiles.py`, `test_host_capabilities.py`,
-  `test_design_scaffold.py` and `test_stress.py`, which pins an expected
+  `test_design_scaffold.py`, `test_read_only_seed.py` and `test_stress.py`, which pins an expected
   outcome and a reason for all fifteen mutations and fails on a mutation with
   no recorded outcome. `scripts/score_run.py` gains S14 (classifier accuracy
   on the seven edge briefs: 7 of 7) and S15 (a seed design per brief profile).
@@ -111,15 +124,19 @@ identity, dates and limits" rule is untouched. Decisions are recorded in
 
 ### What it still cannot do
 
-- **The three profile seed designs do not exist, so S15 fails.** The existing
-  seeds are 400 to 575 KB with 86 items, full semantic contracts, 23 goldens
-  and an independent review. Producing three more to that standard means
-  running the skill end to end three times, which is authoring work rather
-  than a code fix. The scorecard reports which folder each is missing from
-  rather than passing on nothing. The rules those seeds would exercise are
-  covered by `tests/test_brief_profiles.py`, which builds satisfiable
-  read-only and multi-tenant variants and proves both the failing and the
-  passing side of every new rule.
+- **Two of the three profile seeds do not exist, so S15 still fails.** The
+  read-only seed is delivered and passes its row. The real-time and
+  multi-tenant seeds are not written, and `score_run.py` reports the folder
+  each is missing from rather than passing on nothing. Their rules are covered
+  by `tests/test_brief_profiles.py`, which builds satisfiable variants and
+  proves both the failing and the passing side of each, but a test fixture is
+  not a worked example.
+- **The read-only seed carries a self-review, not an independent one.** The
+  same agent authored and scored it, which is weaker evidence than the reviews
+  behind telecom and health-claims. It is labelled `self-review` in the record
+  and on every rendered view, and its own review lists six limitations
+  starting with that one. Two of its four review issues are unresolved minors
+  that cannot be closed before the system exists.
 - **S13's visual grade is stale and was not re-run.** Fix 5 rewrote the SVG
   router, so the HTML the independent grader scored no longer exists.
   Re-running it needs that separate agent plus Node, Playwright and a

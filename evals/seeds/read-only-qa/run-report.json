@@ -1,0 +1,202 @@
+{
+  "version": "1.1",
+  "mode": "standard",
+  "startedAt": null,
+  "endedAt": "2026-11-05T07:21:25.221051+00:00",
+  "wallTimeSeconds": null,
+  "approximateTokensUsed": null,
+  "tokenMethod": "Unavailable: the host did not expose total inference usage.",
+  "artifactTextTokenEstimate": 81443,
+  "artifactTokenMethod": "UTF-8 decoded text characters / 4 across delivered text artifacts, excludes historical failed rounds; not host inference tokens.",
+  "fileSizes": {
+    "DESIGN.html": 171107,
+    "DESIGN.pdf": 50668,
+    "review.json": 14322,
+    "author_design.py": 89533,
+    "design.json": 136376,
+    "out/DESIGN.html": 168713,
+    "out/README.md": 1685,
+    "out/validation.json": 23924,
+    "out/_evidence/PRD.md": 34290,
+    "out/_evidence/architecture.md": 34686,
+    "out/_evidence/assumptions.md": 17978,
+    "out/_evidence/fmea-register.csv": 8235,
+    "out/_evidence/eval-set.json": 27480,
+    "out/build/00-overview.md": 2218,
+    "out/build/01-milestone.md": 9097,
+    "out/build/02-milestone.md": 6042,
+    "out/build/03-milestone.md": 9534
+  },
+  "pageCount": 10,
+  "validatorResults": {
+    "semanticCoverage": "verified-declarations",
+    "valid": true,
+    "status": "structural-pass",
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "context": 6,
+      "tasks": 10,
+      "components": 8,
+      "workflow": 9,
+      "framework": 5,
+      "models": 2,
+      "fmea": 6,
+      "evals": 11,
+      "rollout": 6,
+      "export": 1
+    },
+    "coverage": {
+      "required": 12,
+      "coveredRequired": 12,
+      "missingRequired": [],
+      "justified": [
+        "COV15"
+      ],
+      "missingRecommended": [],
+      "checks": [
+        {
+          "id": "COV1",
+          "title": "Business decision and boundary",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'decision'."
+        },
+        {
+          "id": "COV2",
+          "title": "Actors and decision owners",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'actor'."
+        },
+        {
+          "id": "COV3",
+          "title": "Trigger, first-release scope and non-goals",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'boundar'."
+        },
+        {
+          "id": "COV4",
+          "title": "Success measures or end conditions",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'success'."
+        },
+        {
+          "id": "COV5",
+          "title": "Constraints, regulation and privacy",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'constraint'."
+        },
+        {
+          "id": "COV6",
+          "title": "Evidence limits and unknowns",
+          "status": "covered",
+          "required": true,
+          "evidence": "Context mentions 'limit'."
+        },
+        {
+          "id": "COV7",
+          "title": "Reader layer (system sentence, design calls, autonomy, scope summary)",
+          "status": "covered",
+          "required": true,
+          "evidence": "presentation present with scope summary."
+        },
+        {
+          "id": "COV8",
+          "title": "Build milestones",
+          "status": "covered",
+          "required": true,
+          "evidence": "3 milestones."
+        },
+        {
+          "id": "COV9",
+          "title": "Web research record (performed, or why not)",
+          "status": "covered",
+          "required": true,
+          "evidence": "Not performed: No web search tool was offered to the authoring session, so no search tool was used and no finding is recorded. Every tool named in the stack cards is an unverified candidate to check, not a recommendation."
+        },
+        {
+          "id": "COV10",
+          "title": "Tooling card for each capability the brief implies",
+          "status": "covered",
+          "required": true,
+          "evidence": "Covered: document AI and OCR. "
+        },
+        {
+          "id": "COV11",
+          "title": "Human trigger for money or record writes the brief implies",
+          "status": "n/a",
+          "required": false,
+          "evidence": "Read-only system: the design writes to no system of record, so there is nothing for a human trigger to gate."
+        },
+        {
+          "id": "COV12",
+          "title": "Volume stated (cases per period)",
+          "status": "covered",
+          "required": false,
+          "evidence": "A volume per period is stated."
+        },
+        {
+          "id": "COV13",
+          "title": "Each KPI states a baseline and target, or says the baseline is unknown and how it is collected",
+          "status": "covered",
+          "required": false,
+          "evidence": "All KPI cards state baseline handling."
+        },
+        {
+          "id": "COV14",
+          "title": "Every leaf task has at least two concrete examples",
+          "status": "covered",
+          "required": false,
+          "evidence": "All leaves carry two or more examples."
+        },
+        {
+          "id": "COV15",
+          "title": "Each tooling card has at least one candidate checked against a cited source",
+          "status": "justified",
+          "required": false,
+          "evidence": "no web search tool was offered, so every tool candidate on the stack cards is unverified rather than checked against a cited source."
+        },
+        {
+          "id": "COV16",
+          "title": "Read-only system: citation goldens and a document access statement",
+          "status": "covered",
+          "required": true,
+          "evidence": "Citation goldens: EV1, EV2, EV3, EV4, EV5, EV6; access control stated."
+        },
+        {
+          "id": "COV17",
+          "title": "Read-only risk families in the register",
+          "status": "covered",
+          "required": true,
+          "evidence": "All read-only risk families are covered."
+        }
+      ],
+      "note": "Coverage checks look for expected information by field and keyword; they do not judge its quality. Justify a gap with an assumption string that starts with its ID."
+    },
+    "limitations": [
+      "Design-only tooling: this helper makes no provider, network or business API calls and executes no business assertions; optional host-assistant research is outside this statement.",
+      "Schema, reference, graph and ID-coverage checks do not establish semantic completeness, source truth, actual human authorization or production safety.",
+      "Review scores and evidence are supplied by the reviewing agent; the helper checks their shape and declared pass conditions, not their truth.",
+      "FMEA action/control text is required where specified; the helper does not verify ownership, release authority, regulatory compliance or risk acceptance."
+    ]
+  },
+  "reviewRounds": [
+    "review.json"
+  ],
+  "reviewMethod": "self-review",
+  "reviewStatus": "pass",
+  "designSha256": "6f2e72d08814546211113fb7e9a291db00bb0830449be79bf3d4e9783ec215ec",
+  "businessAssertionsExecuted": false,
+  "hostCapabilities": {
+    "subAgent": false,
+    "webSearch": false,
+    "reportLab": true,
+    "node": false,
+    "questionDialog": false
+  },
+  "runConditions": "Review: self-review (no separate agent available). Research: none (no web tool). PDF: rendered. Visual QA: not run. Intake: skipped (no question dialog)."
+}
