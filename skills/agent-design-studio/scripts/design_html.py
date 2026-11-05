@@ -404,6 +404,27 @@ def parse_range(text):
     return baseline, target
 
 
+LONG_BRIEF_CHARS = 2000
+
+
+def brief_panel(brief):
+    """The verbatim brief, collapsed behind a control when it is long.
+
+    Nothing is hidden to fit a limit: the full text is in the page either way.
+    """
+    text = str(brief or "")
+    body = f'<div class="brief-text">{esc(text)}</div>'
+    if len(text) <= LONG_BRIEF_CHARS:
+        return f'<div class="panel box"><div class="lb">Brief (verbatim)</div>{body}</div>'
+    head = text[:LONG_BRIEF_CHARS].rsplit(" ", 1)[0]
+    return (
+        '<div class="panel box"><div class="lb">Brief (verbatim)</div>'
+        f'<div class="brief-text">{esc(head)}</div>'
+        f'<details class="brief-full"><summary class="mini">Show full brief '
+        f'({len(text):,} characters)</summary>{body}</details></div>'
+    )
+
+
 def sentence_end(text):
     """End a derived fragment with one full stop, never two."""
     text = str(text).strip()
@@ -561,7 +582,7 @@ def view_context(m):
         rows += f'<tr><td class="nowrap"><span class="fm-id">{esc(c["id"])}</span> {esc(c["data"]["field"])}</td><td>{esc(c["data"]["value"])}{reading}</td></tr>'
     return (
         head(STEP_BY_KEY["context"][3], "The brief as given, and how this design reads it. Facts the brief did not give are assumptions with owners.")
-        + f'<div class="panel box"><div class="lb">Brief (verbatim)</div><div class="brief-text">{esc(m.d["brief"])}</div></div>'
+        + brief_panel(m.d["brief"])
         + '<div class="sec"><div class="tw"><table><thead><tr><th>Field</th><th>Design reading</th></tr></thead><tbody>'
         + rows
         + "</tbody></table></div></div>"
@@ -782,6 +803,13 @@ def view_components(m):
 NODE_W = 180
 GAP_X = 170
 LAYERS_PER_BAND = 16
+# Routing: how far a gutter sits from a column edge, and how far apart two
+# gutters in the same gap are.
+GUTTER_PAD = 18
+LANE_W = 14
+# Above this many exits from one node, conditions become a numbered legend
+# under the node rather than a plate per edge.
+MAX_LABELLED_EXITS = 6
 
 
 def layout_flow(m):
@@ -958,7 +986,7 @@ def flow_svg(m):
     for (s, t), whens in edges.items():
         if band_of[layer[s]] != band_of[layer[t]]:
             cross_notes.setdefault(s, []).append(("continue", f"→ continues at {t} (band {band_of[layer[t]] + 1})"))
-            cross_notes.setdefault(t, []).append(("continue", f"← from {s} (band {band_of[layer[s]] + 1})"))
+            cross_notes.setdefault(t, []).append(("continue", f"← continues at {s} (band {band_of[layer[s]] + 1})"))
     parts = []
     # Lane captions per band: dominant top-level task per layer, grouped
     for b, layers in enumerate(bands):
@@ -988,12 +1016,91 @@ def flow_svg(m):
                 + "".join(f'<tspan x="{x}" dy="{0 if i == 0 else 13}">{esc(line)}</tspan>' for i, line in enumerate(lines))
                 + "</text>"
             )
-    # Edges
+    # Edges, routed orthogonally.
+    #
+    # Long curves put a condition plate wherever the curve happened to pass,
+    # which on a wide span landed it on another plate or on a node. Every edge
+    # now leaves its source sideways into a gutter reserved for that source,
+    # travels vertically there, crosses intermediate columns in a corridor
+    # between node rows, and enters the target from the left. Plates then have
+    # a known vertical line to sit on, and collisions are resolved by stacking
+    # along it.
     rail_index = {}
     for b, (top, y0, rails, back_in_band) in enumerate(band_tops):
         for k, edge in enumerate(sorted(back_in_band)):
             rail_index[edge] = top + 34 + 8 + k * 16
+
+    row_of = {wid: k for col in cols for k, wid in enumerate(col)}
+    band_geometry = {b: band_tops[b] for b in range(len(bands))}
+
+    def centre_y(wid):
+        return xy[wid][1] + node_h / 2
+
+    # One gutter lane per source in the gap after its column, and one per
+    # target in the gap before its column, so edges from one node fan out as a
+    # bus instead of crossing each other.
+    out_lane, in_lane = {}, {}
+    for L, col in enumerate(cols):
+        sources = [wid for wid in col if any(a == wid and layer[t] > L for (a, t) in edges)]
+        for k, wid in enumerate(sources):
+            out_lane[wid] = k
+        targets = [wid for wid in col if any(t == wid and layer[a] < L for (a, t) in edges)]
+        for k, wid in enumerate(targets):
+            in_lane[wid] = k
+
+    def out_gutter(wid):
+        x = xy[wid][0] + NODE_W
+        lanes = max(1, sum(1 for other in cols[layer[wid]] if other in out_lane))
+        span = min(GAP_X - 2 * GUTTER_PAD, lanes * LANE_W)
+        step = span / lanes if lanes else 0
+        return x + GUTTER_PAD + out_lane.get(wid, 0) * step
+
+    def in_gutter(wid):
+        x = xy[wid][0]
+        lanes = max(1, sum(1 for other in cols[layer[wid]] if other in in_lane))
+        span = min(GAP_X - 2 * GUTTER_PAD, lanes * LANE_W)
+        step = span / lanes if lanes else 0
+        return x - GUTTER_PAD - in_lane.get(wid, 0) * step
+
+    def corridor_y(wid):
+        """A horizontal line between node rows, so a long leg crosses no node."""
+        _, y0, _, _ = band_geometry[band_of[layer[wid]]]
+        row = row_of[wid]
+        return y0 + row * pitch_y - (pitch_y - node_h) / 2
+
+    # Obstacles a plate must not land on: every node box and its tag lines.
+    obstacles = []
+    for wid, (x, y) in xy.items():
+        tag_rows = sum(len(lines) for _, lines in info[wid]["tags"]) + len(cross_notes.get(wid, []))
+        obstacles.append((x - 2, y - 2, NODE_W + 4, node_h + 4 + 14 * tag_rows))
+
+    def overlaps(a, b):
+        return (a[0] < b[0] + b[2] and b[0] < a[0] + a[2]
+                and a[1] < b[1] + b[3] and b[1] < a[1] + a[3])
+
+    placed = []
+
+    def place_plate(lines, cx, cy):
+        """Put the plate at (cx, cy), then slide it along the gutter until it is clear."""
+        width = max(len(line) for line in lines) * 6.7 + 12
+        height = 15 * len(lines) + 4
+        for step in range(0, 60):
+            for direction in ((1, -1) if step else (0,)):
+                y = cy + direction * step * (height / 2 + 4)
+                rect = (cx - width / 2, y - height / 2, width, height)
+                if rect[1] < 2:
+                    continue
+                if any(overlaps(rect, other) for other in placed + obstacles):
+                    continue
+                placed.append(rect)
+                return label_plate(lines, cx, y), rect
+        # Nowhere clear: keep it on the edge rather than drop the condition.
+        rect = (cx - width / 2, cy - height / 2, width, height)
+        placed.append(rect)
+        return label_plate(lines, cx, cy), rect
+
     plates = []
+    legends = {}
     per_source = {}
     for (s, t) in edges:
         per_source.setdefault(s, []).append(t)
@@ -1002,61 +1109,65 @@ def flow_svg(m):
             continue
         sx, sy = xy[s]
         tx, ty = xy[t]
+        sy_c, ty_c = centre_y(s), centre_y(t)
         tasks = " ".join(sorted(set(info[s]["tops"]) | set(info[t]["tops"])))
         label_lines = []
-        text_whens = [w for w, _ in whens if w]
-        if out_count[s] > 1 or (text_whens and len(text_whens[0]) <= 48):
-            for w, mode in whens:
-                if not w:
-                    continue
-                suffix = " (parallel)" if mode == "fan-out" else ""
-                label_lines.extend(wrap(w + suffix, 20))
+        for w, mode in whens:
+            if not w:
+                continue
+            suffix = " (parallel)" if mode == "fan-out" else ""
+            label_lines.extend(wrap(w + suffix, 20))
         if out_count[s] > 1 and not label_lines:
             label_lines = ["(no condition stated)"]
-        siblings = per_source[s]
-        j = siblings.index(t)
-        n_out = len(siblings)
+
         if (s, t) in back:
             rail = rail_index[(s, t)]
             k = sorted(band_tops[band_of[layer[s]]][3]).index((s, t))
             gx1 = sx + NODE_W + 14 + k * 7
             gx2 = tx - 14 - k * 7
-            path = f"M{sx + NODE_W},{sy + node_h / 2} L{gx1},{sy + node_h / 2} L{gx1},{rail} L{gx2},{rail} L{gx2},{ty + node_h / 2} L{tx},{ty + node_h / 2}"
-            lx, ly = (gx1 + gx2) / 2, rail
+            path = (f"M{sx + NODE_W},{sy_c} L{gx1},{sy_c} L{gx1},{rail} L{gx2},{rail} "
+                    f"L{gx2},{ty_c} L{tx},{ty_c}")
+            anchor = ((gx1 + gx2) / 2, rail)
             cls = "wf-edge back"
         elif layer[t] == layer[s]:
-            reach = NODE_W + 34 + j * 10
-            p0 = (sx + NODE_W, sy + node_h / 2)
-            p3 = (tx + NODE_W, ty + node_h / 2)
-            p1 = (sx + reach + 30, sy + node_h / 2)
-            p2 = (tx + reach + 30, ty + node_h / 2)
-            path = f"M{p0[0]},{p0[1]} C{p1[0]},{p1[1]} {p2[0]},{p2[1]} {p3[0]},{p3[1]}"
-            lx, ly = bezier_point(p0, p1, p2, p3, 0.5)
+            # Same column: out to the right of both and back, still orthogonal.
+            reach = max(sx, tx) + NODE_W + 20 + per_source[s].index(t) * LANE_W
+            path = (f"M{sx + NODE_W},{sy_c} L{reach},{sy_c} L{reach},{ty_c} "
+                    f"L{tx + NODE_W},{ty_c}")
+            anchor = (reach, (sy_c + ty_c) / 2)
             cls = "wf-edge"
         else:
-            p0 = (sx + NODE_W, sy + node_h / 2)
-            p3 = (tx, ty + node_h / 2)
-            mid = (p0[0] + p3[0]) / 2
-            p1 = (mid, p0[1])
-            p2 = (mid, p3[1])
-            path = f"M{p0[0]},{p0[1]} C{p1[0]},{p1[1]} {p2[0]},{p2[1]} {p3[0]},{p3[1]}"
-            span = layer[t] - layer[s]
-            gap_index = (span - 1) // 2
-            target_x = p0[0] + GAP_X / 2 + gap_index * (NODE_W + GAP_X)
-            lo, hi = 0.0, 1.0
-            for _ in range(40):  # bisection on the monotone x(t) of the curve
-                mid_t = (lo + hi) / 2
-                if bezier_point(p0, p1, p2, p3, mid_t)[0] < target_x:
-                    lo = mid_t
-                else:
-                    hi = mid_t
-            lx, ly = bezier_point(p0, p1, p2, p3, (lo + hi) / 2)
+            g1 = out_gutter(s)
+            if layer[t] - layer[s] == 1:
+                path = f"M{sx + NODE_W},{sy_c} L{g1:.1f},{sy_c} L{g1:.1f},{ty_c} L{tx},{ty_c}"
+                anchor = (g1, ty_c - (ty_c - sy_c) * 0.25)
+            else:
+                # Several columns apart: drop into a corridor between rows,
+                # cross there, then drop into the target's own gutter.
+                g2 = in_gutter(t)
+                mid = corridor_y(t)
+                path = (f"M{sx + NODE_W},{sy_c} L{g1:.1f},{sy_c} L{g1:.1f},{mid:.1f} "
+                        f"L{g2:.1f},{mid:.1f} L{g2:.1f},{ty_c} L{tx},{ty_c}")
+                anchor = (g2, (mid + ty_c) / 2)
             cls = "wf-edge"
+
+        legend_number = None
+        if out_count[s] > MAX_LABELLED_EXITS and label_lines:
+            # Too many exits to letter: number them here, spell them out under
+            # the node, and keep the full text in the node detail table.
+            legend = legends.setdefault(s, [])
+            legend.append((len(legend) + 1, " ".join(" ".join(label_lines).split())))
+            legend_number = legend[-1][0]
+
         parts.append(
-            f'<g class="wf-edgeg" data-edge="{esc(s)}-{esc(t)}" data-tasks="{esc(tasks)}"><path class="{cls}" d="{path}" marker-end="url(#ah)"/></g>'
+            f'<g class="wf-edgeg" data-edge="{esc(s)}-{esc(t)}" data-tasks="{esc(tasks)}"'
+            + (f' data-legend="{legend_number}"' if legend_number else "")
+            + f'><path class="{cls}" d="{path}" marker-end="url(#ah)"/></g>'
         )
-        if label_lines:
-            plates.append(f'<g class="wf-edgeg" data-tasks="{esc(tasks)}">{label_plate(label_lines, lx, ly)}</g>')
+        shown = [str(legend_number)] if legend_number else label_lines
+        if shown:
+            plate, _ = place_plate(shown, anchor[0], anchor[1])
+            plates.append(f'<g class="wf-edgeg" data-tasks="{esc(tasks)}">{plate}</g>')
     # Nodes
     for w in m.nodes:
         wid = w["id"]
@@ -1072,7 +1183,8 @@ def flow_svg(m):
             yy += 13
         tag_y = y + node_h + 14
         tags = ""
-        for kind, lines in i["tags"] + [(k, wrap(t, 32)) for k, t in cross_notes.get(wid, [])]:
+        legend_tags = [("legend", wrap(f"{n} {text}", 32)) for n, text in legends.get(wid, [])]
+        for kind, lines in i["tags"] + [(k, wrap(t, 32)) for k, t in cross_notes.get(wid, [])] + legend_tags:
             for line in lines:
                 tags += f'<text class="wf-tag {kind}" x="{x + 2}" y="{tag_y}">{esc(line)}</text>'
                 tag_y += 14
@@ -1672,7 +1784,7 @@ button.chip{cursor:pointer;font-family:inherit}button.chip:hover{border-color:va
 .calls{list-style:none;margin:0;padding:0;display:grid;gap:10px}.calls li{padding:12px 14px;display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px}.calls .n{font-family:var(--f-mono);color:var(--accent);font-weight:600}.calls .rej{font-size:12.5px;color:var(--muted);margin-top:4px}.calls .rej b{color:var(--fg);font-weight:600}
 .kpimini{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;font-size:13px;padding:7px 0;border-bottom:1px solid var(--line)}.kpimini:last-child{border-bottom:0}.kpimini .v{font-family:var(--f-mono);white-space:nowrap}.kpimini .v b{color:var(--accent)}.kpimini .df{grid-column:1/-1;color:var(--muted);font-size:12px}
 .blk{font-size:13px;padding:6px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px}.blk:last-child{border-bottom:0}.blk .o{display:block;color:var(--muted);font-size:12px}
-.lb{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;margin-bottom:6px}.brief-text{font-size:13.5px;max-width:90ch;white-space:pre-wrap}
+.lb{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;margin-bottom:6px}.brief-text{font-size:13.5px;max-width:90ch;white-space:pre-wrap}.brief-full{margin-top:8px}.brief-full>summary{cursor:pointer;color:var(--accent)}
 .tree-wrap{overflow-x:auto;padding:16px}.tree2{display:flex;flex-direction:column;align-items:center}.root{background:var(--fg);color:var(--bg);border-radius:9px;padding:10px 18px;font-family:var(--f-display);font-weight:700;font-size:16px;text-align:center}.root small{display:block;font-family:var(--f-mono);font-weight:400;font-size:11px;opacity:.75}
 .stem{width:2px;height:16px;background:var(--line)}.trow{display:grid;gap:12px;width:100%;position:relative;padding-top:16px}.trow::before{content:"";position:absolute;top:0;left:calc(100% / (var(--n) * 2));right:calc(100% / (var(--n) * 2));height:2px;background:var(--line)}
 .tcol{position:relative;display:flex;flex-direction:column;gap:8px;min-width:0}.tcol::before{content:"";position:absolute;top:-16px;left:50%;width:2px;height:16px;background:var(--line)}

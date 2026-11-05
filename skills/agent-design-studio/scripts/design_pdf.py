@@ -223,6 +223,21 @@ def _assumptions(design):
     return ledger, extra
 
 
+# Matches export_v2.BRIEF_QUOTE_BYTES: one rule for how much brief a generated
+# document quotes before pointing at the source.
+BRIEF_QUOTE_CHARS = 2000
+
+
+def _quote_brief(brief, limit=BRIEF_QUOTE_CHARS):
+    """The opening of the brief, cut on a word, and whether it was cut."""
+    text = str(brief or "")
+    if len(text) <= limit:
+        return text, False
+    head = text[:limit]
+    cut = head.rsplit(" ", 1)[0] if " " in head[-200:] else head
+    return cut.rstrip() + " [...]", True
+
+
 def _record_font_warnings(out, warnings):
     """Add the font warnings to the validation.json beside the PDF, if there is one.
 
@@ -443,7 +458,14 @@ def create_pdf(design_path, review_path, out, mode=None):
         items = stages[key]["items"]
         if key == "context":
             add("Original brief", "card")
-            add(design["brief"])
+            quote, trimmed = _quote_brief(design["brief"])
+            add(quote)
+            if trimmed:
+                add(
+                    "The brief is %s characters; the quote above is its opening. Appendix D carries it in full."
+                    % f"{len(design['brief']):,}",
+                    "small",
+                )
             printed = {" ".join(design["brief"].split())}
             for item in items:
                 value = item["data"]["value"]
@@ -822,6 +844,15 @@ def create_pdf(design_path, review_path, out, mode=None):
                 label("Used by", ", ".join(f["usedBy"]) or "none", None, "small")
         else:
             add("No web research was performed: " + research["unavailableReason"] + " Tool candidates are unverified.", "small")
+    if _quote_brief(design["brief"])[1]:
+        story.append(R.CondPageBreak(700))
+        section("D", "The brief in full")
+        add(
+            "Quoted verbatim, as given. Section 1 carries its opening; this appendix exists so the full text "
+            "stays in the report rather than only in design.json.",
+            "small",
+        )
+        add(design["brief"])
     add(
         "Canonical design SHA256: "
         + hashlib.sha256(design_path.read_bytes()).hexdigest(),

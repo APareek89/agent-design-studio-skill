@@ -97,3 +97,46 @@ brief lists an expected outcome for fourteen of the fifteen mutations and omits
 06. Emptying the model stage leaves components that declare a model with
 nothing to bind to, and the validator says so, which is correct behaviour; it
 is recorded as "rejected with the current message" rather than left undefined.
+
+## Fix 4, long briefs
+
+**Generated documents quote the brief; they never copy it.** `BRIEF_QUOTE_BYTES`
+is 2,000 and the same rule applies in `build/00-overview.md`, the HTML Brief
+panel and the Context section of the PDF. Below that length nothing changes.
+
+**The size error names the field, not a remedy that cannot work.** It used to
+say "split milestones" for an overview that was large because the brief was
+60 KB. It now reports each oversize file with its byte count and the part of
+the design that dominates it, and reports a total overrun separately.
+
+**Nothing is hidden to fit a limit.** The HTML collapses a long brief behind a
+"Show full brief" control with the whole text still in the page, and the full
+PDF carries it as appendix D. Only the build overview points elsewhere, and it
+says where.
+
+## Fix 5, flow layout
+
+**Edges are orthogonal with one gutter per source.** An edge leaves its source
+sideways into a lane reserved for that source in the gap after its column,
+travels vertically there, and enters the target from the left. Several columns
+apart, it crosses in a corridor between node rows and drops into a lane
+reserved for the target, so a long edge passes between rows rather than
+through a node.
+
+**Plates are placed at the target end and then moved until they are clear.**
+Each plate starts on the final vertical segment near the target and slides up
+and down that line in half-plate steps until it touches no other plate and no
+node box, counting a node's tag lines as part of it. If nowhere is clear the
+plate stays on its edge rather than being dropped: a lost condition is worse
+than a crowded one. Measured over both seeds and six stress variants, there
+are now no plate-plate and no plate-node overlaps, including the two the v1.2
+changelog recorded in the health-claims flow.
+
+**Over six exits from one node become a numbered legend.** The plate carries
+the number, the numbered conditions print under the node, and the node detail
+table keeps every condition in full. Six is the point where plates in one
+gutter stop being readable at 1440 px.
+
+**A cross-band edge says "continues at" at both ends.** It used to say
+"continues at W17" at one end and "from W16" at the other, which read as two
+different things.

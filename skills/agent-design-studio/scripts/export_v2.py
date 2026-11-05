@@ -27,6 +27,52 @@ def coverage_lines(structural):
     return lines
 
 
+# A build file quotes the brief; it never copies it. A 60 KB brief used to be
+# pasted whole into build/00-overview.md, which broke the standard export with
+# an error about splitting milestones - advice that could not help, because the
+# milestones were not the problem.
+BRIEF_QUOTE_BYTES=2000
+FILE_LIMIT=25000
+TOTAL_LIMIT=100000
+
+
+def quote_brief(brief,limit=BRIEF_QUOTE_BYTES):
+    """The first `limit` characters of the brief, cut on a word, and whether it was cut."""
+    text=str(brief or '')
+    if len(text)<=limit:return text,False
+    head=text[:limit]
+    cut=head.rsplit(' ',1)[0] if ' ' in head[-200:] else head
+    return cut.rstrip()+' [...]',True
+
+
+def biggest_field(name,text,design):
+    """Which part of the design makes this build file big.
+
+    "Split milestones" is useless advice when the overview is large because the
+    brief is 60 KB, so the error names the field a reader can actually act on.
+    """
+    if name.endswith('00-overview.md'):
+        brief=len(str(design.get('brief','')).encode())
+        if brief>len(text.encode())/3:return '$.brief (%s bytes)'%f'{brief:,}'
+        return '$.milestones (the overview lists %d)'%len(design.get('milestones') or [])
+    widest,size=None,0
+    for key in ('components','workflow'):
+        for item in design['stages'][key]['items']:
+            length=len(str(item.get('description','')).encode())
+            if length>size and item['id'] in text:widest,size=item['id'],length
+    return ('$.stages contract %s (%s bytes)'%(widest,f'{size:,}')) if widest else 'the selected contracts'
+
+
+def size_error(files,oversize,total,design):
+    named=', '.join('%s: %s bytes, largest part %s'%(f,f'{len(files[f].encode()):,}',biggest_field(f,files[f],design))
+                    for f in oversize)
+    parts=[]
+    if oversize:parts.append('over the %s KB file limit -> %s'%(FILE_LIMIT//1000,named))
+    if total>TOTAL_LIMIT:parts.append('the build folder is %s bytes, over the %s KB total'%(f'{total:,}',TOTAL_LIMIT//1000))
+    return ('Build context exceeds standard limits (%s KB/file, %s KB total): %s. Keep full contracts in companions; '
+            'the brief is quoted, not copied.'%(FILE_LIMIT//1000,TOTAL_LIMIT//1000,'; '.join(parts)))
+
+
 def readme(design, review, mode, milestone_count, structural=None):
     lines=['# '+design['title'],'',f'> {review["status"].upper()} | DESIGN ONLY. {review["method"]}; round {review["round"]}. A proposed design, not an approved or built system.','',
            '## Open first','','1. `DESIGN.html`: the clickable read-only view. Decision brief, then the ten steps, then assumptions and review.',
@@ -74,7 +120,12 @@ def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode)
             milestones.append({'id':f'{i:02d}','title':comp['title'],'componentIds':[comp['id']],
                                'taskIds':comp['data']['taskIds'],'evalIds':[e['id'] for e in design['stages']['evals']['items'] if comp['id'] in e['data']['componentIds']],
                                'acceptanceCriteria':['Implement the declared contract and all named assertions; do not execute live actions without user authority.']})
-    overview='# Build overview\n\n'+banner+design['brief']+'\n\n'
+    quote,trimmed=quote_brief(design['brief'])
+    overview='# Build overview\n\n'+banner+quote+'\n\n'
+    if trimmed:
+        overview+=('The brief above is the first %d characters of a %s-character brief. '
+                   'The full brief is design.json -> brief; the full PDF carries it as an appendix.\n\n'
+                   %(len(quote),f"{len(design['brief']):,}"))
     overview+='Load one milestone file at a time. Contracts below are selected by component; full source is ../design.json. Test IDs resolve to complete fixtures in ../_evidence/eval-set.json. Do not load the entire design unless a dependency requires it.\n\n'
     overview+='Code owns money, identity, dates and limits. The agent never holds write authority. Keep proposed policies and owners distinct from verified facts. Launch blockers: ../_evidence/assumptions.md. Complete rollout gates and owners: ../_evidence/PRD.md#rollout.\n\n'
     overview+=R.HTML_NOTE+' Deliver DESIGN.html and DESIGN.pdf together; neither grants write authority.\n\n'
@@ -116,9 +167,10 @@ def make_docs(D, design, review, structural, rr, design_hash, review_hash, mode)
     files['build/00-overview.md']=overview
     files['README.md']=readme(design,review,mode,len(milestones),structural)
     if mode=='standard':
-        oversize=[f for f,v in files.items() if len(v.encode())>25000]
-        if oversize or sum(len(v.encode()) for v in files.values())>100000:
-            raise ValueError('Build context exceeds standard limits (25 KB/file, 100 KB total). Split milestones or remove duplicated context; keep full contracts in companions. '+str(oversize))
+        oversize=[f for f,v in files.items() if len(v.encode())>FILE_LIMIT]
+        total=sum(len(v.encode()) for v in files.values())
+        if oversize or total>TOTAL_LIMIT:
+            raise ValueError(size_error(files,oversize,total,design))
     docs.pop('build-prompt.md')
     docs.update(files)
     report=json.loads(docs['validation.json']);report['mode']=mode;report['generatedFiles']=list(docs)
