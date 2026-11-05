@@ -441,6 +441,70 @@ def _intake_schema():
     }
 
 
+# ---------------------------------------------------------------------------
+# Brief profiles. `intake.briefProfile` says what kind of system the brief
+# describes; three kinds change what the design must contain. A design with no
+# profile keeps the v1.2 rules exactly.
+# ---------------------------------------------------------------------------
+
+# A read-only assistant cannot go wrong in the ways a writing one can, so the
+# write risk families are replaced rather than added to. Each entry is a family
+# name and the words that show a risk card covers it.
+READ_ONLY_RISK_FAMILIES = (
+    ("wrong or stale source", r"stale|out[- ]of[- ]date|outdated|superseded|wrong (?:source|document|version)|old version"),
+    ("missing citation", r"missing citation|uncited|no citation|without a citation|unattributed"),
+    ("answer outside the corpus", r"outside the corpus|out of scope|not in the (?:corpus|documents)|beyond the corpus|unsupported claim|hallucinat"),
+    ("prompt injection through documents", r"prompt injection|injected instruction|instruction in a document|poisoned document|indirect injection"),
+    ("leaking content the user may not see", r"leak\w*|not permitted to see|unauthorised (?:content|access)|unauthorized (?:content|access)|permission\w* (?:breach|leak)|access control"),
+    ("confident answer when the corpus is silent", r"corpus is silent|no evidence|nothing found|silent corpus|confident(?:ly)? (?:answer|wrong)|over[- ]confiden|abstain|decline"),
+)
+READ_ONLY_AUTONOMY = ("answers with citation", "answers with caveat", "declines")
+# A voice system's own failure surface.
+REALTIME_REQUIRED_CAPABILITIES = ("speech", "voice")
+
+
+def brief_profile(design):
+    """The recorded brief profile, or an empty dict when the design has none."""
+    intake = design.get("intake")
+    if not isinstance(intake, dict):
+        return {}
+    profile = intake.get("briefProfile")
+    return profile if isinstance(profile, dict) else {}
+
+
+def profile_says(design, key, default=None):
+    """One profile field, honouring a host override recorded alongside it."""
+    profile = brief_profile(design)
+    return profile.get(key, default) if profile else default
+
+
+def is_read_only(design):
+    profile = brief_profile(design)
+    return bool(profile) and profile.get("writes") is False
+
+
+def is_realtime(design):
+    return bool(profile_says(design, "realtime", False))
+
+
+def is_multi_tenant(design):
+    return bool(profile_says(design, "multiTenant", False))
+
+
+def _risk_text(design):
+    return " ".join(
+        item["title"] + " " + item["description"] + " " + item["data"].get("control", "")
+        + " " + item["data"].get("action", "")
+        for item in design["stages"]["fmea"]["items"]
+    ).lower()
+
+
+def read_only_risk_gaps(design):
+    """Read-only risk families with no card covering them."""
+    text = _risk_text(design)
+    return [name for name, pattern in READ_ONLY_RISK_FAMILIES if not re.search(pattern, text)]
+
+
 CONTEXT_EXPECTATIONS = (
     ("COV1", "Business decision and boundary", r"decision|boundar|goal|purpose|objective|problem"),
     ("COV2", "Actors and decision owners", r"actor|owner|people|role|user|customer|staff|who |stakeholder"),
@@ -525,7 +589,10 @@ def coverage_report(design):
             ("Covered: " + ", ".join(found_caps) + ". " if found_caps else "") + ("Missing tooling card for: " + ", ".join(missing_caps) + "." if missing_caps else ""))
     else:
         checks.append({"id": "COV10", "title": "Tooling card for each capability the brief implies", "status": "n/a", "required": False, "evidence": "The brief names no capability beyond the model."})
-    if re.search(WRITE_HINTS, brief):
+    read_only = is_read_only(design)
+    if read_only:
+        checks.append({"id": "COV11", "title": "Human trigger for money or record writes the brief implies", "status": "n/a", "required": False, "evidence": "Read-only system: the design writes to no system of record, so there is nothing for a human trigger to gate."})
+    elif re.search(WRITE_HINTS, brief):
         human = [c["id"] for c in design["stages"]["components"]["items"] if c["data"]["group"] == "Code: human triggers"]
         add("COV11", "Human trigger for money or record writes the brief implies", bool(human), ("Human triggers: " + ", ".join(human) + ".") if human else "The brief implies money or record writes but no component is a human trigger.")
     else:
@@ -544,6 +611,30 @@ def coverage_report(design):
         add("COV15", "Each tooling card has at least one candidate checked against a cited source", not unchecked, "All tooling cards cite a checked candidate." if not unchecked else "Tooling cards with no checked candidate: " + ", ".join(unchecked) + ".", required=False)
     else:
         checks.append({"id": "COV15", "title": "Each tooling card has at least one candidate checked against a cited source", "status": "n/a", "required": False, "evidence": "No tooling card."})
+    if read_only:
+        goldens = [e for e in design["stages"]["evals"]["items"] if e["data"]["category"] == "golden"]
+        cited = [e["id"] for e in goldens if re.search(r"citation|cite[sd]?|source", e["data"]["expected"] + " " + e["data"]["passRule"], re.I)]
+        declines = [e["id"] for e in goldens if re.search(r"declin|refus|abstain|cannot answer|no answer", e["data"]["expected"] + " " + e["data"]["passRule"] + " " + e["title"], re.I)]
+        access = " ".join(
+            [c["title"] + " " + c["description"] for c in design["stages"]["components"]["items"]]
+            + [f["title"] + " " + f["data"].get("choice", "") for f in design["stages"]["framework"]["items"]]
+            + [h["statement"] for h in design["assumptions"]]
+        )
+        has_access = bool(re.search(r"access (?:check|control)|permission\w* check|document[- ]level|entitlement|who may (?:see|read)", access, re.I))
+        missing = []
+        if not cited:
+            missing.append("a golden that requires a verifiable citation")
+        if not declines:
+            missing.append("a golden that requires a refusal when the corpus is silent")
+        if not has_access:
+            missing.append("a statement of who may see which documents")
+        add("COV16", "Read-only system: citation goldens and a document access statement", not missing,
+            ("Citation goldens: " + ", ".join(cited + declines) + "; access control stated.") if not missing
+            else "A read-only assistant needs " + ", ".join(missing) + ".")
+        gaps = read_only_risk_gaps(design)
+        add("COV17", "Read-only risk families in the register", not gaps,
+            "All read-only risk families are covered." if not gaps
+            else "No risk card covers: " + ", ".join(gaps) + ".")
     required = [c for c in checks if c["required"]]
     return {
         "required": len(required),
@@ -1185,6 +1276,8 @@ def validate_design(design, schemas=None):
         semantic_coverage = "failed" if semantic_errors else "verified-declarations"
     else:
         warnings.append({"path": "$.semantics", "message": "Legacy schema 1.0: semantic coverage unverified; author new designs as schema 1.1 with complete semantic metadata."})
+    errors.extend(_profile_errors(design))
+    warnings.extend(_profile_warnings(design))
     coverage = None
     if not errors:
         coverage = coverage_report(design)
@@ -1201,6 +1294,142 @@ def validate_design(design, schemas=None):
         "coverage": coverage,
         "limitations": LIMITATIONS,
     }
+
+
+
+def _speaking_nodes(design):
+    """Nodes that say something to a person, so a caller can talk over them."""
+    speaking = []
+    for node in design["stages"]["workflow"]["items"]:
+        text = node["title"] + " " + node["description"] + " " + node["data"].get("example", "")
+        if re.search(r"\b(speak\w*|say[s]?|says|prompt\w*|read[s]? (?:out|back)|play\w*|announce\w*|greet\w*|"
+                     r"tts|text[- ]to[- ]speech|utterance|voice reply|spoken)\b", text, re.I):
+            speaking.append(node)
+    return speaking
+
+
+def _profile_errors(design):
+    """Rules that only apply to a design whose brief profile asks for them."""
+    errors = []
+    if is_realtime(design):
+        nodes = design["stages"]["workflow"]["items"]
+        by_id = {n["id"]: n for n in nodes}
+        # Where the system speaks, the design must say what happens when the
+        # user talks over it. Silence here is a design gap, not a detail.
+        for node in _speaking_nodes(design):
+            targets = [by_id.get(t) for t in node["data"]["next"]]
+            transitions = []
+            try:
+                transitions = parse_json(node["description"]).get("transitions", [])
+            except (ValueError, TypeError):
+                transitions = []
+            barge_in = any(
+                re.search(r"barge[sd]?[- ]?in\b|interrupt\w*|user speaks|caller speaks|talks over|cuts in",
+                          str(t.get("when", "")) + " " + str((by_id.get(t.get("to")) or {}).get("title", "")), re.I)
+                for t in transitions if isinstance(t, dict)
+            ) or any(
+                target is not None and re.search(r"barge[sd]?[- ]?in\b|interrupt", target["title"], re.I)
+                for target in targets
+            )
+            if not barge_in:
+                _issue(errors, "$.stages.workflow." + node["id"],
+                       "Real-time system: " + node["id"] + " speaks to the user, so it needs a barge-in branch "
+                       "saying what is cancelled and what is kept when the user talks over it.")
+        # A transcript the speech component is unsure of must not reach a write
+        # without someone confirming it.
+        confidence = [
+            c for c in design["stages"]["components"]["items"]
+            if re.search(r"confidence|score", " ".join(c["data"].get("outputs", [])), re.I)
+            and re.search(r"speech|transcri\w*|stt|asr|voice", c["title"] + " " + c["description"], re.I)
+        ]
+        speech = [
+            c for c in design["stages"]["components"]["items"]
+            if re.search(r"speech|transcri\w*|\bstt\b|\basr\b|text[- ]to[- ]speech|\btts\b|telephon\w*",
+                         c["title"] + " " + c["description"], re.I)
+        ]
+        if speech and not confidence:
+            _issue(errors, "$.stages.components",
+                   "Real-time system: a speech component must output a confidence value, so a low-confidence "
+                   "transcript can be routed to a confirm step before any write.")
+    return errors
+
+
+def _profile_warnings(design):
+    """Profile findings a reader must see but that do not make the design invalid."""
+    warnings = []
+    if is_realtime(design):
+        target = _latency_target(design)
+        budgets = [
+            n["data"].get("latencyBudgetMs") for n in design["stages"]["workflow"]["items"]
+            if isinstance(n["data"].get("latencyBudgetMs"), int)
+        ]
+        if target is not None and budgets:
+            worst = _first_reply_latency(design)
+            if worst is not None and worst > target:
+                warnings.append({
+                    "path": "$.stages.workflow",
+                    "message": ("Real-time system: the slowest path from entry to the first reply budgets %d ms, "
+                                "over the brief's stated %d ms." % (worst, target)),
+                })
+        elif target is not None and not budgets:
+            warnings.append({
+                "path": "$.stages.workflow",
+                "message": ("Real-time system: the brief states a %d ms target but no node carries a "
+                            "latencyBudgetMs, so the path cannot be checked." % target),
+            })
+    if is_multi_tenant(design):
+        grid = " ".join(c["data"].get("field", "") for c in design["stages"]["context"]["items"]).lower()
+        if "tenant" not in grid:
+            warnings.append({
+                "path": "$.stages.context",
+                "message": "Multi-tenant system: no context card names the tenant; the key attributes grid "
+                           "shows the tenant column first and needs it.",
+            })
+    return warnings
+
+
+def _latency_target(design):
+    """The reply-latency target the brief states, in milliseconds."""
+    brief = str(design.get("brief", ""))
+    match = re.search(r"(\d[\d,.]*)\s*(ms|milliseconds?)\b", brief, re.I)
+    if match:
+        return int(float(match.group(1).replace(",", "")))
+    match = re.search(r"(?:under|below|within|less than|at most|<=?)\s*(\d[\d,.]*)\s*(seconds?|secs?|s)\b",
+                      brief, re.I)
+    if match:
+        return int(float(match.group(1).replace(",", "")) * 1000)
+    return None
+
+
+def _first_reply_latency(design):
+    """The slowest budgeted path from an entry node to the first node that speaks."""
+    nodes = {n["id"]: n for n in design["stages"]["workflow"]["items"]}
+    if not nodes:
+        return None
+    incoming = {i: 0 for i in nodes}
+    for node in nodes.values():
+        for nxt in node["data"]["next"]:
+            if nxt in incoming:
+                incoming[nxt] += 1
+    entries = [i for i in nodes if incoming[i] == 0] or list(nodes)[:1]
+    speaks = {n["id"] for n in _speaking_nodes(design)}
+    if not speaks:
+        return None
+
+    def budget(i):
+        value = nodes[i]["data"].get("latencyBudgetMs")
+        return value if isinstance(value, int) else 0
+
+    worst, stack = None, [(e, budget(e), {e}) for e in entries]
+    while stack:
+        node, total, seen = stack.pop()
+        if node in speaks:
+            worst = total if worst is None else max(worst, total)
+            continue
+        for nxt in nodes[node]["data"]["next"]:
+            if nxt in nodes and nxt not in seen:
+                stack.append((nxt, total + budget(nxt), seen | {nxt}))
+    return worst
 
 
 def validate_review(review, structural_valid=True):
@@ -1332,6 +1561,23 @@ def validate_review(review, structural_valid=True):
             "$.review.status",
             "Claimed pass is unsupported: structural validity,all D1-D12 >=3,no unresolved critical/major,and limitations are required.",
         )
+    # A review the author ran on their own work is not an independent one, and
+    # must never read as one anywhere in the record.
+    if re.search(r"\bself\b|self[- ]review", review["method"], re.I):
+        where = []
+        if re.search(r"independent", review["method"], re.I):
+            where.append("$.review.method")
+        for i, limitation in enumerate(review.get("limitations", [])):
+            if re.search(r"independent", str(limitation), re.I):
+                where.append(f"$.review.limitations[{i}]")
+        for i, issue in enumerate(review.get("issues", [])):
+            text = " ".join(str(v) for v in issue.values() if isinstance(v, str))
+            if re.search(r"independent", text, re.I):
+                where.append(f"$.review.issues[{i}]")
+        for path in where:
+            _issue(errors, path,
+                   "This is a self-review, so it cannot describe itself as independent. "
+                   "Say what was actually done, or have a separate agent review it.")
     status = (
         "needs-work"
         if review["status"] == "needs-work" or computed != "pass"

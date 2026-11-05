@@ -238,6 +238,17 @@ def _quote_brief(brief, limit=BRIEF_QUOTE_CHARS):
     return cut.rstrip() + " [...]", True
 
 
+def _run_conditions_near(design_path):
+    """The run conditions recorded beside a design, if a run report is there."""
+    report = Path(design_path).parent / "run-report.json"
+    if not report.is_file():
+        return ""
+    try:
+        return str(json.loads(report.read_text(encoding="utf-8")).get("runConditions", ""))
+    except (OSError, ValueError):
+        return ""
+
+
 def _record_font_warnings(out, warnings):
     """Add the font warnings to the validation.json beside the PDF, if there is one.
 
@@ -289,7 +300,7 @@ def create_pdf(design_path, review_path, out, mode=None):
         spec = importlib.util.spec_from_file_location("studio_report_v2", Path(__file__).with_name("report_v2.py"))
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        return module.render(design, review, out, mode)
+        return module.render(design, review, out, mode, _run_conditions_near(design_path))
     if mode not in (None, "full"):
         raise ValueError("Unknown PDF mode.")
     R = _libraries()
@@ -893,7 +904,7 @@ def create_pdf(design_path, review_path, out, mode=None):
         spec = importlib.util.spec_from_file_location("studio_report_front", Path(__file__).with_name("report_v2.py"))
         front = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(front)
-        report = front.Report(design, review, "full")
+        report = front.Report(design, review, "full", _run_conditions_near(design_path))
         report.decision(); report.finish_page()
         report.heading("Task tree"); report.task_tree(); report.finish_page()
         report.heading("Workflow diagram"); report.workflow(); report.finish_page()

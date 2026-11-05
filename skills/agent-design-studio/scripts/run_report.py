@@ -7,6 +7,58 @@ import json
 from pathlib import Path
 
 
+# What a host may be missing, and the words the report uses for each. A run
+# that could not do one of these is not the same run as one that did, and the
+# PASS badge on its own does not say so.
+HOST_CAPABILITIES = (
+    ('subAgent', 'Review', 'independent agent review', 'self-review (no separate agent available)'),
+    ('webSearch', 'Research', 'web research', 'none (no web tool)'),
+    ('reportLab', 'PDF', 'rendered', 'skipped'),
+    ('node', 'Visual QA', 'run', 'not run'),
+    ('questionDialog', 'Intake', 'asked', 'skipped (no question dialog)'),
+)
+
+
+def run_conditions(capabilities):
+    """One line a reader can act on: what this run could and could not do.
+
+    A design produced without a separate reviewer, without web search or
+    without a rendered PDF is a different artifact from one produced with
+    them, and the review status alone does not show it.
+    """
+    parts = []
+    for key, label, available, missing in HOST_CAPABILITIES:
+        parts.append(label + ': ' + (available if capabilities.get(key) else missing))
+    return '. '.join(parts) + '.'
+
+
+def detect_capabilities(folder, design=None, review=None):
+    """What the host running this design actually had.
+
+    Read from the design's own records where it states them, and from the
+    environment where it does not.
+    """
+    folder = Path(folder)
+    design = design or {}
+    review = review or {}
+    research = design.get('research') if isinstance(design.get('research'), dict) else None
+    intake = design.get('intake') if isinstance(design.get('intake'), dict) else None
+    try:
+        import reportlab  # noqa: F401
+        has_reportlab = True
+    except ImportError:
+        has_reportlab = False
+    qa = list(folder.glob('html-qa/**/qa.json')) + list(folder.glob('qa.json'))
+    method = str(review.get('method', '')).lower()
+    return {
+        'subAgent': bool(method) and 'self' not in method,
+        'webSearch': bool(research and research.get('performed')),
+        'reportLab': has_reportlab and (folder / 'DESIGN.pdf').exists(),
+        'node': bool(qa),
+        'questionDialog': bool(intake and intake.get('asked')),
+    }
+
+
 def record(folder, mode, started_at=None, approximate_tokens=None, token_method=None):
     folder=Path(folder)
     from importlib.util import spec_from_file_location,module_from_spec
@@ -33,6 +85,9 @@ def record(folder, mode, started_at=None, approximate_tokens=None, token_method=
             'reviewMethod':review['method'],'reviewStatus':review['status'],
             'designSha256':hashlib.sha256((folder/'design.json').read_bytes()).hexdigest(),
             'businessAssertionsExecuted':False}
+    capabilities=detect_capabilities(folder,design,review)
+    result['hostCapabilities']=capabilities
+    result['runConditions']=run_conditions(capabilities)
     (folder/'run-report.json').write_text(json.dumps(result,indent=2)+'\n')
     return result
 

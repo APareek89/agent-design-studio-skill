@@ -207,7 +207,7 @@ def brief_data(design):
 
 
 class Report:
-    def __init__(self, design, review, mode):
+    def __init__(self, design, review, mode, run_conditions=''):
         from reportlab.pdfgen import canvas
         from reportlab.lib.pagesizes import A4
         from reportlab.lib import colors
@@ -215,6 +215,7 @@ class Report:
         from reportlab.platypus import Paragraph
         self.colors, self.Paragraph, self.Style = colors, Paragraph, ParagraphStyle
         self.design, self.review, self.mode = design, review, mode
+        self.run_conditions = run_conditions
         # Noto Sans and its per-script companions: Devanagari, Arabic and CJK
         # text renders instead of coming out as black squares.
         spec = importlib.util.spec_from_file_location(
@@ -422,7 +423,12 @@ class Report:
         self.heading('Illustrative cost per case')
         note='Provider costs are unknown.' if not data['priced'] else 'This is an estimate, not a current provider quote.'
         self.text(f'USD {data["cost"]:.5f} per case in the model budget. '+note+' Staff and tools cost extra.','small')
-        self.text(f'Review status: {self.review["method"]}; round {self.review["round"]}; {self.review["status"]}.','small')
+        method=self.review['method']
+        if 'self' in method.lower():
+            method=re.sub(r'independent','self',method,flags=re.I)
+        self.text(f'Review status: {method}; round {self.review["round"]}; {self.review["status"]}.','small')
+        if self.run_conditions:
+            self.text('Run conditions - '+self.run_conditions,'small')
         self.text('Proposed design. Full rules and blockers: design.json and assumptions.md.','small')
         self.styles['head']=old_head
 
@@ -534,9 +540,9 @@ def _record_font_warnings(out,warnings):
         pass
 
 
-def render(design,review,out,mode='standard'):
+def render(design,review,out,mode='standard',run_conditions=''):
     if mode not in ('lite','standard'):raise ValueError('Compact PDF mode must be lite or standard.')
-    r=Report(design,review,mode); r.build(); r.c.save()
+    r=Report(design,review,mode,run_conditions); r.build(); r.c.save()
     limit=4 if mode=='lite' else 12
     if r.pages>limit:raise ValueError(f'{mode} PDF exceeds {limit} pages; move detailed appendices into companions.')
     path=Path(out); path.parent.mkdir(parents=True,exist_ok=True)

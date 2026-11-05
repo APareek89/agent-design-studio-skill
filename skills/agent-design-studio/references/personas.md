@@ -66,6 +66,30 @@ Explain hypothetical S/O/D: severity 1 negligible–10 catastrophic; occurrence 
 
 Each failure has prevention, detection, mitigation, metric, protected business KPI and relevant planned golden IDs. Plan monitor/release links separately. Derive both directions of the all-category risk/eval relation from one relationship set; indiscriminate all-to-all IDs are not semantic coverage.
 
+### Read-only systems (`briefProfile.writes = false`)
+
+A system that answers and never acts cannot fail in the ways above, so the
+write families are replaced, not supplemented. Cover or justify
+inapplicability of: a wrong or stale source; an answer with no citation; an
+answer outside the corpus; prompt injection carried in a document the system
+reads; leaking content this reader may not see; and a confident answer when
+the corpus is silent, where the system should decline. Wrong tenant/subject
+and revoked authority still apply. Money, duplicate posting and unknown-commit
+families do not; say so rather than padding the register with them.
+
+### Real-time and voice systems (`briefProfile.realtime = true`)
+
+Add: a transcript the speech component was unsure of reaching a write; the
+user talking over the system and the system acting on the cancelled turn; a
+reply that misses the latency budget and the caller hanging up mid-case; an
+accent or language the word-error-rate layer has not measured.
+
+### Multi-tenant systems (`briefProfile.multiTenant = true`)
+
+Wrong tenant is the first family, not one of many: a record read or written
+under another customer's scope, a cached answer served across tenants, and a
+tenant field that came from the model rather than from the session.
+
 ## 8. Eval Designer
 
 Every unaccepted FM and high-risk leaf needs a substantive golden. Use JSON strings for input, expected and assertions, with complete command, policy/evidence/version, authority, ledger/record prerequisites and ordered mocks. A shared ID or monitor is insufficient.
@@ -75,6 +99,29 @@ Validate the positive base, then mutate one guard per negative case and assert p
 Canonical hashes must match payloads and serialization. Unknown-commit cases explicitly start after a previously authorized operation; cover duplicate callbacks, expired sessions, cancellation and separately authorized follow-up. Human timers use declared calendars and owners. Resolve named/versioned fixture inheritance with explicit array/deletion/replacement rules; cyclic or missing bases are defects. Show the resulting effective fixture during review.
 
 Define offline component/end-to-end layers, strata, labelling/adjudication, metric/KPI/target and online cadence/threshold/response owner. Release suites and rollout assertions must actually include newly added goldens. Verify all-category reciprocal links. These are future test specifications; the helper does not execute business assertions.
+
+### Read-only systems
+
+The write action pair is replaced by an answer pair per corpus type: a
+positive case that answers with a verifiable citation, and a negative case
+that refuses when the corpus is silent. Declare each in `semantics.goldens`
+with `actionClass: "answer"`, a `polarity`, the `citationField` it asserts on,
+and an `expected.citations` count: one or more for the positive case, zero for
+the negative. Every answer golden names a component whose declared effect is
+`read`. SEM008 checks this where SEM003 checks writes.
+
+### Real-time and voice systems
+
+Add an offline layer for word error rate, stratified by language and by
+accent, with its own labelling and adjudication, and a latency percentile row
+(p50, p95) in online monitoring with a threshold and a response owner. A mean
+latency alone hides the tail that makes a call unusable.
+
+### Multi-tenant systems
+
+The required set includes a cross-tenant negative golden: a request that names
+a record belonging to another tenant, expected to be refused with zero reads
+of that record.
 
 ## 9. Measurement Lead
 

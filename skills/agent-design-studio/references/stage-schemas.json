@@ -646,6 +646,14 @@
                 "example": {
                   "type": "string",
                   "maxLength": 8000
+                },
+                "latencyBudgetMs": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 600000
+                },
+                "streaming": {
+                  "type": "boolean"
                 }
               },
               "required": [

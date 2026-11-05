@@ -60,10 +60,19 @@ TYPE_NAME = {
 }
 MODE_TEXT = {"sequence": "sequence: all run", "choose one": "choose one per case", "leaf": "leaf"}
 LEVEL_TEXT = {"acts alone": "Acts alone", "suggests": "Suggests", "human decides": "Human decides"}
+# A read-only assistant never acts alone and no human decides on its behalf:
+# the three things it can do are answer with a citation, answer with a caveat,
+# or decline.
+READ_ONLY_LEVEL_TEXT = {
+    "acts alone": "Answers with citation",
+    "suggests": "Answers with caveat",
+    "human decides": "Declines",
+}
 VOLUME_WORDS = r"(?:text\s+)?(?:cases|claims|requests|complaints|reports|tickets|conversations|runs|jobs|orders|interactions|messages|applications)"
 VOLUME_RE = re.compile(
     r"(\d{1,3}(?:[, ]\d{3})+|\d+)\s*" + VOLUME_WORDS + r"\s*(?:/|per|a|each|every)\s*month", re.I
 )
+TENANT_WORDS = re.compile(r"tenant|organi[sz]ation|workspace|client", re.I)
 RANGE_RE = re.compile(r"(?<![\w.])([^;:\n]{1,32}?)\s*(?:→|->)\s*([^;:\n(]{1,32}?)(?=[\s;,.(]|$)")
 
 
@@ -168,7 +177,7 @@ def pretty_json(value):
 class Model:
     """Precomputed lookups over one validated design, review and mode."""
 
-    def __init__(self, design, review, mode, rounds=()):
+    def __init__(self, design, review, mode, rounds=(), run_conditions=""):
         self.d = design
         self.review = review
         self.mode = mode
@@ -219,6 +228,10 @@ class Model:
         self.derived = not isinstance(pres, dict)
         self.pres = pres if isinstance(pres, dict) else report.derive_presentation(design)
         self.brief = report.brief_data(design)
+        self.run_conditions = run_conditions
+        self.read_only = design_io.is_read_only(design)
+        self.realtime = design_io.is_realtime(design)
+        self.multi_tenant = design_io.is_multi_tenant(design)
         self.task_labels = self.pres.get("taskLabels", {}) or {}
         self.node_labels = self.pres.get("workflowLabels", {}) or {}
         self.index = {item["id"]: key for key in STAGES for item in st[key]["items"]}
@@ -361,7 +374,14 @@ class Model:
 
     def status_line(self):
         r = self.review
-        return f'{r["method"]}, round {r["round"]}: {self.result["status"]}. Read-only view. Not approved by stakeholders.'
+        method = r["method"]
+        # A self-review may not present itself as an independent one.
+        if "self" in method.lower():
+            method = re.sub(r"independent", "self", method, flags=re.I)
+        line = f'{method}, round {r["round"]}: {self.result["status"]}. Read-only view. Not approved by stakeholders.'
+        if self.run_conditions:
+            line += " Run conditions - " + self.run_conditions
+        return line
 
     def views(self):
         return LITE_VIEWS if self.mode == "lite" else VIEW_ORDER
@@ -504,8 +524,9 @@ def view_brief(m):
     if not calls:
         calls = ('<li class="panel"><div class="mini">No framework card records an architecture, '
                  "orchestration or permission decision.</div></li>")
+    levels = READ_ONLY_LEVEL_TEXT if m.read_only else LEVEL_TEXT
     autonomy = "".join(
-        f"<tr><td>{esc(plain(a['action']))}</td><td>{esc(LEVEL_TEXT.get(a['level'], a['level']))}</td></tr>"
+        f"<tr><td>{esc(plain(a['action']))}</td><td>{esc(levels.get(a['level'], a['level']))}</td></tr>"
         for a in b["autonomy"]
     )
     kpis = ""
@@ -726,12 +747,18 @@ def view_tasks(m):
     )
     details = "".join(leaf_detail(m, t, t["id"] != first) for t in leaves)
     attr_rows = ""
-    for a in m.attrs:
+    attrs_ordered = list(m.attrs)
+    if m.multi_tenant:
+        # In a shared system every other attribute is read inside a tenant, so
+        # the tenant rows come first.
+        attrs_ordered.sort(key=lambda a: 0 if TENANT_WORDS.search(a["title"]) else 1)
+    for a in attrs_ordered:
         ticks = ""
         linked = set(a["data"]["taskIds"])
         for top in m.tops:
             ticks += f'<td class="ck">{"✓" if linked & set(m.descendants(top["id"])) else ""}</td>'
-        attr_rows += f'<tr><td>{esc(a["title"])}</td>{ticks}<td>{esc(a["data"]["sourceSystem"])}</td><td class="mono small">{esc(a["data"]["loaded"])}</td></tr>'
+        tenant_cls = ' class="tenant-row"' if m.multi_tenant and TENANT_WORDS.search(a["title"]) else ""
+        attr_rows += f'<tr{tenant_cls}><td>{esc(a["title"])}</td>{ticks}<td>{esc(a["data"]["sourceSystem"])}</td><td class="mono small">{esc(a["data"]["loaded"])}</td></tr>'
     attrs = (
         '<div class="sec"><h3>Key attributes</h3><p class="sub">Facts the tasks rely on, where they come from and when they load.</p>'
         + '<div class="tw attr"><table><thead><tr><th>Attribute</th>'
@@ -937,8 +964,12 @@ def flow_svg(m):
         example = w["data"]["example"]
         if " ".join(example.split()).lower() in (" ".join(label.split()).lower(), " ".join(w["title"].split()).lower()):
             example = ""
+        budget = w["data"].get("latencyBudgetMs")
+        header = f'{wid} · {comp["id"]}' + (" · decides" if w["data"]["decision"] else "")
+        if isinstance(budget, int):
+            header += f' · {budget:,}ms' + ("▸" if w["data"].get("streaming") else "")
         info[wid] = {
-            "header": f'{wid} · {comp["id"]}' + (" · decides" if w["data"]["decision"] else ""),
+            "header": header,
             "title": wrap(label, 23),
             "example": wrap(example, 27) if example and len(wrap(example, 27)) <= 2 else [],
             "tags": [(kind, wrap(text, 32)) for kind, text in node_tags(m, wid)],
@@ -1202,6 +1233,15 @@ def flow_svg(m):
     return svg, info
 
 
+def latency_text(node):
+    """The node's reply budget, for a real-time design. Empty when it has none."""
+    budget = node["data"].get("latencyBudgetMs")
+    if not isinstance(budget, int):
+        return ""
+    streaming = " · streams its reply" if node["data"].get("streaming") else ""
+    return esc(f"{budget:,} ms" + streaming)
+
+
 def node_detail(m, w, hidden):
     wid = w["id"]
     c = m.contract[wid]
@@ -1244,6 +1284,7 @@ def node_detail(m, w, hidden):
                 ("Next steps", nxt),
                 ("If it fails", esc(c.get("failureDisposition", ""))),
                 ("Timeout · retry", esc(c.get("timeout", "")) + " · " + esc(c.get("retryPolicy", ""))),
+                ("Latency budget", latency_text(w)),
                 ("Failure modes", m.links([f["id"] for f in fms])),
             ]
         )
@@ -1685,7 +1726,7 @@ def rail(m):
     return f'<nav class="rail" aria-label="Steps"><div class="rg">{labels}</div><ol>{chevrons}</ol></nav>'
 
 
-def render_html(design, review, mode="standard", review_rounds=()):
+def render_html(design, review, mode="standard", review_rounds=(), run_conditions=""):
     if mode not in MODES:
         raise ValueError("HTML mode must be lite, standard or full.")
     structural = design_io.validate_design(design)
@@ -1695,7 +1736,7 @@ def render_html(design, review, mode="standard", review_rounds=()):
             "HTML requires valid canonical design and review: "
             + json.dumps(structural["errors"] + checked_review["errors"], ensure_ascii=False)
         )
-    m = Model(design, review, mode, review_rounds)
+    m = Model(design, review, mode, review_rounds, run_conditions)
     sections = ""
     first_leaf = m.leaves[0]["id"] if m.leaves else ""
     first_node = m.nodes[0]["id"] if m.nodes else ""
@@ -1990,6 +2031,17 @@ def _write_new(path, content, inputs):
     return path
 
 
+def run_conditions_near(design_path):
+    """The run conditions recorded beside a design, if a run report is there."""
+    report = Path(design_path).parent / "run-report.json"
+    if not report.is_file():
+        return ""
+    try:
+        return str(json.loads(report.read_text(encoding="utf-8")).get("runConditions", ""))
+    except (OSError, ValueError):
+        return ""
+
+
 def review_rounds_near(review_path):
     """Names of kept earlier review rounds next to review.json, if any."""
     folder = Path(review_path).parent
@@ -2003,7 +2055,7 @@ def export_html(design_path, review_path, out, mode="standard", review_rounds=No
     design = design_io.load_json(design_path)
     review = design_io.load_json(review_path)
     rounds = review_rounds_near(review_path) if review_rounds is None else review_rounds
-    document = render_html(design, review, mode, rounds)
+    document = render_html(design, review, mode, rounds, run_conditions_near(design_path))
     path = _write_new(out, document, (design_path, review_path))
     return {
         "ok": True,

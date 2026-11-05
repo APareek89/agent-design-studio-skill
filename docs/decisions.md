@@ -140,3 +140,53 @@ gutter stop being readable at 1440 px.
 **A cross-band edge says "continues at" at both ends.** It used to say
 "continues at W17" at one end and "from W16" at the other, which read as two
 different things.
+
+## Fixes 6 to 8, brief profiles
+
+**A design with no `briefProfile` keeps the v1.2 rules exactly.** Every profile
+rule is switched on by a recorded profile, so the two seed examples and every
+earlier design validate unchanged. This is checked by a test.
+
+**Read-only risk families replace the write families; they do not join them.**
+A system that answers and never acts cannot post a duplicate payment. Padding
+the register with families that cannot occur is how a register stops being
+read. COV17 names the read-only families a register is missing; money and
+duplicate-write families become "n/a" with the reason.
+
+**`answer` is an action class, checked by SEM008.** A read-only design has no
+write node for SEM003 to check, so its pair of goldens is a cited answer and a
+refusal when the corpus is silent, each naming a component whose declared
+effect is `read`, each with an integer `expected.citations`, and each naming
+the `citationField` it asserts on.
+
+**Barge-in is an error, not a warning.** Where the design says the system
+speaks, leaving out what happens when the user talks over it is a hole in the
+design rather than a missing nicety, so the validator fails it. The latency
+budget is a warning, because a budget can be exceeded for stated reasons.
+
+**The latency check needs a node budget to work.** With a target in the brief
+and no `latencyBudgetMs` anywhere, the validator says the path cannot be
+checked rather than passing silently.
+
+**SEM009 looks at inputs, not at prose.** A component whose declared inputs
+name a record ID and no tenant is flagged; adding `tenantId` to its inputs
+satisfies it. An identity binding must carry a tenant, and that tenant must be
+`trusted`: a tenant the model supplied is the whole of the risk.
+
+**The key attributes grid orders on the attribute's own name.** Ordering on the
+source system too put a row first because its source string happened to
+mention a tenant field.
+
+## Fix 9, host degradation
+
+**`runConditions` is one sentence with a clause per capability**, in the
+wording the brief gives, and it is written by the run report, read from
+`run-report.json` beside the design, and shown on the HTML status bar of every
+view and on page 1 of the PDF. A design with no run report shows no line
+rather than guessing.
+
+**"Independent" is a validation error in a self-review.** The `method` field
+is an enum so it cannot claim both, but the limitations and issues are free
+text and were where the claim actually appeared. Setting the telecom review to
+`self-review` now fails until its limitations are rewritten, which is the
+point.

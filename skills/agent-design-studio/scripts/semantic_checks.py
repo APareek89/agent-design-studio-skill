@@ -9,7 +9,13 @@ RULES = {
     'SEM005': 'LLM outputs do not supply money, dates or identity to writes.',
     'SEM006': 'Uncertain writer outcomes reconcile before a repeated write.',
     'SEM007': 'Completion confirmation passes a record-ID guard on every path.',
+    'SEM008': 'Every answer golden names a read source component and a citation field.',
+    'SEM009': 'A component that reads or writes by record ID is scoped to a tenant.',
 }
+# A read-only assistant declares its answers the way a writing one declares its
+# writes: `answer` is the action class, and its goldens are checked by SEM008
+# instead of SEM003.
+ANSWER_ACTION = 'answer'
 KINDS = {'start','validation','approval','write','human_wait','requester_notice','reconcile','record_id_guard','completion','other'}
 CATEGORIES = {'money','date','identity','other'}
 OUTCOMES = {'normal','TIMEOUT','unknown_commit','repeat','notice'}
@@ -48,7 +54,7 @@ def validate_semantics(design):
     shape(s['componentEffects'], {'componentId':str,'effect':str})
     shape(s['modelOutputs'], {'componentId':str,'field':str,'category':str})
     shape(s['writeActions'], {'actionClass':str,'nodeIds':list})
-    shape(s['goldens'], {'evalId':str,'actionClass':str,'polarity':str}, {'fixture':dict,'base':dict,'mergeRule':str,'overrides':dict,'resolvedFixture':dict})
+    shape(s['goldens'], {'evalId':str,'actionClass':str,'polarity':str}, {'fixture':dict,'base':dict,'mergeRule':str,'overrides':dict,'resolvedFixture':dict,'citationField':str})
     for n in s['nodes']:
         if isinstance(n,dict) and isinstance(n.get('bindings'),list):
             shape(n['bindings'], {'field':str,'category':str,'source':str}, {'sourceComponentId':str,'sourceField':str})
@@ -148,7 +154,7 @@ def validate_semantics(design):
     for g in s['goldens']:
         if not isinstance(g,dict): issue('SEM000','Invalid golden declaration.'); continue
         eid = g.get('evalId'); a = g.get('actionClass'); polarity = g.get('polarity')
-        if eid not in evals or evals.get(eid,{}).get('data',{}).get('category') != 'golden' or eid in seen_evals or (a not in actions and a != '') or polarity not in {'positive','negative'}:
+        if eid not in evals or evals.get(eid,{}).get('data',{}).get('category') != 'golden' or eid in seen_evals or (a not in actions and a not in ('', ANSWER_ACTION)) or polarity not in {'positive','negative'}:
             issue('SEM000','Golden must identify a unique actual golden eval, declared action class and polarity.'); continue
         seen_evals.add(eid)
         data = evals[eid]['data']
@@ -158,11 +164,11 @@ def validate_semantics(design):
         # allowed only when its exact version and deterministic merge are declared.
         if 'base' in g:
             base=g['base']
-            if set(g)!={'evalId','actionClass','polarity','base','mergeRule','overrides','resolvedFixture'} or not isinstance(base,dict) or set(base)!={'id','version'} or not all(isinstance(base[k],str) and base[k].strip() for k in base) or g.get('mergeRule')!='deep-merge-v1' or not isinstance(g.get('overrides'),dict) or not isinstance(g.get('resolvedFixture'),dict) or g.get('resolvedFixture')!=fixture:
+            if set(g)-{'citationField'}!={'evalId','actionClass','polarity','base','mergeRule','overrides','resolvedFixture'} or not isinstance(base,dict) or set(base)!={'id','version'} or not all(isinstance(base[k],str) and base[k].strip() for k in base) or g.get('mergeRule')!='deep-merge-v1' or not isinstance(g.get('overrides'),dict) or not isinstance(g.get('resolvedFixture'),dict) or g.get('resolvedFixture')!=fixture:
                 issue('SEM004','Inherited golden requires versioned base, deep-merge-v1, overrides and resolvedFixture matching actual eval: '+eid)
-        elif set(g)-{'evalId','actionClass','polarity','fixture'} or not isinstance(g.get('fixture'),dict) or set(g['fixture'])!={'input','expected'} or g['fixture']!=fixture or not all(isinstance(fixture[k],dict) and fixture[k] for k in ('input','expected')):
+        elif set(g)-{'evalId','actionClass','polarity','fixture','citationField'} or not isinstance(g.get('fixture'),dict) or set(g['fixture'])!={'input','expected'} or g['fixture']!=fixture or not all(isinstance(fixture[k],dict) and fixture[k] for k in ('input','expected')):
             issue('SEM004','Self-contained golden fixture must match actual eval input/expected objects: '+eid)
-        if a and fixture and isinstance(fixture['expected'],dict):
+        if a and a != ANSWER_ACTION and fixture and isinstance(fixture['expected'],dict):
             count=fixture['expected'].get('writes')
             try: assertion=json.loads(data['passRule']).get('equals',{}).get('writes')
             except (TypeError,ValueError,AttributeError): assertion=None
@@ -177,6 +183,8 @@ def validate_semantics(design):
     for a in actions:
         for p in ('positive','negative'):
             if (a,p) not in coverage: issue('SEM003','Missing '+p+' golden for write action '+a)
+    errors.extend(_answer_goldens(design, s, evals, comps))
+    errors.extend(_tenant_scope(design, s, comps, wf))
     # Output categories and writer input bindings are exhaustive, so an empty
     # metadata list cannot stand in for a provenance check.
     llms = {i for i,c in comps.items() if c['data']['group']=='Agents (LLM)'}
@@ -237,4 +245,128 @@ def validate_semantics(design):
         else: issue('SEM007','Record-ID guard requires a deterministic validator and required string recordProof input from upstream trusted writers, reconcilers or read adapters: '+i)
     for i in kind({'completion'}) & reachable(roots,valid_record_guards):
         issue('SEM007','Completion reachable without a record-ID guard: '+i)
+    return errors
+
+
+def _profile(design):
+    intake = design.get('intake')
+    if not isinstance(intake, dict): return {}
+    profile = intake.get('briefProfile')
+    return profile if isinstance(profile, dict) else {}
+
+
+def _answer_goldens(design, s, evals, comps):
+    """SEM008: a read-only design proves its answers the way a writer proves its writes.
+
+    With `briefProfile.writes = false` there is no write action for SEM003 to
+    check, so the pair of goldens that matters is a cited answer and a refusal
+    when the corpus is silent. Each must name a component that actually reads.
+    """
+    errors = []
+    profile = _profile(design)
+    if not profile or profile.get('writes') is not False:
+        return errors
+    effects = {}
+    for row in s.get('componentEffects', []):
+        if isinstance(row, dict) and isinstance(row.get('componentId'), str):
+            effects[row['componentId']] = row.get('effect')
+    answers = [g for g in s.get('goldens', [])
+               if isinstance(g, dict) and g.get('actionClass') == ANSWER_ACTION]
+    if not answers:
+        errors.append({'path': '$.semantics.goldens', 'ruleId': 'SEM008',
+                       'message': ('A read-only design needs goldens with actionClass "answer": one that answers '
+                                   'with a verifiable citation and one that refuses when the corpus is silent.')})
+        return errors
+    seen = set()
+    for g in answers:
+        eid = g.get('evalId')
+        path = '$.semantics.goldens[' + str(eid) + ']'
+        polarity = g.get('polarity')
+        seen.add(polarity)
+        row = evals.get(eid)
+        if row is None:
+            continue
+        data = row['data']
+        try:
+            expected = json.loads(data['expected'])
+        except (TypeError, ValueError):
+            expected = None
+        count = expected.get('citations') if isinstance(expected, dict) else None
+        if type(count) is not int:
+            errors.append({'path': path, 'ruleId': 'SEM008',
+                           'message': 'Answer golden needs an integer expected.citations: ' + str(eid)})
+        elif polarity == 'positive' and count < 1:
+            errors.append({'path': path, 'ruleId': 'SEM008',
+                           'message': 'A positive answer golden must expect at least one citation: ' + str(eid)})
+        elif polarity == 'negative' and count != 0:
+            errors.append({'path': path, 'ruleId': 'SEM008',
+                           'message': 'A negative answer golden refuses, so it expects zero citations: ' + str(eid)})
+        readers = [c for c in data['componentIds'] if effects.get(c) == 'read']
+        if not readers:
+            errors.append({'path': path, 'ruleId': 'SEM008',
+                           'message': ('Answer golden must name a source component whose declared effect is read: '
+                                       + str(eid))})
+        if not isinstance(g.get('citationField'), str) or not g['citationField'].strip():
+            errors.append({'path': path, 'ruleId': 'SEM008',
+                           'message': 'Answer golden must name the citation field it asserts on: ' + str(eid)})
+    for polarity in ('positive', 'negative'):
+        if polarity not in seen:
+            errors.append({'path': '$.semantics.goldens', 'ruleId': 'SEM008',
+                           'message': 'Missing ' + polarity + ' answer golden for the read-only corpus.'})
+    return errors
+
+
+# Words that mean "a record of one customer", which in a shared system must be
+# read inside a tenant.
+RECORD_ID = ('customerid', 'accountid', 'caseid', 'recordid', 'claimid', 'ticketid', 'orderid',
+             'invoiceid', 'userid', 'subscriberid', 'policyid', 'documentid', 'patientid')
+TENANT_FIELDS = ('tenant', 'tenantid', 'orgid', 'organisationid', 'organizationid', 'workspaceid', 'clientid')
+
+
+def _tenant_scope(design, s, comps, wf):
+    """SEM009: in a shared system, a record ID without a tenant is a cross-tenant read."""
+    errors = []
+    profile = _profile(design)
+    if not profile or not profile.get('multiTenant'):
+        return errors
+    effects = {}
+    for row in s.get('componentEffects', []):
+        if isinstance(row, dict) and isinstance(row.get('componentId'), str):
+            effects[row['componentId']] = row.get('effect')
+
+    def names(component, side):
+        return [x.split(':', 1)[0].rstrip('!').strip().lower() for x in component['data'][side]]
+
+    for cid, component in comps.items():
+        if effects.get(cid) not in ('read', 'write'):
+            continue
+        inputs = names(component, 'inputs')
+        if not any(any(key in field for key in RECORD_ID) for field in inputs):
+            continue
+        if any(any(key in field for key in TENANT_FIELDS) for field in inputs):
+            continue
+        errors.append({'path': '$.stages.components.' + cid, 'ruleId': 'SEM009',
+                       'message': ('Component ' + cid + ' reads or writes by record ID with no tenant in scope; '
+                                   'add a trusted tenant input so one customer cannot reach another.')})
+    # Identity bindings carry the tenant, and it is never the model's to supply.
+    for node in s.get('nodes', []):
+        if not isinstance(node, dict):
+            continue
+        bindings = node.get('bindings')
+        if not isinstance(bindings, list):
+            continue
+        identity = [b for b in bindings if isinstance(b, dict) and b.get('category') == 'identity']
+        if not identity:
+            continue
+        tenant = [b for b in identity if any(key in str(b.get('field', '')).lower() for key in TENANT_FIELDS)]
+        if not tenant:
+            errors.append({'path': '$.semantics.nodes.' + str(node.get('id')), 'ruleId': 'SEM009',
+                           'message': ('Identity binding at ' + str(node.get('id'))
+                                       + ' names no tenant field; a shared system must bind the tenant.')})
+            continue
+        for binding in tenant:
+            if binding.get('source') != 'trusted':
+                errors.append({'path': '$.semantics.nodes.' + str(node.get('id')), 'ruleId': 'SEM009',
+                               'message': ('The tenant at ' + str(node.get('id')) + ' comes from '
+                                           + str(binding.get('source')) + '; it must be trusted, never a model output.')})
     return errors
