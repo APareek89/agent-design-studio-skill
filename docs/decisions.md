@@ -243,3 +243,38 @@ stayed unmeasured since 1.1. The rules the seeds would exercise are covered by
 `tests/test_brief_profiles.py`, which builds satisfiable read-only and
 multi-tenant variants and proves both the failing and the passing side of
 every new rule.
+
+## Verification and the rules
+
+The v1.3 brief set four rules. What was done about each:
+
+**"Never lower a threshold, delete a failing test, edit a seeded defect or
+rename a stage key."** `quality-rubric.json` is byte-identical. `STAGES` is
+unchanged. `evals/seeded-defects/` and `evals/seed-reviews-v2/` are
+byte-identical, and all thirteen seeded defects are still caught by their own
+rule (SEM001 to SEM007) with the passing control still passing. Two test
+assertions were removed and both were replaced with stricter ones: the
+task-depth assertion now requires the message to name the limit, and the test
+asserting that the seeds *fail* `--strict-coverage` was replaced by three
+tests — both seeds pass, the research records say what they say, and a
+synthetic design with a real gap still fails the flag. Net: 1,786 test lines
+added, 14 removed.
+
+**"Never hide content to pass a size or page limit; move it to a companion and
+link."** The only content moved is the long brief, and it is moved to a
+companion that is named at the point it is moved from: the build overview
+quotes 2 KB and points at `design.json`, the HTML collapses the rest behind a
+control with the whole text still in the page, and the full PDF carries it as
+appendix D.
+
+**"A fix that would weaken 'code owns money, identity, dates and limits' is
+refused."** None was needed. The one place the brief pushed against it is the
+autonomous-trading edge brief, and the classifier's answer is to record the
+conflict and fail validation until the design says what it keeps instead — the
+opposite of weakening it.
+
+**"Stop after 6 iterations or when S1–S15 pass on all seeds in two
+consecutive runs."** Neither condition was reached: the work was eleven fixes
+done once each, and S11, S13 and S15 are open, so an all-target pass has not
+happened once. `evals/v1.3-scorecard.md` records what was measured and what
+was not.

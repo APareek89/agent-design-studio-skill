@@ -1,0 +1,46 @@
+01_xss_strings           validate rc=0 html rc=0 ['escaped', 'img-escaped', 'html 296KB', 'no_ellipsis']
+    V: "errors": [],
+02_unicode_scripts       validate rc=0 html rc=0 ['html 296KB', 'no_ellipsis']
+    V: "errors": [],
+03_very_long_labels      validate rc=0 html rc=0 ['html 306KB', 'no_ellipsis']
+    V: "errors": [],
+04_twelve_design_calls   validate rc=1 html rc=1 []
+    V: "status": "structural-errors",
+    V: "errors": [
+    H: {"ok": false, "error": "HTML requires valid canonical design and review: [{\"path\": \"$.presentation.designCalls\", \"message\": \"Too many items; maxItems=5.\
+05_zero_fmea             validate rc=1 html rc=1 []
+    V: "status": "structural-errors",
+    V: "errors": [
+    H: {"ok": false, "error": "HTML requires valid canonical design and review: [{\"path\": \"$.stages.fmea.items\", \"message\": \"Too few items; minItems=1.\"}, {\"p
+06_zero_models_all_code  validate rc=1 html rc=1 []
+    V: "status": "structural-errors",
+    V: "errors": [
+    H: {"ok": false, "error": "HTML requires valid canonical design and review: [{\"path\": \"$.stages.components.items[2]\", \"message\": \"Exactly one active model p
+07_duplicate_ids         validate rc=1 html rc=1 []
+    V: "status": "structural-errors",
+    V: "errors": [
+    H: {"ok": false, "error": "HTML requires valid canonical design and review: [{\"path\": \"$.stages.tasks.items[2].id\", \"message\": \"Duplicate item ID T1; first 
+08_cycle_back_edge       validate rc=0 html rc=0 ['html 296KB', 'no_ellipsis']
+    V: "errors": [],
+09_rpn_extremes          validate rc=1 html rc=1 []
+    V: "status": "structural-errors",
+    V: "errors": [
+    H: {"ok": false, "error": "HTML requires valid canonical design and review: [{\"path\": \"$.stages.fmea.items[1].data.severity\", \"message\": \"Number is below 1.
+10_deep_task_tree        validate rc=1 html rc=1 []
+    V: "status": "structural-errors",
+    V: "errors": [
+    H: {"ok": false, "error": "HTML requires valid canonical design and review: [{\"path\": \"$.stages.tasks.items[14]\", \"message\": \"Task depth 4 exceeds the limit
+11_twelve_top_tasks      validate rc=1 html rc=1 []
+    V: "status": "structural-errors",
+    V: "errors": [
+    H: {"ok": false, "error": "HTML requires valid canonical design and review: [{\"path\": \"$.stages.tasks.items[11]\", \"message\": \"Leaf task has no serving compo
+12_fan_out_eight         validate rc=0 html rc=0 ['html 299KB', 'no_ellipsis']
+    V: "errors": [],
+13_no_presentation_1_1   validate rc=0 html rc=0 ['html 295KB', 'no_ellipsis']
+    V: "errors": [],
+14_huge_brief            validate rc=0 html rc=0 ['html 356KB', 'no_ellipsis']
+    V: "errors": [],
+15_empty_strings         validate rc=1 html rc=1 []
+    V: "status": "structural-errors",
+    V: "errors": [
+    H: {"ok": false, "error": "HTML requires valid canonical design and review: [{\"path\": \"$.stages.tasks.items[0]\", \"message\": \"Does not match any allowed sche

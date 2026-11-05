@@ -3,7 +3,7 @@ name: agent-design-studio
 description: Turn a brief into a reviewed system design delivered as a clickable read-only HTML view and a PDF, with task and workflow diagrams, deterministic controls, risk analysis, evaluation fixtures and a milestone coding handoff. Use to detail AI workflows from minimal input; produces designs rather than implementing the business system.
 license: MIT
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Agent Design Studio
